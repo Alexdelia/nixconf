@@ -1,7 +1,7 @@
-{ lib, /*username,*/ ... }:
+{ username }:
 
 {
-  users.users./*${username}*/alex = {
+  users.users.${username} = {
     isNormalUser = true;
     description = "Alexandre Delille";
     extraGroups = [ "networkmanager" "wheel" ];
