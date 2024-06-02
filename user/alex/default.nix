@@ -1,14 +1,15 @@
-{ lib, hostname, home-manager, ... }:
+{ lib, /*home-manager,*/ ... }:
 let
   username = "alex";
 in {
   imports = [
-    ( import ./system.nix {
+    ./system.nix
+    /*( import ./system.nix {
       inherit username;
-    })
-    ( import ./home {
+    })*/
+    /*( import ./home {
       inherit username;
       inherit home-manager;
-    })
+    })*/
   ];
 }
