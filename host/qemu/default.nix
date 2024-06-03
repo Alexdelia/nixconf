@@ -3,7 +3,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    #../../user/alex
     ( import ../../user/alex {
       inherit home-manager;
     })
