@@ -5,7 +5,10 @@
   home-manager.useUserPackages = true;
 
   home-manager.users.${username} = {
-    imports = [ ./pkg ];
+    imports = [
+      ./pkg
+      ./shell
+    ];
 
     home = {
       username = username;
