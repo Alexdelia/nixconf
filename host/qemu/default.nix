@@ -1,12 +1,12 @@
-{ lib, config, pkgs, hostname, ... }:
+{ lib, config, pkgs, hostname, home-manager, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
-    ../../user/alex
-    /*( import ../../user/alex {
+    #../../user/alex
+    ( import ../../user/alex {
       inherit home-manager;
-    })*/
+    })
   ];
 
   # Bootloader.
