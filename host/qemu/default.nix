@@ -1,10 +1,11 @@
-{ lib, config, pkgs, hostname, home-manager, ... }:
+{ lib, config, pkgs, hostname, nixpkgs-unstable, home-manager, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ( import ../../user/alex {
       inherit home-manager;
+      inherit nixpkgs-unstable;
     })
   ];
 

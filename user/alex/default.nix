@@ -1,4 +1,4 @@
-{ home-manager, ... }:
+{ nixpkgs-unstable, home-manager, ... }:
 let
   username = "alex";
 in {
@@ -11,6 +11,7 @@ in {
 
     ( import ./home {
       inherit username;
+      inherit nixpkgs-unstable;
       inherit home-manager;
     })
   ];

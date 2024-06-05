@@ -2,17 +2,18 @@
   description = "Alexdelia's nixos config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }: {
+  outputs = { self, nixpkgs-unstable, nixpkgs-stable, home-manager, ... }: {
     nixosConfigurations = builtins.mapAttrs (name: system:
-      nixpkgs.lib.nixosSystem {
+      nixpkgs-stable.lib.nixosSystem {
         inherit system;
 
         modules = [
@@ -21,6 +22,7 @@
           ./host/${name}
           { _module.args = {
             hostname = name;
+            inherit nixpkgs-unstable;
             inherit home-manager;
           };}
         ];
