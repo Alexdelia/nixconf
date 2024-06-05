@@ -8,7 +8,7 @@
     imports = [
       ./pkg
       ./shell
-      # ./editor
+      ./editor
     ];
 
     home = {

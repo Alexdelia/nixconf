@@ -8,6 +8,8 @@
     XDG_STATE_HOME  = "$HOME/.local/state";
     XDG_BIN_HOME    = "$HOME/.local/bin";
 
-    XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";
+    EDITOR = "hx";
+
+    # XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";
   };
 }

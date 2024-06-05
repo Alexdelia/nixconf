@@ -1,6 +1,6 @@
 {
   imports = [
     ./vim
-    ./hexix
+    ./helix
   ];
 }
