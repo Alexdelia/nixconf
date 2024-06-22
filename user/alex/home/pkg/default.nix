@@ -1,12 +1,7 @@
-{ config, pkgs, nixpkgs-unstable, ... }:
+{ config, pkgs, ... }:
 
 {
   # imports = [];
-
-  programs.warp-terminal = {
-    enable = true;
-    package = nixpkgs-unstable.warp-terminal;
-  };
 
   home.packages = with pkgs; [
     neofetch
