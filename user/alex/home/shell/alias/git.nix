@@ -1,0 +1,3 @@
+{
+  gst = "git status --short";
+}
