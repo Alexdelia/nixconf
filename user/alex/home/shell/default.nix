@@ -1,6 +1,5 @@
 {
   imports = [
-	# ./alias
     ./nushell
     # ./zsh
   ];
