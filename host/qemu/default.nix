@@ -3,7 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../system
+    ../../system
     ( import ../../user/alex {
       inherit home-manager;
       inherit nixpkgs-unstable;
