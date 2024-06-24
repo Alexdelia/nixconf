@@ -1,5 +1,1 @@
-{
-  imports = [
-    ./git.nix
-  ];
-}
+import ./git.nix // import ./rust.nix

@@ -1,14 +1,14 @@
 let
-  aliases = import./../alias/git.nix;
+  aliases = import ../alias;
 in
-{ programs = {
+{
+  programs = {
   nushell = {
     enable = true;
 
     configFile.source = ./config.nu;
     envFile.source = ./env.nu;
 
-    # builtins.trace aliases;
-    # shellAliases = aliases;
+    shellAliases = aliases;
   };
 };}
