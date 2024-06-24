@@ -1,6 +1,3 @@
-let
-  aliases = import ../alias;
-in
 {
   programs = {
   nushell = {
@@ -9,6 +6,6 @@ in
     configFile.source = ./config.nu;
     envFile.source = ./env.nu;
 
-    shellAliases = aliases;
+    shellAliases = import ../alias;
   };
 };}
