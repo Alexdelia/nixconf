@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../system
     ( import ../../user/alex {
       inherit home-manager;
       inherit nixpkgs-unstable;
@@ -41,13 +42,6 @@
     LC_TELEPHONE = "fr_FR.UTF-8";
     LC_TIME = "fr_FR.UTF-8";
   };
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the XFCE Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
 
   # Configure keymap in X11
   services.xserver = {

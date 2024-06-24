@@ -9,6 +9,6 @@ in
     envFile.source = ./env.nu;
 
     # builtins.trace aliases;
-    shellAliases = aliases;
+    # shellAliases = aliases;
   };
 };}
