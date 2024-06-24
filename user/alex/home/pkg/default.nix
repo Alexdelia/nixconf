@@ -1,9 +1,14 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # imports = [];
 
   home.packages = with pkgs; [
-    neofetch
+    # neofetch
+
+    ## nix
+    alejandra
   ];
 }

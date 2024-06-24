@@ -1,11 +1,12 @@
 {
   programs = {
-  nushell = {
-    enable = true;
+    nushell = {
+      enable = true;
 
-    configFile.source = ./config.nu;
-    envFile.source = ./env.nu;
+      configFile.source = ./config.nu;
+      envFile.source = ./env.nu;
 
-    shellAliases = import ../alias;
+      shellAliases = import ../alias;
+    };
   };
-};}
+}

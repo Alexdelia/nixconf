@@ -1,10 +1,16 @@
-{ lib, config, pkgs, hostname, nixpkgs-unstable, home-manager, ... }:
-
 {
+  lib,
+  config,
+  pkgs,
+  hostname,
+  nixpkgs-unstable,
+  home-manager,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ../../system
-    ( import ../../user/alex {
+    (import ../../user/alex {
       inherit home-manager;
       inherit nixpkgs-unstable;
     })
@@ -77,7 +83,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -112,5 +118,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }

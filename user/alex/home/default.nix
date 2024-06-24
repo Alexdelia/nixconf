@@ -1,12 +1,19 @@
-{ username, nixpkgs-unstable, home-manager, ... }: { config, pkgs, ... }:
-
 {
+  username,
+  nixpkgs-unstable,
+  home-manager,
+  ...
+}: {
+  config,
+  pkgs,
+  ...
+}: {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    extraSpecialArgs = { inherit nixpkgs-unstable; };
-  
+    extraSpecialArgs = {inherit nixpkgs-unstable;};
+
     users.${username} = {
       imports = [
         ./pkg

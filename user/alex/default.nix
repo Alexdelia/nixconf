@@ -1,15 +1,18 @@
-{ nixpkgs-unstable, home-manager, ... }:
-let
+{
+  nixpkgs-unstable,
+  home-manager,
+  ...
+}: let
   username = "alex";
 in {
   imports = [
-    ( import ./system.nix {
+    (import ./system.nix {
       inherit username;
     })
 
     ./env.nix
 
-    ( import ./home {
+    (import ./home {
       inherit username;
       inherit nixpkgs-unstable;
       inherit home-manager;
