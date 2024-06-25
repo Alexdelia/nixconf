@@ -1,5 +1,6 @@
 {
   imports = [
+    ./locale.nix
     ./de
   ];
 
