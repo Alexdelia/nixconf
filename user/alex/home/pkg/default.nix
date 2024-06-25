@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./git
     ./eza.nix
   ];
 
