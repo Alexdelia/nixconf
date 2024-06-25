@@ -3,7 +3,9 @@
   pkgs,
   ...
 }: {
-  # imports = [];
+  imports = [
+    ./eza.nix
+  ];
 
   home.packages = with pkgs; [
     # neofetch
