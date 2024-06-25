@@ -21,4 +21,6 @@
   gm = "git merge";
 
   gk = "git cherry-pick";
+
+  gid = "git identify";
 }
