@@ -3,8 +3,8 @@
 
   i18n.extraLocaleSettings = {
     LC_TIME = "fr_FR.UTF-8"; # use an english + dd/mm/yyyy format
-    LC_NUMERIC = "mfe.UTF-8";
-    LC_MONETARY = "mfe.UTF-8";
+    LC_NUMERIC = "mfe_MU.UTF-8";
+    LC_MONETARY = "mfe_MU.UTF-8";
     LC_MEASUREMENT = "nl_NL.UTF-8";
 
     LC_ADDRESS = "fr_FR.UTF-8";
