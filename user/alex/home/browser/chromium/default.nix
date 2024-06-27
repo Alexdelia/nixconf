@@ -4,6 +4,6 @@
 
     package = pkgs.brave;
 
-    # extensions = builtins.trace import ./extension;
+    extensions = import ./extension;
   };
 }
