@@ -19,6 +19,7 @@
         ./pkg
         ./shell
         ./editor
+        ./browser
       ];
 
       home = {
