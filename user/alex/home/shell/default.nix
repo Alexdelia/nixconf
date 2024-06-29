@@ -2,5 +2,7 @@
   imports = [
     ./nushell
     # ./zsh
+
+    ./starship
   ];
 }
