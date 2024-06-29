@@ -1,10 +1,14 @@
 {
-  i18n.defaultLocale = "en_UK.UTF-8";
+  i18n.defaultLocale = "en_GB.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_TIME = "fr_FR.UTF-8"; # use an english + dd/mm/yyyy format
+    # 31/01/1970 24:59:59
+    LC_TIME = "en_SG.UTF-8";
+    # 1 234.56
     LC_NUMERIC = "mfe_MU.UTF-8";
-    LC_MONETARY = "mfe_MU.UTF-8";
+    # ₹1234.56
+    LC_MONETARY = "en_IN.UTF-8";
+    # meter system
     LC_MEASUREMENT = "nl_NL.UTF-8";
 
     LC_ADDRESS = "fr_FR.UTF-8";
@@ -15,4 +19,14 @@
 
     LC_PAPER = "nl_NL.UTF-8";
   };
+
+  i18n.supportedLocales = [
+    "en_GB.UTF-8/UTF-8"
+    "en_US.UTF-8/UTF-8"
+    "en_SG.UTF-8/UTF-8"
+    "mfe_MU/UTF-8"
+    "en_IN/UTF-8"
+    "nl_NL.UTF-8/UTF-8"
+    "fr_FR.UTF-8/UTF-8"
+  ];
 }
