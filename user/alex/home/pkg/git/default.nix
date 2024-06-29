@@ -4,15 +4,14 @@
   lib,
   pkgs,
   ...
-}: let
-  gitIdentity =
-    pkgs.writeScriptBin "git-identity" (builtins.readFile ./git-identity.sh);
-in {
-  home.packages = with pkgs; [
-    gitIdentity
+}: {
+  home.packages = with pkgs;
+    [
+      delta
 
-    delta
-  ];
+      (pkgs.writeScriptBin "git-identity" (builtins.readFile ./git-identity.sh))
+    ]
+    ++ (import ./script {inherit pkgs;});
 
   programs.git = {
     enable = true;
@@ -40,10 +39,10 @@ in {
     };
 
     aliases = {
+      vommit = "commit";
+
       identity = "! git-identity";
       id = "! git-identity";
-
-      vommit = "commit";
     };
   };
 }
