@@ -1,5 +1,5 @@
 {
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "C";
 
   i18n.extraLocaleSettings = {
     # 31/01/1970 24:59:59
@@ -21,7 +21,7 @@
   };
 
   i18n.supportedLocales = [
-    "en_GB.UTF-8/UTF-8"
+    "C.UTF-8/UTF-8"
     "en_US.UTF-8/UTF-8"
     "en_SG.UTF-8/UTF-8"
     "mfe_MU/UTF-8"
