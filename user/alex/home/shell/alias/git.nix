@@ -10,6 +10,7 @@
   gtree = "git log --graph --oneline --decorate --all";
 
   gc = "git commit --message";
+  gops = "git reset HEAD~1 --soft";
 
   gl = "git pull";
   gp = "git push";
