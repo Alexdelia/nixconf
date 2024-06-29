@@ -8,7 +8,7 @@
     LC_NUMERIC = "mfe_MU";
     # € 1234,56
     LC_MONETARY = "nl_NL.UTF-8";
-    # meter system
+    # metric system
     LC_MEASUREMENT = "nl_NL.UTF-8";
 
     LC_ADDRESS = "fr_FR.UTF-8";
