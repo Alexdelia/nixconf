@@ -9,9 +9,11 @@
         format = lib.concatStrings [
           "$cmd_duration"
           "$directory"
+          " "
         ];
 
         cmd_duration = import ./cmd_duration.nix;
+        directory = import ./directory.nix;
       };
     };
   };
