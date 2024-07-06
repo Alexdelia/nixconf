@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   programs = {
     starship = {
       enable = true;
@@ -6,10 +6,12 @@
       settings = {
         add_newline = false;
 
-        character = {
-          success_symbol = "[➜](bold green)";
-          error_symbol = "[➜](bold red)";
-        };
+        format = lib.concatStrings [
+          "$cmd_duration"
+          "$directory"
+        ];
+
+        cmd_duration = import ./cmd_duration.nix;
       };
     };
   };
