@@ -19,7 +19,7 @@
         ./pkg
         ./font
         ./shell
-        # ./tty
+        ./tty
         ./editor
         ./browser
       ];
