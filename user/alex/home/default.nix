@@ -18,6 +18,7 @@
       imports = [
         ./pkg
         ./shell
+        # ./tty
         ./editor
         ./browser
       ];

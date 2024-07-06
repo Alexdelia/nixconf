@@ -14,6 +14,9 @@
     ## shell essentials
     ripgrep
 
+    ## tty
+    warp-terminal
+
     ## nix
     alejandra
   ];
