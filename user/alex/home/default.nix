@@ -17,6 +17,7 @@
     users.${username} = {
       imports = [
         ./pkg
+        ./font
         ./shell
         # ./tty
         ./editor
