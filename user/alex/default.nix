@@ -12,6 +12,8 @@ in {
 
     ./env.nix
 
+    ./font.nix
+
     (import ./home {
       inherit username;
       inherit nixpkgs-unstable;
