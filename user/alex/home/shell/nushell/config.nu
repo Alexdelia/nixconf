@@ -151,14 +151,14 @@ $env.config = {
     }
 
     filesize: {
-        metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
-        format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
+        metric: true
+        format: "auto"
     }
 
     cursor_shape: {
-        emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
-        vi_insert: block # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (block is the default)
-        vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
+        emacs: line
+        vi_insert: line
+        vi_normal: block
     }
 
     color_config: $theme
@@ -543,6 +543,7 @@ $env.config = {
                 ]
             }
         }
+
         {
             name: delete_one_character_backward
             modifier: none
@@ -558,6 +559,14 @@ $env.config = {
             event: { edit: backspaceword }
         }
         {
+            name: delete_one_word_backward_fix
+            modifier: control
+            keycode: char_h
+            mode: [emacs, vi_insert]
+            event: { edit: backspaceword }
+        }
+
+        {
             name: delete_one_character_forward
             modifier: none
             keycode: delete
@@ -571,6 +580,14 @@ $env.config = {
             mode: [emacs, vi_insert]
             event: { edit: delete }
         }
+        {
+            name: delete_one_word_forward
+            modifier: control
+            keycode: delete
+            mode: [emacs, vi_insert]
+            event: { edit: deleteword }
+        }
+
         {
             name: delete_one_character_backward
             modifier: control
