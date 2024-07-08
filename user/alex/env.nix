@@ -8,7 +8,7 @@
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
 
-    EDITOR = "hx";
+    EDITOR = "vim";
 
     # XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";
   };
