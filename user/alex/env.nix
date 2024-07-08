@@ -12,6 +12,6 @@
 
     # XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";
 
-    WAKATIME_HOME = "$XDG_CONFIG_HOME/wakatime";
+    WAKATIME_HOME = "${XDG_CONFIG_HOME}/wakatime";
   };
 }
