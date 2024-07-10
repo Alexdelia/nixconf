@@ -7,10 +7,11 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 let theme = {
-    # color for nushell primitives
-    separator: white
-    leading_trailing_space_bg: { attr: n } # no fg, no bg, attr none effectively turns this off
-    header: green_bold
+    # separator: "#bdf54e"
+	separator: purple_dimmed
+
+    leading_trailing_space_bg: { attr: n }
+    header: { fg: white attr: b }
     empty: blue
     # Closures can be used to choose colors for specific values.
     # The value (in this case, a bool) is piped into the closure.
