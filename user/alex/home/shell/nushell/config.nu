@@ -7,7 +7,8 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 let theme = {
-    # separator: "#bdf54e"
+    hints: { attr: h } 
+
 	separator: purple_dimmed
 
     leading_trailing_space_bg: { attr: n }
@@ -20,19 +21,20 @@ let theme = {
     int: white
     filesize: cyan
     duration: white
-    date: purple
+    date: blue
     range: white
     float: white
     string: white
     nothing: white
     binary: white
     cell-path: white
-    row_index: green_bold
+    row_index: white_dimmed
     record: white
     list: white
     block: white
-    hints: { attr: h } 
+
     search_result: { bg: red fg: white }
+
     shape_and: purple_bold
     shape_binary: purple_bold
     shape_block: blue_bold
@@ -60,7 +62,7 @@ let theme = {
     shape_nothing: light_cyan
     shape_operator: yellow
     shape_or: purple_bold
-    shape_pipe: purple_bold
+    shape_pipe: "#bdf54e"
     shape_range: yellow_bold
     shape_record: cyan_bold
     shape_redirection: purple_bold
