@@ -7,7 +7,7 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 let theme = {
-    hints: { attr: h } 
+    hints: { attr: h }
 
 	separator: purple_dimmed
 
