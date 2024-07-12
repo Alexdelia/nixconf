@@ -8,6 +8,7 @@
 
         format = lib.concatStrings [
           "$cmd_duration"
+          "$memory_usage"
           "$directory"
           "$git_branch"
           "$git_commit"
@@ -18,6 +19,9 @@
         ];
 
         cmd_duration = import ./cmd_duration.nix;
+        memory_usage = import ./memory_usage.nix;
+
+        # TODO: hostname and local ip for ssh
 
         directory = import ./directory.nix;
 
