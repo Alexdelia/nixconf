@@ -11,8 +11,9 @@
           "$directory"
           "$git_branch"
           "$git_commit"
-          "$git_state"
           "$git_metrics"
+          "$git_state"
+          "$git_status"
           " "
         ];
 
@@ -22,8 +23,9 @@
 
         git_branch = import ./git/branch.nix;
         git_commit = import ./git/commit.nix;
-        git_state = import ./git/state.nix;
         git_metrics = import ./git/metrics.nix;
+        git_state = import ./git/state.nix;
+        git_status = import ./git/status.nix;
       };
     };
   };
