@@ -11,13 +11,19 @@
           "$directory"
           "$git_branch"
           "$git_commit"
+          "$git_state"
+          "$git_metrics"
           " "
         ];
 
         cmd_duration = import ./cmd_duration.nix;
+
         directory = import ./directory.nix;
-        git_branch = import ./git_branch.nix;
-        git_commit = import ./git_commit.nix;
+
+        git_branch = import ./git/branch.nix;
+        git_commit = import ./git/commit.nix;
+        git_state = import ./git/state.nix;
+        git_metrics = import ./git/metrics.nix;
       };
     };
   };
