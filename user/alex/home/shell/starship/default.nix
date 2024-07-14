@@ -36,7 +36,9 @@
         git_commit = import ./git/commit.nix;
         git_metrics = import ./git/metrics.nix;
         git_state = import ./git/state.nix;
-        git_status = import ./git/status.nix;
+        git_status = import ./git/status.nix {
+          inherit lib;
+        };
 
         shlvl = import ./shlvl.nix;
       };
