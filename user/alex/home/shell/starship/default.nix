@@ -9,12 +9,14 @@
         format = lib.concatStrings [
           "$cmd_duration"
           "$memory_usage"
+          "$nix_shell"
           "$directory"
           "$git_branch"
           "$git_commit"
           "$git_metrics"
           "$git_state"
           "$git_status"
+          "$shlvl"
           " "
         ];
 
@@ -23,6 +25,8 @@
 
         # TODO: hostname and local ip for ssh
 
+        nix_shell = import ./nix_shell.nix;
+
         directory = import ./directory.nix;
 
         git_branch = import ./git/branch.nix;
@@ -30,6 +34,8 @@
         git_metrics = import ./git/metrics.nix;
         git_state = import ./git/state.nix;
         git_status = import ./git/status.nix;
+
+        shlvl = import ./shlvl.nix;
       };
     };
   };
