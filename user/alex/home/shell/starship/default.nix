@@ -8,6 +8,7 @@
 
         format = lib.concatStrings [
           "$cmd_duration"
+          "$status"
           "$memory_usage"
           "$nix_shell"
           "$directory"
@@ -21,6 +22,8 @@
         ];
 
         cmd_duration = import ./cmd_duration.nix;
+        status = import ./status.nix;
+
         memory_usage = import ./memory_usage.nix;
 
         # TODO: hostname and local ip for ssh
