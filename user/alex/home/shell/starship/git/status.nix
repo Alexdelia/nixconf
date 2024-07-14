@@ -1,6 +1,12 @@
 {lib, ...}: let
-  ahead = "[\${count}](dimmed yellow)";
-  behind = "[\${count}](bold red)";
+  ahead = {
+    symbol = "";
+    style = "dimmed yellow";
+  };
+  behind = {
+    symbol = "";
+    style = "bold red";
+  };
 in {
   format = lib.concatStrings [
     "["
@@ -39,9 +45,9 @@ in {
 
   staged = "[󰖌](dimmed yellow)";
 
-  ahead = ahead;
-  diverged = "${behind}${ahead}";
-  behind = behind;
+  ahead = "[${ahead.symbol}\${count}](${ahead.style})";
+  diverged = "[${ahead.symbol}\${ahead_count}](${ahead.style})[${behind.symbol}\${behind_count}](${behind.style})";
+  behind = "[${behind.symbol}\${count}](${behind.style})";
 
   deleted = "";
   modified = "";
