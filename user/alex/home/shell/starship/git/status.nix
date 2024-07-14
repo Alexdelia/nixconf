@@ -1,4 +1,7 @@
-{lib, ...}: {
+{lib, ...}: let
+  ahead = "[\${count}](dimmed yellow)";
+  behind = "[\${count}](bold red)";
+in {
   format = lib.concatStrings [
     "["
 
@@ -31,14 +34,14 @@
   up_to_date = "";
 
   conflicted = "[󱓌\${count}](bold red)";
-  diverged = "";
 
   stashed = "[](dimmed white)";
 
   staged = "[󰖌](dimmed yellow)";
 
-  ahead = "[⇡\${count}](dimmed yellow)";
-  behind = "[⇣\${count}](bold red)";
+  ahead = ahead;
+  diverged = "${behind}${ahead}";
+  behind = behind;
 
   deleted = "";
   modified = "";
