@@ -3,8 +3,11 @@
     "["
 
     "( "
+    "$ahead_behind"
+    ")"
+
+    "( "
     "$stashed"
-    "$ahead"
     "$staged"
     ")"
 
@@ -16,9 +19,6 @@
     ")"
 
     "( "
-    "$behind"
-
-    "$diverged"
     "$conflicted"
 
     "$typechanged"
@@ -30,15 +30,15 @@
 
   up_to_date = "";
 
-  conflicted = "󱓌";
+  conflicted = "[󱓌\${count}](bold red)";
   diverged = "";
 
   stashed = "[](dimmed white)";
 
   staged = "[󰖌](dimmed yellow)";
 
-  ahead = "[⇡](dimmed yellow)";
-  behind = "[⇣](bold red)";
+  ahead = "[⇡\${count}](dimmed yellow)";
+  behind = "[⇣\${count}](bold red)";
 
   deleted = "";
   modified = "";
