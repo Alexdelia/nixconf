@@ -14,9 +14,9 @@
           "$directory"
           "$git_branch"
           "$git_commit"
-          "$git_metrics"
           "$git_state"
           "$git_status"
+          "$git_metrics"
           "$shlvl"
           " "
         ];
