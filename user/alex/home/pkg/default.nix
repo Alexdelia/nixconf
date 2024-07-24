@@ -6,6 +6,7 @@
   imports = [
     ./git
     ./eza.nix
+    ./zoxide.nix
   ];
 
   home.packages = with pkgs; [
