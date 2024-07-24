@@ -7,7 +7,7 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 let theme = {
-    hints: { attr: h }
+    hints: { fg: black attr: h }
 
 	separator: purple_dimmed
 
@@ -82,19 +82,20 @@ let theme = {
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
     show_banner: false
+	# show_hints: false
 
     ls: {
-        use_ls_colors: true # use the LS_COLORS environment variable to colorize output
-        clickable_links: true # enable or disable clickable links. Your terminal has to support links.
+        use_ls_colors: true
+        clickable_links: true
     }
 
     rm: {
-        always_trash: false # always act as if -t was given. Can be overridden with -p
+        always_trash: false
     }
 
     table: {
-        mode: rounded # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
-        index_mode: always # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
+        mode: rounded
+        index_mode: auto
         show_empty: true # show 'empty list' and 'empty record' placeholders for command output
         padding: { left: 0, right: 0 } # a left right padding of each column in a table
         trim: {
