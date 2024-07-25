@@ -820,3 +820,5 @@ $env.config = {
         }
     ]
 }
+
+history | uniq-by -c command | select value.command count | sort-by count -r | first 10 | rename cmd | move cmd --after count | print
