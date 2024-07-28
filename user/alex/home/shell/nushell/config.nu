@@ -822,3 +822,11 @@ $env.config = {
 }
 
 history | uniq-by -c command | select value.command count | sort-by count -r | first 10 | rename cmd | move cmd --after count | print
+timeit {
+	history | uniq-by -c command | select value.command count | sort-by count -r | first 10 | rename cmd | move cmd --after count | print
+}
+
+history | get command | to text | awk '{ print $1 }' | uniq -c | sort-by count -r | first 10
+timeit {
+	history | get command | to text | awk '{ print $1 }' | uniq -c | sort-by count -r | first 10
+}
