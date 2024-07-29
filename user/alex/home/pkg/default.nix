@@ -14,6 +14,7 @@
 
     ## shell essentials
     ripgrep
+    typos
 
     ## tty
     warp-terminal
