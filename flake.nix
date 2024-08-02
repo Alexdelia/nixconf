@@ -1,22 +1,29 @@
 {
   description = "Alexdelia's nix/nixos config";
 
-  inputs = {
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs = let
+    stable = "24.05";
 
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+    dep = url: {
+      inherit url;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+  in {
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-${stable}";
+    # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    home-manager = dep "github:nix-community/home-manager/release-${stable}";
   };
 
-  outputs = inputs @ {
-    nixpkgs-unstable,
-    nixpkgs-stable,
-    home-manager,
-    ...
-  }: {
+  outputs = inputs: let
+    ilib = import ./lib {inherit inputs;};
+
+    target = {
+      # decim = "x86_64-linux";
+      work = "aarch64-linux";
+      qemu = "x86_64-linux";
+    };
+  in {
     imports =
       builtins.mapAttrs (
         host: system: (
@@ -24,13 +31,11 @@
           {
             inherit host system;
             inherit inputs;
+            inherit ilib;
           }
         )
-      ) {
-        # decim = "x86_64-linux";
-        work = "aarch64-linux";
-        qemu = "x86_64-linux";
-      };
+      )
+      target;
     /*
     nixosConfigurations =
       builtins.mapAttrs (
