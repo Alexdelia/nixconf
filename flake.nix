@@ -1,5 +1,5 @@
 {
-  description = "Alexdelia's nixos config";
+  description = "Alexdelia's nix/nixos config";
 
   inputs = {
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
@@ -11,13 +11,27 @@
     };
   };
 
-  outputs = {
-    self,
+  outputs = inputs @ {
     nixpkgs-unstable,
     nixpkgs-stable,
     home-manager,
     ...
   }: {
+    imports =
+      builtins.mapAttrs (
+        host: system: (
+          import ./host/${host}
+          {
+            inherit host system;
+            inherit inputs;
+          }
+        )
+      ) {
+        # decim = "x86_64-linux";
+        work = "aarch64-linux";
+        qemu = "x86_64-linux";
+      };
+    /*
     nixosConfigurations =
       builtins.mapAttrs (
         name: system:
@@ -38,8 +52,10 @@
             ];
           }
       ) {
-        # decim="x86_64-linux";
+        # decim = "x86_64-linux";
         qemu = "x86_64-linux";
+        work = "aarch64-linux";
       };
+    */
   };
 }
