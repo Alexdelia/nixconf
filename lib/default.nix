@@ -1,5 +1,5 @@
 {inputs}: {
-  mkStandaloneHome = import ./mkStandaloneHome.nix {
+  mkHomeConfigurations = import ./mkHomeConfigurations.nix {
     nixpkgs = inputs.nixpkgs;
     home-manager = inputs.home-manager;
   };
