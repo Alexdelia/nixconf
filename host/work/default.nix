@@ -1,5 +1,5 @@
 {
-  host,
+  # host,
   system,
   inputs,
   ilib,
@@ -11,10 +11,12 @@
 
   stateVersion = "23.11";
 in {
-  homeConfigurations = (
-    builtins.map (
-      username: ilib.mkStandaloneHome {inherit username system stateVersion;}
-    )
+  homeConfigurations = builtins.listToAttrs (
+    map
+    (username: {
+      name = username;
+      value = (ilib.mkStandaloneHome {inherit username system stateVersion;}).${username};
+    })
     users
   );
 }
