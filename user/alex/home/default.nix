@@ -1,8 +1,8 @@
 {...}: {
   imports = [
     ./pkg
-    # ./font
-    # ./shell
+    ./font
+    ./shell
     # ./tty
     # ./editor
     # ./browser
