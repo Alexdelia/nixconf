@@ -5,6 +5,6 @@
     ./shell
     # ./tty
     # ./editor
-    # ./browser
+    ./browser
   ];
 }
