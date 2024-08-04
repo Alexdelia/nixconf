@@ -12,6 +12,8 @@
         ../system
         (import ../../user/alex {inherit inputs;})
       ];
+
+      networking.hostName = hostname;
     };
   in {
     nixosConfigurations = {

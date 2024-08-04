@@ -3,19 +3,8 @@
   config,
   pkgs,
   hostname,
-  nixpkgs-unstable,
-  home-manager,
   ...
 }: {
-  imports = [
-    ./hardware-configuration.nix
-    ../../system
-    (import ../../user/alex {
-      inherit home-manager;
-      inherit nixpkgs-unstable;
-    })
-  ];
-
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
