@@ -16,6 +16,7 @@
     target = {
       # decim = "x86_64-linux";
       work = "aarch64-linux";
+      melons = "x86_64-linux";
       qemu = "x86_64-linux";
     };
   in (import ./host/work {

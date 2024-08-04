@@ -3,8 +3,8 @@
     ./pkg
     ./font
     ./shell
-    # ./tty
-    # ./editor
+    ./tty
+    ./editor
     ./browser
   ];
 }
