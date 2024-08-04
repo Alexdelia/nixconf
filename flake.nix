@@ -40,6 +40,7 @@
       ) {
         # decim="x86_64-linux";
         qemu = "x86_64-linux";
+        melons = "x86_64-linux";
       };
   };
 }
