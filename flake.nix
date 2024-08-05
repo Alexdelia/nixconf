@@ -21,7 +21,7 @@
     };
   in (import ./host/melons {
     inherit inputs ilib;
-    system = "x86_64-linux";
+    hostname = "melons"; # TODO: get from iteration over `target`
   });
   /*
   nixosConfigurations = (

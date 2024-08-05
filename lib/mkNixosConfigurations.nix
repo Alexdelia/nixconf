@@ -31,7 +31,7 @@
         inherit system;
 
         modules = [
-          inputs.nixosModules.home-manager
+          inputs.home-manager.nixosModules.home-manager
 
           ../host/${hostname}
           {
