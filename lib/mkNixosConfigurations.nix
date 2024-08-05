@@ -33,13 +33,7 @@
         modules = [
           inputs.home-manager.nixosModules.home-manager
 
-          ../host/${hostname}
-          {
-            _module.args = {
-              inherit hostname;
-              inherit inputs;
-            };
-          }
+          systemModule
         ];
       };
     };
