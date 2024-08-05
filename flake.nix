@@ -19,9 +19,9 @@
       melons = "x86_64-linux";
       qemu = "x86_64-linux";
     };
-  in (import ./host/work {
+  in (import ./host/melons {
     inherit inputs ilib;
-    system = "aarch64-linux";
+    system = "x86_64-linux";
   });
   /*
   nixosConfigurations = (
