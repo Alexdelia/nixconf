@@ -1,14 +1,18 @@
 {
+  inputs,
   hostname,
-  ilib,
   ...
 }: let
-  users = [
-    "alex"
-  ];
-
   system = "x86_64-linux";
 
   stateVersion = "24.05";
-in
-  ilib.mkNixosConfigurations {inherit hostname system users stateVersion;}
+
+  users = [
+    "alex"
+  ];
+in (import ../../lib/mkNixosConfigurations.nix {
+  inherit inputs;
+  inherit hostname system;
+  inherit users;
+  inherit stateVersion;
+})

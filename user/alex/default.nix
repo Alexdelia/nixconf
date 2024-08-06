@@ -1,6 +1,5 @@
 {
   inputs,
-  ilib,
   stateVersion,
 }: let
   username = "alex"; # TODO: get from parameters
@@ -15,7 +14,6 @@ in {
     (import ./home-manager.nix {
       inherit username;
       inherit inputs;
-      inherit ilib;
       inherit stateVersion;
     })
   ];

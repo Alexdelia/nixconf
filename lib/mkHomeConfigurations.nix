@@ -15,7 +15,7 @@
           pkgs = nixpkgs.legacyPackages.${system};
 
           modules = [
-            (import ./mkHome.nix {
+            (import ../user/${username}/home/mkHome.nix {
               inherit username stateVersion;
               isNixos = false;
             })

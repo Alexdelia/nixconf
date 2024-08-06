@@ -1,7 +1,6 @@
 {
   username,
   inputs,
-  ilib,
   stateVersion,
 }: {
   home-manager = {
@@ -12,7 +11,7 @@
 
     users.${username} = (
       (import ./home)
-      // (ilib.mkHome {
+      // (import ./home/mkHome {
         inherit username;
         inherit stateVersion;
         isNixos = true;

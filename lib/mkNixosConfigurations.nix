@@ -1,27 +1,23 @@
-{inputs}: (
-  {
-    hostname,
-    system,
-    users,
-    stateVersion,
-  }: {
-    nixosConfigurations = {
-      ${hostname} = inputs.nixpkgs.lib.nixosSystem {
-        inherit system;
+{
+  inputs,
+  hostname,
+}: {
+  nixosConfigurations = {
+    ${hostname} = inputs.nixpkgs.lib.nixosSystem {
+      inherit system;
 
-        modules = [
-          inputs.home-manager.nixosModules.home-manager
+      modules = [
+        inputs.home-manager.nixosModules.home-manager
 
-          ./systemModule.nix
-          {
-            _module.args = {
-              inherit hostname;
-              inherit inputs;
-              inherit stateVersion;
-            };
-          }
-        ];
-      };
+        ./systemModule.nix
+        {
+          _module.args = {
+            inherit hostname;
+            inherit inputs;
+            inherit stateVersion;
+          };
+        }
+      ];
     };
-  }
-)
+  };
+}
