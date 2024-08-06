@@ -14,7 +14,8 @@
       (import ./home)
       // (ilib.mkHome {
         inherit username;
-        inherit inputs;
+        inherit stateVersion;
+        isNixos = true;
       })
     );
   };
