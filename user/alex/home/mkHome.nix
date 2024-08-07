@@ -4,7 +4,7 @@
   stateVersion,
   isNixos,
 }: {
-  home = {
+  home = rec {
     inherit username;
     homeDirectory = "/home/${username}";
 
