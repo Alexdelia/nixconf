@@ -17,8 +17,9 @@
               ./${hostname}
               {
                 _module.args = {
-                  inherit hostname hostAttrs;
                   inherit inputs;
+                  inherit hostname;
+                  stateVersion = hostAttrs.stateVersion;
                 };
               }
             ];
