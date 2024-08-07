@@ -16,9 +16,6 @@
     ripgrep
     typos
 
-    ## tty
-    warp-terminal
-
     ## nix
     alejandra
   ];

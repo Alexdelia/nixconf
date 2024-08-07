@@ -1,9 +1,8 @@
 {
-  nixpkgs-unstable,
-  home-manager,
-  ...
+  inputs,
+  stateVersion,
 }: let
-  username = "alex";
+  username = "alex"; # TODO: get from parameters
 in {
   imports = [
     (import ./system.nix {
@@ -12,10 +11,10 @@ in {
 
     ./env.nix
 
-    (import ./home {
+    (import ./home-manager.nix {
       inherit username;
-      inherit nixpkgs-unstable;
-      inherit home-manager;
+      inherit inputs;
+      inherit stateVersion;
     })
   ];
 }
