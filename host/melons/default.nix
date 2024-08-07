@@ -4,7 +4,7 @@
   stateVersion,
   ...
 }: {
-  # TODO: better way to remove duplicate and add structure
+  # TODO: implement better system, to remove duplicate and add structure
   imports = [
     ./hardware-configuration.nix
     ../../system
