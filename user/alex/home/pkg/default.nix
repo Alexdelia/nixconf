@@ -17,6 +17,8 @@
     typos
 
     ## nix
+    nh
+    nix-output-monitor
     alejandra
   ];
 }

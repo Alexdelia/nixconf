@@ -1,6 +1,6 @@
 {
   environment.sessionVariables = rec {
-    PATH = ["${XDG_BIN_HOME}"];
+    PATH = [XDG_BIN_HOME];
 
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_CONFIG_HOME = "$HOME/.config";
