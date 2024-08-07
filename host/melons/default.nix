@@ -8,10 +8,10 @@
   imports = [
     ./hardware-configuration.nix
     ../../system
-    # (import ../../user/alex {
-    #   inherit inputs;
-    #   inherit stateVersion;
-    # })
+    (import ../../user/alex {
+      inherit inputs;
+      inherit stateVersion;
+    })
   ];
 
   # Bootloader.
