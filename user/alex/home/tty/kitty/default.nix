@@ -1,11 +1,11 @@
-{
+{lib, ...}: {
   programs = {
     kitty = {
       enable = true;
 
-      font = {
+      font = lib.mkForce {
         name = "RobotoMono Nerd Font";
-        size = 12;
+        size = 14;
       };
     };
   };

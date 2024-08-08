@@ -10,7 +10,9 @@
 
           modules = [
             inputs.home-manager.nixosModules.home-manager
+
             inputs.stylix.nixosModules.stylix
+            ../common/stylix.nix
 
             ./${hostname}
             {
@@ -40,6 +42,7 @@
 
                 modules = [
                   inputs.stylix.homeManagerModules.stylix
+                  ../common/stylix.nix
 
                   (import ../common/mkHome.nix {
                     inherit username;
