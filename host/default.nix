@@ -41,7 +41,7 @@
                 modules = [
                   inputs.stylix.homeManagerModules.stylix
 
-                  (import ../user/${username}/home/mkHome.nix {
+                  (import ../common/mkHome.nix {
                     inherit username;
                     stateVersion = hostAttrs.stateVersion;
                     isNixos = false;

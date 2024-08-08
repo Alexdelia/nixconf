@@ -11,7 +11,7 @@
 
     users.${username} = (
       (import ./home {})
-      // (import ./home/mkHome.nix {
+      // (import ../../common/mkHome.nix {
         inherit username;
         inherit stateVersion;
         isNixos = true;

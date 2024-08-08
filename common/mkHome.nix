@@ -1,16 +1,11 @@
-# TODO: move to a more shared/common location
 {
   username,
   stateVersion,
   isNixos,
 }: {
-  home = rec {
+  home = {
     inherit username;
     homeDirectory = "/home/${username}";
-
-    sessionVariables = {
-      FLAKE = "${homeDirectory}/.nc";
-    };
 
     inherit stateVersion;
   };
