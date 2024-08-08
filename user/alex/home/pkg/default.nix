@@ -16,6 +16,7 @@
 
     ## nix
     nh
+    nil
     nix-output-monitor
     alejandra
   ];
