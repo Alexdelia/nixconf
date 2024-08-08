@@ -5,9 +5,6 @@
     ## shell essentials
     ./eza.nix
     ./zoxide.nix
-
-    ## nix
-    ./nh.nix
   ];
 
   home.packages = with pkgs; [
@@ -18,6 +15,7 @@
     typos
 
     ## nix
+    nh
     nix-output-monitor
     alejandra
   ];

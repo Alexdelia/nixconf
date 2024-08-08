@@ -8,6 +8,10 @@
     inherit username;
     homeDirectory = "/home/${username}";
 
+    sessionVariables = {
+      FLAKE = "${homeDirectory}/.nc";
+    };
+
     inherit stateVersion;
   };
 
