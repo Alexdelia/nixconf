@@ -2,7 +2,7 @@
   inputs,
   hosts,
 }: {
-  nixosConfigurations =
+  nixosConfigurations = (
     builtins.mapAttrs (
       hostname: hostAttrs: (
         inputs.nixpkgs.lib.nixosSystem {
@@ -23,28 +23,35 @@
         }
       )
     )
-    (inputs.nixpkgs.lib.filterAttrs (hostname: hostAttrs: hostAttrs.isNixos) hosts);
+    (inputs.nixpkgs.lib.filterAttrs (hostname: hostAttrs: hostAttrs.isNixos) hosts)
+  );
 
-  homeConfigurations = inputs.nixpkgs.lib.flatten (
-    inputs.nixpkgs.lib.mapAttrsToList (
-      hostname: hostAttrs:
-        inputs.nixpkgs.lib.mapAttrsToList (map (user: {
-            name = "${user}@${hostname}";
-            value = inputs.home-manager.lib.homeManagerConfiguration {
-              pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
+  homeConfigurations = (
+    builtins.listToAttrs (
+      builtins.concatLists (map (
+          hostname: let
+            hostAttrs = hosts.${hostname};
+          in
+            map (username: {
+              name = "${username}@${hostname}";
+              value = inputs.home-manager.lib.homeManagerConfiguration {
+                pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
 
-              modules = [
-                (import ../user/${user}/home/mkHome.nix {
-                  inherit user;
-                  stateVersion = hostAttrs.stateVersion;
-                  isNixos = false;
-                })
-                ../user/${user}/home
-              ];
-            };
-          })
-          hostAttrs.users)
+                modules = [
+                  (import ../user/${username}/home/mkHome.nix {
+                    inherit username;
+                    stateVersion = hostAttrs.stateVersion;
+                    isNixos = false;
+                  })
+                  ../user/${username}/home
+                ];
+              };
+            })
+            hostAttrs.users
+        ) (
+          builtins.attrNames
+          (inputs.nixpkgs.lib.filterAttrs (hostname: hostAttrs: !hostAttrs.isNixos) hosts)
+        ))
     )
-    (inputs.nixpkgs.lib.filterAttrs (hostname: hostAttrs: !hostAttrs.isNixos) hosts)
   );
 }
