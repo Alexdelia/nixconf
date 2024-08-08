@@ -24,6 +24,7 @@
       user.work.email = "alexandre@terros.io";
 
       push.autoSetupRemote = true;
+      pull.rebase = false;
 
       # https://github.com/dandavison/delta?tab=readme-ov-file#get-started
       core.pager = "delta";
