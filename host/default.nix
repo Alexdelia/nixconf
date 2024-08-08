@@ -10,6 +10,7 @@
 
           modules = [
             inputs.home-manager.nixosModules.home-manager
+            inputs.stylix.nixosModules.stylix
 
             ./${hostname}
             {
@@ -34,6 +35,8 @@
               pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
 
               modules = [
+                inputs.stylix.homeManagerModules.stylix
+
                 (import ../user/${user}/home/mkHome.nix {
                   inherit user;
                   stateVersion = hostAttrs.stateVersion;
