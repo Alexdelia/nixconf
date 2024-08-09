@@ -11,8 +11,11 @@
     # neofetch
 
     ## shell essentials
+    ### rust
     ripgrep
     typos
+    ### rest
+    wget # `ruget` is slower and less maintained
 
     ## nix
     nh
