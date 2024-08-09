@@ -276,11 +276,11 @@
     "vity-base24": {
       "flake": false,
       "locked": {
-        "lastModified": 1723230864,
-        "narHash": "sha256-xdCPKJIIteggMyw138gpGAAT9ba2sf9tuAKzyeMNvqs=",
+        "lastModified": 1723235078,
+        "narHash": "sha256-bJObCk38waGQ9GztgH1ApauscxTfdjxEUxMyElLGEUI=",
         "owner": "Alexdelia",
         "repo": "vity-base24",
-        "rev": "ec332f7f3e0d198014ad75373dc1cdd324f16551",
+        "rev": "92c8a1d8ecb7350e98d86f7f6a23eb14cf2a3a39",
         "type": "github"
       },
       "original": {
