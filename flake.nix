@@ -10,6 +10,10 @@
     };
 
     stylix.url = "github:danth/stylix";
+    vity-base24 = {
+      url = "github:Alexdelia/vity-base24";
+      flake = false;
+    };
   };
 
   outputs = inputs: let

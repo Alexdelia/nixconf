@@ -40,6 +40,10 @@
               value = inputs.home-manager.lib.homeManagerConfiguration {
                 pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
 
+                extraSpecialArgs = {
+                  inherit inputs;
+                };
+
                 modules = [
                   inputs.stylix.homeManagerModules.stylix
                   ../common/stylix.nix

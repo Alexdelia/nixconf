@@ -207,11 +207,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1722869614,
-        "narHash": "sha256-7ojM1KSk3mzutD7SkrdSflHXEujPvW1u7QuqWoTLXQU=",
+        "lastModified": 1722987190,
+        "narHash": "sha256-68hmex5efCiM2aZlAAEcQgmFI4ZwWt8a80vOeB/5w3A=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "883180e6550c1723395a3a342f830bfc5c371f6b",
+        "rev": "21cc704b5e918c5fbf4f9fff22b4ac2681706d90",
         "type": "github"
       },
       "original": {
@@ -241,7 +241,8 @@
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "stylix": "stylix"
+        "stylix": "stylix",
+        "vity-base24": "vity-base24"
       }
     },
     "stylix": {
@@ -269,6 +270,22 @@
       "original": {
         "owner": "danth",
         "repo": "stylix",
+        "type": "github"
+      }
+    },
+    "vity-base24": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723230864,
+        "narHash": "sha256-xdCPKJIIteggMyw138gpGAAT9ba2sf9tuAKzyeMNvqs=",
+        "owner": "Alexdelia",
+        "repo": "vity-base24",
+        "rev": "ec332f7f3e0d198014ad75373dc1cdd324f16551",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Alexdelia",
+        "repo": "vity-base24",
         "type": "github"
       }
     }
