@@ -9,6 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    base16.url = "github:SenchoPens/base16.nix";
     stylix.url = "github:danth/stylix";
     vity-base24 = {
       url = "github:Alexdelia/vity-base24";

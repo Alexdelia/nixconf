@@ -1,7 +1,9 @@
 {
   inputs,
   hosts,
-}: {
+}: let
+  scheme = "${inputs.vity-base24}/vity.yaml";
+in {
   nixosConfigurations = (
     builtins.mapAttrs (
       hostname: hostAttrs: (
@@ -11,6 +13,8 @@
           modules = [
             inputs.home-manager.nixosModules.home-manager
 
+            inputs.base16.nixosModule
+            {inherit scheme;}
             inputs.stylix.nixosModules.stylix
             ../common/stylix.nix
 
@@ -42,11 +46,15 @@
 
                 extraSpecialArgs = {
                   inherit inputs;
+                  inherit scheme;
                 };
 
                 modules = [
                   inputs.stylix.homeManagerModules.stylix
                   ../common/stylix.nix
+
+                  inputs.base16.nixosModule
+                  {inherit scheme;}
 
                   (import ../common/mkHome.nix {
                     inherit username;

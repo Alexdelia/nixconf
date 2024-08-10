@@ -2,12 +2,15 @@
   username,
   inputs,
   stateVersion,
-}: {
+}: {config, ...}: {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {
+      inherit inputs;
+      scheme = config.scheme;
+    };
 
     users.${username} = (
       (import ./home {})

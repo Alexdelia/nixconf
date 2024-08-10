@@ -1,6 +1,6 @@
 {
-  inputs,
   pkgs,
+  config,
   ...
 }: {
   stylix = {
@@ -13,7 +13,7 @@
 
     polarity = "dark";
 
-    base16Scheme = "${inputs.vity-base24}/vity.yaml";
+    base16Scheme = "${config.scheme}";
 
     fonts = let
       mono = {
