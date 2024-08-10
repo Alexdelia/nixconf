@@ -18,11 +18,11 @@
     fonts = let
       mono = {
         package = pkgs.nerdfonts.override {fonts = ["SourceCodePro"];};
-        name = "SourceCodePro Nerd Font";
+        name = "SourceCodePro";
       };
       rest = {
         package = pkgs.nerdfonts.override {fonts = ["RobotoMono"];};
-        name = "RobotoMono Nerd Font";
+        name = "RobotoMono";
       };
     in {
       monospace = mono;
