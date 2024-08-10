@@ -4,8 +4,8 @@
       enable = true;
 
       font = lib.mkForce {
-        name = "RobotoMono Nerd Font";
-        size = 14;
+        name = "SourceCodePro Nerd Font";
+        size = 16;
       };
     };
   };

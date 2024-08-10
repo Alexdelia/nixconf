@@ -14,5 +14,29 @@
     polarity = "dark";
 
     base16Scheme = "${inputs.vity-base24}/vity.yaml";
+
+    fonts = let
+      mono = {
+        package = pkgs.nerdfonts.override {fonts = ["SourceCodePro"];};
+        name = "SourceCodePro Nerd Font";
+      };
+      rest = {
+        package = pkgs.nerdfonts.override {fonts = ["RobotoMono"];};
+        name = "RobotoMono Nerd Font";
+      };
+    in {
+      monospace = mono;
+
+      serif = rest;
+      sansSerif = rest;
+      emoji = rest;
+
+      sizes = {
+        applications = 14;
+        desktop = 14;
+        popups = 14;
+        terminal = 16;
+      };
+    };
   };
 }
