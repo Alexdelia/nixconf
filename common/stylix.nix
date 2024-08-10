@@ -38,5 +38,11 @@
         terminal = 16;
       };
     };
+
+    cursor = {
+      package = pkgs.vimix-cursor-theme;
+      name = "Vimix-Cursors-White";
+      # size =
+    };
   };
 }
