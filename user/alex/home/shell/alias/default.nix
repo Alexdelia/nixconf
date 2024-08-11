@@ -5,4 +5,5 @@ import ./ls.nix
   s = "sudo";
 
   j = "z";
+  jq = "jaq";
 }

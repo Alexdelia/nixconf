@@ -16,6 +16,7 @@
     ripgrep
     typos
     oxker
+    jaq
     ### rest
     wget # `ruget` is slower and less maintained
 
