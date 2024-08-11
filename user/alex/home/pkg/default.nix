@@ -14,6 +14,7 @@
     ### rust
     ripgrep
     typos
+    oxker
     ### rest
     wget # `ruget` is slower and less maintained
 
