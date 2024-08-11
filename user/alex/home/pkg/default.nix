@@ -3,6 +3,7 @@
     ./git
 
     ## shell essentials
+    ./bat.nix
     ./eza.nix
     ./zoxide.nix
   ];
