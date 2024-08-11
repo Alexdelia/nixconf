@@ -3,11 +3,7 @@
 IDENTITIES=$(git config --global --name-only --get-regexp "user.*..name" | rg 'user\.(.*)\.name' -or '$1')
 ID=$(
 	echo "${IDENTITIES}" |
-		sk --preview='
-			git config --global --get-regexp "user."{}".*" \
-			| sort -r \
-			| cut -d" " -f2 \
-			| bat --color=always -pp -l=qml' \
+		sk --preview='git-identity-preview {}' \
 			--preview-window=down:3
 )
 

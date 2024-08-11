@@ -3,8 +3,6 @@
   home.packages = with pkgs;
     [
       delta
-
-      (pkgs.writeScriptBin "git-identity" (builtins.readFile ./git-identity.sh))
     ]
     ++ (import ./script {inherit pkgs;});
 
