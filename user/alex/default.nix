@@ -1,9 +1,8 @@
 {
   inputs,
   stateVersion,
-}: let
-  username = "alex"; # TODO: get from parameters
-in {
+  username,
+}: {
   imports = [
     (import ./system.nix {
       inherit username;

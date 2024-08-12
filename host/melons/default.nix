@@ -4,12 +4,14 @@
   users,
   stateVersion,
 }: {
+  # TODO: implement better system, to remove duplicate and add structure
   imports =
     [
       ./hardware-configuration.nix
       ../../system
     ]
     ++ map (username: (import ../../user/${username} {
+      inherit username;
       inherit inputs;
       inherit stateVersion;
     }))
