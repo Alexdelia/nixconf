@@ -1,6 +1,7 @@
 {
   imports = [
     ./locale.nix
+    ./zone.nix
     ./de
   ];
 

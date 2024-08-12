@@ -41,9 +41,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "Europe/Paris";
-
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
