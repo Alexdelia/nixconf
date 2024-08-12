@@ -18,14 +18,13 @@ in {
             inputs.stylix.nixosModules.stylix
             ../common/stylix.nix
 
-            ./${hostname}
-            {
-              _module.args = {
+            (import ./${hostname}
+              {
                 inherit inputs;
                 inherit hostname;
+                users = hostAttrs.users;
                 stateVersion = hostAttrs.stateVersion;
-              };
-            }
+              })
           ];
         }
       )

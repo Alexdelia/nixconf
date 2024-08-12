@@ -1,18 +1,19 @@
 {
   inputs,
   hostname,
+  users,
   stateVersion,
-  ...
 }: {
-  # TODO: implement better system, to remove duplicate and add structure
-  imports = [
-    ./hardware-configuration.nix
-    ../../system
-    (import ../../user/alex {
+  imports =
+    [
+      ./hardware-configuration.nix
+      ../../system
+    ]
+    ++ map (username: (import ../../user/${username} {
       inherit inputs;
       inherit stateVersion;
-    })
-  ];
+    }))
+    users;
 
   # Bootloader.
   boot.loader.grub.enable = true;
