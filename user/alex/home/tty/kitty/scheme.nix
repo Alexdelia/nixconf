@@ -13,7 +13,7 @@ in {
   color7 = base06; # white  # not base05 on purpose
 
   # bright (ansi 90-97)
-  color8 = base11; # black
+  color8 = base04; # black
   color9 = base12; # red
   color10 = base14; # green
   color11 = base13; # yellow
