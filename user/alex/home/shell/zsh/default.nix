@@ -1,4 +1,8 @@
-{
+{pkgs, ...}: {
+  home.packages = with pkgs; [
+    zsh-syntax-highlighting
+  ];
+
   programs = {
     zsh = {
       enable = true;
@@ -12,6 +16,8 @@
         # be able to use ctrl + left / ctrl + right to move word by word
         bindkey '^[[1;5C' forward-word
         bindkey '^[[1;5D' backward-word
+
+        source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
       '';
 
       shellAliases = import ../alias;
