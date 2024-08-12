@@ -15,6 +15,7 @@
     ### rust
     ripgrep
     typos
+    tealdeer
     oxker
     jaq
     ### rest
