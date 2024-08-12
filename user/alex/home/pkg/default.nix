@@ -17,6 +17,7 @@
     typos
     tealdeer
     oxker
+    skim
     jaq
     ### rest
     wget # `ruget` is slower and less maintained
