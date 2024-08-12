@@ -8,9 +8,16 @@
   ];
   */
 
+  imports = [
+    ./readline.nix
+  ];
+
   programs = {
     bash = {
       enable = true;
+
+      # initExtra = ''
+      # '';
 
       shellAliases = import ../alias;
     };
