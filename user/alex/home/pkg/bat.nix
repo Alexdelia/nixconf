@@ -1,4 +1,8 @@
-{
+{pkgs, ...}: {
+  home.packages = with pkgs; [
+    bat-extras.batman
+  ];
+
   programs.bat = {
     enable = true;
   };
