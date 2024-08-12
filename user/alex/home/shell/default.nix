@@ -1,7 +1,7 @@
 {
   imports = [
-    ./nushell
-    # ./zsh
+    ./zsh
+    # ./nushell
 
     ./starship
   ];
