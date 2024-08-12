@@ -12,6 +12,11 @@
       "\\e[1;5D" = "backward-word";
       # ctrl + right -> move word forward
       "\\e[1;5C" = "forward-word";
+
+      # arrow up -> history from most recent
+      "\\e[A" = "history-search-backward";
+      # arrow down -> history from oldest
+      "\\e[B" = "history-search-forward";
     };
   };
 }
