@@ -1,6 +1,7 @@
 {
   imports = [
-    ./zsh
+    ./bash
+    # ./zsh
     # ./nushell
 
     ./starship

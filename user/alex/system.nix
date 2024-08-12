@@ -4,7 +4,7 @@
     description = "Alexandre Delille";
     extraGroups = ["networkmanager" "wheel"];
 
-    ignoreShellProgramCheck = true;
-    shell = pkgs.zsh;
+    # ignoreShellProgramCheck = true;
+    shell = pkgs.bash;
   };
 }
