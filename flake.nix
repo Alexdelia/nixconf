@@ -20,14 +20,14 @@
   outputs = inputs: let
     hosts = {
       /*
-      decim = {
+      jiruo = {
         system = "x86_64-linux";
         stateVersion = "24.05";
         isNixos = true;
         users = ["alex"];
       };
       */
-      melons = {
+      marulk = {
         system = "x86_64-linux";
         stateVersion = "24.05";
         isNixos = true;
