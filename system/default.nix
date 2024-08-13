@@ -1,7 +1,9 @@
 {
   imports = [
+    ./group.nix
     ./locale.nix
     ./zone.nix
+    ./service
     ./de
   ];
 

@@ -6,6 +6,9 @@
     ./bat.nix
     ./eza.nix
     ./zoxide.nix
+
+    ## keyboard remapping
+    ./kanata
   ];
 
   home.packages = with pkgs; [
