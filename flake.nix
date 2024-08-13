@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     base16.url = "github:SenchoPens/base16.nix";
     stylix.url = "github:danth/stylix";
     vity-base24 = {
