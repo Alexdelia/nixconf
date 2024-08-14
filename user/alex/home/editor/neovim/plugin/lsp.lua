@@ -27,9 +27,7 @@ local on_attach = function(_, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
---[[
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
---]]
 
 -- # lua
 require('neodev').setup()
@@ -39,7 +37,6 @@ require('lspconfig').lua_ls.setup {
 	root_dir = function()
         return vim.loop.cwd()
     end,
-	cmd = { "lua-lsp" },
     settings = {
         Lua = {
             workspace = { checkThirdParty = false },
