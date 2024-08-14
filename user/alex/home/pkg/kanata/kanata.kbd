@@ -1,5 +1,5 @@
 (defalias
-	esc-ctrl (tap-hold 70 70 esc lctrl)
+	esc-ctrl (tap-hold 100 100 esc lctrl)
 )
 
 (defsrc
