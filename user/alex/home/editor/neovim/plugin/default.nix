@@ -1,13 +1,17 @@
-{pkgs}: let
-  addPlugin = plugin: [
-    pkgs.vimPlugins.${plugin}
-    (
-      {
-        plugin = pkgs.vimPlugins.${plugin};
-      }
-      // (import ./${plugin}.nix)
-    )
-  ];
-in
-  addPlugin "comment-nvim"
-  ++ addPlugin "nvim-lspconfig"
+{pkgs}:
+with pkgs.vimPlugins; [
+  {
+    plugin = comment-nvim;
+    type = "lua";
+    config = "require('Comment').setup()";
+  }
+
+  /*
+  neodev-nvim
+  {
+    plugin = nvim-lspconfig;
+    type = "lua";
+    config = builtins.readFile ./lsp.lua;
+  }
+  */
+]

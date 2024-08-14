@@ -10,6 +10,13 @@
       ${builtins.readFile ./option.lua}
     '';
 
+    extraPackages = with pkgs; [
+      ## lsp
+      lua-language-server
+    ];
+
     plugins = import ./plugin {inherit pkgs;};
   };
+
+  # stylix.targets.neovim.enable = false;
 }

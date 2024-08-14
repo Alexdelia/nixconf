@@ -1,4 +1,3 @@
---[[
 local on_attach = function(_, bufnr)
 
   local bufmap = function(keys, func)
@@ -13,10 +12,12 @@ local on_attach = function(_, bufnr)
   bufmap('gI', vim.lsp.buf.implementation)
   bufmap('<leader>D', vim.lsp.buf.type_definition)
 
+  --[[
   local telescope_builtin = require('telescope.builtin')
   bufmap('gr', telescope_builtin.lsp_references)
   bufmap('<leader>s', telescope_builtin.lsp_document_symbols)
   bufmap('<leader>S', telescope_builtin.lsp_dynamic_workspace_symbols)
+  --]]
 
   bufmap('K', vim.lsp.buf.hover)
 
@@ -26,8 +27,11 @@ local on_attach = function(_, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+--[[
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+--]]
 
+-- # lua
 require('neodev').setup()
 require('lspconfig').lua_ls.setup {
     on_attach = on_attach,
@@ -39,13 +43,7 @@ require('lspconfig').lua_ls.setup {
     settings = {
         Lua = {
             workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
+            telemetry = { enable = true },
         },
     }
 }
-
-require('lspconfig').rnix.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-}
---]]
