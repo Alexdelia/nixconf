@@ -1,4 +1,4 @@
-/*
+--[[
 local on_attach = function(_, bufnr)
 
   local bufmap = function(keys, func)
@@ -48,4 +48,4 @@ require('lspconfig').rnix.setup {
     on_attach = on_attach,
     capabilities = capabilities,
 }
-*/
+--]]
