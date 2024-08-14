@@ -10,7 +10,6 @@
       exit 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
     fi
 
-    # launch nix shell nixpkgs#$1 nixpkgs#$2 ...
     pkgs=""
     for pkg in "$@"; do
       pkgs+="nixpkgs#$pkg "
