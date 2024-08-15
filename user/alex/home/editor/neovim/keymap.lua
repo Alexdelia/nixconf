@@ -17,10 +17,17 @@ local mapping_by_mode = {
 		["<C-h>"] = "b",
 		["<C-l>"] = "w",
 	},
+	-- # normal mode keymaps
 	n = {
 		-- shift + h / shift + l to move between buffers
 		["<S-h>"] = ":bp<CR>",
 		["<S-l>"] = ":bn<CR>",
+	},
+	-- # visual mode keymaps
+	v = {
+		-- alt + j / alt + k to move lines up and down
+		["<A-j>"] = ":m '>+1<CR>gv=gv",
+		["<A-k>"] = ":m '<-2<CR>gv=gv",
 	},
 }
 
