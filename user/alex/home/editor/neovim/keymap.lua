@@ -16,7 +16,12 @@ local mapping_by_mode = {
 		-- ctrl + h / ctrl + l to move between words
 		["<C-h>"] = "b",
 		["<C-l>"] = "w",
-	}
+	},
+	n = {
+		-- shift + h / shift + l to move between buffers
+		["<S-h>"] = ":bp<CR>",
+		["<S-l>"] = ":bn<CR>",
+	},
 }
 
 for mode, mapping in pairs(mapping_by_mode) do
