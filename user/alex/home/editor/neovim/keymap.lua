@@ -37,6 +37,12 @@ local mapping_by_mode = {
 		["p"] = '"_dP',
 		["P"] = '"_dP',
 	},
+	-- # visual block mode keymaps
+	x = {
+		-- alt + j / alt + k to move lines up and down
+		["<A-j>"] = ":m '>+1<CR>gv=gv",
+		["<A-k>"] = ":m '<-2<CR>gv=gv",
+	},
 }
 
 for mode, mapping in pairs(mapping_by_mode) do
