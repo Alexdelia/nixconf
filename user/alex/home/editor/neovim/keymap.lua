@@ -12,11 +12,11 @@ vim.g.maplocalleader = " "
 
 local mapping_by_mode = {
 	-- # global keymaps
-	"" = {
+	[""] = {
 		-- ctrl + h / ctrl + l to move between words
-		"<C-h>" = "b",
-		"<C-l>" = "w",
-	},
+		["<C-h>"] = "b",
+		["<C-l>"] = "w",
+	}
 }
 
 for mode, mapping in pairs(mapping_by_mode) do
