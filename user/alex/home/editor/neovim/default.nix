@@ -7,7 +7,14 @@
     vimdiffAlias = true;
 
     extraLuaConfig = ''
+      -- # option.lua
       ${builtins.readFile ./option.lua}
+
+      -- # alias.lua
+      ${builtins.readFile ./alias.lua}
+
+      -- # keymap.lua
+      ${builtins.readFile ./keymap.lua}
     '';
 
     extraPackages = with pkgs; [

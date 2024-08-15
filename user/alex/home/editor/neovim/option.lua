@@ -1,15 +1,19 @@
--- option.lua
+local opt = {
+	clipboard = 'unnamedplus',
 
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+	number = true,
+	relativenumber = false,
 
-vim.o.number = true
+	tabstop = 4,
+	shiftwidth = 4,
 
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
+	mouse = 'a',
 
-vim.o.mouse = 'a'
+	termguicolors = true,
 
-vim.o.termguicolors = true
+	splitright = true,
+}
 
---
+for k, v in pairs(opt) do
+	vim.opt[k] = v
+end
