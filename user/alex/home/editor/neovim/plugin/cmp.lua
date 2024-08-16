@@ -56,7 +56,7 @@ cmp.setup {
         end, { 'i', 's' }),
     },
 	formatting = {
-		fields = { "kind", "abbr", "menu" },
+		fields = { "menu", "kind", "abbr" },
 		format = function(entry, vim_item)
 		  vim_item.kind = string.format("%s", icon_kind[vim_item.kind])
 		  vim_item.menu = ({
@@ -71,5 +71,9 @@ cmp.setup {
 		{ name = 'buffer' },
 		{ name = 'path' },
         { name = 'nvim_lsp' },
+		entry_filter = function(entry, _ctx)
+			-- disable snippet
+			return cmp.lsp.completionItemKind.Snippet ~= entry:get_kind()
+		end,
     },
 }
