@@ -1,32 +1,39 @@
 local cmp = require('cmp')
 
 
-local icon_kind = {
-	Text = "󰊄",
-	Function = "󰊕",
-	Variable = "󰫧",
-	Value = "󰬺",
-	Constant = "󱊈",
-	Struct = "󰅩",
-	Class = "",
-	Interface = "",
-	Enum = "󰉺",
-	Field = "󰠵",
-	Method = "󰫺",
-	Property = "󰫽",
-	EnumMember = "▴",
-	Constructor = "󱩭",
-	Module = "",
-	Unit = "µ",
-	Keyword = "",
-	File = "",
-	Snippet = "",
-	Color = "",
-	Reference = "&",
-	Folder = "",
-	Event = "",
-	Operator = "",
-	TypeParameter = "T",
+local icon = {
+	kind = {
+		Text = "󰊄",
+		Function = "󰊕",
+		Variable = "󰫧",
+		Value = "󰬺",
+		Constant = "󱊈",
+		Struct = "󰅩",
+		Class = "",
+		Interface = "",
+		Enum = "󰉺",
+		Field = "󰠵",
+		Method = "󰫺",
+		Property = "󰫽",
+		EnumMember = "▴",
+		Constructor = "󱩭",
+		Module = "",
+		Unit = "µ",
+		Keyword = "",
+		File = "",
+		Snippet = "",
+		Color = "",
+		Reference = "&",
+		Folder = "",
+		Event = "",
+		Operator = "",
+		TypeParameter = "T",
+	},
+	menu = {
+		buffer = "󰪷",
+		path = "",
+		nvim_lsp = "󰫹",
+	},
 }
 
 cmp.setup {
@@ -58,12 +65,8 @@ cmp.setup {
 	formatting = {
 		fields = { "menu", "kind", "abbr" },
 		format = function(entry, vim_item)
-		  vim_item.kind = string.format("%s", icon_kind[vim_item.kind])
-		  vim_item.menu = ({
-			buffer = "󰪷",
-			path = "",
-			nvim_lsp = "󰫹",
-		  })[entry.source.name]
+		  vim_item.kind = icon.kind[vim_item.kind]
+		  vim_item.menu = icon.menu[entry.source.name]
 		  return vim_item
 		end,
 	},
