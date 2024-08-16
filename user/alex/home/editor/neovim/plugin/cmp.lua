@@ -69,14 +69,14 @@ cmp.setup {
 	},
 
     sources = {
-		{ name = 'buffer' },
-		{ name = 'path' },
         {
 			name = 'nvim_lsp',
 			entry_filter = function(entry, _ctx)
 				return cmp.lsp.CompletionItemKind.Snippet ~= entry:get_kind()
 			end
 		},
+		{ name = 'path' },
+		{ name = 'buffer' },
     },
 
 	formatting = {
