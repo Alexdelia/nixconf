@@ -1,5 +1,34 @@
 local cmp = require('cmp')
 
+
+local icon_kind = {
+	Text = "󰊄",
+	Function = "󰊕",
+	Variable = "󰫧",
+	Value = "󰬺",
+	Constant = "󱊈",
+	Struct = "󰅩",
+	Class = "",
+	Interface = "",
+	Enum = "󰉺",
+	Field = "󰠵",
+	Method = "󰫺",
+	Property = "󰫽",
+	EnumMember = "▴",
+	Constructor = "󱩭",
+	Module = "",
+	Unit = "µ",
+	Keyword = "",
+	File = "",
+	Snippet = "",
+	Color = "",
+	Reference = "&",
+	Folder = "",
+	Event = "",
+	Operator = "",
+	TypeParameter = "T",
+}
+
 cmp.setup {
     mapping = cmp.mapping.preset.insert {
         ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -26,6 +55,17 @@ cmp.setup {
             end
         end, { 'i', 's' }),
     },
+	formatting = {
+		fields = { "kind", "abbr", "menu" },
+		format = function(entry, vim_item)
+		  vim_item.kind = string.format("%s", icon_kind[vim_item.kind])
+		  vim_item.menu = ({
+			buffer = "󰪷",
+			path = "",
+		  })[entry.source.name]
+		  return vim_item
+		end,
+	},
     sources = {
         { name = 'nvim_lsp' },
     },
