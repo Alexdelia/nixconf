@@ -7,6 +7,7 @@ with pkgs.vimPlugins; [
     config = builtins.readFile ./lsp.lua;
   }
   neodev-nvim
+  # TODO: crates.nvim https://github.com/saecki/crates.nvim
 
   ## completion
   {
@@ -15,6 +16,8 @@ with pkgs.vimPlugins; [
     config = builtins.readFile ./cmp.lua;
   }
   cmp-nvim-lsp
+  cmp-path
+  cmp-buffer
   luasnip
 
   {
