@@ -15,6 +15,7 @@ with pkgs.vimPlugins; [
     config = builtins.readFile ./cmp.lua;
   }
   cmp-nvim-lsp
+  luasnip
 
   {
     plugin = comment-nvim;

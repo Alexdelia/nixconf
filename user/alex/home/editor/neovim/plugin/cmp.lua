@@ -1,5 +1,7 @@
 local cmp = require('cmp')
+local luasnip = require('luasnip')
 
+luasnip.config.setup {}
 
 local icon = {
 	kind = {
@@ -44,7 +46,6 @@ cmp.setup {
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete {},
         ['<CR>'] = cmp.mapping.confirm {
-            behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         },
         ['<Tab>'] = cmp.mapping(function(fallback)
@@ -62,14 +63,11 @@ cmp.setup {
             end
         end, { 'i', 's' }),
     },
-	formatting = {
-		fields = { "menu", "kind", "abbr" },
-		format = function(entry, vim_item)
-		  vim_item.kind = icon.kind[vim_item.kind]
-		  vim_item.menu = icon.menu[entry.source.name]
-		  return vim_item
-		end,
+	confirm_opts = {
+		behavior = cmp.ConfirmBehavior.Replace,
+		select = false,
 	},
+
     sources = {
 		{ name = 'buffer' },
 		{ name = 'path' },
@@ -80,4 +78,19 @@ cmp.setup {
 			end
 		},
     },
+
+	formatting = {
+		fields = { "menu", "kind", "abbr" },
+		format = function(entry, vim_item)
+		  vim_item.kind = icon.kind[vim_item.kind]
+		  vim_item.menu = icon.menu[entry.source.name]
+		  return vim_item
+		end,
+	},
+
+	snippet = {
+		expand = function(args)
+            luasnip.lsp_expand(args.body)
+        end,
+	},
 }
