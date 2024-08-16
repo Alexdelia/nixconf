@@ -62,11 +62,14 @@ cmp.setup {
 		  vim_item.menu = ({
 			buffer = "󰪷",
 			path = "",
+			nvim_lsp = "󰫹",
 		  })[entry.source.name]
 		  return vim_item
 		end,
 	},
     sources = {
+		{ name = 'buffer' },
+		{ name = 'path' },
         { name = 'nvim_lsp' },
     },
 }
