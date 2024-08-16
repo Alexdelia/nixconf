@@ -26,6 +26,9 @@ local mapping_by_mode = {
 		-- pasting does not yank the replaced text
 		["p"] = '"_dP',
 		["P"] = '"_dP',
+
+		["<leader>f"] = "<cmd>Telescope find_files<CR>";
+		["<leader>s"] = "<cmd>Telescope live_grep<CR>";
 	},
 	-- # visual mode keymaps
 	v = {

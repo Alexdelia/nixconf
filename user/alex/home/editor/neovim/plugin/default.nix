@@ -20,6 +20,15 @@ with pkgs.vimPlugins; [
   cmp-buffer
   luasnip
 
+  ## motion
+  {
+    plugin = telescope-nvim;
+    type = "lua";
+    config = builtins.readFile ./telescope.lua;
+  }
+  telescope-fzf-native-nvim
+
+  ## edit
   {
     plugin = comment-nvim;
     type = "lua";
