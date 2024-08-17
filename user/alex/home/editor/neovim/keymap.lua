@@ -45,6 +45,10 @@ local mapping_by_mode = {
 		-- pasting does not yank the replaced text
 		["p"] = '"_dP',
 		["P"] = '"_dP',
+
+		-- inspect
+		["i"] = "<cmd>Inspect<CR>",
+		["I"] = "<cmd>InspectTree<CR>",
 	},
 	-- # visual block mode keymaps
 	x = {

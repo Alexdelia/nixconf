@@ -9,6 +9,50 @@ with pkgs.vimPlugins; [
   neodev-nvim
   # TODO: crates.nvim https://github.com/saecki/crates.nvim
 
+  ## tree sitter
+  {
+    plugin = nvim-treesitter.withPlugins (p: [
+      # supported language: https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#supported-languages
+
+      ### rust
+      p.tree-sitter-rust
+      p.tree-sitter-toml
+
+      ### dev env
+      p.tree-sitter-bash
+      p.tree-sitter-nix
+      p.tree-sitter-vim
+      p.tree-sitter-lua
+      p.tree-sitter-csv
+      p.tree-sitter-yaml
+      p.tree-sitter-diff
+      p.tree-sitter-gitattributes
+      p.tree-sitter-gitignore
+      p.tree-sitter-regex
+
+      ### c
+      p.tree-sitter-c
+      p.tree-sitter-make
+
+      ### python
+      p.tree-sitter-python
+
+      ### web
+      p.tree-sitter-typescript
+      p.tree-sitter-javascript
+      p.tree-sitter-tsx
+      p.tree-sitter-vue
+      p.tree-sitter-json
+      p.tree-sitter-html
+      p.tree-sitter-css
+      # p.tree-sitter-scss
+      p.tree-sitter-sql
+      p.tree-sitter-http
+    ]);
+    type = "lua";
+    config = builtins.readFile ./treesitter.lua;
+  }
+
   ## completion
   {
     plugin = nvim-cmp;
