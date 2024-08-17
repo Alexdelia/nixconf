@@ -6,6 +6,7 @@
     vimAlias = true;
     vimdiffAlias = true;
 
+    # TODO avoid duplicate
     extraLuaConfig = ''
       -- # option.lua
       ${builtins.readFile ./option.lua}
@@ -15,6 +16,9 @@
 
       -- # keymap.lua
       ${builtins.readFile ./keymap.lua}
+
+      -- # plugin/custom.lua
+      ${builtins.readFile ./plugin/custom.lua}
     '';
 
     extraPackages = with pkgs; [
