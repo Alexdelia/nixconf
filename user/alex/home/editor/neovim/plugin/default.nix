@@ -62,6 +62,7 @@ with pkgs.vimPlugins; [
   cmp-nvim-lsp
   cmp-path
   cmp-buffer
+  copilot-vim
   luasnip
 
   ## motion
@@ -78,4 +79,7 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = "require('Comment').setup()";
   }
+
+  ## external
+  vim-wakatime
 ]

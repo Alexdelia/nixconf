@@ -39,8 +39,10 @@ local mapping_by_mode = {
 	-- # visual mode keymaps
 	v = {
 		-- alt + j / alt + k to move lines up and down
-		["<A-j>"] = ":m '>+1<CR>gv=gv",
+		["<A-Up>"] = ":m '<-2<CR>gv=gv",
 		["<A-k>"] = ":m '<-2<CR>gv=gv",
+		["<A-Down>"] = ":m '>+1<CR>gv=gv",
+		["<A-j>"] = ":m '>+1<CR>gv=gv",
 
 		-- pasting does not yank the replaced text
 		["p"] = '"_dP',
@@ -53,8 +55,10 @@ local mapping_by_mode = {
 	-- # visual block mode keymaps
 	x = {
 		-- alt + j / alt + k to move lines up and down
-		["<A-j>"] = ":m '>+1<CR>gv=gv",
+		["<A-Up>"] = ":m '<-2<CR>gv=gv",
 		["<A-k>"] = ":m '<-2<CR>gv=gv",
+		["<A-Down>"] = ":m '>+1<CR>gv=gv",
+		["<A-j>"] = ":m '>+1<CR>gv=gv",
 	},
 }
 
