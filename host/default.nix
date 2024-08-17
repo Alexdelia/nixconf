@@ -45,14 +45,13 @@ in {
 
                 extraSpecialArgs = {
                   inherit inputs;
-                  inherit scheme;
                 };
 
                 modules = [
                   inputs.stylix.homeManagerModules.stylix
                   ../common/stylix.nix
 
-                  inputs.base16.nixosModule
+                  inputs.base16.homeManagerModule
                   {inherit scheme;}
 
                   (import ../common/mkHome.nix {

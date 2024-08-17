@@ -1,6 +1,6 @@
 {
-  scheme,
   lib,
+  config,
   ...
 }: {
   programs = {
@@ -43,7 +43,7 @@
 
           hide_window_decorations = false;
         }
-        // (import ./scheme.nix {inherit scheme;});
+        // (import ./scheme.nix {scheme = config.scheme;});
     };
   };
 
