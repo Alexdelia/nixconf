@@ -17,6 +17,8 @@
     }))
     users;
 
+  stylix.enable = true;
+
   # TODO: organize
   programs.steam = {
     enable = true;

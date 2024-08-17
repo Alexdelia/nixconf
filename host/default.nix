@@ -60,6 +60,8 @@ in {
                     isNixos = false;
                   })
                   ../user/${username}/home
+
+                  ./${hostname}
                 ];
               };
             })
