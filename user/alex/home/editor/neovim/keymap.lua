@@ -31,12 +31,18 @@ local mapping_by_mode = {
 
 		["<leader>f"] = "<cmd>Telescope find_files<CR>";
 		["<leader>s"] = "<cmd>Telescope live_grep<CR>";
+
+		-- ctrl+/ to comment current line
+		["<C-_>"] = "gcc",
 	},
 	-- # insert mode keymaps
 	i = {
 		-- delete whole word with ctrl + backspace / ctrl + delete
 		["<C-BS>"] = "<cmd>DeleteBackward<CR>",
 		["<C-Del>"] = "<C-o>dw",
+
+		-- ctrl+/ to comment current line
+		["<C-_>"] = "gcc",
 	},
 	-- # visual mode keymaps
 	v = {
@@ -55,6 +61,9 @@ local mapping_by_mode = {
 		-- inspect
 		["i"] = "<cmd>Inspect<CR>",
 		["I"] = "<cmd>InspectTree<CR>",
+
+		-- ctrl+/ to comment selected lines
+		["<C-_>"] = "gc",
 	},
 	-- # visual block mode keymaps
 	x = {
