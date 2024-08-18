@@ -1,4 +1,7 @@
-{pkgs, ...}: {
+{
+  # pkgs,
+  ...
+}: {
   /*
   home.packages = with pkgs; [
     # syntax highlight
@@ -16,8 +19,9 @@
     bash = {
       enable = true;
 
-      # initExtra = ''
-      # '';
+      initExtra = ''
+        export EDITOR="vim"
+      '';
 
       shellAliases = import ../alias;
     };

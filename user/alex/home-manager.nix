@@ -9,7 +9,6 @@
 
     extraSpecialArgs = {
       inherit inputs;
-      scheme = config.scheme;
     };
 
     users.${username} = (
