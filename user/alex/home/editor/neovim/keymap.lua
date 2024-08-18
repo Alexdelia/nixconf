@@ -5,7 +5,7 @@ local opt = {
 
 local kmap = vim.api.nvim_set_keymap
 
---space as leader key
+-- space as leader key
 kmap("", "<Space>", "<Nop>", opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -33,7 +33,7 @@ local mapping_by_mode = {
 		["<leader>s"] = "<cmd>Telescope live_grep<CR>";
 
 		-- ctrl+/ to comment current line
-		["<C-_>"] = "gcc",
+		["<C-/>"] = ":norm gcc<CR>",
 	},
 	-- # insert mode keymaps
 	i = {
@@ -42,7 +42,7 @@ local mapping_by_mode = {
 		["<C-Del>"] = "<C-o>dw",
 
 		-- ctrl+/ to comment current line
-		["<C-_>"] = "gcc",
+		["<C-/>"] = "<C-o>:norm gcc<CR>",
 	},
 	-- # visual mode keymaps
 	v = {
@@ -63,7 +63,7 @@ local mapping_by_mode = {
 		["I"] = "<cmd>InspectTree<CR>",
 
 		-- ctrl+/ to comment selected lines
-		["<C-_>"] = "gc",
+		["<C-/>"] = ":'<,'>norm gcc<CR>gv=gv",
 	},
 	-- # visual block mode keymaps
 	x = {
