@@ -77,8 +77,9 @@ with pkgs.vimPlugins; [
   {
     plugin = comment-nvim;
     type = "lua";
-    config = "require('Comment').setup()";
+    config = builtins.readFile ./comment.lua;
   }
+  nvim-ts-context-commentstring
 
   ## external
   vim-wakatime
