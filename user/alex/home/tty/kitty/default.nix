@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  scheme ? {},
   ...
 }: {
   programs = {
@@ -43,7 +44,12 @@
 
           hide_window_decorations = false;
         }
-        // (import ./scheme.nix {scheme = config.scheme;});
+        // (import ./scheme.nix {
+          scheme =
+            if config ? scheme
+            then config.scheme
+            else scheme;
+        });
     };
   };
 
