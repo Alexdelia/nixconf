@@ -87,6 +87,11 @@ with pkgs.vimPlugins; [
 	type = "lua";
 	config = builtins.readFile ./git.lua;
   }
+  {
+  	plugin = nvim-notify;
+	type = "lua";
+	config = builtins.readFile ./notify.lua;
+  }
 
   ## external
   vim-wakatime
