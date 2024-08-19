@@ -81,6 +81,13 @@ with pkgs.vimPlugins; [
   }
   nvim-ts-context-commentstring
 
+  ## non-lsp info
+  {
+  	plugin = gitsigns-nvim;
+	type = "lua";
+	config = builtins.readFile ./git.lua;
+  }
+
   ## external
   vim-wakatime
 ]
