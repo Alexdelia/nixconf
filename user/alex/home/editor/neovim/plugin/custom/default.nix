@@ -1,7 +1,7 @@
 { lib }: let
 	plugins = [
 		"delete_backward"
-		# "open_remote_rev"
+		"open_remote_rev"
 	];
 in lib.concatStringsSep "\n" (map (
 	plugin:
