@@ -73,6 +73,12 @@ with pkgs.vimPlugins; [
   }
   telescope-fzf-native-nvim
 
+  {
+  	plugin = nvim-tree-lua;
+	type = "lua";
+	config = builtins.readFile ./tree.lua;
+  }
+
   ## edit
   {
     plugin = comment-nvim;
