@@ -6,5 +6,5 @@
 
   symbol = "";
 
-  threshold = 50;
+  threshold = 70;
 }
