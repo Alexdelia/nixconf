@@ -5,7 +5,7 @@ local opt = {
 
 local kmap = vim.api.nvim_set_keymap
 
---space as leader key
+-- space as leader key
 kmap("", "<Space>", "<Nop>", opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -24,17 +24,25 @@ local mapping_by_mode = {
 		["<S-l>"] = ":bn<CR>",
 
 		-- pasting does not yank the replaced text
+		--[[
 		["p"] = '"_dP',
 		["P"] = '"_dP',
+		--]]
 
 		["<leader>f"] = "<cmd>Telescope find_files<CR>";
 		["<leader>s"] = "<cmd>Telescope live_grep<CR>";
+
+		-- ctrl+/ to comment current line
+		["<C-/>"] = ":norm gcc<CR>",
 	},
 	-- # insert mode keymaps
 	i = {
 		-- delete whole word with ctrl + backspace / ctrl + delete
 		["<C-BS>"] = "<cmd>DeleteBackward<CR>",
 		["<C-Del>"] = "<C-o>dw",
+
+		-- ctrl+/ to comment current line
+		["<C-/>"] = "<C-o>:norm gcc<CR>",
 	},
 	-- # visual mode keymaps
 	v = {
@@ -45,12 +53,17 @@ local mapping_by_mode = {
 		["<A-j>"] = ":m '>+1<CR>gv=gv",
 
 		-- pasting does not yank the replaced text
+		--[[
 		["p"] = '"_dP',
 		["P"] = '"_dP',
+		--]]
 
 		-- inspect
 		["i"] = "<cmd>Inspect<CR>",
 		["I"] = "<cmd>InspectTree<CR>",
+
+		-- ctrl+/ to comment selected lines
+		["<C-/>"] = ":'<,'>norm gcc<CR>gv=gv",
 	},
 	-- # visual block mode keymaps
 	x = {

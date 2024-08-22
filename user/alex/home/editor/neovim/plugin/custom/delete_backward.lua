@@ -13,7 +13,7 @@ local function delete_backward()
 		end;
 	else
 		-- skip all non-word characters and non-whitespace characters
-		while start > 0 and (line:sub(start, start)):match("[%S%W]") do
+		while start > 0 and (line:sub(start, start)):match("[^%s%w]") do
 			start = start - 1;
 		end;
 	end;

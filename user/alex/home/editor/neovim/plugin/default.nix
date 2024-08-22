@@ -73,11 +73,30 @@ with pkgs.vimPlugins; [
   }
   telescope-fzf-native-nvim
 
+  {
+  	plugin = nvim-tree-lua;
+	type = "lua";
+	config = builtins.readFile ./tree.lua;
+  }
+
   ## edit
   {
     plugin = comment-nvim;
     type = "lua";
-    config = "require('Comment').setup()";
+    config = builtins.readFile ./comment.lua;
+  }
+  nvim-ts-context-commentstring
+
+  ## non-lsp info
+  {
+  	plugin = gitsigns-nvim;
+	type = "lua";
+	config = builtins.readFile ./git.lua;
+  }
+  {
+  	plugin = nvim-notify;
+	type = "lua";
+	config = builtins.readFile ./notify.lua;
   }
 
   ## external

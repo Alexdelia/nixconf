@@ -17,8 +17,7 @@
       -- # keymap.lua
       ${builtins.readFile ./keymap.lua}
 
-      -- # plugin/custom.lua
-      ${builtins.readFile ./plugin/custom.lua}
+      ${import ./plugin/custom {lib = pkgs.lib;}}
     '';
 
     extraPackages = with pkgs; [
