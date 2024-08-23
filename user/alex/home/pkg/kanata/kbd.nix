@@ -1,3 +1,4 @@
+{ pkgs }: /* kbd */ ''
 (defcfg
 	danger-enable-cmd yes
 )
@@ -7,8 +8,8 @@
 
 	held-meta-layer (layer-while-held meta-layer)
 
-	terminal (cmd kitty)
-	browser (cmd brave)
+	terminal (cmd ${pkgs.kitty})
+	browser (cmd ${pkgs.brave})
 )
 
 (defsrc
@@ -37,3 +38,4 @@
 
 	_
 )
+''
