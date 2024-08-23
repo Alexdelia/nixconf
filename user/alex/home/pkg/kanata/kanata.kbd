@@ -5,6 +5,8 @@
 (defalias
 	esc-ctrl (tap-hold 100 100 esc lctrl)
 
+	held-meta-layer (layer-while-held meta-layer)
+
 	terminal (cmd kitty)
 	browser (cmd brave)
 )
@@ -21,15 +23,17 @@
 (deflayer default
 	@esc-ctrl
 
-	(chord ch-meta c)
-	(chord ch-meta b)
+	c
+	b
 
-	(chord ch-meta lmet)
+	held-meta-layer
 )
 
-(defchords ch-meta 1000
-	(c)			c
-	(b)			b
-	(lmet c)	@terminal
-	(lmet b)	@browser
+(deflay	meta-layer
+	_
+
+	@terminal
+	@browser
+
+	_
 )
