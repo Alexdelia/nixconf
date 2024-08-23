@@ -4,7 +4,7 @@
   ...
 }: {
   home.packages = with pkgs; [
-    kanata
+    kanata-with-cmd
   ];
 
   xdg.configFile."kanata/kanata.kbd".source = ./kanata.kbd;
@@ -15,7 +15,7 @@
     };
     Service = {
       Type = "simple";
-      ExecStart = "${pkgs.kanata}/bin/kanata --cfg ${config.xdg.configFile."kanata/kanata.kbd".target}";
+      ExecStart = "${pkgs.kanata-with-cmd}/bin/kanata --cfg ${config.xdg.configFile."kanata/kanata.kbd".target}";
       Restart = "never";
     };
     Install = {

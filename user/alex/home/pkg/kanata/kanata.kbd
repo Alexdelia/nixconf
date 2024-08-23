@@ -1,11 +1,35 @@
+(defcfg
+	danger-enable-cmd yes
+)
+
 (defalias
 	esc-ctrl (tap-hold 100 100 esc lctrl)
+
+	terminal (cmd kitty)
+	browser (cmd brave)
 )
 
 (defsrc
 	caps
+
+	c
+	b
+
+	lmet
 )
 
 (deflayer default
 	@esc-ctrl
+
+	(chord ch-meta c)
+	(chord ch-meta b)
+
+	(chord ch-meta lmet)
+)
+
+(defchords ch-meta 1000
+	(c)			c
+	(b)			b
+	(lmet c)	@terminal
+	(lmet b)	@browser
 )
