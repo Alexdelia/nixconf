@@ -98,6 +98,7 @@ with pkgs.vimPlugins; [
 	type = "lua";
 	config = builtins.readFile ./notify.lua;
   }
+  nvim-web-devicons
 
   ## external
   vim-wakatime
