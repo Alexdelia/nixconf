@@ -8,8 +8,8 @@
 
 	held-meta-layer (layer-while-held meta-layer)
 
-	terminal (cmd ${pkgs.kitty})
-	browser (cmd ${pkgs.brave})
+	terminal (cmd ${pkgs.kitty}/bin/kitty)
+	browser (cmd ${pkgs.brave}/bin/brave)
 )
 
 (defsrc
