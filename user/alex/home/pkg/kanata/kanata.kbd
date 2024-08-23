@@ -26,10 +26,10 @@
 	c
 	b
 
-	held-meta-layer
+	(multi @held-meta-layer lmet)
 )
 
-(deflay	meta-layer
+(deflayer meta-layer
 	_
 
 	@terminal
