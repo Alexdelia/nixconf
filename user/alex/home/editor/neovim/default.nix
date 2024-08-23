@@ -8,6 +8,9 @@
 
     # TODO avoid duplicate
     extraLuaConfig = ''
+	  -- # early nvim-web-devicons config
+	  ${builtins.readFile ./plugin/icons.lua}
+
       -- # option.lua
       ${builtins.readFile ./option.lua}
 
