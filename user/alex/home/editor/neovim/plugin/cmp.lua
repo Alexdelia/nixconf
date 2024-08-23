@@ -78,7 +78,7 @@ cmp.setup {
 			end
 		},
 		{ name = 'path' },
-		{ name = 'buffer' },
+		-- { name = 'buffer' },
     },
 
 	formatting = {
