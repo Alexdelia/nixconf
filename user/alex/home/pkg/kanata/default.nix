@@ -7,7 +7,7 @@
     kanata-with-cmd
   ];
 
-  xdg.configFile."kanata/kanata.kbd".text = (import ./kbd.nix { inherit pkgs; });
+  xdg.configFile."kanata/kanata.kbd".text = import ./kbd.nix {inherit pkgs;};
   systemd.user.services.kanata = {
     Unit = {
       Description = "Kanata";

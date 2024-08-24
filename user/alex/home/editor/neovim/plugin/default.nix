@@ -74,9 +74,9 @@ with pkgs.vimPlugins; [
   telescope-fzf-native-nvim
 
   {
-  	plugin = nvim-tree-lua;
-	type = "lua";
-	config = builtins.readFile ./file_tree.lua;
+    plugin = nvim-tree-lua;
+    type = "lua";
+    config = builtins.readFile ./file_tree.lua;
   }
 
   ## edit
@@ -89,14 +89,14 @@ with pkgs.vimPlugins; [
 
   ## non-lsp info
   {
-  	plugin = gitsigns-nvim;
-	type = "lua";
-	config = builtins.readFile ./git.lua;
+    plugin = gitsigns-nvim;
+    type = "lua";
+    config = builtins.readFile ./git.lua;
   }
   {
-  	plugin = nvim-notify;
-	type = "lua";
-	config = builtins.readFile ./notify.lua;
+    plugin = nvim-notify;
+    type = "lua";
+    config = builtins.readFile ./notify.lua;
   }
   nvim-web-devicons
 
