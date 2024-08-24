@@ -35,7 +35,7 @@
 
         	settings = {
 				"org/gnome/desktop/wm/preferences" = {
-					num-workspaces = "10";
+					num-workspaces = lib.gvariant.mkInt32 10;
 				};
 				"org/gnome/shell/app-switcher" = {
 					current-workspace-only = true;
@@ -53,8 +53,8 @@
 
 				## shortcut
 				"org/gnome/settings-daemon/plugins/media-keys" = {
-					www = "['<Super>b']";
-					calculator = "['<Super>k']";
+					www = ["<Super>b"];
+					calculator = ["<Super>k"];
 				};
 				"org/gnome/settings-daemon/plugins/media-keys" = {
 					custom-keybindings = [
@@ -62,21 +62,21 @@
 					];
 				};
 				"org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-					binding = "'<Super>c'";
-					command = "'kitty'";
-					name = "'kitty'";
+					binding = "<Super>c";
+					command = "kitty";
+					name = "kitty";
 				};
 				"org/gnome/desktop/wm/keybindings" = {
-					"switch-to-workspace-1" = "['<Super>1']";
-					"switch-to-workspace-2" = "['<Super>2']";
-					"switch-to-workspace-3" = "['<Super>3']";
-					"switch-to-workspace-4" = "['<Super>4']";
-					"switch-to-workspace-5" = "['<Super>5']";
-					"switch-to-workspace-6" = "['<Super>6']";
-					"switch-to-workspace-7" = "['<Super>7']";
-					"switch-to-workspace-8" = "['<Super>8']";
-					"switch-to-workspace-9" = "['<Super>9']";
-					"switch-to-workspace-10" = "['<Super>0']";
+					"switch-to-workspace-1" = ["<Super>1"];
+					"switch-to-workspace-2" = ["<Super>2"];
+					"switch-to-workspace-3" = ["<Super>3"];
+					"switch-to-workspace-4" = ["<Super>4"];
+					"switch-to-workspace-5" = ["<Super>5"];
+					"switch-to-workspace-6" = ["<Super>6"];
+					"switch-to-workspace-7" = ["<Super>7"];
+					"switch-to-workspace-8" = ["<Super>8"];
+					"switch-to-workspace-9" = ["<Super>9"];
+					"switch-to-workspace-10" = ["<Super>0"];
 				};
 			};
 		}];
