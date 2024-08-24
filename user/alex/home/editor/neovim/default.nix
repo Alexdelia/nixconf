@@ -26,6 +26,8 @@
     extraPackages = with pkgs; [
       ## lsp
       lua-language-server
+
+	  fd
     ];
 
     plugins = import ./plugin {inherit pkgs;};
