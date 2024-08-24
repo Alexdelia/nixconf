@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   services.xserver = {
     enable = true;
 
@@ -26,4 +26,21 @@
       hitori # sudoku game
       atomix # puzzle game
     ]);
+
+	programs.dconf = {
+		enable = true;
+
+		profiles.user.databases = [{
+        	lockAll = true; # prevents overriding
+
+        	settings = {
+				"org/gnome/desktop/wm/preferences" = {
+					num-workspaces = lib.gvariant.mkUint16 10;
+				};
+				"org/gnome/shell/app-switcher" = {
+					current-workspace-only = true;
+				};
+			};
+		}];
+	};
 }
