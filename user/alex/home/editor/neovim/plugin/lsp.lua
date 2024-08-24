@@ -32,9 +32,11 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- disable snippet
 -- capabilities.textDocument.completion.completionItem.snippetSupport = false
 
+local lspconfig = require('lspconfig')
+
 -- # lua
 require('neodev').setup()
-require('lspconfig').lua_ls.setup {
+lspconfig.lua_ls.setup {
     on_attach = on_attach,
     capabilities = capabilities,
     root_dir = function() return vim.loop.cwd() end,
@@ -44,4 +46,10 @@ require('lspconfig').lua_ls.setup {
             telemetry = {enable = true}
         }
     }
+}
+
+-- # nix
+lspconfig.nil_ls.setup {
+	autostart = true,
+    capabilities = capabilities,
 }
