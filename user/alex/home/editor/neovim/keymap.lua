@@ -60,7 +60,7 @@ local mapping_by_mode = {
 
         -- inspect
         ["i"] = "<cmd>Inspect<CR>",
-        ["I"] = "<cmd>InspectTree<CR>",
+        ["<C-i>"] = "<cmd>InspectTree<CR>",
 
         -- ctrl+/ to comment selected lines
         ["<C-/>"] = ":'<,'>norm gcc<CR>gv=gv"
