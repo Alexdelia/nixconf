@@ -22,7 +22,6 @@ with pkgs.vimPlugins; [
       p.tree-sitter-bash
       p.tree-sitter-nix
       p.tree-sitter-vim
-	  p.tree-sitter-help
       p.tree-sitter-lua
       p.tree-sitter-csv
       p.tree-sitter-yaml
