@@ -49,7 +49,4 @@ lspconfig.lua_ls.setup {
 }
 
 -- # nix
-lspconfig.nil_ls.setup {
-	autostart = true,
-    capabilities = capabilities,
-}
+lspconfig.nil_ls.setup {autostart = true, capabilities = capabilities}
