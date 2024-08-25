@@ -1,5 +1,6 @@
 {
   imports = [
+  	./boot.nix
     ./group.nix
     ./locale.nix
     ./zone.nix
