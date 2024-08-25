@@ -31,12 +31,12 @@
       ## lua
       lua-language-server
 
-	  ## rust
-	  rust-analyzer
-	  rustc
-	  cargo
-	  rustfmt
-	  clippy
+      ## rust
+      rust-analyzer
+      rustc
+      cargo
+      rustfmt
+      clippy
 
       fd
     ];

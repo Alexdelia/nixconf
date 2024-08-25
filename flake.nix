@@ -16,8 +16,8 @@
       flake = false;
     };
     vity-nvim = {
-      url = "github:Alexdelia/vity.nvim";
-      flake = false;
+      url = "github:Alexdelia/vity.nvim/rust";
+      flake = true;
     };
   };
 

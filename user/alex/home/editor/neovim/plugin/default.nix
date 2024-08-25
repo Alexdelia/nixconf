@@ -1,12 +1,29 @@
-{pkgs, inputs}:
+{
+  pkgs,
+  inputs,
+}:
 with pkgs.vimPlugins; [
+  ## non-lsp info
+  nvim-web-devicons
+  {
+    plugin = nvim-notify;
+    type = "lua";
+    config = builtins.readFile ./notify.lua;
+  }
+  {
+    plugin = gitsigns-nvim;
+    type = "lua";
+    config = builtins.readFile ./git.lua;
+  }
+
   ## colorscheme
   {
     plugin = pkgs.vimUtils.buildVimPlugin {
-	  name = "vity";
-	  src = inputs.vity-nvim;
-	};
-	config = "colorscheme vity";
+      name = "vity";
+      src = inputs.vity-nvim;
+    };
+	type = "lua";
+	config = builtins.readFile ./colorscheme.lua;
   }
 
   ## lsp
@@ -17,9 +34,9 @@ with pkgs.vimPlugins; [
   }
   neodev-nvim
   {
-  	plugin = crates-nvim;
-	type = "lua";
-	config = "require('crates').setup()";
+    plugin = crates-nvim;
+    type = "lua";
+    config = "require('crates').setup()";
   }
 
   ## tree sitter
@@ -101,22 +118,9 @@ with pkgs.vimPlugins; [
   nvim-ts-context-commentstring
   {
     plugin = rust-vim;
-	type = "lua";
-	config = "vim.g.rustfmt_autosave = 1";
-  }
-
-  ## non-lsp info
-  {
-    plugin = gitsigns-nvim;
     type = "lua";
-    config = builtins.readFile ./git.lua;
+    config = "vim.g.rustfmt_autosave = 1";
   }
-  {
-    plugin = nvim-notify;
-    type = "lua";
-    config = builtins.readFile ./notify.lua;
-  }
-  nvim-web-devicons
 
   ## external
   vim-wakatime
