@@ -43,8 +43,8 @@
           placement_strategy = "center";
 
           hide_window_decorations = false;
-		  enable_csd = true;
-		  linux_display_server = "x11";
+          enable_csd = true;
+          linux_display_server = "x11";
         }
         // (import ./scheme.nix {
           scheme =

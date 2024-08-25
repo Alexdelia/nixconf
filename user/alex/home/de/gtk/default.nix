@@ -1,9 +1,9 @@
-{ pkgs, ...}: {
+{pkgs, ...}: {
   gtk = {
-  	enable = true;
+    enable = true;
 
-	theme.name = "Sweet-Dark";
-	theme.package = pkgs.sweet;
+    theme.name = "Sweet-Dark";
+    theme.package = pkgs.sweet;
   };
 
   stylix.targets.gtk.enable = false;

@@ -15,6 +15,10 @@
       url = "github:Alexdelia/vity-base24";
       flake = false;
     };
+    vity-nvim = {
+      url = "github:Alexdelia/vity.nvim";
+      flake = false;
+    };
   };
 
   outputs = inputs: let

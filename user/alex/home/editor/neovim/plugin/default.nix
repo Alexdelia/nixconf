@@ -1,5 +1,8 @@
 {pkgs}:
 with pkgs.vimPlugins; [
+  ## colorscheme
+  vity-nvim
+
   ## lsp
   {
     plugin = nvim-lspconfig;

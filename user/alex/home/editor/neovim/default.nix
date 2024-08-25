@@ -1,4 +1,23 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  nixpkgs = {
+    overlays = [
+      (final: prev: {
+        vimPlugins =
+          prev.vimPlugins
+          // {
+            vity-nvim = prev.vimUtils.buildVimPlugin {
+              name = "vity.nvim";
+              src = inputs.vity-nvim;
+            };
+          };
+      })
+    ];
+  };
+
   programs.neovim = {
     enable = true;
 
@@ -33,5 +52,5 @@
     plugins = import ./plugin {inherit pkgs;};
   };
 
-  # stylix.targets.neovim.enable = false;
+  stylix.targets.neovim.enable = false;
 }
