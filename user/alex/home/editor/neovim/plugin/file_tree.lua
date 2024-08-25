@@ -49,7 +49,7 @@ nvim_tree.setup {
 
     view = {width = 30, side = "left", number = false, relativenumber = false},
     sort = {sorter = "case_sensitive"},
-    filters = {dotfiles = true, git_ignored = true},
+    filters = {dotfiles = false, git_ignored = false},
 
     renderer = {
         group_empty = true,
