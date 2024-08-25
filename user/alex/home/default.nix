@@ -12,5 +12,6 @@
     ./tty
     ./editor
     ./browser
+	./de
   ];
 }
