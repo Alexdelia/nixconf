@@ -24,6 +24,7 @@
     jaq
     ### rest
     wget # `ruget` is slower and less maintained
+	wl-clipboard # dependency of a lot of tools
 
     ## nix
     nh

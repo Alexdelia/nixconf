@@ -1,6 +1,4 @@
-vim.diagnostic.config({
-	signs = false,
-})
+vim.diagnostic.config({signs = false})
 
 local on_attach = function(_, bufnr)
 
@@ -52,31 +50,28 @@ lspconfig.lua_ls.setup {
 
 -- # nix
 lspconfig.nil_ls.setup {
-	on_attach = on_attach,
-	capabilities = capabilities,
+    on_attach = on_attach,
+    capabilities = capabilities,
 
-	filetypes = { "nix" },
-	root_dir = function(fname)
-		return lspconfig.util.root_pattern("flake.nix", "default.nix", "shell.nix", ".git")(fname) or vim.loop.cwd()
-	end
+    filetypes = {"nix"},
+    root_dir = function(fname)
+        return lspconfig.util.root_pattern("flake.nix", "default.nix",
+                                           "shell.nix", ".git")(fname) or
+                   vim.loop.cwd()
+    end
 }
 
 -- # rust
 lspconfig.rust_analyzer.setup {
-	on_attach = on_attach,
-	capabilities = capabilities,
+    on_attach = on_attach,
+    capabilities = capabilities,
 
-	filetypes = { "rust" },
-	root_dir = function(fname)
-		return lspconfig.util.root_pattern("Cargo.toml", ".git")(fname) or vim.loop.cwd()
-	end,
+    filetypes = {"rust"},
+    root_dir = function(fname)
+        return lspconfig.util.root_pattern("Cargo.toml", ".git")(fname) or
+                   vim.loop.cwd()
+    end,
 
-	settings = {
-		["rust-analyzer"] = {
-			cargo = {
-				allFeatures = true,
-			},
-		}
-	}
+    settings = {["rust-analyzer"] = {cargo = {allFeatures = true}}}
 }
 

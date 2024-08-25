@@ -20,10 +20,10 @@ with pkgs.vimPlugins; [
   {
     plugin = pkgs.vimUtils.buildVimPlugin {
       name = "vity";
-      src = inputs.vity-nvim;
+      src = inputs.vity-nvim.packages.${pkgs.system}.default;
     };
-	type = "lua";
-	config = builtins.readFile ./colorscheme.lua;
+    type = "lua";
+    config = builtins.readFile ./colorscheme.lua;
   }
 
   ## lsp
