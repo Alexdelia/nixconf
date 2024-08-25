@@ -1,3 +1,7 @@
+vim.diagnostic.config({
+	signs = false,
+})
+
 local on_attach = function(_, bufnr)
 
     local bufmap = function(keys, func)
@@ -12,12 +16,10 @@ local on_attach = function(_, bufnr)
     bufmap('gI', vim.lsp.buf.implementation)
     bufmap('<leader>D', vim.lsp.buf.type_definition)
 
-    --[[
-  local telescope_builtin = require('telescope.builtin')
-  bufmap('gr', telescope_builtin.lsp_references)
-  bufmap('<leader>s', telescope_builtin.lsp_document_symbols)
-  bufmap('<leader>S', telescope_builtin.lsp_dynamic_workspace_symbols)
-  --]]
+    local telescope_builtin = require('telescope.builtin')
+    bufmap('gr', telescope_builtin.lsp_references)
+    bufmap('<leader>s', telescope_builtin.lsp_document_symbols)
+    bufmap('<leader>S', telescope_builtin.lsp_dynamic_workspace_symbols)
 
     bufmap('K', vim.lsp.buf.hover)
 
@@ -49,4 +51,32 @@ lspconfig.lua_ls.setup {
 }
 
 -- # nix
-lspconfig.nil_ls.setup {autostart = true, capabilities = capabilities}
+lspconfig.nil_ls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+
+	filetypes = { "nix" },
+	root_dir = function(fname)
+		return lspconfig.util.root_pattern("flake.nix", "default.nix", "shell.nix", ".git")(fname) or vim.loop.cwd()
+	end
+}
+
+-- # rust
+lspconfig.rust_analyzer.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+
+	filetypes = { "rust" },
+	root_dir = function(fname)
+		return lspconfig.util.root_pattern("Cargo.toml", ".git")(fname) or vim.loop.cwd()
+	end,
+
+	settings = {
+		["rust-analyzer"] = {
+			cargo = {
+				allFeatures = true,
+			},
+		}
+	}
+}
+

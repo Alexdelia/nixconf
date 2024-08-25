@@ -16,7 +16,11 @@ with pkgs.vimPlugins; [
     config = builtins.readFile ./lsp.lua;
   }
   neodev-nvim
-  # TODO: crates.nvim https://github.com/saecki/crates.nvim
+  {
+  	plugin = crates-nvim;
+	type = "lua";
+	config = "require('crates').setup()";
+  }
 
   ## tree sitter
   {
@@ -95,6 +99,11 @@ with pkgs.vimPlugins; [
     config = builtins.readFile ./comment.lua;
   }
   nvim-ts-context-commentstring
+  {
+    plugin = rust-vim;
+	type = "lua";
+	config = "vim.g.rustfmt_autosave = 1";
+  }
 
   ## non-lsp info
   {

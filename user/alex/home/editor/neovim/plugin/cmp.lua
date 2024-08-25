@@ -62,12 +62,14 @@ cmp.setup {
     confirm_opts = {behavior = cmp.ConfirmBehavior.Replace, select = false},
 
     sources = {
+		{ name = 'crates' },
         {
             name = 'nvim_lsp',
             entry_filter = function(entry, _ctx)
                 return cmp.lsp.CompletionItemKind.Snippet ~= entry:get_kind()
             end
-        }, {name = 'path'}
+        },
+		{name = 'path'},
         -- { name = 'buffer' },
     },
 
