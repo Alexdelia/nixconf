@@ -298,7 +298,8 @@
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "stylix": "stylix",
-        "vity-base24": "vity-base24"
+        "vity-base24": "vity-base24",
+        "vity-nvim": "vity-nvim"
       }
     },
     "stylix": {
@@ -359,6 +360,22 @@
       "original": {
         "owner": "Alexdelia",
         "repo": "vity-base24",
+        "type": "github"
+      }
+    },
+    "vity-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1724587421,
+        "narHash": "sha256-IA+dwsp+3irn0JEcmwP0iVZYFsCAewk3O/WgQNIWMPg=",
+        "owner": "Alexdelia",
+        "repo": "vity.nvim",
+        "rev": "4ec9d386241fc3600a61bba7800537c275ebb5a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Alexdelia",
+        "repo": "vity.nvim",
         "type": "github"
       }
     }

@@ -1,7 +1,13 @@
-{pkgs}:
+{pkgs, inputs}:
 with pkgs.vimPlugins; [
   ## colorscheme
-  vity-nvim
+  {
+    plugin = pkgs.vimUtils.buildVimPlugin {
+	  name = "vity";
+	  src = inputs.vity-nvim;
+	};
+	config = "colorscheme vity";
+  }
 
   ## lsp
   {
