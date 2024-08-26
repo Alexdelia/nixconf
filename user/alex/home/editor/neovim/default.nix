@@ -38,6 +38,10 @@
       rustfmt
       clippy
 
+	  ## agnostic
+	  typos-lsp
+
+      ## utils
       fd
     ];
 
