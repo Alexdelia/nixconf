@@ -6,4 +6,6 @@
   c = "cargo";
 
   mk = "make";
+
+  nd = "nix develop";
 }
