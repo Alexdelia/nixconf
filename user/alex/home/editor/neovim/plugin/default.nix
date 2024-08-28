@@ -15,6 +15,11 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = builtins.readFile ./git.lua;
   }
+  {
+  	plugin = nvim-colorizer-lua;
+	type = "lua";
+	config = builtins.readFile ./colorizer.lua;
+  }
 
   ## colorscheme
   {
