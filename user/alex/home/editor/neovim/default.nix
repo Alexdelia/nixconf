@@ -48,5 +48,5 @@
     plugins = import ./plugin {inherit pkgs inputs;};
   };
 
-  stylix.targets.neovim.enable = false;
+  # stylix.targets.neovim.enable = false;
 }
