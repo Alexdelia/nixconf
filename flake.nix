@@ -10,7 +10,10 @@
     };
 
     base16.url = "github:SenchoPens/base16.nix";
-    stylix.url = "github:danth/stylix/release-24.05";
+    stylix = {
+		url = "github:danth/stylix/release-24.05";
+		inputs.nixpkgs.follows = "nixpkgs";
+	};
     vity-base24 = {
       url = "github:Alexdelia/vity-base24";
       flake = false;
