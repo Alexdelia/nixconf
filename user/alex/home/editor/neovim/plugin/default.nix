@@ -20,6 +20,11 @@ with pkgs.vimPlugins; [
 	type = "lua";
 	config = builtins.readFile ./colorizer.lua;
   }
+  {
+  	plugin = bufferline-nvim;
+	type = "lua";
+	config = builtins.readFile ./bufferline.lua;
+  }
 
   ## colorscheme
   {

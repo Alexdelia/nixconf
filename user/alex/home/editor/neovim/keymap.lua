@@ -15,7 +15,10 @@ local mapping_by_mode = {
     [""] = {
         -- ctrl + h / ctrl + l to move between words
         ["<C-h>"] = "b",
-        ["<C-l>"] = "w"
+        ["<C-l>"] = "w",
+
+		-- save + unload buffers
+		["<leader>d"] = "<cmd>w<CR><cmd>bd<CR>"
     },
     -- # normal mode keymaps
     n = {
