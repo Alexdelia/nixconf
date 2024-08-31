@@ -2,6 +2,7 @@
   plugins = [
     "delete_backward"
     "open_remote_rev"
+	"quit"
   ];
 in
   lib.concatStringsSep "\n" (

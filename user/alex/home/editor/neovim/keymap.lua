@@ -18,7 +18,7 @@ local mapping_by_mode = {
         ["<C-l>"] = "w",
 
 		-- save + unload buffers
-		["<leader>d"] = "<cmd>w<CR><cmd>bd<CR>"
+		["<leader>d"] = "<cmd>Quit<CR>"
     },
     -- # normal mode keymaps
     n = {
@@ -33,7 +33,7 @@ local mapping_by_mode = {
 		--]]
 
         ["<leader>f"] = "<cmd>Telescope find_files<CR>",
-        ["<leader>s"] = "<cmd>Telescope live_grep<CR>",
+        ["<leader>g"] = "<cmd>Telescope live_grep<CR>",
 
         -- ctrl+/ to comment current line
         ["<C-/>"] = ":norm gcc<CR>"
