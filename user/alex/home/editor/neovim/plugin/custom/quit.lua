@@ -1,8 +1,8 @@
 local function quit()
-	if #vim.api.nvim_list_bufs() == 1 then
-		vim.cmd("w | q | bd")
+	if vim.fn.len(vim.fn.getbufinfo({buflisted = 1})) == 1 then
+		vim.cmd("w | q | bd #")
 	else
-		vim.cmd("w | bd")
+		vim.cmd("w | bp | bd #")
 	end
 end
 
