@@ -42,7 +42,10 @@ local mapping_by_mode = {
         ["<C-Del>"] = "<C-o>dw",
 
         -- ctrl+/ to comment current line
-        ["<C-/>"] = "<C-o>:norm gcc<CR>"
+        ["<C-/>"] = "<C-o>:norm gcc<CR>",
+
+		-- accept first word of github copilot suggestion
+		["<C-Right>"] = "<cmd>AcceptOneWord<CR>"
     },
     -- # visual mode keymaps
     v = {

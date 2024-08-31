@@ -97,7 +97,11 @@ with pkgs.vimPlugins; [
   cmp-nvim-lsp
   cmp-path
   cmp-buffer
-  copilot-vim
+  {
+  	plugin = copilot-vim;
+	type = "lua";
+	config = builtins.readFile ./copilot.lua;
+  }
   luasnip
 
   ## motion
