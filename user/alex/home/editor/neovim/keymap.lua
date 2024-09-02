@@ -16,9 +16,6 @@ local mapping_by_mode = {
         -- ctrl + h / ctrl + l to move between words
         ["<C-h>"] = "b",
         ["<C-l>"] = "w",
-
-		-- save + unload buffers
-		["<leader>d"] = "<cmd>Quit<CR>"
     },
     -- # normal mode keymaps
     n = {
@@ -32,8 +29,13 @@ local mapping_by_mode = {
 		["P"] = '"_dP',
 		--]]
 
+		-- save + unload buffers
+		["<leader>d"] = "<cmd>Quit<CR>",
+
         ["<leader>f"] = "<cmd>Telescope find_files<CR>",
         ["<leader>g"] = "<cmd>Telescope live_grep<CR>",
+		["<leader>h"] = "<cmd>Telescope highlights<CR>",
+		["<leader>mi"] = "<cmd>Inspect<CR>",
 
         -- ctrl+/ to comment current line
         ["<C-/>"] = ":norm gcc<CR>"
