@@ -16,14 +16,14 @@ with pkgs.vimPlugins; [
     config = builtins.readFile ./git.lua;
   }
   {
-  	plugin = nvim-colorizer-lua;
-	type = "lua";
-	config = builtins.readFile ./colorizer.lua;
+    plugin = nvim-colorizer-lua;
+    type = "lua";
+    config = builtins.readFile ./colorizer.lua;
   }
   {
-  	plugin = bufferline-nvim;
-	type = "lua";
-	config = builtins.readFile ./bufferline.lua;
+    plugin = bufferline-nvim;
+    type = "lua";
+    config = builtins.readFile ./bufferline.lua;
   }
 
   ## colorscheme
@@ -103,9 +103,9 @@ with pkgs.vimPlugins; [
   cmp-path
   cmp-buffer
   {
-  	plugin = copilot-vim;
-	type = "lua";
-	config = builtins.readFile ./copilot.lua;
+    plugin = copilot-vim;
+    type = "lua";
+    config = builtins.readFile ./copilot.lua;
   }
   luasnip
 

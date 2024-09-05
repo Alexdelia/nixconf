@@ -38,8 +38,8 @@
       rustfmt
       clippy
 
-	  ## agnostic
-	  typos-lsp
+      ## agnostic
+      typos-lsp
 
       ## utils
       fd
