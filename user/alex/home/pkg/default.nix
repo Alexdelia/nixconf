@@ -12,14 +12,13 @@
   ];
 
   home.packages = with pkgs; [
-    # neofetch
-
     ## shell essentials
     ### rust
     ripgrep
 	xcp
     typos
     tealdeer
+	ouch
     oxker
     skim
     jaq
