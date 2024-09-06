@@ -15,10 +15,11 @@
     ## shell essentials
     ### rust
     ripgrep
-	xcp
+    xcp
+    dysk
     typos
     tealdeer
-	ouch
+    ouch
     oxker
     skim
     jaq
