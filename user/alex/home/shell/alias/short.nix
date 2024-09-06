@@ -8,4 +8,6 @@
   mk = "make";
 
   nd = "nix develop";
+
+  b = "bat";
 }
