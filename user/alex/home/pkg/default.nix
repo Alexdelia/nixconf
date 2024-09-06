@@ -17,6 +17,7 @@
     ## shell essentials
     ### rust
     ripgrep
+	xcp
     typos
     tealdeer
     oxker
