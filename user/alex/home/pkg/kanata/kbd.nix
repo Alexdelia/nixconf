@@ -12,7 +12,7 @@ kbd
 
   	;; held-meta-layer (layer-while-held meta-layer)
 
-  	;; terminal (cmd ${pkgs.kitty}/bin/kitty)
+  	;; terminal (cmd ${pkgs.alacritty}/bin/alacritty)
   	;; browser (cmd ${pkgs.brave}/bin/brave)
   )
 
