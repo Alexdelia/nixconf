@@ -29,6 +29,11 @@
 
             decorations = "None";
             startup_mode = "Maximized";
+
+            dimensions = {
+              columns = 128;
+              lines = 32;
+            };
           };
         }
         // (import ./scheme.nix {
