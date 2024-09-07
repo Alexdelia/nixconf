@@ -16,8 +16,12 @@
             size = 16.0;
 
             normal = {
-              family = "SourceCodePro Nerd Font";
+              family = "SourceCodePro";
               style = "Regular";
+            };
+            bold = {
+              family = "SourceCodePro";
+              style = "Black";
             };
           };
 
