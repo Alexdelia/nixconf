@@ -1,6 +1,7 @@
 {
   imports = [
-    # ./warp
+    ./alacritty
     ./kitty
+    # ./warp
   ];
 }

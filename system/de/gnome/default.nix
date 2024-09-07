@@ -68,8 +68,8 @@
           };
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
             binding = "<Super>c";
-            command = "kitty";
-            name = "kitty";
+            command = "alacritty";
+            name = "alacritty";
           };
           "org/gnome/desktop/wm/keybindings" = {
             "switch-to-workspace-1" = ["<Super>1"];
