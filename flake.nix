@@ -23,14 +23,12 @@
 
   outputs = inputs: let
     hosts = {
-      /*
       jiruo = {
         system = "x86_64-linux";
         stateVersion = "24.05";
         isNixos = true;
         users = ["alex"];
       };
-      */
       marulk = {
         system = "x86_64-linux";
         stateVersion = "24.05";
