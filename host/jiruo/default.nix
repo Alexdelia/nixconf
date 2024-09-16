@@ -10,7 +10,8 @@
       ./hardware-configuration.nix
       ../../system
 
-	  ./nvidia.nix
+      ./nvidia.nix
+      (import ./docker.nix {inherit users;})
     ]
     ++ map (username: (import ../../user/${username} {
       inherit username;
