@@ -7,6 +7,7 @@
   imports = [
     ./pkg
     ./font
+    ./keyboard
     ./shell
     ./script
     ./tty
