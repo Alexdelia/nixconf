@@ -32,5 +32,8 @@
     nil
     nix-output-monitor
     alejandra
+
+    ## non-free
+    slack
   ];
 }
