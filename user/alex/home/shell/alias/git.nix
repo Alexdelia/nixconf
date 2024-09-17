@@ -2,6 +2,7 @@
   gg = "git clone --recurse-submodules";
 
   gst = "git status --short";
+  gts = "git status --short";
   gs = "git status --short";
 
   gd = "git diff";
