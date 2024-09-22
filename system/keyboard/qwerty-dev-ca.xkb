@@ -1,15 +1,15 @@
 partial alphanumeric_keys 
-xkb_symbols "qwerty-dev-fr"
+xkb_symbols "qwerty-dev-ca"
 {
     include "us(basic)"
     include "level3(ralt_switch)"
 
-    name[Group1]= "US keyboard for development with french symbols - AltGr combination";
+    name[Group1]= "US keyboard for development with french accents - AltGr combination";
 
     // key <TLDE> { [ grave,        asciitilde,  dead_grave,             dead_tilde           ] };
     // key <AE01> { [ 1,            exclam,      onesuperior,            exclamdown           ] };
     // key <AE02> { [ 2,            at,          twosuperior,            dead_doubleacute     ] };
-    // key <AE03> { [ 3,            numbersign,  ecircumflex,            Ecircumflex          ] };
+    key <AE03> { [ 3,            numbersign,  ecircumflex,            Ecircumflex          ] };
     key <AE04> { [ 4,            dollar,      EuroSign,               dead_currency        ] };
     // key <AE05> { [ 5,            percent,     dead_macron,            dead_abovedot        ] };
     // key <AE06> { [ 6,            asciicircum, dead_circumflex,        dead_caron           ] };
@@ -27,8 +27,9 @@ xkb_symbols "qwerty-dev-fr"
     // key <AD05> { [ t,            T,           thorn,                  THORN                ] };
     // key <AD06> { [ y,            Y,           dead_invertedbreve,     dead_breve           ] };
     key <AD07> { [ u,            U,           ugrave,                 Ugrave               ] };
-    key <AD08> { [ i,            I,           igrave,                 Igrave               ] };
-    key <AD09> { [ o,            O,           ograve,                 Ograve               ] };
+    // key <AD08> { [ i,            I,           igrave,                 Igrave               ] };
+    // key <AD09> { [ o,            O,           ograve,                 Ograve               ] };
+    key <AD09> { [ o,            O,           ocircumflex,            Ocircumflex          ] };
     key <AD10> { [ p,            P,           oe,                     OE                   ] };
     // key <AD11> { [ bracketleft,  braceleft,   guillemotleft,          leftdoublequotemark  ] };
     // key <AD12> { [ bracketright, braceright,  guillemotright,         rightdoublequotemark ] };
