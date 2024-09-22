@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  layout = "qwerty-dev-fr";
+  layout = "qwerty-dev-ca";
   # compiledLayout = pkgs.runCommand "compiled-keyboard-layout" {} ''
   # ${pkgs.xorg.xkbcomp}/bin/xkbcomp ${layout} $out
   # '';
