@@ -4,7 +4,7 @@
     ./group.nix
     ./locale.nix
     ./zone.nix
-	./keyboard
+    ./keyboard
     ./service
     ./de
   ];
