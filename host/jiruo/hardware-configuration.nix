@@ -12,11 +12,13 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod"];
+  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" "vmd"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+  # handled by disko
+  # /*
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/b4263163-e0cd-4fc3-b6d2-54dfb2995dbf";
     fsType = "ext4";
@@ -31,6 +33,7 @@
   swapDevices = [
     {device = "/dev/disk/by-uuid/8f796718-dbfa-4a7a-84e1-ba33a1b3218d";}
   ];
+  # */
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

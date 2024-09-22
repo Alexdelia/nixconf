@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     base16.url = "github:SenchoPens/base16.nix";
     stylix = {
       url = "github:danth/stylix/release-24.05";

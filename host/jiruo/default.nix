@@ -10,7 +10,9 @@
       ./hardware-configuration.nix
       ../../system
 
+      inputs.disko.nixosModules.disko
       ./nvidia.nix
+      # ./disko.nix
       (import ./docker.nix {inherit users;})
     ]
     ++ map (username: (import ../../user/${username} {
@@ -31,11 +33,14 @@
   };
 
   # Bootloader.
-  # boot.loader.grub.enable = true;
-  # boot.loader.grub.device = "/dev/sda";
-  # boot.loader.grub.useOSProber = true;
-  # boot.loader.grub.efiSupport = true;
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub ={
+	  enable = true;
+	  device = "/dev/sda";
+	  useOSProber = true;
+	  efiSupport = true;
+	  # efiInstallAsRemovable = true;
+  };
+  # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # TODO: remove duplicate
