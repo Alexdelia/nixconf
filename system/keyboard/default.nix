@@ -18,7 +18,7 @@ in {
   services.xserver = {
     layout = layout;
     extraLayouts.${layout} = {
-      description = ${layout};
+      description = layout;
       languages = ["en" "fr" "ca"];
       symbolsFile = ./${layout}.xkb;
     };
