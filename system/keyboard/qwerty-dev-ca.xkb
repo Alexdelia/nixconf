@@ -50,7 +50,7 @@ xkb_symbols "qwerty-dev-ca"
     // key <LSGT> { [ less,         greater,     lessthanequal,          greaterthanequal     ] };
     // key <AB01> { [ z,            Z,           adiaeresis,             Adiaeresis           ] };
     // key <AB02> { [ x,            X,           multiply,               division             ] };
-    // key <AB03> { [ c,            C,           ccedilla,               Ccedilla             ] };
+    key <AB03> { [ c,            C,           ccedilla,               Ccedilla             ] };
     // key <AB04> { [ v,            V,           VoidSymbol,             VoidSymbol           ] };
     // key <AB05> { [ b,            B,           ssharp,                 U1E9E                ] }; // ß, ẞ (capital)
     // key <AB06> { [ n,            N,           ntilde,                 Ntilde               ] };
