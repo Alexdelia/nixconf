@@ -15,7 +15,18 @@ local mapping_by_mode = {
     [""] = {
         -- ctrl + h / ctrl + l to move between words
         ["<C-h>"] = "b",
+		["<C-Left>"] = "b",
         ["<C-l>"] = "w",
+		["<C-Right>"] = "w",
+
+        -- alt + j / alt + k to move lines up and down
+        ["<A-Up>"] = ":m '<-2<CR>gv=gv",
+        ["<A-k>"] = ":m '<-2<CR>gv=gv",
+        ["<A-Down>"] = ":m '>+1<CR>gv=gv",
+        ["<A-j>"] = ":m '>+1<CR>gv=gv",
+
+		["<C-n>"] = "<cmd>vim.lsp.diagnostic.goto_next()<CR>",
+		["<C-p>"] = "<cmd>vim.lsp.diagnostic.goto_prev()<CR>",
     },
     -- # normal mode keymaps
     n = {
@@ -52,16 +63,10 @@ local mapping_by_mode = {
         ["<C-/>"] = "<C-o>:norm gcc<CR>",
 
 		-- accept first word of github copilot suggestion
-		["<C-Right>"] = "<cmd>AcceptOneWord<CR>"
+		["<C-y>"] = "<cmd>AcceptOneWord<CR>"
     },
     -- # visual mode keymaps
     v = {
-        -- alt + j / alt + k to move lines up and down
-        ["<A-Up>"] = ":m '<-2<CR>gv=gv",
-        ["<A-k>"] = ":m '<-2<CR>gv=gv",
-        ["<A-Down>"] = ":m '>+1<CR>gv=gv",
-        ["<A-j>"] = ":m '>+1<CR>gv=gv",
-
         -- pasting does not yank the replaced text
         --[[
 		["p"] = '"_dP',
@@ -77,11 +82,6 @@ local mapping_by_mode = {
     },
     -- # visual block mode keymaps
     x = {
-        -- alt + j / alt + k to move lines up and down
-        ["<A-Up>"] = ":m '<-2<CR>gv=gv",
-        ["<A-k>"] = ":m '<-2<CR>gv=gv",
-        ["<A-Down>"] = ":m '>+1<CR>gv=gv",
-        ["<A-j>"] = ":m '>+1<CR>gv=gv"
     }
 }
 
