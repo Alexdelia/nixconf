@@ -25,8 +25,8 @@ local mapping_by_mode = {
         ["<A-Down>"] = ":m '>+1<CR>gv=gv",
         ["<A-j>"] = ":m '>+1<CR>gv=gv",
 
-		["<C-n>"] = "<cmd>vim.lsp.diagnostic.goto_next()<CR>",
-		["<C-p>"] = "<cmd>vim.lsp.diagnostic.goto_prev()<CR>",
+		["<C-n>"] = ":lua vim.diagnostic.goto_next()<CR>",
+		["<C-p>"] = ":lua vim.diagnostic.goto_prev()<CR>",
     },
     -- # normal mode keymaps
     n = {
