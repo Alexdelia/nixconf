@@ -10,7 +10,7 @@
       ./hardware-configuration.nix
       ../../system
 
-      inputs.disko.nixosModules.disko
+      # inputs.disko.nixosModules.disko
       ./nvidia.nix
       # ./disko.nix
       (import ./docker.nix {inherit users;})
