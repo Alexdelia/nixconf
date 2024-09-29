@@ -1,6 +1,6 @@
 {
   environment.sessionVariables = rec {
-	NIXOS_OZONE_WL = "1";
+    NIXOS_OZONE_WL = "1";
 
     PATH = [XDG_BIN_HOME];
 

@@ -33,16 +33,16 @@
   };
   environment.systemPackages = with pkgs; [
     ani-cli
-	osu-lazer-bin
+    osu-lazer-bin
   ];
 
   # Bootloader.
-  boot.loader.grub ={
-	  enable = true;
-	  device = "/dev/sda";
-	  useOSProber = true;
-	  efiSupport = true;
-	  # efiInstallAsRemovable = true;
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+    useOSProber = true;
+    efiSupport = true;
+    # efiInstallAsRemovable = true;
   };
   # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

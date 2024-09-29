@@ -1,7 +1,7 @@
-{lib, ... }: {
+{lib, ...}: {
   fileSystems = {
-  	"/".device = lib.mkForce "/dev/disk/by-partlabel/root";
-	"/boot".device = lib.mkForce "/dev/disk/by-partlabel/ESP";
+    "/".device = lib.mkForce "/dev/disk/by-partlabel/root";
+    "/boot".device = lib.mkForce "/dev/disk/by-partlabel/ESP";
   };
 
   disko.devices = {
@@ -12,10 +12,10 @@
         content = {
           type = "gpt";
           partitions = {
-			bios = {
-			  type = "EF02"; # BIOS boot partition
-			  size = "2M";
-			};
+            bios = {
+              type = "EF02"; # BIOS boot partition
+              size = "2M";
+            };
             ESP = {
               type = "EF00"; # EFI System Partition
               size = "1G";

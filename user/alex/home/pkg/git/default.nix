@@ -24,7 +24,7 @@
       push.autoSetupRemote = true;
       pull.rebase = false;
 
-	  init.defaultBranch = "main";
+      init.defaultBranch = "main";
 
       # https://github.com/dandavison/delta?tab=readme-ov-file#get-started
       core.pager = "delta";
