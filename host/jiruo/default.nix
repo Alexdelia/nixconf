@@ -33,6 +33,7 @@
   };
   environment.systemPackages = with pkgs; [
     ani-cli
+	osu-lazer-bin
   ];
 
   # Bootloader.
