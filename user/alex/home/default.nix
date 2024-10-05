@@ -10,6 +10,7 @@
     ./keyboard
     ./shell
     ./script
+	./ssh
     ./tty
     ./editor
     ./browser

@@ -10,7 +10,11 @@
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
 
-    EDITOR = "vim";
+    XDG_DP_SHELL = "bash";
+    XDG_DP_EDITOR = "nvim";
+    XDG_DP_TERMINAL = "alacritty";
+
+    EDITOR = XDG_DP_EDITOR;
 
     # XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";
 
