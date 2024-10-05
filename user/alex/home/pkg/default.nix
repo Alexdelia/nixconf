@@ -33,8 +33,8 @@
     nix-output-monitor
     alejandra
 
-	## work-related
-	libreoffice-qt-still
+    ## work-related
+    libreoffice-qt-still
 
     ## non-free
     slack

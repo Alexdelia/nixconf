@@ -9,6 +9,10 @@
 
       settings =
         {
+          env = {
+            TERM = "xterm-256color";
+          };
+
           live_config_reload = false;
 
           font = {
