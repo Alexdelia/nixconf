@@ -2,6 +2,23 @@
   programs.readline = {
     enable = true;
 
+    variables = {
+      completion-ignore-case = true;
+      show-all-if-ambiguous = true;
+      menu-complete-display-prefix = true;
+      colored-stats = true;
+      colored-completion-prefix = true;
+
+      blink-matching-paren = true;
+
+      bell-style = false;
+      echo-control-characters = false;
+
+      history-ignore-dups = true;
+      history-ignore-space = true;
+      history-preserve-point = true;
+    };
+
     bindings = {
       # ctrl + backspace -> delete word backward
       "\\C-h" = "backward-kill-word";
