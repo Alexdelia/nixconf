@@ -85,8 +85,8 @@
 
             "switch-windows" = ["<Alt>Tab"];
             "switch-windows-backward" = ["<Shift><Alt>Tab"];
-            "switch-applications" = [];
-            "switch-applications-backward" = [];
+            "switch-applications" = lib.gvariant.mkEmptyArray lib.gvariant.type.string;
+            "switch-applications-backward" = lib.gvariant.mkEmptyArray lib.gvariant.type.string;
           };
         };
       }
