@@ -30,6 +30,9 @@
       # ctrl + right -> move word forward
       "\\e[1;5C" = "forward-word";
 
+      # tab -> complete
+      "\\t" = "menu-complete";
+
       # arrow up -> history from most recent
       "\\e[A" = "history-search-backward";
       # arrow down -> history from oldest
