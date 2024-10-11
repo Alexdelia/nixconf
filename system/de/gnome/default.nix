@@ -82,6 +82,11 @@
             "switch-to-workspace-8" = ["<Super>8"];
             "switch-to-workspace-9" = ["<Super>9"];
             "switch-to-workspace-10" = ["<Super>0"];
+
+            "switch-windows" = ["<Alt>Tab"];
+            "switch-windows-backward" = ["<Shift><Alt>Tab"];
+            "switch-applications" = [];
+            "switch-applications-backward" = [];
           };
         };
       }
