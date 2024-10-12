@@ -15,8 +15,8 @@ in {
     earlySetup = true;
   };
 
-  services.xserver = {
-    layout = layout;
+  services.xserver.xkb = {
+    inherit layout;
     extraLayouts.${layout} = {
       description = layout;
       languages = ["en" "fr" "ca"];

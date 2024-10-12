@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # disko = {
     #   url = "github:nix-community/disko";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -55,8 +60,13 @@
       };
       */
     };
-  in (import ./host {
-    inherit inputs;
-    inherit hosts;
-  });
+  in
+    (import ./host {
+      inherit inputs;
+      inherit hosts;
+    })
+    // (import ./hooks.nix {
+      inherit inputs;
+      inherit hosts;
+    });
 }
