@@ -10,16 +10,22 @@
     enable = true;
 
     extraConfig = {
-      user.useConfigOnly = true;
+      user = {
+        useConfigOnly = true;
 
-      user.personal.name = "Alexdelia";
-      user.personal.email = "alexandre.delille.57@gmail.com";
-
-      user.school.name = "adelille";
-      user.school.email = "adelille@student.42.fr";
-
-      user.work.name = "Alexandre Delille";
-      user.work.email = "alexandre@terros.io";
+        personal = {
+          name = "Alexdelia";
+          email = "alexandre.delille.57@gmail.com";
+        };
+        school = {
+          name = "adelille";
+          email = "adelille@student.42.fr";
+        };
+        work = {
+          name = "Alexandre Delille";
+          email = "alexandre@terros.io";
+        };
+      };
 
       push.autoSetupRemote = true;
       pull.rebase = false;
