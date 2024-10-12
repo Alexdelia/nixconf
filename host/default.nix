@@ -29,7 +29,7 @@ in {
         }
       )
     )
-    (inputs.nixpkgs.lib.filterAttrs (hostname: hostAttrs: hostAttrs.isNixos) hosts)
+    (inputs.nixpkgs.lib.filterAttrs (_hostname: hostAttrs: hostAttrs.isNixos) hosts)
   );
 
   homeConfigurations = (
@@ -68,7 +68,7 @@ in {
             hostAttrs.users
         ) (
           builtins.attrNames
-          (inputs.nixpkgs.lib.filterAttrs (hostname: hostAttrs: !hostAttrs.isNixos) hosts)
+          (inputs.nixpkgs.lib.filterAttrs (_hostname: hostAttrs: !hostAttrs.isNixos) hosts)
         ))
     )
   );

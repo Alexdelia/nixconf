@@ -6,7 +6,7 @@
     inputs.nixpkgs.lib.genAttrs
     (
       inputs.nixpkgs.lib.lists.unique (
-        inputs.nixpkgs.lib.mapAttrsToList (name: host: host.system) hosts
+        inputs.nixpkgs.lib.mapAttrsToList (_hostname: hostAttrs: hostAttrs.system) hosts
       )
     );
 
