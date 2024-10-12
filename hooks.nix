@@ -15,7 +15,24 @@
       pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
         src = ./.;
         hooks = {
-          alejandra.enable = true;
+          alejandra = {
+            enable = true;
+            stages = ["pre-commit"];
+
+            settings.verbosity = "quiet";
+          };
+
+          deadnix = {
+            enable = true;
+            stages = ["pre-push"];
+          };
+
+          statix = {
+            enable = true;
+            stages = ["pre-push"];
+
+            settings.format = "stderr";
+          };
         };
       };
     }
