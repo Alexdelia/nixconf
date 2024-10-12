@@ -48,9 +48,7 @@
         }
         // (import ./scheme.nix {
           scheme =
-            if config ? scheme
-            then config.scheme
-            else scheme;
+            config.scheme or scheme;
         });
     };
   };

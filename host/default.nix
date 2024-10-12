@@ -4,11 +4,11 @@
 }: let
   scheme = "${inputs.vity-base24}/vity.yaml";
 in {
-  nixosConfigurations = (
+  nixosConfigurations =
     builtins.mapAttrs (
       hostname: hostAttrs: (
         inputs.nixpkgs.lib.nixosSystem {
-          system = hostAttrs.system;
+          inherit (hostAttrs) system;
 
           modules = [
             inputs.home-manager.nixosModules.home-manager
@@ -22,54 +22,51 @@ in {
               {
                 inherit inputs;
                 inherit hostname;
-                users = hostAttrs.users;
-                stateVersion = hostAttrs.stateVersion;
+                inherit (hostAttrs) users;
+                inherit (hostAttrs) stateVersion;
               })
           ];
         }
       )
     )
-    (inputs.nixpkgs.lib.filterAttrs (_hostname: hostAttrs: hostAttrs.isNixos) hosts)
-  );
+    (inputs.nixpkgs.lib.filterAttrs (_hostname: hostAttrs: hostAttrs.isNixos) hosts);
 
-  homeConfigurations = (
-    builtins.listToAttrs (
-      builtins.concatLists (map (
-          hostname: let
-            hostAttrs = hosts.${hostname};
-          in
-            map (username: {
-              name = "${username}@${hostname}";
-              value = inputs.home-manager.lib.homeManagerConfiguration {
-                pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
+  homeConfigurations = builtins.listToAttrs (
+    builtins.concatLists (map (
+        hostname: let
+          hostAttrs = hosts.${hostname};
+        in
+          map (username: {
+            name = "${username}@${hostname}";
+            value = inputs.home-manager.lib.homeManagerConfiguration {
+              pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
 
-                extraSpecialArgs = {
-                  inherit inputs;
-                };
-
-                modules = [
-                  inputs.stylix.homeManagerModules.stylix
-                  ../common/stylix.nix
-
-                  inputs.base16.homeManagerModule
-                  {inherit scheme;}
-
-                  (import ../common/mkHome.nix {
-                    inherit username;
-                    stateVersion = hostAttrs.stateVersion;
-                    isNixos = false;
-                  })
-                  ../user/${username}/home
-
-                  ./${hostname}
-                ];
+              extraSpecialArgs = {
+                inherit inputs;
               };
-            })
-            hostAttrs.users
-        ) (
-          builtins.attrNames
-          (inputs.nixpkgs.lib.filterAttrs (_hostname: hostAttrs: !hostAttrs.isNixos) hosts)
-        ))
-    )
+
+              modules = [
+                inputs.stylix.homeManagerModules.stylix
+                ../common/stylix.nix
+
+                inputs.base16.homeManagerModule
+                {inherit scheme;}
+
+                (import ../common/mkHome.nix {
+                  inherit username;
+                  inherit (hostAttrs) stateVersion;
+                  isNixos = false;
+                })
+                ../user/${username}/home
+
+                ./${hostname}
+              ];
+            };
+          })
+          hostAttrs.users
+      ) (
+        builtins.attrNames
+        (inputs.nixpkgs.lib.filterAttrs (_hostname: hostAttrs: !hostAttrs.isNixos) hosts)
+      ))
   );
 }

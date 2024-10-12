@@ -24,7 +24,7 @@
          -- # keymap.lua
          ${builtins.readFile ./keymap.lua}
 
-         ${import ./plugin/custom {lib = pkgs.lib;}}
+         ${import ./plugin/custom {inherit (pkgs) lib;}}
     '';
 
     extraPackages = with pkgs; [

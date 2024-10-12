@@ -13,16 +13,15 @@
 
     extraSpecialArgs = {
       inherit inputs;
-      scheme = config.scheme;
+      inherit (config) scheme;
     };
 
-    users.${username} = (
+    users.${username} =
       (import ./home {inherit lib;})
       // (import ../../common/mkHome.nix {
         inherit username;
         inherit stateVersion;
         isNixos = true;
-      })
-    );
+      });
   };
 }
