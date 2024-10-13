@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   services.xserver = {
@@ -68,8 +69,8 @@
           };
           "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
             binding = "<Super>c";
-            command = "alacritty";
-            name = "alacritty";
+            command = config.environment.sessionVariables.XDG_DP_TERMINAL;
+            name = config.environment.sessionVariables.XDG_DP_TERMINAL;
           };
           "org/gnome/desktop/wm/keybindings" = {
             "switch-to-workspace-1" = ["<Super>1"];

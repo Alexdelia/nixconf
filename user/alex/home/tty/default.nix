@@ -1,6 +1,8 @@
-{
+{config, ...}: {
   imports = [
-    ./alacritty
+    ./${config.environment.sessionVariables.XDG_DP_TERMINAL}
+
+    # ./alacritty
     # ./kitty
     # ./warp
   ];

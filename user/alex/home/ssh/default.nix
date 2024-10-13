@@ -1,13 +1,16 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   home.packages = [
     (pkgs.writeScriptBin "ssh-fuzzy" (builtins.readFile ./main.sh))
-    # TODO: do not hard code `alacritty`
     (pkgs.writers.writeBashBin "ssh-fuzzy-open" {}
       /*
       bash
       */
       ''
-        alacritty -e ssh-fuzzy
+        ${config.environment.sessionVariables.XDG_DP_TERMINAL} -e ssh-fuzzy
       '')
   ];
 }
