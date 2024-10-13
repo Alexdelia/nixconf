@@ -8,7 +8,7 @@
     ./zoxide.nix
 
     ## keyboard remapping
-    # ./kanata
+    ./kanata
   ];
 
   home.packages = with pkgs; [

@@ -10,7 +10,7 @@
       bash
       */
       ''
-        ${config.environment.sessionVariables.XDG_DP_TERMINAL} -e ssh-fuzzy
+		alacritty -e ssh-fuzzy
       '')
   ];
 }
