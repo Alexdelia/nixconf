@@ -67,11 +67,11 @@
               "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
             ];
           };
-          # "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-          # binding = "<Super>c";
-          # command = "alacritty";
-          # name = "alacritty";
-          # };
+          "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+            binding = "<Super>c";
+            command = "alacritty";
+            name = "alacritty";
+          };
           "org/gnome/desktop/wm/keybindings" = {
             "switch-to-workspace-1" = ["<Super>1"];
             "switch-to-workspace-2" = ["<Super>2"];
