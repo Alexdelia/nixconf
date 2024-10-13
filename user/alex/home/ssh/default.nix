@@ -10,7 +10,7 @@
       bash
       */
       ''
-		alacritty -e ssh-fuzzy
+        alacritty -e ssh-fuzzy
       '')
   ];
 }
