@@ -6,5 +6,7 @@
   (import
     ./tampermonkey.nix)
   (import
+    ./improved_intra_42.nix)
+  (import
     ./protondb.nix)
 ]
