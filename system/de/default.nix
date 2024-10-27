@@ -2,7 +2,7 @@
   imports = [
     # ./hyprland
     # ./gnome
-    # (import ./sway { inherit users; })
+    # ./sway
   ];
 
   stylix.targets.chromium.enable = false;

@@ -1,6 +1,7 @@
-{pkgs, ...}: {users}: {
+{pkgs, ...}: {
   imports = [
-    (import ./greet {inherit users;})
+    import
+    ./greet
   ];
 
   environment.systemPackages = with pkgs; [
