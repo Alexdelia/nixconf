@@ -18,14 +18,15 @@ in {
             inputs.stylix.nixosModules.stylix
             ../common/stylix.nix
 
-            (import ./${hostname}
-              {
-                inherit inputs;
-                inherit hostname;
-                inherit (hostAttrs) users;
-                inherit (hostAttrs) stateVersion;
-              })
+            ./${hostname}
           ];
+
+          specialArgs = {
+            inherit inputs;
+            inherit hostname;
+            inherit (hostAttrs) users;
+            inherit (hostAttrs) stateVersion;
+          };
         }
       )
     )

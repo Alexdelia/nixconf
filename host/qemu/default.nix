@@ -3,6 +3,7 @@
   hostname,
   stateVersion,
   users,
+  ...
 }: {
   # TODO: implement better system, to remove duplicate and add structure
   imports =
