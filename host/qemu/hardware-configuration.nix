@@ -12,7 +12,7 @@
 
   boot = {
     initrd = {
-      availableKernelModules = ["ata_piix" "uhci_hcd" "ehci_pci" "sd_mod" "sr_mod"];
+      availableKernelModules = ["ata_piix" "uhci_hcd" "ehci_pci" "usbhid" "sd_mod" "sr_mod"];
       kernelModules = [];
     };
     kernelModules = ["kvm-intel"];
@@ -20,7 +20,7 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/77e29e14-dfa6-4e0c-8148-006cf4fb0edd";
+    device = "/dev/disk/by-uuid/b3a5a816-b0b9-4348-aa0d-f406ed6927c9";
     fsType = "ext4";
   };
 
