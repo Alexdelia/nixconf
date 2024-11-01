@@ -13,7 +13,7 @@
       shell = "${pkgs.bash}/bin/bash";
       editor = "${pkgs.vim}/bin/vim";
 
-      browser = "${pkgs.brave}/bin/brave";
+      browser = "${pkgs.firefox}/bin/firefox";
     };
   };
 }
