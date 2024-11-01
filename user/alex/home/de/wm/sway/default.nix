@@ -1,6 +1,6 @@
 {config, ...}: {
   imports = [
-    # ./keybind.nix
+    ./keybind.nix
   ];
 
   wayland.windowManager.sway = {
