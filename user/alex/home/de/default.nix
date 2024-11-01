@@ -1,5 +1,7 @@
 {
   imports = [
+    ./wm
+
     # ./gtk
     # ./qt
   ];
