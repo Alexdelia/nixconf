@@ -10,7 +10,7 @@
 
       #      terminal = "alacritty";
       output = {
-        "Output Virtual-1" = {
+        "Virtual-1" = {
           mode = "1920x1080@60.000Hz";
         };
       };
