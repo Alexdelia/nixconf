@@ -5,7 +5,7 @@
     ];
 
   imports = [
-    ../../../common/option/dp.nix
+    ../../../common/option
 
     ./pkg
     ./font
