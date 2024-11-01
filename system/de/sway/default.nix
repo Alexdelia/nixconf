@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    import
     ./greet
   ];
 
