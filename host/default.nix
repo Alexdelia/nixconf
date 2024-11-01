@@ -14,7 +14,7 @@ in {
             inputs.home-manager.nixosModules.home-manager
 
             # ../common/option
-            ../common/option/dp.nix
+            # ../common/option/dp.nix
 
             inputs.base16.nixosModule
             {inherit scheme;}
@@ -54,7 +54,7 @@ in {
                 ../common/stylix.nix
 
                 # ../common/option
-                ../common/option/dp.nix
+                # ../common/option/dp.nix
 
                 inputs.base16.homeManagerModule
                 {inherit scheme;}

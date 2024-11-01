@@ -23,18 +23,27 @@
   options.dp = lib.mkOption {
     description = "preferred packages";
 
-    type = lib.attrsOf (lib.submodule ({name, ...}: {
-      options = lib.mkOption {type = lib.types.path;};
+    type = lib.types.attrsOf (lib.types.submodule ({name, ...}: {
+      options = {
+        bin = lib.mkOption {type = lib.types.path;};
+        name = lib.mkOption {type = lib.types.str;};
+      };
     }));
 
     default = {
-      term = "${pkgs.alacritty}/bin/alacritty";
-      editor = "${pkgs.vim}/bin/vim";
+      term = {
+        bin = "${pkgs.alacritty}/bin/alacritty";
+        name = "alacritty";
+      };
+      editor = {
+        bin = "${pkgs.vim}/bin/vim";
+        name = "vim";
+      };
     };
   };
 
-  config.dp = {
-    term = "${pkgs.alacritty}/bin/alacritty";
-    editor = "${pkgs.vim}/bin/vim";
-  };
+  # config.dp = {
+  # term = "${pkgs.alacritty}/bin/alacritty";
+  # editor = "${pkgs.vim}/bin/vim";
+  # };
 }

@@ -5,6 +5,8 @@
     ];
 
   imports = [
+    ../../../common/option/dp.nix
+
     ./pkg
     ./font
     ./keyboard
