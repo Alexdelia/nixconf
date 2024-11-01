@@ -13,6 +13,9 @@ in {
           modules = [
             inputs.home-manager.nixosModules.home-manager
 
+            # ../common/option
+            ../common/option/dp.nix
+
             inputs.base16.nixosModule
             {inherit scheme;}
             inputs.stylix.nixosModules.stylix
@@ -49,6 +52,9 @@ in {
               modules = [
                 inputs.stylix.homeManagerModules.stylix
                 ../common/stylix.nix
+
+                # ../common/option
+                ../common/option/dp.nix
 
                 inputs.base16.homeManagerModule
                 {inherit scheme;}

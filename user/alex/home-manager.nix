@@ -3,6 +3,7 @@
   inputs,
   stateVersion,
 }: {
+  pkgs,
   config,
   lib,
   ...
