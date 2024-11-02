@@ -3,4 +3,6 @@
 - pass for:
   - ssh connection password
 - hyprland
+  - anyrun
+  - waybar (maybe)
 - music management
