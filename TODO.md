@@ -2,4 +2,5 @@
   - wakatime api key
 - pass for:
   - ssh connection password
-- sway
+- hyprland
+- music management
