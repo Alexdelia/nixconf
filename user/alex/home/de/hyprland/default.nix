@@ -3,6 +3,7 @@
     ./input.nix
     ./keybind.nix
     ./monitor.nix
+    ./appearance.nix
   ];
 
   wayland.windowManager.hyprland = {
