@@ -5,6 +5,8 @@
     ];
 
   imports = [
+    ../../../common/option
+
     ./pkg
     ./font
     ./keyboard

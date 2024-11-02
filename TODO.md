@@ -1,0 +1,5 @@
+- sops for:
+  - wakatime api key
+- pass for:
+  - ssh connection password
+- sway

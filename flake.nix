@@ -51,14 +51,12 @@
         isNixos = false;
         users = ["alex"];
       };
-      /*
       qemu = {
         system = "x86_64-linux";
-        stateVersion = "23.11";
+        stateVersion = "24.05";
         isNixos = true;
         users = ["alex"];
       };
-      */
     };
   in
     (import ./host {

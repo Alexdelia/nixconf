@@ -1,12 +1,18 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: let
+  name = "ssh-fuzzy";
+in {
   home.packages = [
-    (pkgs.writeScriptBin "ssh-fuzzy" (builtins.readFile ./main.sh))
-    (pkgs.writers.writeBashBin "ssh-fuzzy-open" {}
+    (pkgs.writeScriptBin name (builtins.readFile ./main.sh))
+    (pkgs.writers.writeBashBin "${name}-open" {}
       /*
       bash
       */
       ''
-        alacritty -e ssh-fuzzy
+        ${config.dp.term} -e ${name}
       '')
   ];
 }

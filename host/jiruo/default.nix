@@ -1,9 +1,11 @@
 {
+  pkgs,
   inputs,
   hostname,
   users,
   stateVersion,
-}: {pkgs, ...}: {
+  ...
+}: {
   # TODO: implement better system, to remove duplicate and add structure
   imports =
     [
