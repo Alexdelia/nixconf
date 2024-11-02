@@ -1,5 +1,6 @@
 {config, ...}: {
   imports = [
+    ./input.nix
     ./keybind.nix
     ./monitor.nix
   ];
