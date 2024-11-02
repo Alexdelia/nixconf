@@ -1,6 +1,7 @@
 {config, ...}: {
   imports = [
     ./keybind.nix
+    ./monitor.nix
   ];
 
   wayland.windowManager.hyprland = {
