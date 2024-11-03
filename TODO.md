@@ -3,8 +3,6 @@
 - pass for:
   - ssh connection password
 - hyprland
-  - font
   - anyrun
-  - greeter
   - waybar (maybe)
 - music management
