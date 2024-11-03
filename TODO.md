@@ -5,5 +5,6 @@
 - hyprland
   - font
   - anyrun
+  - greeter
   - waybar (maybe)
 - music management
