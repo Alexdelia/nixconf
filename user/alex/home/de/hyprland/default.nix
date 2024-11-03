@@ -16,6 +16,9 @@
     settings = {
       "$mod" = "SUPER";
       "$terminal" = config.dp.term;
+      misc.font_family = "monospace";
     };
   };
+
+  stylix.targets.hyprland.enable = false;
 }
