@@ -67,6 +67,10 @@
         	/* transition: 500ms; */
         }
 
+        image {
+        	-gtk-icon-transform: scale(5.0);
+        }
+
         #window,
         #match,
         #entry,
