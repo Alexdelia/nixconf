@@ -11,12 +11,16 @@
   programs.anyrun = {
     enable = true;
 
-    config = {
-      x = {fraction = 0.5;};
-      y = {fraction = 0.3;};
-      width = {fraction = 0.3;};
+    config = let
+      width = 1 / 4;
+    in {
       hideIcons = false;
       ignoreExclusiveZones = false;
+
+      x.fraction = 1 / 2;
+      y.fraction = (1 - width) / 2;
+      width.fraction = width;
+
       layer = "overlay";
       hidePluginInfo = true;
       closeOnClick = false;
