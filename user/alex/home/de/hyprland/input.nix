@@ -1,7 +1,7 @@
 {
   wayland.windowManager.hyprland.settings.input = {
     touchpad = {
-      natural_scroll = false;
+      natural_scroll = true;
     };
   };
 }
