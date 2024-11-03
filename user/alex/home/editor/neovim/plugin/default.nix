@@ -65,6 +65,7 @@ with pkgs.vimPlugins; [
       p.tree-sitter-lua
       p.tree-sitter-csv
       p.tree-sitter-yaml
+      p.tree-sitter-ron
       p.tree-sitter-diff
       p.tree-sitter-gitattributes
       p.tree-sitter-gitignore

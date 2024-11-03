@@ -4,6 +4,7 @@
     ./keybind.nix
     ./monitor.nix
     ./appearance.nix
+    ../runner/anyrun.nix
   ];
 
   wayland.windowManager.hyprland = {

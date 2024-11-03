@@ -18,6 +18,8 @@ in {
             inputs.stylix.nixosModules.stylix
             ../common/stylix.nix
 
+            {environment.systemPackages = [inputs.anyrun.packages.${hostAttrs.system}.anyrun];}
+
             ./${hostname}
           ];
 

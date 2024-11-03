@@ -29,6 +29,11 @@
       flake = false;
     };
     vity-nvim.url = "github:Alexdelia/vity.nvim";
+
+    anyrun = {
+      url = "github:anyrun-org/anyrun";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: let
