@@ -68,7 +68,10 @@
         }
 
         image {
-        	-gtk-icon-transform: scale(5.0);
+        	-gtk-icon-transform: scale(3.0);
+
+        	padding: 2rem;
+        	margin-right: 1rem;
         }
 
         #window,
