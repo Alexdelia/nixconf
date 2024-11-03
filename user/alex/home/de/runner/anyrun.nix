@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  config,
   ...
 }: {
   imports = [
@@ -17,7 +18,7 @@
       hideIcons = false;
       ignoreExclusiveZones = false;
       layer = "overlay";
-      hidePluginInfo = false;
+      hidePluginInfo = true;
       closeOnClick = false;
       showResultsImmediately = false;
       maxEntries = null;
@@ -45,13 +46,6 @@
     '';
     */
 
-    # extraConfigFiles."some-plugin.ron".text = ''
-    # Config(
-    # // for any other plugin
-    # // this file will be put in ~/.config/anyrun/some-plugin.ron
-    # // refer to docs of xdg.configFile for available options
-    # )
-    # '';
     extraConfigFiles = {
       "applications.ron".text =
         /*
@@ -59,22 +53,22 @@
         */
         ''
           Config(
-            desktop_actions: true,
-            max_entries: 5,
-            terminal: Some("foot"),
+            desktop_actions: false,
+            max_entries: 8,
+            terminal: Some("${config.dp.term}"),
           )
         '';
     };
   };
 
-  nix.settings = {
-    builders-use-substitutes = true;
-    extra-substituters = [
-      "https://anyrun.cachix.org"
-    ];
+  # nix.settings = {
+  #   builders-use-substitutes = true;
+  #   extra-substituters = [
+  #     "https://anyrun.cachix.org"
+  #   ];
 
-    extra-trusted-public-keys = [
-      "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
-    ];
-  };
+  #   extra-trusted-public-keys = [
+  #     "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
+  #   ];
+  # };
 }
