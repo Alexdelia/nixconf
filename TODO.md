@@ -4,5 +4,10 @@
   - ssh connection password
 - hyprland
   - anyrun
+    - color from my b16 colorscheme
+  - calculator
+  - screenshot
+  - color picker
+  - clipboard
   - waybar (maybe)
 - music management
