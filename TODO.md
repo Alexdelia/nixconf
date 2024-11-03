@@ -1,7 +1,3 @@
-- sops for:
-  - wakatime api key
-- pass for:
-  - ssh connection password
 - hyprland
   - anyrun
     - color from my b16 colorscheme
@@ -11,3 +7,7 @@
   - clipboard
   - waybar (maybe)
 - music management
+- sops for:
+  - wakatime api key
+- pass for:
+  - ssh connection password
