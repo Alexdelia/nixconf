@@ -1,3 +1,4 @@
+- bluetooth
 - hyprland
   - anyrun
     - color from my b16 colorscheme
