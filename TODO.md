@@ -6,6 +6,7 @@
   - screenshot
   - color picker
   - clipboard
+  - icon theme (maybe)
   - waybar (maybe)
 - music management
 - sops for:
