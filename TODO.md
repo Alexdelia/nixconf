@@ -1,3 +1,4 @@
+- completion on bash alias
 - bluetooth
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
 - hyprland
