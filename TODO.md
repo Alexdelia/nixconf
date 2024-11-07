@@ -1,5 +1,5 @@
 - bluetooth
-- hotkey daemon (like sxhkd)
+- hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
 - hyprland
   - anyrun
     - color from my b16 colorscheme
