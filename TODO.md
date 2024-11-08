@@ -11,6 +11,9 @@
   - icon theme (maybe)
   - waybar (maybe)
 - music management
+  - mpd
+  - mpd client
+  - playerctl
 - sops for:
   - wakatime api key
 - pass for:
