@@ -16,5 +16,6 @@
   - playerctl
 - sops for:
   - wakatime api key
+  - mpd listenbrainz user token
 - pass for:
   - ssh connection password
