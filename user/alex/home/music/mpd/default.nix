@@ -1,6 +1,10 @@
 {config, ...}: let
   dataDir = "${config.xdg.dataHome}/mpd";
 in {
+  imports = [
+    # ./listenbrainz.nix
+  ];
+
   services.mpd = {
     enable = true;
 
