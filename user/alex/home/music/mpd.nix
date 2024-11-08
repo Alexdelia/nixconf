@@ -9,5 +9,14 @@ in {
 
     inherit dataDir;
     dbFile = "${dataDir}/mpd.db";
+
+    extraConfig = ''
+      auto_update "yes"
+
+      restore_paused "yes"
+
+      follow_inside_symlinks "yes"
+      follow_outside_symlinks "yes"
+    '';
   };
 }
