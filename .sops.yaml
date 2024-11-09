@@ -1,7 +1,7 @@
 keys:
   - &alex age1dvmn0h4dt9xk4sglcadzd6kq7w59mt6c2acecx7y49py3md4rvksszm3gz
 creation_rules:
-  - path_regex: secret/alex.ini$
+  - path_regex: secret/alex.yaml$
     key_groups:
       - age:
         - *alex

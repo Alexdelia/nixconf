@@ -1,12 +1,12 @@
 {
   # config,
-  username,
+  # username,
   ...
 }: {
   sops = {
     secrets."wakatime/api_key" = {
       # owner = username;
-      path = "/home/${username}/test.ini";
+      # path = "/home/${username}/test";
     };
     # };
     # templates."test.toml".content = ''
