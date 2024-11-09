@@ -1,8 +1,9 @@
+# {
+# config,
+# username,
+# ...
+# }:
 {
-  # config,
-  # username,
-  ...
-}: {
   sops = {
     secrets."wakatime/api_key" = {
       # owner = username;
