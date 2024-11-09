@@ -21,6 +21,11 @@ in {
 
       follow_inside_symlinks "yes"
       follow_outside_symlinks "yes"
+
+      audio_output {
+      	type "pipewire"
+      	name "pipewire"
+      }
     '';
   };
 }
