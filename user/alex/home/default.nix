@@ -19,5 +19,6 @@
     ./editor
     ./browser
     ./de
+    ./sops
   ];
 }

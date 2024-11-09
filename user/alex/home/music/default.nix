@@ -1,5 +1,5 @@
 {
   imports = [
-    ./mpd.nix
+    ./mpd
   ];
 }
