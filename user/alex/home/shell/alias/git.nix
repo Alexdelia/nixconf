@@ -27,5 +27,5 @@
 
   gk = "git cherry-pick";
 
-  gid = "git identify";
+  gid = "git identity";
 }
