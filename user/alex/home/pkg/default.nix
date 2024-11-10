@@ -16,6 +16,7 @@
     ### rust
     ripgrep
     xcp
+    sd
     dysk
     typos
     tealdeer
