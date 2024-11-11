@@ -1,5 +1,7 @@
 {pkgs, ...}: {
   imports = [
+    ./mime.nix
+
     ./git
 
     ## shell essentials
