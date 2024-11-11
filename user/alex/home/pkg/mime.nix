@@ -1,5 +1,9 @@
 {config, ...}: {
-  xdg.mimeApps.defaultApplications = {
-    "audio/mpeg" = config.dm.browser;
+  xdg.mimeApps = {
+    enable = true;
+
+    defaultApplications = {
+      "audio/mpeg" = config.dm.browser;
+    };
   };
 }
