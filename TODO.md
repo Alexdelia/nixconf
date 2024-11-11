@@ -4,3 +4,5 @@
   - ssh connection password
 - hyprland
 - music management
+- xdg-open default application
+  - audio -> browser
