@@ -1,7 +1,4 @@
-{
-  # pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   /*
   home.packages = with pkgs; [
     # syntax highlight
@@ -54,6 +51,16 @@
                 ;;
             esac
           }
+
+          complete -F _complete_alias "''${!BASH_ALIASES[@]}"
+        '';
+
+      bashrcExtra =
+        /*
+        bash
+        */
+        ''
+          source ${pkgs.complete-alias}/bin/complete_alias
         '';
 
       shellAliases = import ../alias;
