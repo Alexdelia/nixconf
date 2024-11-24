@@ -2,6 +2,7 @@
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
 - hyprland
   - anyrun
+    - binding
     - color from my b16 colorscheme
   - calculator
   - screenshot
