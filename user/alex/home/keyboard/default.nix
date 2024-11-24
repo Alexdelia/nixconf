@@ -1,6 +1,6 @@
 {
   imports = [
-    ./sxhkd.nix
+    # ./sxhkd.nix
   ];
 
   home.keyboard = null;
