@@ -1,5 +1,6 @@
 {
   imports = [
     ./mpd
+    ./playerctl.nix
   ];
 }

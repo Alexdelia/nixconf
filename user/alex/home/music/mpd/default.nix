@@ -3,6 +3,7 @@
 in {
   imports = [
     ./listenbrainz.nix
+    ./mpdris2.nix
   ];
 
   services.mpd = {
