@@ -3,4 +3,4 @@
 - pass for:
   - ssh connection password
 - hyprland
-- use pipe-operators everywhere
+- use [pipe-operators](https://youtu.be/WOw8MJYZjRI) everywhere
