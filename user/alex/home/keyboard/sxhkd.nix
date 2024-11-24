@@ -12,6 +12,7 @@
       # apps
       # "super + c" = config.dp.term;
       # "super + b" = config.dp.browser;
+      # "super + m" = config.dp.music;
       # "super + k" = config.dp.calculator;
       # "super + f" = config.dp.fileManager;
 

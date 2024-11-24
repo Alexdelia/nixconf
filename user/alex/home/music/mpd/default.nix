@@ -2,6 +2,7 @@
   dataDir = "${config.xdg.dataHome}/mpd";
 in {
   imports = [
+    ./client
     ./listenbrainz.nix
     ./mpdris2.nix
   ];
