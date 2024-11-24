@@ -5,6 +5,7 @@
     ./locale.nix
     ./zone.nix
     ./keyboard
+    ./sound
     ./service
     ./de
   ];
