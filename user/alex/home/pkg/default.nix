@@ -1,5 +1,7 @@
 {pkgs, ...}: {
   imports = [
+    ./mime.nix
+
     ./git
 
     ## shell essentials
@@ -16,6 +18,7 @@
     ### rust
     ripgrep
     xcp
+    sd
     dysk
     typos
     tealdeer

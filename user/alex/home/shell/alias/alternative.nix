@@ -1,6 +1,6 @@
 {
   j = "z";
-  cp = "xcp";
+  cp = "xcp -r";
   man = "batman";
   jq = "jaq";
 }

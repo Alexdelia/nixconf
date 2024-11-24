@@ -3,6 +3,7 @@
   inputs,
   stateVersion,
 }: {
+  pkgs,
   config,
   lib,
   ...
@@ -11,8 +12,13 @@
     useGlobalPkgs = true;
     useUserPackages = true;
 
+    sharedModules = [
+      inputs.sops-nix.homeManagerModules.sops
+    ];
+
     extraSpecialArgs = {
       inherit inputs;
+      inherit username;
       inherit (config) scheme;
     };
 

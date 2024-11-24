@@ -10,10 +10,8 @@
   - shutdown prompt
   - icon theme (maybe)
   - waybar (maybe)
-- music management
-  - mpd client
-  - playerctl
 - sops for:
   - wakatime api key
 - pass for:
   - ssh connection password
+- use [pipe-operators](https://youtu.be/WOw8MJYZjRI) everywhere

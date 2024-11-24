@@ -1,5 +1,8 @@
 {
   s = "sudo";
+  pk = "pkill";
+
+  b = "bat";
 
   v = "nvim";
 
@@ -8,6 +11,4 @@
   mk = "make";
 
   nd = "nix develop";
-
-  b = "bat";
 }

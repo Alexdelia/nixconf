@@ -49,6 +49,8 @@ in {
               };
 
               modules = [
+                inputs.sops-nix.homeManagerModules.sops
+
                 inputs.stylix.homeManagerModules.stylix
                 ../common/stylix.nix
 

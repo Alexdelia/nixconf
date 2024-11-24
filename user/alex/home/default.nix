@@ -7,6 +7,7 @@
   imports = [
     ../../../common/option
 
+    ./fs
     ./pkg
     ./font
     ./keyboard
@@ -14,8 +15,10 @@
     ./script
     ./ssh
     ./tty
+    ./music
     ./editor
     ./browser
     ./de
+    ./sops
   ];
 }
