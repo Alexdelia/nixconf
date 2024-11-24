@@ -7,6 +7,7 @@
   - screenshot
   - color picker
   - clipboard
+  - shutdown prompt
   - icon theme (maybe)
   - waybar (maybe)
 - music management
