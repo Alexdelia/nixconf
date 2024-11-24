@@ -3,6 +3,4 @@
 - pass for:
   - ssh connection password
 - hyprland
-- music management
-- xdg-open default application
-  - audio -> browser
+- use pipe-operators everywhere
