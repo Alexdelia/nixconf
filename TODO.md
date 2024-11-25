@@ -6,7 +6,6 @@
     - color from my b16 colorscheme
   - calculator
   - color picker
-  - clipboard
   - shutdown prompt
   - icon theme (maybe)
   - waybar (maybe)
