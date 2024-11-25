@@ -20,3 +20,4 @@
 - pass for:
   - ssh connection password
 - use [pipe-operators](https://youtu.be/WOw8MJYZjRI) everywhere
+- clean host/\*/default.nix
