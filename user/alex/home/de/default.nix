@@ -3,7 +3,7 @@
     ./hyprland
     # ./sway
 
-    # ./gtk
+    ./gtk
     # ./qt
   ];
 }
