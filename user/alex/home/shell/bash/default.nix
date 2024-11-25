@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   /*
   home.packages = with pkgs; [
     # syntax highlight
@@ -63,7 +67,7 @@
           source ${pkgs.complete-alias}/bin/complete_alias
         '';
 
-      shellAliases = import ../alias;
+      shellAliases = import ../alias {inherit config pkgs;};
     };
   };
 }
