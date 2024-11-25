@@ -4,6 +4,13 @@
   - anyrun
     - binding
     - color from my b16 colorscheme
+  - info hub (common or separate)
+    - shortcut to open
+    - datetime
+    - notifications
+    - sound device
+    - bluetooth status
+    - active music
   - calculator
   - color picker
   - shutdown prompt
