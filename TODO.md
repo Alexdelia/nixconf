@@ -7,7 +7,6 @@
   - calculator
   - color picker
   - shutdown prompt
-  - icon theme (maybe)
   - waybar (maybe)
 - sops for:
   - wakatime api key
