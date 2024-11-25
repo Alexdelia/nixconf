@@ -1,4 +1,9 @@
 {pkgs, ...}: {
+  dp = {
+    clipboard-copy = "${pkgs.wl-clipboard-rs}/bin/wl-copy";
+    clipboard-paste = "${pkgs.wl-clipboard-rs}/bin/wl-paste";
+  };
+
   imports = [
     ./mime.nix
 
@@ -16,6 +21,7 @@
   home.packages = with pkgs; [
     ## shell essentials
     ### rust
+    wl-clipboard-rs
     ripgrep
     xcp
     sd
@@ -28,7 +34,6 @@
     jaq
     ### rest
     wget # `ruget` is slower and less maintained
-    wl-clipboard # dependency of a lot of tools
 
     ## nix
     nh

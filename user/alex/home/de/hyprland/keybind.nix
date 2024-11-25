@@ -2,6 +2,8 @@
   wayland.windowManager.hyprland.settings.bind = [
     "$mod, C, exec, ${config.dp.term}"
     "$mod, B, exec, ${config.dp.browser}"
+    "$mod, S, exec, screenshot"
+    "$mod, I, exec, image-edit"
 
     "$mod SHIFT, Q, killactive,"
     "$mod SHIFT, M, exit,"

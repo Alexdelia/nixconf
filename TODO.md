@@ -5,7 +5,6 @@
     - binding
     - color from my b16 colorscheme
   - calculator
-  - screenshot
   - color picker
   - clipboard
   - shutdown prompt
