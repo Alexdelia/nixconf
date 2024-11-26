@@ -14,6 +14,7 @@
   - calculator
   - color picker
   - shutdown prompt
+  - alert for too long use of headset
   - waybar (maybe)
 - sops for:
   - wakatime api key
