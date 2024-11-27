@@ -16,6 +16,7 @@
     ./ssh
     ./tty
     ./music
+    ./calculator
     ./editor
     ./browser
     ./de

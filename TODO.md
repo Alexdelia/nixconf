@@ -11,7 +11,6 @@
     - sound device
     - bluetooth status
     - active music
-  - calculator (numbat start on ctrl+k)
   - color picker
   - shutdown prompt
   - alert for too long use of headset

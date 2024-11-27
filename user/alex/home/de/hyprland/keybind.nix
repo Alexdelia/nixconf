@@ -3,6 +3,8 @@
     bind = [
       "$mod, C, exec, ${config.dp.term}"
       "$mod, B, exec, ${config.dp.browser}"
+      "$mod, K, exec, ${config.dp.calculator}"
+
       "$mod, S, exec, screenshot"
       "$mod, I, exec, image-edit"
 
