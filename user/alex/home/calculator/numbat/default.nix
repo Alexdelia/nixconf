@@ -1,4 +1,4 @@
-{lib, ...}: {
+{
   xdg.configFile.numbat = {
     enable = true;
 
