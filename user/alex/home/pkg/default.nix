@@ -22,6 +22,7 @@
     dysk
     typos
     tealdeer
+    numbat
     ouch
     oxker
     skim
