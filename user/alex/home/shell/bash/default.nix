@@ -61,6 +61,7 @@
         */
         ''
           source ${pkgs.complete-alias}/bin/complete_alias
+          complete -F _comp_complete_longopt
         '';
 
       shellAliases = import ../alias;
