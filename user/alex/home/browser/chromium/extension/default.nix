@@ -9,4 +9,8 @@
     ./improved_intra_42.nix)
   (import
     ./protondb.nix)
+  (import
+    ./augmented_steam.nix)
+  (import
+    ./steamdb.nix)
 ]
