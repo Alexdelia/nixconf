@@ -13,6 +13,7 @@
     ./bat.nix
     ./eza.nix
     ./zoxide.nix
+    ./direnv.nix
 
     ## keyboard remapping
     # ./kanata
