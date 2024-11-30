@@ -6,6 +6,6 @@
     # enableNushellIntegration = true; # home-manager unstable
 
     git = true;
-    icons = true;
+    icons = "auto";
   };
 }
