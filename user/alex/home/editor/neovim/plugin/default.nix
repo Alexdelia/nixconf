@@ -27,14 +27,14 @@ with pkgs.vimPlugins; [
   }
 
   ## colorscheme
-  {
-    plugin = pkgs.vimUtils.buildVimPlugin {
-      name = "vity";
-      src = inputs.vity-nvim.packages.${pkgs.system}.default;
-    };
-    type = "lua";
-    config = builtins.readFile ./colorscheme.lua;
-  }
+  # {
+  #   plugin = pkgs.vimUtils.buildVimPlugin {
+  #     name = "vity";
+  #     src = inputs.vity-nvim.packages.${pkgs.system}.default;
+  #   };
+  #   type = "lua";
+  #   config = builtins.readFile ./colorscheme.lua;
+  # }
 
   ## lsp
   {
