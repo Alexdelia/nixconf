@@ -136,6 +136,28 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = "vim.g.rustfmt_autosave = 1";
   }
+  {
+    plugin = pkgs.vimUtils.buildVimPlugin {
+      name = "42Header";
+      src = pkgs.fetchFromGitHub {
+        owner = "42Paris";
+        repo = "42header";
+        rev = "master";
+        sha256 = "sha256-T4BdswmjlrR3KG+97mzncuJ/1OAvx7GDwXW6MI5fBNE=";
+      };
+    };
+    type = "lua";
+    config = let
+      login = "adelille";
+    in
+      /*
+      lua
+      */
+      ''
+        vim.g.user42 = '${login}'
+        vim.g.mail42 = '${login}@student.42.fr'
+      '';
+  }
 
   ## external
   vim-wakatime
