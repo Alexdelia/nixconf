@@ -9,7 +9,7 @@
 
   environment.loginShellInit = ''
     if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-      exec dbus-launch hyprland
+      exec dbus-launch Hyprland || echo 'oh no!'
     fi
   '';
 }
