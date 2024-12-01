@@ -14,8 +14,6 @@
       bell-style = false;
       echo-control-characters = false;
 
-      history-ignore-dups = true;
-      history-ignore-space = true;
       history-preserve-point = true;
     };
 
