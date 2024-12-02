@@ -1,0 +1,12 @@
+CompileFlags:
+  Add: [-Wall, -Wextra, -Werror, -I./inc/]
+
+ClangTidy:
+  Add: modernize-*
+
+InlayHints:
+  Enabled: Yes
+  # BlockEnd: Yes
+
+Diagnostics:
+  UnusedIncludes: Strict

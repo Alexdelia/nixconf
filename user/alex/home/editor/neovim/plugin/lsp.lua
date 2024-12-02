@@ -75,6 +75,12 @@ lspconfig.rust_analyzer.setup {
 	settings = { ["rust-analyzer"] = { cargo = { allFeatures = true } } }
 }
 
+-- # c/c++
+lspconfig.clangd.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+
 -- # agnostic
 lspconfig.typos_lsp.setup {
 	-- cmd_env = { RUST_LOG = "error" },
