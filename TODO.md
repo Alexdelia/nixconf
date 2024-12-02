@@ -1,6 +1,7 @@
 - bluetooth
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
 - hyprland
+  - popup for volume and brightness change
   - anyrun
     - binding
     - color from my b16 colorscheme
