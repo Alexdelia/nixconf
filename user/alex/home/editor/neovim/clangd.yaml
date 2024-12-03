@@ -1,5 +1,5 @@
 CompileFlags:
-  Add: [-Wall, -Wextra, -Werror, -I./inc/]
+  Add: [-Wall, -Wextra, -Werror]
 
 ClangTidy:
   Add: modernize-*
