@@ -76,10 +76,12 @@ lspconfig.rust_analyzer.setup {
 }
 
 -- # c/c++
+--[[
 lspconfig.clangd.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
 }
+--]]
 
 -- # agnostic
 lspconfig.typos_lsp.setup {

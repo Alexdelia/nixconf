@@ -49,7 +49,7 @@
   };
 
   xdg.configFile.clangd = {
-    enable = true;
+    enable = false;
 
     source = ./clangd.yaml;
     target = "clangd/config.yaml";
