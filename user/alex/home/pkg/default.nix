@@ -7,9 +7,8 @@
   imports = [
     ./mime.nix
 
-    ./git
-
     ## shell essentials
+    ./git
     ./bat.nix
     ./eza.nix
     ./zoxide.nix

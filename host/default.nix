@@ -18,8 +18,10 @@ in {
             inputs.stylix.nixosModules.stylix
             ../common/stylix.nix
 
+            # TODO: organize
             {environment.systemPackages = [inputs.anyrun.packages.${hostAttrs.system}.anyrun];}
 
+            ../common/option/nixos-module.nix
             ./${hostname}
           ];
 
@@ -60,6 +62,7 @@ in {
                 (import ../common/mkHome.nix {
                   inherit username;
                   inherit (hostAttrs) stateVersion;
+                  hostType = "lite";
                   isNixos = false;
                 })
                 ../user/${username}/home
