@@ -5,7 +5,7 @@
     type = lib.types.attrsOf lib.types.bool;
 
     default = {
-      music = false;
+      music = true;
       video = false;
       gaming = false;
     };

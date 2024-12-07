@@ -62,8 +62,10 @@ in {
                 (import ../common/mkHome.nix {
                   inherit username;
                   inherit (hostAttrs) stateVersion;
-                  hostType = "lite";
                   isNixos = false;
+                  hostOption = {
+                    hostType = "lite";
+                  };
                 })
                 ../user/${username}/home
 

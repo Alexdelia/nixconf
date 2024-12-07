@@ -1,6 +1,6 @@
 {
   imports = [
-    ./host-type.nix
+    ./type.nix
     ./entertainment/nixos-module.nix
   ];
 }
