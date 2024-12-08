@@ -11,7 +11,7 @@
     inherit stateVersion;
   };
 
-  imports = [../common/option];
+  # imports = [../common/option];
   inherit hostOption;
 
   programs.home-manager.enable = true;

@@ -65,7 +65,7 @@ in {
                   inherit (hostAttrs) stateVersion;
                   isNixos = false;
                   hostOption = {
-                    hostType = "lite";
+                    type = "lite";
                   };
                 })
                 ../user/${username}/home

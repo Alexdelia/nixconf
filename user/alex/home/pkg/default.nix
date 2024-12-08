@@ -9,6 +9,8 @@
   };
 
   imports = [
+    ../../../../common/option
+
     ./mime.nix
 
     ## shell essentials
@@ -22,39 +24,38 @@
     # ./kanata
   ];
 
-  home.packages = with pkgs;
-    [
-      ## shell essentials
-      ### rust
-      wl-clipboard-rs
-      ripgrep
-      xcp
-      sd
-      dysk
-      typos
-      tealdeer
-      numbat
-      ouch
-      oxker
-      skim
-      jaq
-      ### rest
-      wget # `ruget` is slower and less maintained
+  home.packages = with pkgs; [
+    ## shell essentials
+    ### rust
+    wl-clipboard-rs
+    ripgrep
+    xcp
+    sd
+    dysk
+    typos
+    tealdeer
+    numbat
+    ouch
+    oxker
+    skim
+    jaq
+    ### rest
+    wget # `ruget` is slower and less maintained
 
-      ## nix
-      nh
-      nil
-      nix-output-monitor
-      alejandra
+    ## nix
+    nh
+    nil
+    nix-output-monitor
+    alejandra
 
-      ## non-free
-      slack
-    ]
-    ++ (
-      if config.hostOption.type == "full"
-      then [
-        libreoffice-still
-      ]
-      else []
-    );
+    ## non-free
+    slack
+  ];
+  # ++ (
+  # if config.hostOption.type == "full"
+  # then [
+  # libreoffice-still
+  # ]
+  # else []
+  # );
 }
