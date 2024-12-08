@@ -27,7 +27,7 @@
         inherit username;
         inherit stateVersion;
         isNixos = true;
-        hostOption = config.hostOption;
+        inherit (config) hostOption;
       });
   };
 }
