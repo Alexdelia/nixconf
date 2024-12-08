@@ -21,7 +21,8 @@ in {
             # TODO: organize
             {environment.systemPackages = [inputs.anyrun.packages.${hostAttrs.system}.anyrun];}
 
-            ../common/option/nixos-module.nix
+            ../common/option/host-option/default.nix
+            ../common/option/host-option/nixos-module.nix
             ./${hostname}
           ];
 

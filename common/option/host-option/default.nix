@@ -1,2 +1,6 @@
 {
+  imports = [
+    ./type.nix
+    ./entertainment
+  ];
 }
