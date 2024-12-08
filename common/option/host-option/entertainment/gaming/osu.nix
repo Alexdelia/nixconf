@@ -4,7 +4,7 @@
   lib,
   ...
 }: {
-  config = lib.mkIf config.entertainment.gaming {
+  config = lib.mkIf config.hostOption.entertainment.gaming {
     environment.systemPackages = with pkgs; [
       osu-lazer-bin
     ];
