@@ -5,6 +5,9 @@
     ];
 
   imports = [
+    ../../../common/option
+    ../../../common/option/host-option/home-manager-module.nix
+
     ./fs
     ./pkg
     ./font
