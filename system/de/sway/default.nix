@@ -9,6 +9,11 @@
   ];
 
   config = lib.mkIf (config.hostOption.type == "minimal") {
+    programs.sway = {
+      enable = true;
+      wrapperFeatures.gtk = true;
+    };
+
     environment.systemPackages = with pkgs; [
       grim
       slurp
@@ -17,10 +22,5 @@
     ];
 
     services.gnome.gnome-keyring.enable = true;
-
-    programs.sway = {
-      enable = true;
-      wrapperFeatures.gtk = true;
-    };
   };
 }
