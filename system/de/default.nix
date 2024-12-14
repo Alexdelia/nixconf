@@ -1,7 +1,7 @@
 {
   imports = [
-    # ./hyprland
-    # ./sway
+    ./hyprland
+    ./sway
     ./gnome
   ];
 

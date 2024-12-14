@@ -1,7 +1,14 @@
-{users, ...}: {
+{
+  users,
+  lib,
+  config,
+  ...
+}: {
   # imports = [
   #   ./regreet
   # ];
 
-  services.getty.autologinUser = builtins.elemAt users 0;
+  config = lib.mkIf (config.hostOption.type == "minimal") {
+    services.getty.autologinUser = builtins.elemAt users 0;
+  };
 }

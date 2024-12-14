@@ -1,5 +1,4 @@
 {
-  pkgs,
   inputs,
   hostname,
   users,
@@ -26,17 +25,15 @@
 
   stylix.enable = true;
 
-  # TODO: organize
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  hostOption = {
+    type = "full";
+
+    entertainment = {
+      music = true;
+      video = true;
+      gaming = true;
+    };
   };
-  environment.systemPackages = with pkgs; [
-    ani-cli
-    osu-lazer-bin
-  ];
 
   # Bootloader.
   boot.loader.grub = {
@@ -62,22 +59,6 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;

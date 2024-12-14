@@ -8,6 +8,7 @@
 
     keybindings = let
       playerctl = "${pkgs.playerctl}/bin/playerctl";
+      mpc = "${pkgs.mpc-cli}/bin/mpc";
     in {
       # apps
       # "super + c" = config.dp.term;
@@ -23,6 +24,7 @@
       # sound
       "super + z" = "${playerctl} play-pause";
       "super + x" = "${playerctl} next";
+      "super + shift + z" = "${mpc} toggle";
     };
   };
 }

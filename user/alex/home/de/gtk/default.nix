@@ -2,9 +2,16 @@
   gtk = {
     enable = true;
 
-    theme.name = "Sweet-Dark";
-    theme.package = pkgs.sweet;
+    # theme = {
+    #   name = "Sweet-Dark";
+    #   package = pkgs.sweet;
+    # };
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
   };
 
-  stylix.targets.gtk.enable = false;
+  # stylix.targets.gtk.enable = false;
 }

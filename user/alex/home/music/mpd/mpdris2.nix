@@ -1,3 +1,3 @@
-{
-  services.mpdris2.enable = true;
+{config, ...}: {
+  services.mpdris2.enable = config.hostOption.entertainment.music;
 }

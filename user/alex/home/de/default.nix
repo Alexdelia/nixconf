@@ -1,8 +1,9 @@
 {
   imports = [
-    # ./sway
+    ./hyprland
+    ./sway
 
-    # ./gtk
+    ./gtk
     # ./qt
   ];
 }

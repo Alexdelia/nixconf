@@ -13,17 +13,17 @@
             TERM = "xterm-256color";
           };
 
-          live_config_reload = false;
+          general.live_config_reload = false;
 
           font = {
             size = 16.0;
 
             normal = {
-              family = "SourceCodePro";
+              family = "SauceCodeProNerdFont";
               style = "Regular";
             };
             bold = {
-              family = "SourceCodePro";
+              family = "SauceCodeProNerdFont";
               style = "Black";
             };
           };

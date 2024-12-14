@@ -3,7 +3,6 @@
   inputs,
   stateVersion,
 }: {
-  # pkgs,
   config,
   lib,
   ...
@@ -28,6 +27,7 @@
         inherit username;
         inherit stateVersion;
         isNixos = true;
+        inherit (config) hostOption;
       });
   };
 }

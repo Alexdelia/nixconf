@@ -1,6 +1,24 @@
+- bluetooth
+- hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
+- hyprland
+  - popup for volume and brightness change
+  - anyrun
+    - binding
+    - color from my b16 colorscheme
+  - info hub (common or separate)
+    - shortcut to open
+    - datetime
+    - notifications
+    - sound device
+    - bluetooth status
+    - active music
+  - color picker
+  - shutdown prompt
+  - alert for too long use of headset
+  - waybar (maybe)
 - sops for:
   - wakatime api key
 - pass for:
   - ssh connection password
-- hyprland
 - use [pipe-operators](https://youtu.be/WOw8MJYZjRI) everywhere
+- clean host/\*/default.nix

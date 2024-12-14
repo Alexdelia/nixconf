@@ -48,5 +48,12 @@
     plugins = import ./plugin {inherit pkgs inputs;};
   };
 
+  xdg.configFile.clangd = {
+    enable = false;
+
+    source = ./clangd.yaml;
+    target = "clangd/config.yaml";
+  };
+
   # stylix.targets.neovim.enable = false;
 }

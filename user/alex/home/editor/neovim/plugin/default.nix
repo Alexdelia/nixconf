@@ -27,14 +27,14 @@ with pkgs.vimPlugins; [
   }
 
   ## colorscheme
-  {
-    plugin = pkgs.vimUtils.buildVimPlugin {
-      name = "vity";
-      src = inputs.vity-nvim.packages.${pkgs.system}.default;
-    };
-    type = "lua";
-    config = builtins.readFile ./colorscheme.lua;
-  }
+  # {
+  #   plugin = pkgs.vimUtils.buildVimPlugin {
+  #     name = "vity";
+  #     src = inputs.vity-nvim.packages.${pkgs.system}.default;
+  #   };
+  #   type = "lua";
+  #   config = builtins.readFile ./colorscheme.lua;
+  # }
 
   ## lsp
   {
@@ -65,6 +65,7 @@ with pkgs.vimPlugins; [
       p.tree-sitter-lua
       p.tree-sitter-csv
       p.tree-sitter-yaml
+      p.tree-sitter-ron
       p.tree-sitter-diff
       p.tree-sitter-gitattributes
       p.tree-sitter-gitignore
@@ -134,6 +135,28 @@ with pkgs.vimPlugins; [
     plugin = rust-vim;
     type = "lua";
     config = "vim.g.rustfmt_autosave = 1";
+  }
+  {
+    plugin = pkgs.vimUtils.buildVimPlugin {
+      name = "42Header";
+      src = pkgs.fetchFromGitHub {
+        owner = "42Paris";
+        repo = "42header";
+        rev = "master";
+        sha256 = "sha256-T4BdswmjlrR3KG+97mzncuJ/1OAvx7GDwXW6MI5fBNE=";
+      };
+    };
+    type = "lua";
+    config = let
+      login = "adelille";
+    in
+      /*
+      lua
+      */
+      ''
+        vim.g.user42 = '${login}'
+        vim.g.mail42 = '${login}@student.42.fr'
+      '';
   }
 
   ## external
