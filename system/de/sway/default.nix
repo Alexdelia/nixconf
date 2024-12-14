@@ -1,19 +1,26 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ./greet
   ];
 
-  environment.systemPackages = with pkgs; [
-    grim
-    slurp
-    wl-clipboard
-    mako
-  ];
+  config = lib.mkIf (config.hostOption.type == "minimal") {
+    environment.systemPackages = with pkgs; [
+      grim
+      slurp
+      wl-clipboard
+      mako
+    ];
 
-  services.gnome.gnome-keyring.enable = true;
+    services.gnome.gnome-keyring.enable = true;
 
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
+    programs.sway = {
+      enable = true;
+      wrapperFeatures.gtk = true;
+    };
   };
 }
