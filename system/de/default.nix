@@ -1,8 +1,8 @@
 {
   imports = [
     ./hyprland
-    # ./sway
-    # ./gnome
+    ./sway
+    ./gnome
   ];
 
   stylix.targets.chromium.enable = false;

@@ -8,7 +8,7 @@
   ];
 
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = config.hostOption.type == "lite";
 
     xwayland.enable = true;
 

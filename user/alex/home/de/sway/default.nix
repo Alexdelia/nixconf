@@ -5,7 +5,8 @@
   ];
 
   wayland.windowManager.sway = {
-    enable = true;
+    enable = config.hostOption.type == "minimal";
+
     config = {
       modifier = "Mod4";
 
