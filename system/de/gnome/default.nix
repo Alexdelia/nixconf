@@ -41,8 +41,8 @@
       gnome-system-monitor
       gnome-weather
       loupe
-      nautilus
-      gnome-connections
+      # nautilus
+      # gnome-connections
       simple-scan
       snapshot
       yelp
