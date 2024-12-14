@@ -55,5 +55,5 @@
     target = "clangd/config.yaml";
   };
 
-  # stylix.targets.neovim.enable = false;
+  stylix.targets.neovim.enable = false;
 }
