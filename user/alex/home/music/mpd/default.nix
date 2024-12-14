@@ -8,7 +8,7 @@ in {
   ];
 
   services.mpd = {
-    enable = true;
+    enable = config.hostOption.entertainment.music;
 
     musicDirectory = config.xdg.userDirs.music;
     playlistDirectory = "${config.xdg.userDirs.music}/playlist";
