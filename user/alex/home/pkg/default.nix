@@ -2,10 +2,15 @@
   pkgs,
   config,
   ...
-}: {
+}: let
+  clipboard =
+    if config.hostOption.type == "full"
+    then pkgs.wl-clipboard
+    else pkgs.wl-clipboard-rs;
+in {
   dp = {
-    clipboard-copy = "${pkgs.wl-clipboard-rs}/bin/wl-copy";
-    clipboard-paste = "${pkgs.wl-clipboard-rs}/bin/wl-paste";
+    clipboard-copy = "${clipboard}/bin/wl-copy";
+    clipboard-paste = "${clipboard}/bin/wl-paste";
   };
 
   imports = [
@@ -26,7 +31,6 @@
     [
       ## shell essentials
       ### rust
-      wl-clipboard-rs
       ripgrep
       xcp
       sd
@@ -39,6 +43,7 @@
       skim
       jaq
       ### rest
+      clipboard # if wlroots, use wl-clipboard-rs, else wl-clipboard
       wget # `ruget` is slower and less maintained
 
       ## nix

@@ -17,7 +17,7 @@
     environment.systemPackages = with pkgs; [
       grim
       slurp
-      wl-clipboard
+      wl-clipboard-rs
       mako
     ];
 
