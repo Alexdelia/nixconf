@@ -3,15 +3,6 @@
   pkgs,
   ...
 }: {
-  /*
-  home.packages = with pkgs; [
-    # syntax highlight
-    # history
-    # completion
-    # ...
-  ];
-  */
-
   imports = [
     ./readline.nix
   ];
@@ -68,6 +59,39 @@
         '';
 
       shellAliases = import ../alias {inherit config pkgs;};
+
+      # https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+      shellOptions = [
+        "histappend"
+        "checkwinsize"
+        "extglob"
+        "globstar"
+        "checkjobs"
+        "autocd"
+        "complete_fullquote"
+        "dotglob"
+        "extquote"
+        "failglob"
+        "nocaseglob"
+        "nocasematch"
+      ];
+      # TODO: test `progcomp_alias` instead of `complete_alias`
+
+      historyControl = [
+        "erasedups"
+        "ignoredups"
+      ];
+
+      /*
+      historyIgnore = [
+        # "rm"
+        "l"
+        "ls"
+        "ll"
+      ];
+      */
+
+      historyFile = "${config.xdg.cacheHome}/bash/history";
     };
   };
 }
