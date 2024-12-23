@@ -51,7 +51,6 @@
       # gnome-bluetooth
       # gnome-color-manager
       # gnome-control-center
-      # gnome-shell-extensions
       gnome-tour
       gnome-user-docs
       # glib # for gsettings program
@@ -59,6 +58,13 @@
       # gtk3.out # for gtk-launch program
       # xdg-user-dirs # Update user dirs as described in https://freedesktop.org/wiki/Software/xdg-user-dirs/
       # xdg-user-dirs-gtk # Used to create the default bookmarks
+
+      gnome-online-accounts
+      gnome-initial-setup
+      gnome-remote-desktop
+      gnome-shell
+      gnome-shell-extensions
+      gnome-user-share
     ];
 
     programs.dconf = {
