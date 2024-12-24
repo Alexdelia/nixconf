@@ -19,6 +19,7 @@
 
       "$mod, S, exec, screenshot"
       "$mod, I, exec, image-edit"
+      "$mod, Q, exec, ${config.dp.colorpicker}"
 
       "$mod SHIFT, Q, killactive,"
       "$mod SHIFT, M, exit,"
