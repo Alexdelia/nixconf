@@ -6,7 +6,7 @@
     */
     ''
       # eww open --toggle info_hub
-      eww -c ${./src} open --toggle info_hub
+      eww -c ~/.nc/user/alex/home/de/eww/src/ open --toggle info_hub
     '';
 in {
   home.packages = [
