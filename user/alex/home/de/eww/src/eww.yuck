@@ -14,16 +14,9 @@
 
 	(box
 		:orientation "horizontal"
-		:halign "center"
+		:halign "fill"
+		:valign "fill"
 
-		(greeter
-			:text "Hello, world!"
-			:name "world"
-		)
-		(greeter
-			:text "Hello, moon!"
-			:name "moon"
-		)
 		(time_box)
 	)
 )
@@ -36,7 +29,7 @@
 
 (defwidget time_box []
 	(box
-		:orientation "horizontal"
+		:orientation "vertical"
 		:halign "center"
 		:valign "center"
 

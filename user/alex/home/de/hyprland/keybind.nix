@@ -17,6 +17,8 @@
       "$mod, B, exec, ${config.dp.browser}"
       "$mod, K, exec, ${config.dp.calculator}"
 
+      "$mod, A, exec, ${config.dp.infoHub}"
+
       "$mod, S, exec, screenshot"
       "$mod, I, exec, image-edit"
       "$mod, Q, exec, ${config.dp.colorpicker}"
