@@ -1,6 +1,7 @@
 {
   config,
   scheme ? {},
+  pkgs,
   ...
 }: {
   imports = [
@@ -11,6 +12,10 @@
 
     ./gtk
     # ./qt
+  ];
+
+  home.packages = with pkgs; [
+    maple-mono
   ];
 
   home.file."${config.xdg.configHome}/rice/color.scss".text = let

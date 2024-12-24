@@ -6,20 +6,22 @@
 
 .info_hub {
 	font-family: 'SauceCodeProNerdFont', monospace;
-    font-size: 2rem;
+	font-size: 2rem;
 }
 
 .background {
-    background-color: transparent;
+	background-color: transparent;
 }
 
 .info-box {
-    border-radius: 2rem;
-    
-    background-color: $base00;
+	border-radius: 2rem;
 
-    color: #61afef;
+	background-color: $base00;
 
-    padding: 1rem;
-    margin: 1rem;
+	color: $base0D;
+	font-family: 'MappleMono', 'SauceCodeProNerdFont', monospace;
+	font-weight: 900;
+
+	padding: 1rem;
+	margin: 1rem;
 }

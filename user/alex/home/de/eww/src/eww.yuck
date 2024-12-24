@@ -1,10 +1,11 @@
 (defwindow info_hub
 	:monitor 0
 	:geometry (geometry
-		:x "20px"
-		:y "20px"
+		:x "0px"
+		:y "0px"
 		:width "20%"
 		:height "20%"
+		;; :anchor "center"
 		:anchor "top right"
 	)
     :stacking "fg"
@@ -16,14 +17,41 @@
 		:orientation "horizontal"
 		:halign "fill"
 		:valign "fill"
-		:style "background-color: rgba(255, 0, 0, 0);"
 
-		(info_box
-			(time_box)
+		(box :orientation "vertical"
+			:halign "fill"
+			:valign "fill"
+
+			(info_box
+				(time_box)
+			)
+			(info_box
+				(time_box)
+			)
 		)
-		(info_box
-			(time_box)
+
+		(box :orientation "vertical"
+			:halign "fill"
+			:valign "fill"
+
+			(info_box
+				(time_box)
+			)
+			;; (calendar)
 		)
+
+		(box :orientation "vertical"
+			:halign "fill"
+			:valign "fill"
+
+			(info_box
+				(time_box)
+			)
+			(info_box
+				(time_box)
+			)
+		)
+
 
 		;; (calendar)
 	)
@@ -32,7 +60,7 @@
 (defpoll time
 	:interval "1m"
 
-	`date +%H:%M`
+	`date '+%H %M'`
 )
 
 (defwidget info_box []
@@ -52,14 +80,7 @@
 		:halign "center"
 		:valign "center"
 
-		"${EWW_TIME}"
-
-		(label
-			:text "The time is: "
-		)
-		(label
-			:text time
-		)
+		time
 	)
 )
 
