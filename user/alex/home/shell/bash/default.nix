@@ -94,4 +94,6 @@
       historyFile = "${config.xdg.cacheHome}/bash/history";
     };
   };
+
+  home.file."${config.xdg.cacheHome}/bash/dummy".text = "";
 }
