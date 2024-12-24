@@ -89,6 +89,9 @@ with pkgs.vimPlugins; [
       # p.tree-sitter-scss
       p.tree-sitter-sql
       p.tree-sitter-http
+
+      ### esoteric and unusual
+      p.tree-sitter-yuck
     ]);
     type = "lua";
     config = builtins.readFile ./treesitter.lua;
