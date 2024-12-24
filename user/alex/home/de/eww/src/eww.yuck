@@ -1,4 +1,4 @@
-(defwindow example
+(defwindow info_hub
 	:monitor 0
 	:geometry (geometry
 		:x "20px"
