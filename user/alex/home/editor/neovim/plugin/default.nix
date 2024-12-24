@@ -86,7 +86,7 @@ with pkgs.vimPlugins; [
       p.tree-sitter-json
       p.tree-sitter-html
       p.tree-sitter-css
-      # p.tree-sitter-scss
+      p.tree-sitter-scss
       p.tree-sitter-sql
       p.tree-sitter-http
 
