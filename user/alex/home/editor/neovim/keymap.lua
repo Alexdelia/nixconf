@@ -15,9 +15,9 @@ local mapping_by_mode = {
     [""] = {
         -- ctrl + h / ctrl + l to move between words
         ["<C-h>"] = "b",
-		["<C-Left>"] = "b",
+        ["<C-Left>"] = "b",
         ["<C-l>"] = "w",
-		["<C-Right>"] = "w",
+        ["<C-Right>"] = "w",
 
         -- alt + j / alt + k to move lines up and down
         ["<A-Up>"] = ":m '<-2<CR>gv=gv",
@@ -25,8 +25,8 @@ local mapping_by_mode = {
         ["<A-Down>"] = ":m '>+1<CR>gv=gv",
         ["<A-j>"] = ":m '>+1<CR>gv=gv",
 
-		["<C-m>"] = ":lua vim.diagnostic.goto_next()<CR>",
-		["<C-n>"] = ":lua vim.diagnostic.goto_prev()<CR>",
+        ["<C-m>"] = ":lua vim.diagnostic.goto_next()<CR>",
+        ["<C-n>"] = ":lua vim.diagnostic.goto_prev()<CR>"
     },
     -- # normal mode keymaps
     n = {
@@ -40,15 +40,15 @@ local mapping_by_mode = {
 		["P"] = '"_dP',
 		--]]
 
-		-- save + unload buffers
-		["<leader>d"] = "<cmd>Quit<CR>",
+        -- save + unload buffers
+        ["<leader>d"] = "<cmd>Quit<CR>",
 
         ["<leader>f"] = "<cmd>Telescope find_files<CR>",
         ["<leader>g"] = "<cmd>Telescope live_grep<CR>",
-		["<leader>h"] = ":lua vim.diagnostic.open_float()<CR>",
+        ["<leader>h"] = ":lua vim.diagnostic.open_float()<CR>",
 
-		["<leader>mh"] = "<cmd>Telescope highlights<CR>",
-		["<leader>mi"] = "<cmd>Inspect<CR>",
+        ["<leader>mh"] = "<cmd>Telescope highlights<CR>",
+        ["<leader>mi"] = "<cmd>Inspect<CR>",
 
         -- ctrl+/ to comment current line
         ["<C-/>"] = ":norm gcc<CR>"
@@ -62,8 +62,8 @@ local mapping_by_mode = {
         -- ctrl+/ to comment current line
         ["<C-/>"] = "<C-o>:norm gcc<CR>",
 
-		-- accept first word of github copilot suggestion
-		["<C-y>"] = "<cmd>AcceptOneWord<CR>"
+        -- accept first word of github copilot suggestion
+        ["<C-y>"] = "<cmd>AcceptOneWord<CR>"
     },
     -- # visual mode keymaps
     v = {
@@ -81,8 +81,7 @@ local mapping_by_mode = {
         ["<C-/>"] = ":'<,'>norm gcc<CR>gv=gv"
     },
     -- # visual block mode keymaps
-    x = {
-    }
+    x = {}
 }
 
 for mode, mapping in pairs(mapping_by_mode) do

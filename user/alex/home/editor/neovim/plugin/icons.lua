@@ -5,7 +5,7 @@ local icons = {
     license = {icon = "", color = "#333333", name = "License"},
     lock = {icon = "", color = "#444444", name = "Lock"},
     sh = {icon = "", color = "#ff7043", name = "Shell"},
-	rust = {icon = "", color = "#8a3510", name = "Rust"}
+    rust = {icon = "", color = "#8a3510", name = "Rust"}
 }
 
 devicons.setup({
@@ -14,7 +14,7 @@ devicons.setup({
     strict = true,
 
     override_by_filename = {LICENSE = icons.license, license = icons.license},
-    override_by_extension = {lock = icons.lock, sh = icons.sh, rs = icons.rust},
+    override_by_extension = {lock = icons.lock, sh = icons.sh, rs = icons.rust}
 })
 
 devicons.set_icon({LICENSE = icons.license})
