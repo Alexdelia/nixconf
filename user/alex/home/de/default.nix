@@ -3,6 +3,8 @@
     ./hyprland
     ./sway
 
+    ./eww
+
     ./gtk
     # ./qt
   ];
