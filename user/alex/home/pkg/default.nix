@@ -12,7 +12,7 @@ in {
     clipboard-copy = "${clipboard}/bin/wl-copy";
     clipboard-paste = "${clipboard}/bin/wl-paste";
 
-    colorpicker = "${pkgs.wl-color-picker}/bin/wl-color-picker";
+    colorpicker = "${pkgs.hyprpicker}/bin/hyprpicker -a";
   };
 
   imports = [

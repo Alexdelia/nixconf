@@ -12,7 +12,6 @@
     - sound device
     - bluetooth status
     - active music
-  - color picker
   - shutdown prompt
   - alert for too long use of headset
   - waybar (maybe)
