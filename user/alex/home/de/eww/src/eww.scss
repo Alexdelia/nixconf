@@ -1,5 +1,25 @@
-*{
-	all: unset;
-	font-family: feather;
-	font-family: Iosevka;
+@import '/home/alex/.config/rice/color.scss';
+
+* {
+	/* all: unset; */
+}
+
+.info_hub {
+	font-family: 'SauceCodeProNerdFont', monospace;
+    font-size: 2rem;
+}
+
+.background {
+    background-color: transparent;
+}
+
+.info-box {
+    border-radius: 2rem;
+    
+    background-color: $base00;
+
+    color: #61afef;
+
+    padding: 1rem;
+    margin: 1rem;
 }
