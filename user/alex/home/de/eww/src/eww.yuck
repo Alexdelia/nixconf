@@ -23,10 +23,13 @@
 			:valign "fill"
 
 			(info_box
-				(time_box)
+				"music"
 			)
 			(info_box
-				(time_box)
+				"sound devices"
+			)
+			(info_box
+				"bluetooth"
 			)
 		)
 
@@ -35,9 +38,14 @@
 			:valign "fill"
 
 			(info_box
+				"date"
+			)
+			(info_box
 				(time_box)
 			)
-			;; (calendar)
+			(info_box
+				"-"
+			)
 		)
 
 		(box :orientation "vertical"
@@ -45,10 +53,11 @@
 			:valign "fill"
 
 			(info_box
-				(time_box)
-			)
-			(info_box
-				(time_box)
+				"notifications"
+				"- text 1"
+				"- text 2"
+				"- text 3"
+				"- text 4"
 			)
 		)
 
@@ -76,25 +85,11 @@
 
 (defwidget time_box []
 	(box
+		:class "time-box"
 		:orientation "vertical"
 		:halign "center"
 		:valign "center"
 
 		time
-	)
-)
-
-(defwidget greeter [?text name]
-	(box
-		:orientation "horizontal"
-		:halign "center"
-
-		text
-
-		(button
-			:onclick "notify-send 'Hello' 'Hello, ${name}'"
-
-			"Greet"
-		)
 	)
 )

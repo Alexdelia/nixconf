@@ -13,7 +13,7 @@ in {
     infoHub
   ];
 
-  dp.infoHub = infoHub;
+  dp.infoHub = "${infoHub}/bin/info-hub";
 
   programs.eww = {
     enable = true;
