@@ -14,53 +14,137 @@
 
 	(box
 		:orientation "horizontal"
-		:halign "fill"
-		:valign "fill"
+		:halign "center"
+		:valign "center"
+		:space-evenly false
+		:style "background-color: rgba(0, 0, 0, 0.2); margin: 1rem;"
 
-		(box :orientation "vertical"
+		(box
+			:orientation "vertical"
 			:halign "fill"
 			:valign "fill"
+			:hexpand true
+			:vexpand true
+			:space-evenly false
+			:style "background-color: rgba(255, 0, 0, 0.2); margin: 1rem;"
 
-			(info_box
+			(box
+				:orientation "horizontal"
+				:halign "end"
+				:valign "fill"
+				:hexpand false
+				:vexpand false
+				:space-evenly false
+
 				(music_box)
+
+				(box
+					:style "background-color: rgba(0, 0, 255, 0.2); margin: 1rem;"
+					:width 100
+				)
 			)
-			(info_box
-				"sound devices"
+			(box
+				:orientation "horizontal"
+				:halign "end"
+				:valign "fill"
+				:hexpand false
+				:vexpand false
+				:space-evenly false
+
+				(box
+					:style "background-color: rgba(0, 0, 255, 0.2); margin: 1rem;"
+					:width 100
+				)
+				(box
+					:style "background-color: rgba(0, 0, 255, 0.2); margin: 1rem;"
+					:width 100
+				)
+
+				(info_box
+					(time_box)
+				)
+
+				(box
+					:style "background-color: rgba(0, 0, 255, 0.2); margin: 1rem;"
+					:width 100
+				)
 			)
-			(info_box
-				"bluetooth"
+			(box
+				"yo"
 			)
 		)
-
-		(box :orientation "vertical"
-			:halign "fill"
+	
+		(box
+			:halign "end"
 			:valign "fill"
-
-			(info_box
-				"date"
-			)
-			(info_box
-				(time_box)
-			)
-			(info_box
-				"${EWW_TIME}"
-			)
-		)
-
-		(box :orientation "vertical"
-			:halign "fill"
-			:valign "fill"
-
-			(info_box
-				"notifications"
-				"- text 1"
-				"- text 2"
-				"- text 3"
-				"- text 4"
-			)
+			:style "background-color: rgba(0, 255, 0, 0.2); margin: 1rem;"
+			:width 100
 		)
 	)
-)
+
+;;	(box
+;;		:orientation "horizontal"
+;;		:halign "fill"
+;;		:valign "fill"
+;;
+;;
+;;		(box :orientation "vertical"
+;;			:halign "fill"
+;;			:valign "fill"
+;;
+;;			(info_box
+;;				(music_box)
+;;			)
+;;			(info_box
+;;				"sound devices"
+;;			)
+;;			(info_box
+;;				"bluetooth"
+;;			)
+;;		)
+;;
+;;		(box :orientation "vertical"
+;;			:halign "fill"
+;;			:valign "fill"
+;;
+;;			(info_box
+;;				"date"
+;;			)
+;;			(info_box
+;;				(time_box)
+;;			)
+;;			(info_box
+;;				"${EWW_TIME}"
+;;			)
+;;		)
+;;
+;;		(box :orientation "vertical"
+;;			:halign "fill"
+;;			:valign "fill"
+;;
+;;			(info_box
+;;				"notifications"
+;;				"- text 1"
+;;				"- text 2"
+;;				"- text 3"
+;;				"- text 4"
+;;			)
+;;		)
+;;
+;;		(box :orientation "vertical"
+;;			:halign "fill"
+;;			:valign "fill"
+;;
+;;			(info_box
+;;				"notifications"
+;;				"- text 1"
+;;				"- text 2"
+;;				"- text 3"
+;;				"- text 4"
+;;			)
+;;		)
+	)
+;;)
 
 (defpoll time
 	:interval "1m"
@@ -72,8 +156,8 @@
 	(box
 		:class "info-box"
 		:orientation "vertical"
-		:halign "fill"
-		:valign "fill"
+		:halign "baseline"
+		:valign "baseline"
 
 		(children)
 	)
@@ -101,18 +185,36 @@
 (defwidget music_box []
 	(box
 		:class "music-box"
-		:orientation "vertical"
+		:orientation "horizontal"
 		:halign "fill"
 		:valign "fill"
 
-		:style "background-image: url('${music_art_url}'); background-size: cover;"
-
-		music_title
-
-		(image
-			:path {replace(music_art_url, "^file://", "")}
-			:image-width 100
-			:image-height 100
+		(box
+			:class "music-art"
+			:style "background-image: url('${music_art_url}'); background-size: cover;"
+			:vexpand true
+			:hexpand true
+			:height 300
+			:width 300
 		)
+
+		(box
+			:orientation "vertical"
+			:halign "fill"
+			:valign "fill"
+			:hexpand true
+			:vexpand true
+
+			(label
+				:text music_title
+				:truncate true
+			)
+		)
+
+		;; (image
+		;; :path {replace(music_art_url, "^file://", "")}
+		;; :image-width 100
+		;; :image-height 100
+		;; )
 	)
 )

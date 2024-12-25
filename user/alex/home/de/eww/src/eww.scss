@@ -2,6 +2,7 @@
 
 * {
   /* all: unset; */
+  transition: all 1s;
 }
 
 .info_hub {
@@ -18,7 +19,7 @@
 
   background-color: $base00;
 
-  padding: 1rem;
+  padding: 0rem 1rem;
   margin: 1rem;
 }
 
@@ -31,4 +32,10 @@
 
 .music-box {
   // background-image: url('/tmp/cover-1beajbg3.png');
+}
+
+.music-art {
+  border-radius: 2rem;
+
+  transition: all 1s;
 }
