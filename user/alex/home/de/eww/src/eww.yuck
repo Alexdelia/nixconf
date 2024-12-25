@@ -22,7 +22,7 @@
 			:valign "fill"
 
 			(info_box
-				"music"
+				(music_box)
 			)
 			(info_box
 				"sound devices"
@@ -90,8 +90,12 @@
 	)
 )
 
-(deflisten music_art
-	;; `mpc current -f %file%`
+(deflisten music_title
+	`playerctl --player=mpd --follow metadata xesam:title`
+)
+
+(deflisten music_art_url
+	`playerctl --player=mpd --follow metadata mpris:artUrl`
 )
 
 (defwidget music_box []
@@ -101,8 +105,14 @@
 		:halign "fill"
 		:valign "fill"
 
+		:style "background-image: url('${music_art_url}'); background-size: cover;"
+
+		music_title
+
 		(image
-			:path 
+			:path {replace(music_art_url, "^file://", "")}
+			:image-width 100
+			:image-height 100
 		)
 	)
 )
