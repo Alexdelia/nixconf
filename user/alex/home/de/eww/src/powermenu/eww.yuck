@@ -1,0 +1,46 @@
+(defwindow powermenu
+	:monitor 0
+	:geometry (geometry
+		:x "0px"
+		:y "0px"
+		:width "80%"
+		:height "50%"
+		:anchor "center"
+	)
+    :stacking "fg"
+	:focusable true
+
+	(box
+		:orientation "horizontal"
+		:halign "center"
+		:valign "center"
+		:space-evenly false
+		:style "background-color: rgba(255, 0, 0, 0.5);"
+
+		(button
+			:onclick "alacritty"
+			:timeout "30s"
+
+			""
+		)
+		(input
+			:onaccept ""
+			:timeout "30s"
+			:value "⏻"
+		)
+
+		(input
+			:onaccept "eww close powermenu; eww open info_hub"
+			:timeout "30s"
+
+			""
+		)
+
+		(input
+			:onaccept "eww close powermenu; eww open info_hub"
+			:timeout "30s"
+
+			""
+		)
+	)
+)

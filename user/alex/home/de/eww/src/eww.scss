@@ -5,6 +5,9 @@
   transition: all 1s;
 }
 
+@import './info_hub/eww.scss';
+@import './powermenu/eww.scss';
+
 .info_hub {
   font-family: 'SauceCodeProNerdFont', monospace;
   font-size: 2rem;

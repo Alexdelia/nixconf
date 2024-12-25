@@ -17,7 +17,8 @@
       "$mod, B, exec, ${config.dp.browser}"
       "$mod, K, exec, ${config.dp.calculator}"
 
-      "$mod, A, exec, ${config.dp.infoHub}"
+      # "$mod, A, exec, ${config.dp.infoHub}"
+      # "$mod, W, exec, ${config.dp.powermenu}"
 
       "$mod, S, exec, screenshot"
       "$mod, I, exec, image-edit"

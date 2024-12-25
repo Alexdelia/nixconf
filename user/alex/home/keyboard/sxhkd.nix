@@ -1,5 +1,5 @@
 {
-  config,
+  # config,
   pkgs,
   ...
 }: {
@@ -18,7 +18,8 @@
       # "super + f" = config.dp.fileManager;
 
       # widgets
-      "super + a" = config.dp.infoHub;
+      # "super + a" = config.dp.infoHub;
+      # "super + w" = config.dp.powermenu;
 
       # screen read
       # "super + s" = "screenshot";

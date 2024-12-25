@@ -1,19 +1,20 @@
 {
-  config,
-  scheme ? {},
-  pkgs,
+  # config,
+  # scheme ? {},
+  # pkgs,
   ...
 }: {
   imports = [
     ./hyprland
     ./sway
 
-    ./eww
+    # ./eww
 
     ./gtk
     # ./qt
   ];
 
+  /*
   home.packages = with pkgs; [
     maple-mono
   ];
@@ -38,4 +39,5 @@
     $base0E:${c.base0E};
     $base0F:${c.base0F};
   '';
+  */
 }
