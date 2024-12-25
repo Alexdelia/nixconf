@@ -3,10 +3,9 @@
 	:geometry (geometry
 		:x "0px"
 		:y "0px"
-		:width "20%"
-		:height "20%"
-		;; :anchor "center"
-		:anchor "top right"
+		:width "90%"
+		:height "90%"
+		:anchor "center"
 	)
     :stacking "fg"
     ;; :reserve (struts :distance "40px" :side "top")
@@ -44,7 +43,7 @@
 				(time_box)
 			)
 			(info_box
-				"-"
+				"${EWW_TIME}"
 			)
 		)
 
@@ -60,9 +59,6 @@
 				"- text 4"
 			)
 		)
-
-
-		;; (calendar)
 	)
 )
 
@@ -91,5 +87,22 @@
 		:valign "center"
 
 		time
+	)
+)
+
+(deflisten music_art
+	;; `mpc current -f %file%`
+)
+
+(defwidget music_box []
+	(box
+		:class "music-box"
+		:orientation "vertical"
+		:halign "fill"
+		:valign "fill"
+
+		(image
+			:path 
+		)
 	)
 )

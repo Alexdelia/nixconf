@@ -9,6 +9,7 @@
     "${pkgs.ymuse}/bin/ymuse";
 
   imports = [
+    ./mpc.nix
     ./ymuse.nix
   ];
 }
