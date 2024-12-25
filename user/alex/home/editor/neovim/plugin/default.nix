@@ -71,8 +71,9 @@ with pkgs.vimPlugins; [
       p.tree-sitter-gitignore
       p.tree-sitter-regex
 
-      ### c
+      ### c/c++
       p.tree-sitter-c
+      p.tree-sitter-cpp
       p.tree-sitter-make
 
       ### python
