@@ -20,9 +20,11 @@
       # "$mod, A, exec, ${config.dp.infoHub}"
       # "$mod, W, exec, ${config.dp.powermenu}"
 
-      "$mod, S, exec, screenshot"
-      "$mod, I, exec, image-edit"
+      "$mod, S, exec, ${config.customScript.screenshot}"
+      "$mod, I, exec, ${config.customScript.imageEdit}"
       "$mod, Q, exec, ${config.dp.colorpicker}"
+
+      "$mod, P, exec, ${config.customScript.passwordGen} | ${config.dp.clipboard-copy}"
 
       "$mod SHIFT, Q, killactive,"
       "$mod SHIFT, M, exit,"
