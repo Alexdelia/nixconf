@@ -3,7 +3,7 @@
 
   tr = "${coreutils}/bin/tr";
   head = "${coreutils}/bin/head";
-in (
+in
   pkgs.writers.writeBashBin
   "password-gen" {}
   /*
@@ -12,4 +12,3 @@ in (
   ''
     ${tr} -dc 'a-zABCDEFGHJKLMNPQRSTUVWXYZ1-9' < /dev/urandom | ${head} -c 42
   ''
-)
