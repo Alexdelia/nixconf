@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   imports = [
     # ./boot.nix
     ./group.nix
@@ -24,5 +24,14 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = false;
+  # nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "copilot.vim"
+      "slack"
+      "steam"
+      "steam-unwrapped"
+      "code"
+      "vscode"
+    ];
 }

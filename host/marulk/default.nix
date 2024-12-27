@@ -26,7 +26,7 @@
     entertainment = {
       music = true;
       video = true;
-      gaming = false;
+      gaming = true;
     };
   };
 
