@@ -18,6 +18,7 @@
       # "super + f" = config.dp.fileManager;
 
       # widgets
+      # "super + d" = config.dp.dmenu;
       # "super + a" = config.dp.infoHub;
       # "super + w" = config.dp.powermenu;
 
