@@ -4,6 +4,7 @@
       "code"
       "vscode"
       "copilot.vim"
+      "slack"
     ];
 
   imports = [

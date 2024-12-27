@@ -53,14 +53,18 @@ in {
       nil
       nix-output-monitor
       alejandra
-
-      ## non-free
-      slack
     ]
     ++ (
       if config.hostOption.type == "full"
       then [
         libreoffice-still
+      ]
+      else []
+    )
+    ++ (
+      if pkgs.system != "aarch64-linux"
+      then [
+        slack
       ]
       else []
     );
