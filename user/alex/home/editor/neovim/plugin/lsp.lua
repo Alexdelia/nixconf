@@ -1,4 +1,5 @@
 vim.diagnostic.config({signs = false})
+vim.lsp.inlay_hint.enable = true
 
 local on_attach = function(_, bufnr)
     local bufmap = function(keys, func)
