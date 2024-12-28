@@ -33,6 +33,6 @@
 
   programs = {
     swaylock.enable = false;
-    swayidle.enable = false;
+    swayidle.enable = true;
   };
 }
