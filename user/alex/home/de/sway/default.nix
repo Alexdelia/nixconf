@@ -25,6 +25,8 @@
           natural_scroll = "enabled";
         };
       };
+
+      bars = [];
     };
   };
 }

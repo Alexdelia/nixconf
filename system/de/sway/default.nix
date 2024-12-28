@@ -19,5 +19,12 @@
     ];
 
     services.gnome.gnome-keyring.enable = true;
+
+    /*
+    stylix.targets = {
+      sway.enable = true;
+      swaylock.enable = false;
+    };
+    */
   };
 }
