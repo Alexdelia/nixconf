@@ -2,6 +2,8 @@
   imports = [
     ./keybind.nix
     ./window.nix
+
+    ../notification/mako.nix
     ../runner/anyrun.nix
   ];
 
@@ -33,6 +35,11 @@
 
   programs = {
     swaylock.enable = false;
-    swayidle.enable = true;
+  };
+
+  services = {
+    swayidle = {
+      enable = true;
+    };
   };
 }
