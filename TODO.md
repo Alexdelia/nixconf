@@ -1,3 +1,4 @@
+- setup [mako](https://github.com/emersion/mako)
 - bluetooth
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
 - popup for volume and brightness change
@@ -10,7 +11,6 @@
   - active music
 - shutdown prompt
 - alert for too long use of headset
-- look into [mako](https://github.com/emersion/mako)
 - waybar (maybe)
 - sops for:
   - wakatime api key

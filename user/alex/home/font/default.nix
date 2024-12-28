@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   home.packages = [
     (pkgs.nerdfonts.override {fonts = ["RobotoMono" "SourceCodePro"];})
+    # maple-mono
   ];
 
   fonts.fontconfig = {

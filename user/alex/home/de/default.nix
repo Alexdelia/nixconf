@@ -1,7 +1,7 @@
 {
   # config,
   # scheme ? {},
-  # pkgs,
+  pkgs,
   ...
 }: {
   imports = [
@@ -14,10 +14,10 @@
     # ./qt
   ];
 
-  /*
   home.packages = with pkgs; [
-    maple-mono
+    libnotify
   ];
+  /*
 
   home.file."${config.xdg.configHome}/rice/color.scss".text = let
     c = (config.scheme or scheme).withHashtag;
