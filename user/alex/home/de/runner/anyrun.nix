@@ -2,8 +2,11 @@
   pkgs,
   inputs,
   config,
+  scheme,
   ...
 }: {
+  dp.dmenu = "${inputs.anyrun.packages.${pkgs.system}.anyrun}/bin/anyrun";
+
   imports = [
     inputs.anyrun.homeManagerModules.default
   ];
@@ -22,7 +25,7 @@
       maxEntries = null;
 
       x.fraction = 1.0 / 2.0;
-      y.fraction = (1.0 - width) / 2.0;
+      y.fraction = 1.0 / 5.0;
       width.fraction = width;
 
       layer = "overlay";
@@ -43,16 +46,21 @@
         */
         ''
           Config(
-            desktop_actions: false,
-            max_entries: 4,
-            terminal: Some("${config.dp.term}"),
+          	desktop_actions: false,
+          	max_entries: 4,
+          	terminal: Some(Terminal(
+          		command: "${config.dp.term}"
+          		args: "{}"
+          	)),
           )
         '';
     };
 
     # Inline comments are supported for language injection into
     # multi-line strings with Treesitter! (Depends on your editor)
-    extraCss =
+    extraCss = let
+      s = (config.scheme or scheme).withHashtag;
+    in
       /*
       css
       */
@@ -83,13 +91,13 @@
         }
 
         box#main {
-        	background: rgba(0, 0, 0, 1);
+        	background: ${s.base00};
         	border-radius: 1.5rem;
         	padding: 1.5rem;
         }
 
         #entry {
-        	background: rgba(0, 0, 255, 0.1);
+        	background: ${s.base01};
         	border-radius: 0.5rem;
         	padding: 1rem;
         }
@@ -108,10 +116,10 @@
         }
 
         #match:hover {
-        	background: rgba(255, 255, 255, 0.1);
+        	background: rgba(255, 255, 255, 0.15);
         }
         #match:selected {
-        	background: rgba(255, 0, 0, 0.2);
+        	background: rgba(71, 216, 35, 0.2);
         }
       '';
   };

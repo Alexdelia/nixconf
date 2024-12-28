@@ -18,9 +18,6 @@ in {
             inputs.stylix.nixosModules.stylix
             ../common/stylix.nix
 
-            # TODO: organize
-            {environment.systemPackages = [inputs.anyrun.packages.${hostAttrs.system}.anyrun];}
-
             ../common/option/host-option/default.nix
             ../common/option/host-option/nixos-module.nix
             ./${hostname}
