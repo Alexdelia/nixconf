@@ -12,6 +12,7 @@
       modifier = "Mod4";
 
       terminal = config.dp.term;
+      menu = config.dp.dmenu;
 
       output = {
         "Virtual-1" = {
@@ -28,5 +29,10 @@
 
       bars = [];
     };
+  };
+
+  programs = {
+    swaylock.enable = false;
+    swayidle.enable = false;
   };
 }

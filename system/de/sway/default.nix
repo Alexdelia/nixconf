@@ -12,11 +12,13 @@
     programs.sway = {
       enable = true;
       wrapperFeatures.gtk = true;
-    };
 
-    environment.systemPackages = with pkgs; [
-      mako
-    ];
+      extraPackages = with pkgs; [
+        brightnessctl
+        pulseaudio
+        # mako
+      ];
+    };
 
     services.gnome.gnome-keyring.enable = true;
 
