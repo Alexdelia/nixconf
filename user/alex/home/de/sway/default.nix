@@ -2,6 +2,7 @@
   imports = [
     ./keybind.nix
     ./window.nix
+    ../runner/anyrun.nix
   ];
 
   wayland.windowManager.sway = {
