@@ -1,17 +1,17 @@
 - bluetooth
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
-- hyprland
-  - popup for volume and brightness change
-  - info hub (common or separate)
-    - shortcut to open
-    - datetime
-    - notifications
-    - sound device
-    - bluetooth status
-    - active music
-  - shutdown prompt
-  - alert for too long use of headset
-  - waybar (maybe)
+- popup for volume and brightness change
+- info hub (common or separate)
+  - shortcut to open
+  - datetime
+  - notifications
+  - sound device
+  - bluetooth status
+  - active music
+- shutdown prompt
+- alert for too long use of headset
+- look into [mako](https://github.com/emersion/mako)
+- waybar (maybe)
 - sops for:
   - wakatime api key
 - pass for:

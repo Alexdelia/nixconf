@@ -8,16 +8,13 @@
     ./greet
   ];
 
-  config = lib.mkIf (config.hostOption.type == "minimal") {
+  config = lib.mkIf (config.hostOption.type == "lite" || config.hostOption.type == "minimal") {
     programs.sway = {
       enable = true;
       wrapperFeatures.gtk = true;
     };
 
     environment.systemPackages = with pkgs; [
-      grim
-      slurp
-      wl-clipboard-rs
       mako
     ];
 

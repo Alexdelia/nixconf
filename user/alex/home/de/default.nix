@@ -5,7 +5,7 @@
   ...
 }: {
   imports = [
-    ./hyprland
+    # ./hyprland
     ./sway
 
     # ./eww
