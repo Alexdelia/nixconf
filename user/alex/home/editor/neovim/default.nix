@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   ...
@@ -31,6 +32,11 @@
       ## lua
       lua-language-server
 
+      ## nix
+      nil
+      nixd
+      alejandra
+
       ## rust
       rust-analyzer
       rustc
@@ -43,6 +49,11 @@
 
       ## utils
       fd
+      (
+        if config.hostOption.type == "full"
+        then wl-clipboard
+        else wl-clipboard-rs
+      )
     ];
 
     plugins = import ./plugin {inherit pkgs inputs;};

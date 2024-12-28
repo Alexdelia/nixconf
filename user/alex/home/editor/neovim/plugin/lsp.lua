@@ -26,6 +26,18 @@ local on_attach = function(_, bufnr)
                                          {})
 end
 
+vim.api.nvim_create_augroup('AutoFormat', {})
+vim.api.nvim_create_autocmd(
+	'BufWritePre',
+	{
+		pattern = '*.nix',
+		group = 'AutoFormat',
+		callback = function()
+			vim.lsp.buf.format({ async = false })
+		end,
+	}
+)
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
@@ -59,7 +71,24 @@ lspconfig.nil_ls.setup {
         return lspconfig.util.root_pattern("flake.nix", "default.nix",
                                            "shell.nix", ".git")(fname) or
                    vim.loop.cwd()
-    end
+    end,
+
+	settings = {
+                ['nil'] = {
+                    formatting = { command = {"alejandra"}}
+                }
+            }
+}
+lspconfig.nixd.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+
+	filetypes = {"nix"},
+	root_dir = function(fname)
+		return lspconfig.util.root_pattern("flake.nix", "default.nix",
+										   "shell.nix", ".git")(fname) or
+				   vim.loop.cwd()
+	end
 }
 
 -- # rust
@@ -73,7 +102,54 @@ lspconfig.rust_analyzer.setup {
                    vim.loop.cwd()
     end,
 
-    settings = {["rust-analyzer"] = {cargo = {allFeatures = true}}}
+    settings = {
+        ['rust-analyzer'] = {
+            assist = {
+                emitMustUse = true,
+            },
+            cargo = {
+				allFeatures = true,
+                targetDir = true,
+            },
+            imports = {
+                granularity = {
+                    enforce = true,
+                },
+                preferNoStd = true,
+            },
+            inlayHints = {
+                closureCaptureHints = {
+                    enable = true,
+                },
+                closureReturnTypeHints = {
+                    enable = true,
+                },
+                discriminantHints = {
+                    enable = true,
+                },
+                expressionAdjustmentHints = {
+                    enable = true,
+                },
+                genericParameterHints = {
+                    lifetime = {
+                        enable = true,
+                    },
+                    type = {
+                        enable = true,
+                    },
+                },
+                implicitDrops = {
+                    enable = true,
+                },
+                lifetimeElisionHints = {
+                    enable = true,
+                },
+                rangeExclusiveHints = {
+                    enable = true,
+                },
+            }
+        }
+	}
 }
 
 -- # c/c++
