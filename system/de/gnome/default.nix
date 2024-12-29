@@ -5,6 +5,8 @@
   ...
 }: {
   config = lib.mkIf (config.hostOption.type == "full") {
+    hostOption.spec.wlroots = false;
+
     services.xserver = {
       enable = true;
 

@@ -50,9 +50,9 @@
       ## utils
       fd
       (
-        if config.hostOption.type == "full"
-        then wl-clipboard
-        else wl-clipboard-rs
+        if config.hostOption.spec.wlroots
+        then wl-clipboard-rs
+        else wl-clipboard
       )
     ];
 

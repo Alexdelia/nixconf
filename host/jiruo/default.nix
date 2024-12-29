@@ -28,6 +28,11 @@
   hostOption = {
     type = "full";
 
+    spec = {
+      width = 2560;
+      height = 1440;
+    };
+
     entertainment = {
       music = true;
       video = true;

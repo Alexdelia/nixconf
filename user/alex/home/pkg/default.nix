@@ -4,9 +4,9 @@
   ...
 }: let
   clipboard =
-    if config.hostOption.type == "full"
-    then pkgs.wl-clipboard
-    else pkgs.wl-clipboard-rs;
+    if config.hostOption.spec.wlroots
+    then pkgs.wl-clipboard-rs
+    else pkgs.wl-clipboard;
 in {
   dp = {
     clipboard-copy = "${clipboard}/bin/wl-copy";

@@ -11,7 +11,7 @@ in {
     anchor = "bottom-right";
 
     backgroundColor = "${s.base00}ab";
-    borderColor = "${s.base0E}80";
+    borderColor = "${s.base0D}80";
     borderRadius = 15;
     borderSize = 3;
     # progressColor = "source ${s.base0D}00";
@@ -21,7 +21,7 @@ in {
 
     margin = "10";
     padding = "3";
-    width = null;
+    width = builtins.floor (config.hostOption.spec.width * 7 / 24);
 
     defaultTimeout = 5 * 1000; # ms
 
@@ -32,7 +32,7 @@ in {
       border-color=${s.base04}80
 
       [urgency=normal]
-      border-color=${s.base0E}80
+      border-color=${s.base0D}80
 
       [urgency=high]
       border-color=${s.base08}80
