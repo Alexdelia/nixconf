@@ -1,4 +1,3 @@
-- setup [mako](https://github.com/emersion/mako)
 - bluetooth
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
 - popup for volume and brightness change
