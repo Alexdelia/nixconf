@@ -15,32 +15,29 @@
 		:halign "center"
 		:valign "center"
 		:space-evenly false
-		:style "background-color: rgba(255, 0, 0, 0.5);"
+		;; :style "background-color: rgba(255, 0, 0, 0.5);"
 
-		(button
-			:onclick "alacritty"
-			:timeout "30s"
+		(powermenu_btn :text "" :onclick "poweroff")
+		(powermenu_btn :text "" :onclick "reboot")
+		(powermenu_btn :text "" :onclick "systemctl hibernate")
+	)
+)
 
-			""
-		)
-		(input
-			:onaccept ""
-			:timeout "30s"
-			:value "⏻"
-		)
+(defwidget powermenu_btn [text onclick]
+	(button
+		:class "powermenu-btn"
+		:onclick onclick
+		:timeout "30s"
 
-		(input
-			:onaccept "eww close powermenu; eww open info_hub"
-			:timeout "30s"
+		:width 240
+		:height 240
 
-			""
-		)
+		(label
+			;; :justify ""
+			:xalign 0.25
 
-		(input
-			:onaccept "eww close powermenu; eww open info_hub"
-			:timeout "30s"
-
-			""
+			:text text
 		)
 	)
 )
+

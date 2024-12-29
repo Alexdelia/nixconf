@@ -36,6 +36,10 @@
       url = "github:anyrun-org/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    eww = {
+      url = "github:elkowar/eww?rev=6ee166707fb644d501a6d9151a491d07916ca4ed";
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: let

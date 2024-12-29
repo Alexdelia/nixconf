@@ -1,6 +1,6 @@
 {
-  # config,
-  # scheme ? {},
+  config,
+  scheme ? {},
   pkgs,
   ...
 }: {
@@ -8,7 +8,7 @@
     # ./hyprland
     ./sway
 
-    # ./eww
+    ./eww
 
     ./gtk
     # ./qt
@@ -17,7 +17,6 @@
   home.packages = with pkgs; [
     libnotify
   ];
-  /*
 
   home.file."${config.xdg.configHome}/rice/color.scss".text = let
     c = (config.scheme or scheme).withHashtag;
@@ -39,5 +38,4 @@
     $base0E:${c.base0E};
     $base0F:${c.base0F};
   '';
-  */
 }

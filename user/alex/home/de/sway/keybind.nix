@@ -20,8 +20,8 @@ in {
 
     # widgets
     "${modifier}+d" = "exec ${config.dp.dmenu}";
-    # "${modifier}+a" = "exec ${config.dp.infoHub}";
-    # "${modifier}+w" = "exec ${config.dp.powermenu}";
+    "${modifier}+a" = "exec ${config.dp.infoHub}";
+    "${modifier}+w" = "exec ${config.dp.powermenu}";
 
     # screen read
     "${modifier}+s" = "exec ${config.customScript.screenshot}";

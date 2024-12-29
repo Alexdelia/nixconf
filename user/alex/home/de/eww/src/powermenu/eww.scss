@@ -1,0 +1,33 @@
+.powermenu-btn {
+  background-color: $base01;
+
+  border: none;
+  border-radius: 2rem;
+
+  text-decoration: none;
+
+  font-size: 8rem;
+
+  margin: 1rem;
+
+  transition:
+    color 0.3s ease-out,
+    background-color 0.5s;
+
+  // text-shadow: 0 0 1rem $base03;
+  // text-shadow: 0.2rem 0.2rem 0.2rem $base00;
+}
+
+.powermenu-btn:focus {
+  outline: none;
+  // background-color: $base0E;
+  color: $base0E;
+}
+
+.powermenu-btn:hover {
+  background-color: $base02;
+}
+
+.powermenu-btn:active {
+  background-color: $base03;
+}

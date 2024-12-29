@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  inputs,
+  pkgs,
+  ...
+}: let
   # open = "eww open --toggle";
   open = "eww -c ~/.nc/user/alex/home/de/eww/src/ open --toggle";
 
@@ -18,6 +22,8 @@ in {
 
   programs.eww = {
     enable = true;
+
+    package = inputs.eww.packages.${pkgs.system}.eww;
 
     configDir = ./src;
   };

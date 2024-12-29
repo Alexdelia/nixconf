@@ -1,7 +1,8 @@
 {pkgs, ...}: {
-  home.packages = [
-    (pkgs.nerdfonts.override {fonts = ["RobotoMono" "SourceCodePro"];})
-    # maple-mono
+  home.packages = with pkgs; [
+    (nerdfonts.override {fonts = ["RobotoMono" "SourceCodePro"];})
+
+    maple-mono
   ];
 
   fonts.fontconfig = {

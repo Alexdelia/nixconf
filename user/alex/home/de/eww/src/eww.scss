@@ -2,7 +2,8 @@
 
 * {
   /* all: unset; */
-  transition: all 1s;
+  transition:
+    background-color 0.5s,
 }
 
 @import './info_hub/eww.scss';
