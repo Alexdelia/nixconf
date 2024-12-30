@@ -15,7 +15,6 @@
 		:halign "center"
 		:valign "center"
 		:space-evenly false
-		;; :style "background-color: rgba(255, 0, 0, 0.5);"
 
 		(powermenu_btn :text "" :onclick "poweroff")
 		(powermenu_btn :text "" :onclick "reboot")

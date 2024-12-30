@@ -7,10 +7,7 @@
 		:height "90%"
 		:anchor "center"
 	)
-    :stacking "fg"
-    ;; :reserve (struts :distance "40px" :side "top")
-    :windowtype "dock"
-    :wm-ignore false
+	:stacking "fg"
 	:focusable true
 
 	(box

@@ -9,37 +9,6 @@
 @import './info_hub/eww.scss';
 @import './powermenu/eww.scss';
 
-.info_hub {
-  font-family: 'SauceCodeProNerdFont', monospace;
-  font-size: 2rem;
-}
-
 .background {
   background-color: transparent;
-}
-
-.info-box {
-  border-radius: 2rem;
-
-  background-color: $base00;
-
-  padding: 0rem 1rem;
-  margin: 1rem;
-}
-
-.time-box {
-  color: $base0D;
-  font-family: 'MapleMono', 'SauceCodeProNerdFont', monospace;
-  font-size: 6rem;
-  font-weight: 900;
-}
-
-.music-box {
-  // background-image: url('/tmp/cover-1beajbg3.png');
-}
-
-.music-art {
-  border-radius: 2rem;
-
-  transition: all 1s;
 }

@@ -8,7 +8,6 @@
   - sound device
   - bluetooth status
   - active music
-- shutdown prompt
 - alert for too long use of headset
 - waybar (maybe)
 - sops for:
