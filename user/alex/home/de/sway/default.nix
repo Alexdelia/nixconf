@@ -6,8 +6,8 @@
   checkConfig = true;
 in {
   imports = [
-    ./input.nix
-    (import ./keybind.nix {inherit checkConfig;})
+    (import ./input.nix {inherit checkConfig;})
+    ./keybind.nix
     ./window.nix
 
     ../notification/mako.nix
