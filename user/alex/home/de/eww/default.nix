@@ -3,8 +3,8 @@
   pkgs,
   ...
 }: let
-  # open = "eww open --toggle";
-  open = "eww -c ~/.nc/user/alex/home/de/eww/src/ open --toggle";
+  open = "eww open --toggle";
+  # open = "eww -c ~/.nc/user/alex/home/de/eww/src/ open --toggle";
 
   infoHub =
     pkgs.writers.writeBashBin "info-hub" {} "${open} info_hub";
