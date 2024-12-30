@@ -17,7 +17,7 @@ in {
 
     environment.loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ] && [ -L "/home/${mainUser}/.config/hypr/hyprland.conf" ]; then
-        exec dbus-launch Hyprland || echo 'oh no!'
+        exec Hyprland
       fi
     '';
   };
