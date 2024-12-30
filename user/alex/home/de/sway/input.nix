@@ -9,7 +9,7 @@
         # https://discourse.nixos.org/t/services-xserver-xkb-extralayouts-doesnt-seem-to-be-compatible-with-sway/46128
         xkb_layout =
           if checkConfig
-          then "en"
+          then "us"
           else "qwerty-dev-ca";
       };
       "1267:12608:ELAN0001:00_04F3:3140_Touchpad" = {
