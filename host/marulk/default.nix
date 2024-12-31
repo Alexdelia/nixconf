@@ -1,22 +1,7 @@
 {
-  inputs,
-  hostname,
-  users,
-  stateVersion,
-  ...
-}: {
-  # TODO: implement better system, to remove duplicate and add structure
-  imports = [
-    # ./hardware-configuration.nix
-    ../../system
-  ];
-  # ++ map (username: (import ../../user/${username} {
-  # inherit username;
-  # inherit inputs;
-  # inherit stateVersion;
-  # }))
-  # users;
+  imports = [../../system];
 
+  # TODO: set in `system/de`
   stylix.enable = true;
 
   hostOption = {
@@ -29,28 +14,20 @@
     };
   };
 
+  # TODO: move to `system/bluetooth.nix`
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
   };
   services.blueman.enable = true;
 
+  # TODO: move to `system/boot.nix`
+  # `system/boot.nix` will need an option for the device
   boot.loader.grub = {
     enable = true;
     device = "/dev/nvme0n1";
     useOSProber = true;
   };
-
-  # TODO: remove duplicate
-  networking.hostName = hostname; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -70,10 +47,4 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 }

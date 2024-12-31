@@ -18,6 +18,7 @@
       ./sound
       ./service
       ./de
+      ./networking.nix
     ]
     ++ (
       users |> map (username: (import ../user/${username} {
