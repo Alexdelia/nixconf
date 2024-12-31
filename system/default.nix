@@ -3,28 +3,27 @@
   stateVersion,
   users,
   inputs,
+  config,
   lib,
   ...
 }: {
-  imports =
-    [
-      ../host/${hostname}/hardware-configuration.nix
+  imports = [
+    ../host/${hostname}/hardware-configuration.nix
 
-      # ./boot.nix
-      ./group.nix
-      ./locale.nix
-      ./zone.nix
-      ./keyboard
-      ./sound
-      ./service
-      ./de
-      ./networking.nix
-    ]
-    ++ (
-      users |> map (username: (import ../user/${username} {
-        inherit username inputs stateVersion;
-      }))
-    );
+    # ./boot.nix
+    ./group.nix
+    ./locale.nix
+    ./zone.nix
+    ./keyboard
+    ./sound
+    ./service
+    ./de
+    ./networking.nix
+  ] ++ (
+    users |> map (username: (import ../user/${username} {
+      inherit username inputs stateVersion;
+    }))
+  );
 
   nix = {
     settings = {
@@ -42,14 +41,22 @@
 
   # nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "copilot.vim"
-      "slack"
-      "steam"
-      "steam-unwrapped"
-      "code"
-      "vscode"
-    ];
+    builtins.elem (lib.getName pkg) ([
+        "copilot.vim"
+        "slack"
+        "code"
+        "vscode"
+      ]
+      ++ (
+        if (config.hostOption.entertainment.gaming)
+        then ["steam" "steam-unwrapped"]
+        else []
+      )
+      ++ (
+        if (config.hostOption.spec.nvidia)
+        then lib.hasPrefix "nvidia" (lib.getName pkg)
+        else []
+      ));
 
   # TODO: remove duplicate
   # This value determines the NixOS release from which the default
