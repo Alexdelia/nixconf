@@ -20,5 +20,7 @@ in {
         exec Hyprland
       fi
     '';
+
+    stylix.enable = true;
   };
 }

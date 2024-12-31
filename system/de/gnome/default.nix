@@ -69,6 +69,7 @@
       gnome-user-share
     ];
 
+    # TODO: move to ./dconf.nix
     programs.dconf = {
       enable = true;
 
@@ -130,5 +131,7 @@
         }
       ];
     };
+
+    stylix.enable = true;
   };
 }

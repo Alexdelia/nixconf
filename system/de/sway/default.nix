@@ -22,11 +22,15 @@
 
     services.gnome.gnome-keyring.enable = true;
 
-    /*
-    stylix.targets = {
-      sway.enable = true;
-      swaylock.enable = false;
+    stylix = {
+      enable = true;
+
+      /*
+      targets = {
+        sway.enable = true;
+        swaylock.enable = false;
+      };
+      */
     };
-    */
   };
 }
