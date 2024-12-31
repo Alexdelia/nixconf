@@ -1,9 +1,6 @@
 {
   imports = [../../system];
 
-  # TODO: set in `system/de`
-  stylix.enable = true;
-
   hostOption = {
     type = "lite";
 
@@ -28,9 +25,6 @@
     device = "/dev/nvme0n1";
     useOSProber = true;
   };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
