@@ -1,16 +1,11 @@
 {
-  hostname,
-  users,
-  stateVersion,
-  ...
-}: {
   imports = [
     ../../system
 
     # inputs.disko.nixosModules.disko
     ./nvidia.nix
     # ./disko.nix
-    (import ./docker.nix {inherit users;})
+    ./docker.nix
   ];
 
   hostOption = {

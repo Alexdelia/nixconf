@@ -48,12 +48,12 @@
         "vscode"
       ]
       ++ (
-        if (config.hostOption.entertainment.gaming)
+        if config.hostOption.entertainment.gaming
         then ["steam" "steam-unwrapped"]
         else []
       )
       ++ (
-        if (config.hostOption.spec.nvidia)
+        if config.hostOption.spec.nvidia
         then lib.hasPrefix "nvidia" (lib.getName pkg)
         else []
       ));
