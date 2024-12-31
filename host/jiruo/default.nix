@@ -3,8 +3,8 @@
     ../../system
 
     # inputs.disko.nixosModules.disko
-    ./nvidia.nix
     # ./disko.nix
+    ./nvidia.nix
     ./docker.nix
   ];
 
@@ -23,30 +23,16 @@
     };
   };
 
-  # Bootloader.
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-    useOSProber = true;
-    efiSupport = true;
-    # efiInstallAsRemovable = true;
+  boot.loader = {
+    grub = {
+      enable = true;
+      device = "/dev/sda";
+      useOSProber = true;
+      efiSupport = true;
+      # efiInstallAsRemovable = true;
+    };
+
+    # systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
-  # boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 }
