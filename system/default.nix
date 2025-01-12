@@ -54,7 +54,7 @@
       )
       ++ (
         if config.hostOption.spec.nvidia
-        then lib.hasPrefix "nvidia" (lib.getName pkg)
+        then [lib.hasPrefix "nvidia" (lib.getName pkg)]
         else []
       ));
 
