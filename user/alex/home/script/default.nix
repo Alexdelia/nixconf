@@ -8,6 +8,10 @@
   imageEdit = import ./image-edit.nix {inherit config pkgs;};
   passwordGen = import ./password-gen.nix {inherit pkgs;};
 in {
+  imports = [
+    ./docker
+  ];
+
   options.customScript = lib.mkOption {
     description = "custom script I made";
 
