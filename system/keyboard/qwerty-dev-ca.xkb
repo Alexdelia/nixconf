@@ -27,7 +27,7 @@ xkb_symbols "qwerty-dev-ca"
     // key <AD05> { [ t,            T,           thorn,                  THORN                ] };
     // key <AD06> { [ y,            Y,           dead_invertedbreve,     dead_breve           ] };
     key <AD07> { [ u,            U,           ugrave,                 Ugrave               ] };
-    // key <AD08> { [ i,            I,           igrave,                 Igrave               ] };
+    key <AD08> { [ i,            I,           icircumflex,            Icircumflex          ] };
     // key <AD09> { [ o,            O,           ograve,                 Ograve               ] };
     key <AD09> { [ o,            O,           ocircumflex,            Ocircumflex          ] };
     key <AD10> { [ p,            P,           oe,                     OE                   ] };
