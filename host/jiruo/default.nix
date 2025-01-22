@@ -2,8 +2,7 @@
   imports = [
     ../../system
 
-    # inputs.disko.nixosModules.disko
-    # ./disko.nix
+    ./disko.nix
     ./nvidia.nix
     ./docker.nix
   ];
@@ -26,13 +25,12 @@
   boot.loader = {
     grub = {
       enable = true;
-      device = "/dev/sda";
-      useOSProber = true;
+      # useOSProber = true;
       efiSupport = true;
       # efiInstallAsRemovable = true;
     };
 
     # systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    # efi.canTouchEfiVariables = true;
   };
 }

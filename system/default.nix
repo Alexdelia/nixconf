@@ -7,23 +7,34 @@
   lib,
   ...
 }: {
-  imports = [
-    ../host/${hostname}/hardware-configuration.nix
+  imports =
+    [
+      ../host/${hostname}/hardware-configuration.nix
 
-    # ./boot.nix
-    ./group.nix
-    ./locale.nix
-    ./zone.nix
-    ./keyboard
-    ./sound
-    ./service
-    ./de
-    ./networking.nix
-  ] ++ (
-    users |> map (username: (import ../user/${username} {
-      inherit username inputs stateVersion;
-    }))
-  );
+      # ./boot.nix
+      ./group.nix
+      ./locale.nix
+      ./zone.nix
+      ./keyboard
+      ./sound
+      ./service
+      ./de
+      ./networking.nix
+    ]
+    ++
+    /*
+    (
+      users |> map (username: (import ../user/${username} {
+        inherit username inputs stateVersion;
+      }))
+    );
+    */
+    (
+      map (username: (import ../user/${username} {
+        inherit username inputs stateVersion;
+      }))
+      users
+    );
 
   nix = {
     settings = {
