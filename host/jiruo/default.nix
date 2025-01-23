@@ -1,7 +1,8 @@
-{
+{inputs, ...}: {
   imports = [
     ../../system
 
+    inputs.disko.nixosModules.disko
     ./disko.nix
     ./nvidia.nix
     ./docker.nix

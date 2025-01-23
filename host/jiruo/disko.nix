@@ -1,15 +1,4 @@
-{inputs, ...}: {
-  imports = [
-    inputs.disko.nixosModules.disko
-  ];
-
-  /*
-  fileSystems = {
-    "/".device = lib.mkForce "/dev/disk/by-partlabel/root";
-    "/boot".device = lib.mkForce "/dev/disk/by-partlabel/ESP";
-  };
-  */
-
+{
   disko.devices = {
     disk = {
       ssd-nvme = {
@@ -45,7 +34,7 @@
       };
 
       ssd-sata = {
-        device = "/dev/disk/by-id/ata-ST2000DM001-1ER164_Z4Z3RSTY";
+        device = "/dev/disk/by-id/ata-Crucial_CT500MX200SSD1_15451100FC43";
         type = "disk";
         content = {
           type = "gpt";
@@ -61,7 +50,7 @@
       };
 
       hdd = {
-        device = "/dev/disk/by-id/ata-Crucial_CT500MX200SSD1_15451100FC43";
+        device = "/dev/disk/by-id/ata-ST2000DM001-1ER164_Z4Z3RSTY";
         type = "disk";
         content = {
           type = "gpt";
