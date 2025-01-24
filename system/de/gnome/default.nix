@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: {
@@ -19,5 +20,9 @@
     };
 
     stylix.enable = true;
+
+    environment.systemPackages = with pkgs; [
+      gnomeExtensions.fullscreen-notifications
+    ];
   };
 }
