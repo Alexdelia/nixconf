@@ -23,6 +23,7 @@
 
     environment.systemPackages = with pkgs; [
       gnomeExtensions.fullscreen-notifications
+      gnomeExtensions.impatience
     ];
   };
 }
