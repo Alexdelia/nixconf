@@ -1,5 +1,6 @@
 {
   gg = "git clone --recurse-submodules";
+  gcl = "git clone --recurse-submodules";
 
   gst = "git status --short";
   gts = "git status --short";
