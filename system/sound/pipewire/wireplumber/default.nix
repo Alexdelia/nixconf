@@ -1,4 +1,4 @@
 {
-  "98-bluez" = import ./bluez.nix;
-  "99-alsa" = import ./alsa.nix;
+  "99-bluez" = import ./bluez.nix;
+  "98-alsa" = import ./alsa.nix;
 }

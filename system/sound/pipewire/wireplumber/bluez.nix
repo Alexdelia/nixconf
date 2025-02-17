@@ -1,5 +1,5 @@
 {
-  "monitor.alsa.rules" = [
+  "monitor.bluez.rules" = [
     {
       matches = [
         {
