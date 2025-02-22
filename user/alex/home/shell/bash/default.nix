@@ -84,14 +84,13 @@
         "ignoredups"
       ];
 
-      /*
       historyIgnore = [
+        "exit"
         # "rm"
-        "l"
-        "ls"
-        "ll"
+        # "l"
+        # "ls"
+        # "ll"
       ];
-      */
 
       historyFile = "${config.xdg.cacheHome}/bash/history";
     };
