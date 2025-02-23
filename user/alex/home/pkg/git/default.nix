@@ -35,9 +35,14 @@
       # https://github.com/dandavison/delta?tab=readme-ov-file#get-started
       core.pager = "delta";
       interactive.diffFilter = "delta --color-only";
-      delta.navigate = true;
       merge.conflictStyle = "diff3";
       diff.colorMoved = "default";
+      delta = {
+        dark = true;
+        navigate = true;
+        tabs = 4;
+        line-numbers = true;
+      };
     };
 
     aliases = {
