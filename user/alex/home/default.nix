@@ -25,5 +25,6 @@
     ./browser
     ./de
     ./sops
+    ./system-monitor
   ];
 }

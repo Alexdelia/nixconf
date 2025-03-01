@@ -2,6 +2,8 @@
   s = "sudo";
   pk = "pkill";
 
+  sm = config.dp.systemMonitor;
+
   y = config.dp.clipboard-copy;
   p = config.dp.clipboard-paste;
 
