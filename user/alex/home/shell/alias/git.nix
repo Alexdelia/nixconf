@@ -1,4 +1,6 @@
-{
+let
+  basic_git_tree = "git log --graph --oneline --decorate --all";
+in {
   gg = "git clone --recurse-submodules";
   gcl = "git clone --recurse-submodules";
 
@@ -12,7 +14,8 @@
 
   gi = "git log --graph --stat --all --pretty='%n%C(magenta)╭╴%C(auto)%h%C(magenta)╶╴%C(bold green)%an%Creset%C(magenta)╶╴%C(green)%ae%C(magenta)╶╴%C(bold blue)%ch%Creset%n%C(magenta)╰╴%C(auto)%s%Creset'";
   glast = "git --no-pager log -n1 --pretty='%C(magenta)╭╴%C(auto)%h%C(magenta)╶╴%C(bold green)%an%Creset%C(magenta)╶╴%C(green)%ae%C(magenta)╶╴%C(bold blue)%ch%Creset%n%C(magenta)╰╴%C(auto)%s%Creset'";
-  gtree = "git log --graph --oneline --decorate --all";
+  gt = basic_git_tree;
+  gtree = basic_git_tree;
 
   gc = "git commit --message";
   gops = "git reset HEAD~1 --soft";
