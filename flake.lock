@@ -777,11 +777,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1741984590,
-        "narHash": "sha256-DbI7+VbejPmY6b3arOl+ic3Dmp7zo1+EoKHNIbsSInw=",
+        "lastModified": 1741985057,
+        "narHash": "sha256-tvcMOBmHDJc0BGHwtr+XFezf5p8lDWs7p4z2XHqDNdc=",
         "owner": "Alexdelia",
         "repo": "vity.nvim",
-        "rev": "6de3ed8288c18c06a4d2ff1feddd816f513c7803",
+        "rev": "eca697a6d18630b35ce46c0eac9391519793d244",
         "type": "github"
       },
       "original": {
