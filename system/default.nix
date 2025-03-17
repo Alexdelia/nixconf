@@ -46,7 +46,11 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 14d";
+      options = "--delete-older-than ${
+        if config.hostOption.type == "full"
+        then "70d"
+        else "14d"
+      }";
     };
   };
 
