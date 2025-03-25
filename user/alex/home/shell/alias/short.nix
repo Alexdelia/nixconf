@@ -18,5 +18,5 @@
   c = "cargo";
   mk = "make";
 
-  nd = "${pkgs.nom}/bin/nom develop";
+  nd = "${pkgs.nix-output-monitor}/bin/nom develop";
 }
