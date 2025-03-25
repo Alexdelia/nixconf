@@ -1,4 +1,6 @@
-{pkgs, ...}: (
+{pkgs, ...}: let
+  nom = "${pkgs.nix-output-monitor}/bin/nom";
+in (
   pkgs.writers.writeBashBin
   "ns" {}
   /*
@@ -6,7 +8,7 @@
   */
   ''
     if [[ $# -eq 0 ]]; then
-    	nix shell
+    	${nom} shell
     fi
 
     pkgs=""
@@ -14,6 +16,6 @@
     	pkgs+="nixpkgs#$pkg "
     done
 
-    nix shell $pkgs
+    ${nom} shell $pkgs
   ''
 )

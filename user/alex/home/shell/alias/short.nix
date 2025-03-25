@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   s = "sudo";
   pk = "pkill";
 
@@ -14,5 +18,5 @@
   c = "cargo";
   mk = "make";
 
-  nd = "nix develop";
+  nd = "${pkgs.nom}/bin/nom develop";
 }
