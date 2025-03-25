@@ -1,6 +1,6 @@
 {pkgs, ...}: let
   nom = "${pkgs.nix-output-monitor}/bin/nom";
-in (
+in
   pkgs.writers.writeBashBin
   "ns" {}
   /*
@@ -18,4 +18,3 @@ in (
 
     ${nom} shell $pkgs
   ''
-)
