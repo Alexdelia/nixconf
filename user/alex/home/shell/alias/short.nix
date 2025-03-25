@@ -2,7 +2,9 @@
   pkgs,
   config,
   ...
-}: {
+}: let
+  nom = "${pkgs.nix-output-monitor}/bin/nom";
+in {
   s = "sudo";
   pk = "pkill";
 
@@ -18,5 +20,6 @@
   c = "cargo";
   mk = "make";
 
-  nd = "${pkgs.nix-output-monitor}/bin/nom develop";
+  nd = "${nom} develop";
+  nb = "${nom} build";
 }
