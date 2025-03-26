@@ -1,7 +1,7 @@
 {
   j = "z";
   cp = "xcp -r";
-  cat = "bar -p";
+  cat = "bat -p";
   man = "batman";
   jq = "jaq";
 }
