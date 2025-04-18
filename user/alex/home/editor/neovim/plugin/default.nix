@@ -79,6 +79,11 @@ with pkgs.vimPlugins; [
       ### python
       p.tree-sitter-python
 
+      ### go
+      p.tree-sitter-go
+      p.tree-sitter-gomod
+      p.tree-sitter-gosum
+
       ### web
       p.tree-sitter-typescript
       p.tree-sitter-javascript

@@ -44,6 +44,9 @@
       rustfmt
       clippy
 
+      ## go
+      gopls
+
       ## agnostic
       typos-lsp
 

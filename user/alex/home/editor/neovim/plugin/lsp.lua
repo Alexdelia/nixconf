@@ -170,6 +170,34 @@ lspconfig.clangd.setup {
 }
 --]]
 
+-- # go
+lspconfig.gopls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+
+	filetypes = { "go", "gomod" },
+	root_dir = function(fname)
+		return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
+			vim.loop.cwd()
+	end,
+
+	settings = {
+		gopls = {
+			analyses = {
+				unusedparams = true,
+				unusedwrite = true,
+				useany = true,
+			},
+			codelenses = {
+				generate = true,
+				gc_details = true,
+				test = true,
+			},
+			staticcheck = true
+		}
+	}
+}
+
 -- # agnostic
 lspconfig.typos_lsp.setup {
 	-- cmd_env = { RUST_LOG = "error" },
