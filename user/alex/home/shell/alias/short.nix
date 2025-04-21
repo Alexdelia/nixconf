@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  ...
 }: let
   nom = "${pkgs.nix-output-monitor}/bin/nom";
 in {
@@ -13,7 +12,6 @@ in {
   y = config.dp.clipboard-copy;
   p = config.dp.clipboard-paste;
 
-  ca = "${pkgs.uutils-coreutils-noprefix}/bin/cat";
   b = "bat";
 
   v = "nvim";
