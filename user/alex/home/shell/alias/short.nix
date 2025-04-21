@@ -13,7 +13,7 @@ in {
   y = config.dp.clipboard-copy;
   p = config.dp.clipboard-paste;
 
-  ca = "cat";
+  ca = "${pkgs.uutils-coreutils-noprefix}/bin/cat";
   b = "bat";
 
   v = "nvim";
