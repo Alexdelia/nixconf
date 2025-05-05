@@ -27,7 +27,11 @@
         };
       };
 
-      push.autoSetupRemote = true;
+      submodule.recurse = true;
+      push = {
+        autoSetupRemote = true;
+        recurseSubmodules = "on-demand";
+      };
       pull.rebase = false;
 
       init.defaultBranch = "main";
