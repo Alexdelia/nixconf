@@ -36,6 +36,7 @@ in {
       ripgrep
       xcp
       sd
+      bfs
       dysk
       typos
       tealdeer
