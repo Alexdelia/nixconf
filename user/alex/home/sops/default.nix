@@ -1,7 +1,7 @@
 {config, ...}: {
   imports = [
     ./listenbrainz.nix
-    # ./wakatime.nix
+    ./wakatime.nix
   ];
 
   sops = {

@@ -10,8 +10,6 @@
   - active music
 - alert for too long use of headset
 - waybar (maybe)
-- sops for:
-  - wakatime api key
 - pass for:
   - ssh connection password
 - use [pipe-operators](https://youtu.be/WOw8MJYZjRI) everywhere
