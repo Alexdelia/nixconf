@@ -16,7 +16,7 @@ in {
         	MERGE_MSG$
         	TAG_EDITMSG$
 
-        api_key = ${config.sops.placeholder.${secret_path}};
+        api_key = ${config.sops.placeholder.${secret_path}}
       '';
       path = "${config.xdg.configHome}/wakatime/${file}";
     };
