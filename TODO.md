@@ -1,4 +1,4 @@
-- bluetooth
+- bluetooth (probably with [overskride](https://github.com/kaii-lb/overskride))
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
 - popup for volume and brightness change
 - info hub (common or separate)
