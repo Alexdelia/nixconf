@@ -7,7 +7,7 @@
   ''
     if [[ $# -ne 2 ]]; then
     	printf "usage: \033[1m$0 \033[35m<semver> <commit message>\033[0m\n"
-    	return 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
+    	exit 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
     fi
 
     git commit -m 'ver: `'"$1"'` - '"$2" --no-verify
