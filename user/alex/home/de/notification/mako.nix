@@ -25,19 +25,19 @@ in {
 
     defaultTimeout = 5 * 1000; # ms
 
-    extraConfig = ''
-      outer-margin=0,5,20,0
+    settings = {
+      outer-margin = "0,5,20,0";
 
-      [urgency=low]
-      border-color=${s.base04}80
-
-      [urgency=normal]
-      border-color=${s.base0D}80
-
-      [urgency=high]
-      border-color=${s.base08}80
-      default-timeout=0
-    '';
+      "urgency=low" = {
+        borderColor = "${s.base04}80";
+      };
+      "urgency=normal" = {
+        borderColor = "${s.base0D}80";
+      };
+      "urgency=high" = {
+        borderColor = "${s.base08}80";
+      };
+    };
   };
 
   stylix.targets.mako.enable = false;

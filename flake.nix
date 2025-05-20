@@ -2,11 +2,11 @@
   description = "Alexdelia's nix/nixos config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -27,7 +27,7 @@
 
     base16.url = "github:SenchoPens/base16.nix";
     stylix = {
-      url = "github:nix-community/stylix/release-24.11";
+      url = "github:nix-community/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vity-base24 = {
@@ -36,12 +36,8 @@
     };
     vity-nvim.url = "github:Alexdelia/vity.nvim";
 
-    anyrun = {
-      url = "github:anyrun-org/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     eww = {
-      url = "github:elkowar/eww?rev=6ee166707fb644d501a6d9151a491d07916ca4ed";
+      url = "github:elkowar/eww";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
