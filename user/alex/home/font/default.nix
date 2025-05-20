@@ -12,10 +12,10 @@
     enable = true;
 
     defaultFonts = {
-      monospace = ["RobotoMono Nerd Font"];
+      monospace = ["RobotoMono"];
 
-      serif = ["RobotoMono Nerd Font"];
-      sansSerif = ["RobotoMono Nerd Font"];
+      serif = ["RobotoMono"];
+      sansSerif = ["RobotoMono"];
     };
   };
 }

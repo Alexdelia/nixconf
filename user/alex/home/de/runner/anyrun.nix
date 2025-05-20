@@ -62,7 +62,7 @@
         	all: unset;
 
         	font-size: 3rem;
-        	font-family: "SauceCodeProNerdFont";
+        	font-family: "SauceCodePro";
         	/* font-weight: bold; */
 
         	/* transition: 500ms; */
