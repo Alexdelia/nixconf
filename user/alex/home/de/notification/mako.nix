@@ -8,24 +8,24 @@ in {
   services.mako = {
     enable = true;
 
-    anchor = "bottom-right";
-
-    backgroundColor = "${s.base00}ab";
-    borderColor = "${s.base0D}80";
-    borderRadius = 15;
-    borderSize = 3;
-    # progressColor = "source ${s.base0D}00";
-
-    font = "monospace 16";
-    icons = true;
-
-    margin = "10";
-    padding = "3";
-    width = builtins.floor (config.hostOption.spec.width * 7 / 24);
-
-    defaultTimeout = 5 * 1000; # ms
-
     settings = {
+      anchor = "bottom-right";
+
+      backgroundColor = "${s.base00}ab";
+      borderColor = "${s.base0D}80";
+      borderRadius = 15;
+      borderSize = 3;
+      # progressColor = "source ${s.base0D}00";
+
+      font = "monospace 16";
+      icons = true;
+
+      margin = "10";
+      padding = "3";
+      width = builtins.floor (config.hostOption.spec.width * 7 / 24);
+
+      defaultTimeout = 5 * 1000; # ms
+
       outer-margin = "0,5,20,0";
 
       "urgency=low" = {
