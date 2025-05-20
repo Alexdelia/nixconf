@@ -1,6 +1,6 @@
 {
   i18n = {
-    defaultLocale = "C";
+    defaultLocale = "C.UTF-8";
 
     extraLocaleSettings = {
       # 31/01/1970 24:59:59
@@ -20,15 +20,5 @@
 
       LC_PAPER = "nl_NL.UTF-8";
     };
-
-    supportedLocales = [
-      "C.UTF-8/UTF-8"
-      "en_US.UTF-8/UTF-8"
-      "en_SG.UTF-8/UTF-8"
-      "mfe_MU/UTF-8"
-      "en_IN/UTF-8"
-      "nl_NL.UTF-8/UTF-8"
-      "fr_FR.UTF-8/UTF-8"
-    ];
   };
 }
