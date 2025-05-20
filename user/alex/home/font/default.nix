@@ -5,7 +5,7 @@
       sauce-code-pro
     ])
     ++ (with pkgs; [
-      maple-mono
+      maple-mono.NL-TTF-AutoHint
     ]);
 
   fonts.fontconfig = {
