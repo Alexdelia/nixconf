@@ -1,12 +1,4 @@
-{lib, ...}: {
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "copilot.vim"
-      "slack"
-      "code"
-      "vscode"
-    ];
-
+{...}: {
   imports = [
     ../../../common/option
     ../../../common/option/host-option/home-manager-module.nix

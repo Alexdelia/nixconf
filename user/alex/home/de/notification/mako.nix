@@ -8,36 +8,36 @@ in {
   services.mako = {
     enable = true;
 
-    anchor = "bottom-right";
+    settings = {
+      anchor = "bottom-right";
 
-    backgroundColor = "${s.base00}ab";
-    borderColor = "${s.base0D}80";
-    borderRadius = 15;
-    borderSize = 3;
-    # progressColor = "source ${s.base0D}00";
+      backgroundColor = "${s.base00}ab";
+      borderColor = "${s.base0D}80";
+      borderRadius = 15;
+      borderSize = 3;
+      # progressColor = "source ${s.base0D}00";
 
-    font = "monospace 16";
-    icons = true;
+      font = "monospace 16";
+      icons = true;
 
-    margin = "10";
-    padding = "3";
-    width = builtins.floor (config.hostOption.spec.width * 7 / 24);
+      margin = "10";
+      padding = "3";
+      width = builtins.floor (config.hostOption.spec.width * 7 / 24);
 
-    defaultTimeout = 5 * 1000; # ms
+      defaultTimeout = 5 * 1000; # ms
 
-    extraConfig = ''
-      outer-margin=0,5,20,0
+      "outer-margin" = "0,5,20,0";
 
-      [urgency=low]
-      border-color=${s.base04}80
-
-      [urgency=normal]
-      border-color=${s.base0D}80
-
-      [urgency=high]
-      border-color=${s.base08}80
-      default-timeout=0
-    '';
+      "urgency=low" = {
+        borderColor = "${s.base04}80";
+      };
+      "urgency=normal" = {
+        borderColor = "${s.base0D}80";
+      };
+      "urgency=high" = {
+        borderColor = "${s.base08}80";
+      };
+    };
   };
 
   stylix.targets.mako.enable = false;

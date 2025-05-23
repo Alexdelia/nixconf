@@ -1,15 +1,10 @@
 {
   pkgs,
-  inputs,
   config,
   scheme,
   ...
 }: {
-  dp.dmenu = "${inputs.anyrun.packages.${pkgs.system}.anyrun}/bin/anyrun";
-
-  imports = [
-    inputs.anyrun.homeManagerModules.default
-  ];
+  dp.dmenu = "${pkgs.anyrun}/bin/anyrun";
 
   programs.anyrun = {
     enable = true;
@@ -32,10 +27,8 @@
 
       closeOnClick = true;
 
-      plugins = with inputs.anyrun.packages.${pkgs.system}; [
-        applications
-        # ./some_plugin.so
-        # "${inputs.anyrun.packages.${pkgs.system}.anyrun-with-all-plugins}/lib/kidex"
+      plugins = [
+        "${pkgs.anyrun}/lib/libapplications.so"
       ];
     };
 
@@ -123,15 +116,4 @@
         }
       '';
   };
-
-  # nix.settings = {
-  #   builders-use-substitutes = true;
-  #   extra-substituters = [
-  #     "https://anyrun.cachix.org"
-  #   ];
-
-  #   extra-trusted-public-keys = [
-  #     "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
-  #   ];
-  # };
 }

@@ -15,11 +15,11 @@
 
     fonts = let
       mono = {
-        package = pkgs.nerdfonts.override {fonts = ["SourceCodePro"];};
+        package = pkgs.nerd-fonts.sauce-code-pro;
         name = "SourceCodePro Nerd Font";
       };
       rest = {
-        package = pkgs.nerdfonts.override {fonts = ["RobotoMono"];};
+        package = pkgs.nerd-fonts.roboto-mono;
         name = "RobotoMono Nerd Font";
       };
     in {

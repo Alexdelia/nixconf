@@ -11,7 +11,7 @@
     ./eww
 
     ./gtk
-    # ./qt
+    ./qt
   ];
 
   home.packages = with pkgs; [

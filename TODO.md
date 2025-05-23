@@ -1,5 +1,7 @@
 - bluetooth (probably with [overskride](https://github.com/kaii-lb/overskride))
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
+- logiops config
+- music player (probably [rmpc](https://github.com/mierak/rmpc))
 - popup for volume and brightness change
 - info hub (common or separate)
   - shortcut to open

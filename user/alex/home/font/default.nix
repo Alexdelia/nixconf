@@ -1,9 +1,14 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["RobotoMono" "SourceCodePro"];})
+  home.packages =
+    (with pkgs.nerd-fonts; [
+      roboto-mono
+      sauce-code-pro
 
-    maple-mono
-  ];
+      symbols-only
+    ])
+    ++ (with pkgs; [
+      maple-mono.NL-TTF-AutoHint
+    ]);
 
   fonts.fontconfig = {
     enable = true;
