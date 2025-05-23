@@ -26,7 +26,7 @@ in {
 
       defaultTimeout = 5 * 1000; # ms
 
-      outer-margin = "0,5,20,0";
+      "outer-margin" = "0,5,20,0";
 
       "urgency=low" = {
         borderColor = "${s.base04}80";
