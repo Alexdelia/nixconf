@@ -9,7 +9,7 @@
       enable = true;
 
       font = lib.mkForce {
-        name = "SauceCodePro";
+        name = "SourceCodePro";
         size = 16;
       };
 

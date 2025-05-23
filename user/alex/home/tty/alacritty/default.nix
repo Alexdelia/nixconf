@@ -19,13 +19,11 @@
             size = 16.0;
 
             normal = {
-              # family = "SauceCodePro";
-              family = "RobotoMono";
+              family = "SauceCodeProNerdFont";
               style = "Regular";
             };
             bold = {
-              # family = "SauceCodePro";
-              family = "RobotoMono";
+              family = "SauceCodeProNerdFont";
               style = "Black";
             };
           };

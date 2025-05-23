@@ -16,11 +16,11 @@
     fonts = let
       mono = {
         package = pkgs.nerd-fonts.sauce-code-pro;
-        name = "SauceCodePro";
+        name = "SourceCodePro Nerd Font";
       };
       rest = {
         package = pkgs.nerd-fonts.roboto-mono;
-        name = "RobotoMono";
+        name = "RobotoMono Nerd Font";
       };
     in {
       monospace = mono;
