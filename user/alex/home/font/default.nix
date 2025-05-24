@@ -3,8 +3,6 @@
     (with pkgs.nerd-fonts; [
       roboto-mono
       sauce-code-pro
-
-      symbols-only
     ])
     ++ (with pkgs; [
       maple-mono.NL-TTF-AutoHint
