@@ -5,10 +5,23 @@
 
       (import ./material_icons_for_github.nix)
       (import ./improved_intra_42.nix)
-
-      (import ./language_tool.nix)
-      # (import ./tampermonkey.nix)
     ]
+    ++ (
+      if config.hostOption.type == "full"
+      then [
+        (import ./language_tool.nix)
+
+        # (import ./tampermonkey.nix)
+      ]
+      else []
+    )
+    ++ (
+      if config.hostOption.entertainment.music
+      then [
+        (import ./web_scrobbler.nix)
+      ]
+      else []
+    )
     ++ (
       if config.hostOption.entertainment.gaming
       then [
