@@ -51,7 +51,7 @@ in {
               modules = [
                 inputs.sops-nix.homeManagerModules.sops
 
-                inputs.stylix.homeManagerModules.stylix
+                inputs.stylix.homeModules.stylix
                 ../common/stylix.nix
 
                 inputs.base16.homeManagerModule
