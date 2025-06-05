@@ -5,7 +5,7 @@
 }: {
   programs = {
     alacritty = {
-      enable = true;
+      enable = config.targets.genericLinux.enable;
 
       settings =
         {
