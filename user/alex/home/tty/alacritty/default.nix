@@ -5,7 +5,7 @@
 }: {
   programs = {
     alacritty = {
-      enable = config.targets.genericLinux.enable;
+      inherit (config.targets.genericLinux) enable;
 
       settings =
         {
