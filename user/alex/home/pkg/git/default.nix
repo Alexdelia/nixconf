@@ -31,10 +31,18 @@
       push = {
         autoSetupRemote = true;
         recurseSubmodules = "on-demand";
+        followTags = true;
       };
       pull.rebase = false;
 
       init.defaultBranch = "main";
+
+      core.whitespace = "error,trailing-space,-space-before-tab";
+
+      status.showUntrackedFiles = "all";
+
+      branch.sort = "-committerdate";
+      tag.sort = "-taggerdate";
 
       # https://github.com/dandavison/delta?tab=readme-ov-file#get-started
       core.pager = "delta";
