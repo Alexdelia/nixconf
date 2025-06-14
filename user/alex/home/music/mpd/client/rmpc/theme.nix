@@ -105,13 +105,39 @@
 					),
 				],
                 center: [
-                    (
-                        kind: Property(Widget(States(
-                            active_style: (fg: "#808080", modifiers: "Bold"),
-                            separator_style: (fg: "#333333"),
+					(
+						kind: Property(Status(RandomV2(
+							on_label: "", off_label: "",
+							on_style: (fg: "#808080", modifiers: "Bold"),
+							off_style: (fg: "#333333"),
 						))),
-                        style: (fg: "dark_gray")
-                    ),
+					),
+					(kind: Text("  ")),
+					(
+						kind: Property(Status(RepeatV2(
+							on_label: "", off_label: "",
+							on_style: (fg: "#808080", modifiers: "Bold"),
+							off_style: (fg: "#333333"),
+						))),
+					),
+					(kind: Text("  ")),
+					(
+						kind: Property(Status(ConsumeV2(
+							off_label: "󰗶", oneshot_label: "󰻽", on_label: "󰉛",
+							off_style: (fg: "#333333"),
+							oneshot_style: (fg: "yellow"),
+							on_style: (fg: "red"),
+						))),
+					),
+					(kind: Text("  ")),
+					(
+						kind: Property(Status(SingleV2(
+							off_label: "󰖝", oneshot_label: "󱖒", on_label: "󱖐",
+							off_style: (fg: "#333333"),
+							oneshot_style: (fg: "yellow"),
+							on_style: (fg: "#d97f26"),
+						))),
+					),
 				],
                 right: []
             ),
