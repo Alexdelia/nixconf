@@ -1,4 +1,6 @@
 {
+  pkgs,
+  inputs,
   config,
   scheme ? {},
   ...
@@ -6,6 +8,11 @@
   programs = {
     alacritty = {
       enable = true;
+
+      package =
+        (import inputs.nixpkgs-unstable {
+          inherit (pkgs) system;
+        }).alacritty-graphics;
 
       settings =
         {
