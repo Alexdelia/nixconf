@@ -1,15 +1,15 @@
 {
-  pkgs,
   lib,
   config,
   ...
 }: {
   dp.music =
     lib.mkIf config.hostOption.entertainment.music
-    "${pkgs.ymuse}/bin/ymuse";
+    "alacritty -e rmpc";
 
   imports = [
     ./mpc.nix
-    ./ymuse.nix
+    ./rmpc.nix
+    # ./ymuse.nix
   ];
 }
