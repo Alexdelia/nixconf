@@ -2,11 +2,8 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    show_song_table_header: true,
-    browser_column_widths: [20, 38, 42],
+	text_color: None,
     background_color: None,
-    text_color: None,
-    header_background_color: None,
     modal_background_color: None,
 
     highlighted_item_style: (fg: "blue", modifiers: "Bold"),
@@ -90,38 +87,38 @@
         rows: [
             (
                 left: [
-                    (kind: Text("["), style: (fg: "yellow", modifiers: "Bold")),
-                    (kind: Text("]"), style: (fg: "yellow", modifiers: "Bold"))
-                ],
+					(
+						kind: Text(" "),
+						style: (fg: "#333333"),
+					),
+					(
+						kind: Text("󰓃 "),
+						style: (fg: "#999999", bg: "#333333", modifiers: "Bold")
+					),
+					(
+						kind: Property(Status(Volume)),
+						style: (fg: "#999999", bg: "#333333", modifiers: "Bold")
+					),
+					(
+						kind: Text(""),
+						style: (fg: "#333333", modifiers: "Bold")
+					),
+				],
                 center: [
-                    (kind: Property(Song(Title)), style: (modifiers: "Bold"),
-                        default: (kind: Text("No Song"), style: (modifiers: "Bold"))
-                    )
-                ],
-                right: [
-                    (kind: Property(Widget(Volume)), style: (fg: "blue"))
-                ]
+                    (
+                        kind: Property(Widget(States(
+                            active_style: (fg: "#808080", modifiers: "Bold"),
+                            separator_style: (fg: "#333333"),
+						))),
+                        style: (fg: "dark_gray")
+                    ),
+				],
+                right: []
             ),
             (
                 left: [],
-                center: [
-                    (kind: Property(Song(Artist)), style: (fg: "yellow", modifiers: "Bold"),
-                        default: (kind: Text("Unknown"), style: (fg: "yellow", modifiers: "Bold"))
-                    ),
-                    (kind: Text(" - ")),
-                    (kind: Property(Song(Album)),
-                        default: (kind: Text("Unknown Album"))
-                    )
-                ],
-                right: [
-                    (
-                        kind: Property(Widget(States(
-                            active_style: (fg: "white", modifiers: "Bold"),
-                            separator_style: (fg: "white")))
-                        ),
-                        style: (fg: "dark_gray")
-                    ),
-                ]
+                center: [],
+                right: []
             ),
 			(
 				left: [],
@@ -129,9 +126,26 @@
 				right: [],
 			),
 			(
-				left: [],
-				center: [],
-				right: [],
+				left: [
+					(kind: Text(" ")),
+                    (
+						kind: Property(Song(Artist)), style: (modifiers: "Italic"),
+                        default: (kind: Text("")),
+                    ),
+				],
+				center: [
+                    (
+						kind: Property(Song(Title)), style: (modifiers: "Bold"),
+						default: (kind: Text("-"), style: (fg: "dark_gray")),
+                    )
+				],
+				right: [
+					(
+						kind: Property(Song(Other("genre"))), style: (fg: "dark_gray"),
+						default: (kind: Text("")),
+					),
+					(kind: Text(" ")),
+				],
 			),
 			(
 				left: [],
@@ -143,11 +157,11 @@
 				center: [
 					(
 						kind: Text(""),
-						style: (fg: "#333333", modifiers: "Bold"),
+						style: (fg: "#333333"),
 					),
                     (
 						kind: Property(Status(Elapsed)),
-						style: (fg: "white", bg: "#333333", modifiers: "Bold"),
+						style: (bg: "#333333", modifiers: "Bold"),
 					),
                     (
 						kind: Property(Status(StateV2(
@@ -155,21 +169,25 @@
 							paused_label: "🮚 ",
 							stopped_label: " ",
 						))),
-						style: (fg: "#333333", bg: "#1a1a1a", modifiers: "Bold")
+						style: (fg: "#333333", bg: "#1a1a1a"),
 					),
                     (
 						kind: Property(Status(Duration)),
-						style: (fg: "white", bg: "#1a1a1a", modifiers: "Bold"),
+						style: (bg: "#1a1a1a", modifiers: "Bold"),
 					),
 					(
 						kind: Text(""),
-						style: (fg: "#1a1a1a", modifiers: "Bold"),
+						style: (fg: "#1a1a1a"),
 					),
 				],
 				right: [],
 			),
         ],
     ),
+
+    show_song_table_header: true,
+    browser_column_widths: [20, 38, 42],
+    header_background_color: None,
 
     browser_song_format: [
         (
@@ -191,4 +209,3 @@
 
     default_album_art_path: None,
 )
-
