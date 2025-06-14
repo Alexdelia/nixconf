@@ -7,7 +7,9 @@
     programs.dconf = {
       enable = true;
 
-      profiles.user.databases = [
+      profiles.user.databases = let
+        openInTerm = "alacritty -e";
+      in [
         {
           lockAll = true; # prevents overriding
 
@@ -32,18 +34,41 @@
             ## shortcut
             "org/gnome/settings-daemon/plugins/media-keys" = {
               www = ["<Super>b"];
-              calculator = ["<Super>k"];
+              # calculator = ["<Super>k"];
+              # media = ["<Super>m"]; # media player
+
+              screensaver = [""];
             };
+
             "org/gnome/settings-daemon/plugins/media-keys" = {
               custom-keybindings = [
                 "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+                "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+                "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
+                "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/"
               ];
             };
             "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-              binding = "<Super>c";
-              command = "alacritty";
               name = "alacritty";
+              command = "alacritty";
+              binding = "<Super>c";
             };
+            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+              name = "music player";
+              command = "${openInTerm} rmpc";
+              binding = "<Super>m";
+            };
+            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
+              name = "calculator";
+              command = "${openInTerm} numbat";
+              binding = "<Super>k";
+            };
+            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3" = {
+              name = "ssh fuzzy";
+              command = "${openInTerm} ssh-fuzzy";
+              binding = "<Super>j";
+            };
+
             "org/gnome/desktop/wm/keybindings" = {
               "switch-to-workspace-1" = ["<Super>1"];
               "switch-to-workspace-2" = ["<Super>2"];
@@ -60,6 +85,11 @@
               "switch-windows-backward" = ["<Shift><Alt>Tab"];
               "switch-applications" = lib.gvariant.mkEmptyArray lib.gvariant.type.string;
               "switch-applications-backward" = lib.gvariant.mkEmptyArray lib.gvariant.type.string;
+            };
+
+            "org/gnome/shell/keybindings" = {
+              "show-screenshot-ui" = ["<Super>Print" "<Super>s"];
+              "toggle-quick-settings" = [""];
             };
           };
         }
