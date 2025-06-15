@@ -3,6 +3,7 @@
 - logiops config
 - enhance [rmpc](https://github.com/mierak/rmpc)
   - add [queue information](https://mierak.github.io/rmpc/next/configuration/header/#queuelength)
+  - add ScanStatus
 - popup for volume and brightness change
 - info hub (common or separate)
   - shortcut to open
