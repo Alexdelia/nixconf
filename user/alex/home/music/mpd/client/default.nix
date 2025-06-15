@@ -9,7 +9,7 @@
 
   imports = [
     ./mpc.nix
-    ./rmpc.nix
+    ./rmpc
     # ./ymuse.nix
   ];
 }
