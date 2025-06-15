@@ -6,12 +6,9 @@
     background_color: None,
     modal_background_color: None,
 
-    highlighted_item_style: (fg: "blue", modifiers: "Bold"),
-    current_item_style: (fg: "black", bg: "blue", modifiers: "Bold"),
-
     symbols: (
 		song: " ",
-		dir: "",
+		dir: " ",
 		marker: " ",
 		ellipsis: "󰇘"
 	),
@@ -36,8 +33,8 @@
     highlight_border_style: (),
     tab_bar: (
         enabled: true,
-        active_style: (fg: "blue", bg: "black", modifiers: "Bold"),
-        inactive_style: (),
+        active_style: (fg: "#808080", bg: "#111111", modifiers: "Bold"),
+        inactive_style: (fg: "#333333", modifiers: "Bold"),
     ),
 
 	progress_bar: (
@@ -211,6 +208,8 @@
         ],
     ),
 
+    highlighted_item_style: (fg: "white", bg: "#212121", modifiers: "Bold"),
+    current_item_style: (fg: "white", bg: "#333333", modifiers: "Bold"),
     show_song_table_header: true,
     browser_column_widths: [20, 38, 42],
     header_background_color: None,
