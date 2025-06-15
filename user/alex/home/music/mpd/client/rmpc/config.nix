@@ -1,4 +1,4 @@
-{_}:
+{themeName, ...}:
 /*
 ron
 */
@@ -7,7 +7,7 @@ ron
   #![enable(unwrap_newtypes)]
   #![enable(unwrap_variant_newtypes)]
   (
-  	theme: Some("theme"),
+  	theme: Some("${themeName}"),
 
   	enable_mouse: true,
 
