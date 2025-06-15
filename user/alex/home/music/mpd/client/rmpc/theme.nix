@@ -51,34 +51,6 @@
         thumb_style: (fg: "#333333"),
     ),
 
-    song_table_format: [
-        (
-            prop: (kind: Property(Artist),
-                default: (kind: Text("Unknown"))
-            ),
-            width: "20%",
-        ),
-        (
-            prop: (kind: Property(Title),
-                default: (kind: Text("Unknown"))
-            ),
-            width: "35%",
-        ),
-        (
-            prop: (kind: Property(Album), style: (fg: "white"),
-                default: (kind: Text("Unknown Album"), style: (fg: "white"))
-            ),
-            width: "30%",
-        ),
-        (
-            prop: (kind: Property(Duration),
-                default: (kind: Text("-"))
-            ),
-            width: "15%",
-            alignment: Right,
-        ),
-    ],
-
 	// TODO: add (kind: Property(Widget(ScanStatus)))
     header: (
         rows: [
@@ -210,9 +182,48 @@
 
     highlighted_item_style: (fg: "white", bg: "#212121", modifiers: "Bold"),
     current_item_style: (fg: "white", bg: "#333333", modifiers: "Bold"),
-    show_song_table_header: true,
-    browser_column_widths: [20, 38, 42],
+
     header_background_color: None,
+    show_song_table_header: true,
+
+    song_table_format: [
+        (
+			label: "  ",
+            prop: (
+				kind: Property(Artist), style: (modifiers: "Italic"),
+                default: (kind: Text(""))
+            ),
+            width: "25%",
+			alignment: Right,
+		),
+        (
+			label: "  󰗴",
+            prop: (
+				kind: Property(Title), style: (fg: "#bfbfbf", modifiers: "Bold"),
+                default: (kind: Text("-"))
+            ),
+            width: "42%",
+        ),
+        (
+			label: "  󱈤",
+            prop: (
+				kind: Property(Other("genre")), style: (fg: "dark_gray"),
+                default: (kind: Text(""))
+            ),
+            width: "28%",
+        ),
+        (
+			label: "󰞌  ",
+            prop: (
+				kind: Property(Duration), style: (fg: "#bfbfbf"),
+				default: (kind: Text("-:--"), style: (fg: "#808080")),
+            ),
+            width: "6",
+            alignment: Right,
+        ),
+    ],
+
+    browser_column_widths: [20, 38, 42],
 
     browser_song_format: [
         (
