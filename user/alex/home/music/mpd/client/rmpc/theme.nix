@@ -125,7 +125,7 @@
 					(kind: Text(" ")),
                     (
 						kind: Property(Song(Artist)), style: (modifiers: "Italic"),
-                        default: (kind: Text("")),
+                        default: None,
                     ),
 				],
 				center: [
@@ -137,7 +137,7 @@
 				right: [
 					(
 						kind: Property(Song(Other("genre"))), style: (fg: "dark_gray"),
-						default: (kind: Text("")),
+						default: None,
 					),
 					(kind: Text(" ")),
 				],
@@ -191,7 +191,7 @@
 			label: "  ",
             prop: (
 				kind: Property(Artist), style: (modifiers: "Italic"),
-                default: (kind: Text(""))
+                default: None
             ),
             width: "25%",
 			alignment: Right,
@@ -200,7 +200,7 @@
 			label: "  󰗴",
             prop: (
 				kind: Property(Title), style: (fg: "#bfbfbf", modifiers: "Bold"),
-                default: (kind: Text("-"))
+				default: (kind: Text("-"), style: (fg: "#808080"))
             ),
             width: "42%",
         ),
@@ -208,7 +208,7 @@
 			label: "  󱈤",
             prop: (
 				kind: Property(Other("genre")), style: (fg: "dark_gray"),
-                default: (kind: Text(""))
+                default: None
             ),
             width: "28%",
         ),
@@ -223,7 +223,7 @@
         ),
     ],
 
-    browser_column_widths: [20, 38, 42],
+    browser_column_widths: [15, 42, 42],
 
     browser_song_format: [
         (
@@ -234,9 +234,9 @@
         ),
         (
             kind: Group([
-                (kind: Property(Artist)),
+                (kind: Property(Artist), style: (modifiers: "Italic")),
                 (kind: Text(" - ")),
-                (kind: Property(Title)),
+                (kind: Property(Title), style: (fg: "#bfbfbf", modifiers: "Bold")),
             ]),
             default: (kind: Property(Filename))
         ),

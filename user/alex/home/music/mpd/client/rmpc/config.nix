@@ -46,7 +46,7 @@
  	],
 
 	search: (
-		case_sensitive: true,
+		case_sensitive: false,
 		mode: Contains,
 		tags: [
 			(value: "any", label: "any"),
