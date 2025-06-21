@@ -40,8 +40,6 @@
       url = "github:elkowar/eww";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
   outputs = inputs: let
