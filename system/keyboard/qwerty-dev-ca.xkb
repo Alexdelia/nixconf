@@ -26,7 +26,7 @@ xkb_symbols "qwerty-dev-ca"
     key <AD04> { [ r,            R,           egrave,                 Egrave               ] };
     // key <AD05> { [ t,            T,           thorn,                  THORN                ] };
     // key <AD06> { [ y,            Y,           dead_invertedbreve,     dead_breve           ] };
-    key <AD07> { [ u,            U,           ucircumflex,            Ucircumflex          ] };
+    key <AD07> { [ u,            U,           ugrave,                 Ugrave               ] };
     key <AD08> { [ i,            I,           icircumflex,            Icircumflex          ] };
     // key <AD09> { [ o,            O,           ograve,                 Ograve               ] };
     key <AD09> { [ o,            O,           ocircumflex,            Ocircumflex          ] };
@@ -40,7 +40,7 @@ xkb_symbols "qwerty-dev-ca"
     // key <AC04> { [ f,            F,           VoidSymbol,             VoidSymbol           ] };
     // key <AC05> { [ g,            G,           dead_greek,             VoidSymbol           ] };
     // key <AC06> { [ h,            H,           ydiaeresis,             Ydiaeresis           ] };
-    // key <AC07> { [ j,            J,           udiaeresis,             Udiaeresis           ] };
+    key <AC07> { [ j,            J,           ucircumflex,            Ucircumflex          ] };
     // key <AC08> { [ k,            K,           idiaeresis,             Idiaeresis           ] };
     // key <AC09> { [ l,            L,           odiaeresis,             Odiaeresis           ] };
     // key <AC10> { [ semicolon,    colon,       dead_acute,             dead_abovering       ] };
