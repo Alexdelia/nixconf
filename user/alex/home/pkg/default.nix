@@ -54,6 +54,7 @@ in {
       nil
       nix-output-monitor
       alejandra
+      devenv
     ]
     ++ (
       if config.hostOption.type == "full"
