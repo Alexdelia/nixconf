@@ -9,8 +9,8 @@
       actions = {
         "update-props" = {
           "node.nick" = "hdmi global";
-          "priority.driver" = 10000;
-          "priority.session" = 10000;
+          "priority.driver" = 1100;
+          "priority.session" = 1100;
         };
       };
     }
@@ -23,8 +23,8 @@
       actions = {
         "update-props" = {
           "node.nick" = "internal soundcard";
-          "priority.driver" = 100;
-          "priority.session" = 100;
+          "priority.driver" = 10000;
+          "priority.session" = 10000;
         };
       };
     }
