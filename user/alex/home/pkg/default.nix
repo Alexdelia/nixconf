@@ -39,7 +39,7 @@ in {
       bfs
       dysk
       typos
-      tealdeer
+      tlrc
       numbat
       ouch
       oxker
