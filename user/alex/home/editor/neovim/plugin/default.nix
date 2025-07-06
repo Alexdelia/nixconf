@@ -84,6 +84,9 @@ with pkgs.vimPlugins; [
       p.tree-sitter-gomod
       p.tree-sitter-gosum
 
+      ### dart/flutter
+      p.tree-sitter-dart
+
       ### web
       p.tree-sitter-typescript
       p.tree-sitter-javascript
