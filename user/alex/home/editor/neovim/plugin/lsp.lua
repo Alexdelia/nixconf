@@ -34,7 +34,7 @@ vim.api.nvim_create_augroup('AutoFormat', {})
 vim.api.nvim_create_autocmd(
 	'BufWritePre',
 	{
-		pattern = '*.nix,*.lua',
+		pattern = '*.nix,*.lua,*.dart',
 		group = 'AutoFormat',
 		callback = function()
 			vim.lsp.buf.format({ async = false })
@@ -196,6 +196,12 @@ lspconfig.gopls.setup {
 			staticcheck = true
 		}
 	}
+}
+
+-- # dart
+lspconfig.dartls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
 }
 
 -- # agnostic
