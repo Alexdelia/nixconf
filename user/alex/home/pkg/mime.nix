@@ -8,6 +8,9 @@
       "text/html" = config.dm.browser;
 
       "audio/mpeg" = config.dm.browser;
+
+      "video/mp4" = config.dm.browser;
+      "video/webm" = config.dm.browser;
     };
   };
 }
