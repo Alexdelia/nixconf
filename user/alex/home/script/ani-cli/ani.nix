@@ -21,6 +21,7 @@ in
   ''
     if [[ $# -eq 0 ]]; then
     	${bin} --continue
+    	return $?
     fi
 
     ${bin} "$@"
