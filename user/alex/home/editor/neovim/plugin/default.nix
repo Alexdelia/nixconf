@@ -59,6 +59,8 @@ with pkgs.vimPlugins; [
       p.tree-sitter-toml
 
       ### dev env
+      p.tree-sitter-markdown
+      p.tree-sitter-markdown_inline
       p.tree-sitter-bash
       p.tree-sitter-nix
       p.tree-sitter-vim
