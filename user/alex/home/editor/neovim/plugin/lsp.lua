@@ -1,7 +1,8 @@
 local diagnostic_icon = {
-	source = {},
+	source = {
+		['typos'] = '󰷾',
+	},
 	code = {
-		['typos'] = '󰷾 ',
 	},
 }
 
