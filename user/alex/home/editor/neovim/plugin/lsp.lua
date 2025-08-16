@@ -1,8 +1,9 @@
 local diagnostic_icon = {
 	source = {
-		['typos'] = '󰷾',
+		['typos'] = ' ',
 	},
 	code = {
+		['rust-analyzer'] = ' ',
 	},
 }
 
