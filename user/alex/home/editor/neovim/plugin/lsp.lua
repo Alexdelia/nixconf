@@ -23,8 +23,16 @@ vim.diagnostic.config({
 		format = function(diagnostic)
 			local prefix = diagnostic_icon.code[diagnostic.code]
 				or diagnostic_icon.source[diagnostic.source]
-				or (diagnostic.code and '' .. diagnostic.code)
-				or (diagnostic.source and ' ' .. diagnostic.source)
+			-- or (diagnostic.code and '' .. diagnostic.code)
+			-- or (diagnostic.source and ' ' .. diagnostic.source)
+
+			if not prefix then
+				local code = diagnostic.code and '' .. diagnostic.code
+				local source = diagnostic.source and ' ' .. diagnostic.source
+				prefix = (code and source)
+					and string.format("%s %s", source, code)
+					or (code or source)
+			end
 
 			return prefix
 				and string.format("%s %s", prefix, diagnostic.message)
