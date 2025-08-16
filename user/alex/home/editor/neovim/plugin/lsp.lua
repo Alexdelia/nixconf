@@ -1,6 +1,45 @@
-vim.diagnostic.config({ signs = false })
-vim.lsp.inlay_hint.enable = true
+local diagnostic_icon = {
+	source = {},
+	code = {
+		['typos'] = '󰷾 ',
+	},
+}
 
+vim.diagnostic.config({
+	underline = true, -- testing
+
+	signs = false, -- https://neovim.io/doc/user/diagnostic.html#diagnostic-signs
+
+	-- https://neovim.io/doc/user/diagnostic.html#vim.diagnostic.Opts.VirtualText
+	virtual_text = {
+		current_line = nil, -- shows on all lines
+
+		spacing = 4,
+		prefix = '',
+		suffix = '',
+
+		-- diagnostic has type vim.Diagnostic (which extends `vim.Diagnostic.Set`)
+		-- https://neovim.io/doc/user/diagnostic.html#vim.Diagnostic.Set
+		format = function(diagnostic)
+			local prefix = diagnostic_icon.code[diagnostic.code]
+				or diagnostic_icon.source[diagnostic.source]
+				or (diagnostic.code and '' .. diagnostic.code)
+				or (diagnostic.source and ' ' .. diagnostic.source)
+
+			return prefix
+				and string.format("%s %s", prefix, diagnostic.message)
+				or diagnostic.message
+		end,
+	},
+
+	virtual_lines = false, -- diagnostic info as a virtual line under error
+
+	update_in_insert = false, -- diagnostic update in insert mode or on `InsertLeave`
+
+	severity_sort = true,
+})
+
+vim.lsp.inlay_hint.enable(true)
 
 local on_attach = function(_, bufnr)
 	local bufmap = function(keys, func)
@@ -112,6 +151,7 @@ lspconfig.rust_analyzer.setup {
 			vim.loop.cwd()
 	end,
 
+	-- https://rust-analyzer.github.io/book/configuration.html
 	settings = {
 		['rust-analyzer'] = {
 			assist = {
