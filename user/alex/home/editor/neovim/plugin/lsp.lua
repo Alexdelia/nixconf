@@ -70,6 +70,12 @@ local on_attach = function(_, bufnr)
 	bufmap('<leader>S', telescope_builtin.lsp_dynamic_workspace_symbols)
 
 	bufmap('K', vim.lsp.buf.hover)
+	bufmap('<leader>e', function()
+		local _, winid = vim.diagnostic.open_float()
+		if not winid then
+			vim.lsp.buf.hover()
+		end
+	end)
 
 	vim.api.nvim_buf_create_user_command(
 		bufnr,
