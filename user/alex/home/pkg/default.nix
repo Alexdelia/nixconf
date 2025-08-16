@@ -11,8 +11,6 @@ in {
   dp = {
     clipboard-copy = "${clipboard}/bin/wl-copy";
     clipboard-paste = "${clipboard}/bin/wl-paste";
-
-    colorpicker = "${pkgs.hyprpicker}/bin/hyprpicker -a";
   };
 
   imports = [

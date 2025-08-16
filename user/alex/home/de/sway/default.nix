@@ -45,5 +45,7 @@ in {
         enable = true;
       };
     };
+
+    dp.colorpicker = "${config.pkgs.hyprpicker}/bin/hyprpicker -a";
   };
 }

@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: {
@@ -46,6 +47,7 @@
                 "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
                 "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
                 "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/"
+                "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/"
               ];
             };
             "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
@@ -54,16 +56,21 @@
               binding = "<Super>c";
             };
             "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+              name = "color picker";
+              command = "${pkgs.wl-color-picker}/bin/wl-color-picker";
+              binding = "<Super>q";
+            };
+            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
               name = "music player";
               command = "${openInTerm} rmpc";
               binding = "<Super>m";
             };
-            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
+            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3" = {
               name = "calculator";
               command = "${openInTerm} numbat";
               binding = "<Super>k";
             };
-            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3" = {
+            "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4" = {
               name = "ssh fuzzy";
               command = "${openInTerm} ssh-fuzzy";
               binding = "<Super>j";
