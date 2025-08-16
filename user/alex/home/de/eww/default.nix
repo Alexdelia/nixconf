@@ -1,6 +1,8 @@
 {
+  config,
   inputs,
   pkgs,
+  lib,
   ...
 }: let
   open = "eww open --toggle";
@@ -12,19 +14,21 @@
   powermenu =
     pkgs.writers.writeBashBin "powermenu" {} "${open} powermenu";
 in {
-  home.packages = [
-    infoHub
-    powermenu
-  ];
+  config = lib.mkIf (config.hostOption.type == "lite" && pkgs.system != "aarch64-linux") {
+    home.packages = [
+      infoHub
+      powermenu
+    ];
 
-  dp.infoHub = "${infoHub}/bin/info-hub";
-  dp.powermenu = "${powermenu}/bin/powermenu";
+    dp.infoHub = "${infoHub}/bin/info-hub";
+    dp.powermenu = "${powermenu}/bin/powermenu";
 
-  programs.eww = {
-    enable = true;
+    programs.eww = {
+      enable = true;
 
-    package = inputs.eww.packages.${pkgs.system}.eww;
+      package = inputs.eww.packages.${pkgs.system}.eww;
 
-    configDir = ./src;
+      configDir = ./src;
+    };
   };
 }
