@@ -29,7 +29,7 @@ vim.diagnostic.config({
 			-- or (diagnostic.source and ' ' .. diagnostic.source)
 
 			if not prefix then
-				local code = diagnostic.code and '' .. diagnostic.code
+				local code = diagnostic.code and ' ' .. diagnostic.code
 				local source = diagnostic.source and ' ' .. diagnostic.source
 				prefix = (code and source)
 					and string.format("%s %s", source, code)
@@ -47,6 +47,29 @@ vim.diagnostic.config({
 	update_in_insert = false, -- diagnostic update in insert mode or on `InsertLeave`
 
 	severity_sort = true,
+
+	float = {
+		scope = 'cursor',
+		severity_sort = true,
+
+		header = '',
+		source = false,
+		prefix = '',
+		suffix = '',
+		format = function(diagnostic)
+			local source = diagnostic.source and (' ' .. diagnostic.source .. '\n') or ''
+			local code = diagnostic.code and (' ' .. diagnostic.code .. '\n') or ''
+
+			return string.format(
+				"%s%s%s\n",
+				source,
+				code,
+				diagnostic.message
+			)
+		end,
+
+		border = 'rounded',
+	},
 })
 
 vim.lsp.inlay_hint.enable(true)
