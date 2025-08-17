@@ -1,9 +1,11 @@
 local diagnostic_icon = {
 	source = {
 		['typos'] = ' ',
+		['rust-analyzer'] = ' ',
+		['rustc'] = ' ',
 	},
 	code = {
-		['rust-analyzer'] = ' ',
+		['non_upper_case_globals'] = ' ',
 	},
 }
 
@@ -57,8 +59,8 @@ vim.diagnostic.config({
 		prefix = '',
 		suffix = '',
 		format = function(diagnostic)
-			local source = diagnostic.source and (' ' .. diagnostic.source .. '\n') or ''
-			local code = diagnostic.code and (' ' .. diagnostic.code .. '\n') or ''
+			local source = diagnostic.source and ('\t ' .. diagnostic.source .. '\n') or ''
+			local code = diagnostic.code and ('\t ' .. diagnostic.code .. '\n') or ''
 
 			return string.format(
 				"%s%s%s\n",
@@ -200,15 +202,17 @@ lspconfig.rust_analyzer.setup {
 				emitMustUse = true,
 			},
 			cargo = {
-				allFeatures = true,
-				targetDir = true,
+				allFeatures = true, -- possibly deprecated in favor of `features = 'all'`
+				features = 'all',
+				allTargets = true,
+				-- targetDir = true, -- https://rust-analyzer.github.io/book/configuration.html#cargo.targetDir
 			},
 			imports = {
 				granularity = {
 					enforce = true,
 				},
-				preferNoStd = true,
 			},
+			-- https://rust-analyzer.github.io/book/configuration.html#inlayHints.bindingModeHints.enable
 			inlayHints = {
 				closureCaptureHints = {
 					enable = true,
@@ -220,26 +224,48 @@ lspconfig.rust_analyzer.setup {
 					enable = true,
 				},
 				expressionAdjustmentHints = {
-					enable = true,
+					enable = "never",
 				},
 				genericParameterHints = {
 					lifetime = {
-						enable = true,
+						enable = false,
 					},
 					type = {
 						enable = true,
 					},
 				},
 				implicitDrops = {
-					enable = true,
+					enable = false,
 				},
 				lifetimeElisionHints = {
-					enable = true,
+					enable = "never",
 				},
 				rangeExclusiveHints = {
 					enable = true,
 				},
-			}
+			},
+			interpret = {
+				tests = true,
+			},
+			-- enabling extra semantic highlighting because I love specialized color information
+			semanticHighlighting = {
+				operator = {
+					specialization = {
+						enable = true,
+					},
+				},
+				punctuation = {
+					enable = true,
+					separate = {
+						macro = {
+							bang = true,
+						},
+					},
+					specialization = {
+						enable = true,
+					},
+				},
+			},
 		}
 	}
 }
