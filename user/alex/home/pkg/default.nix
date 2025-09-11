@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   ...
@@ -66,5 +67,17 @@ in {
         slack
       ]
       else []
+    );
+
+  nixpkgs.config.allowUnfreePredicate =
+    lib.mkIf (config.targets.genericLinux.enable == true)
+    (
+      pkg:
+        builtins.elem (lib.getName pkg) [
+          "copilot.vim"
+          "slack"
+          "code"
+          "vscode"
+        ]
     );
 }
