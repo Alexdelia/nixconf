@@ -11,6 +11,8 @@
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   mpc = "${pkgs.mpc-cli}/bin/mpc";
+
+  notify = "${pkgs.libnotify}/bin/notify-send";
 in {
   wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault {
     # apps
@@ -20,8 +22,8 @@ in {
 
     # widgets
     "${modifier}+d" = "exec ${config.dp.dmenu}";
-    "${modifier}+a" = "exec ${config.dp.infoHub}";
-    "${modifier}+w" = "exec ${config.dp.powermenu}";
+    "${modifier}+a" = "exec ${config.dp.infoHub or notify + " 'no infoHub'"}";
+    "${modifier}+w" = "exec ${config.dp.powermenu or notify + " 'no powermenu'"}";
 
     # screen read
     "${modifier}+s" = "exec ${config.customScript.screenshot}";

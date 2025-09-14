@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: let
@@ -46,6 +47,6 @@ in {
       };
     };
 
-    dp.colorpicker = "${config.pkgs.hyprpicker}/bin/hyprpicker -a";
+    dp.colorpicker = "${pkgs.hyprpicker}/bin/hyprpicker -a";
   };
 }
