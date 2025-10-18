@@ -10,7 +10,8 @@
     	exit 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
     fi
 
-    git commit -m 'ver: `'"$1"'` - '"$2" --no-verify --quiet
+    git diff --staged --quiet --exit-code || git commit -m 'ver: `'"$1"'` - '"$2" --no-verify --quiet
+
     git tag -a "v$1" -m 'version `'"$1"'` - '"$2"
     git push --no-verify --quiet
     git push origin tag "v$1" --no-verify --quiet
