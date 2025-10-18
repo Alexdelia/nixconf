@@ -70,7 +70,7 @@ in {
     );
 
   nixpkgs.config.allowUnfreePredicate =
-    lib.mkIf (config.targets.genericLinux.enable == true)
+    lib.mkIf config.targets.genericLinux.enable
     (
       pkg:
         builtins.elem (lib.getName pkg) [
