@@ -2,6 +2,7 @@
   j = "z";
   cp = "xcp -r";
   cat = "bat -p";
+  rat = "bat -pA";
   ca = "${pkgs.uutils-coreutils-noprefix}/bin/cat";
   man = "batman";
   jq = "jaq";
