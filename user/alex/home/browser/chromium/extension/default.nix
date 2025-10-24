@@ -10,6 +10,7 @@
       if config.hostOption.type == "full"
       then [
         (import ./language_tool.nix)
+        (import ./markdown_here.nix)
 
         # (import ./tampermonkey.nix)
       ]
