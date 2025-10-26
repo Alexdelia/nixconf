@@ -1,6 +1,6 @@
 {pkgs, ...}: (
   pkgs.writers.writeBashBin
-  "gcv" {}
+  "gtv" {}
   /*
   bash
   */
