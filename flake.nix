@@ -63,10 +63,10 @@
         users = ["alex"];
       };
       work = {
-        system = "aarch64-linux";
+        system = "x86_64-linux";
         stateVersion = "24.05";
         isNixos = false;
-        users = ["alex"];
+        users = ["alexandre"];
       };
     };
   in

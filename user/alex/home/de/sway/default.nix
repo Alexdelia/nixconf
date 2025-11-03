@@ -5,6 +5,10 @@
   ...
 }: let
   checkConfig = true;
+
+  enable =
+    (config.hostOption.type == "minimal" || config.hostOption.type == "lite")
+    && !config.targets.genericLinux.enable;
 in {
   imports = [
     (import ./input.nix {inherit checkConfig;})
@@ -15,9 +19,9 @@ in {
     ../runner/anyrun.nix
   ];
 
-  config = lib.mkIf (config.hostOption.type == "minimal" || config.hostOption.type == "lite") {
+  config = lib.mkIf enable {
     wayland.windowManager.sway = {
-      enable = config.hostOption.type == "minimal" || config.hostOption.type == "lite";
+      inherit enable;
 
       inherit checkConfig;
 
@@ -38,13 +42,11 @@ in {
     };
 
     programs = {
-      swaylock.enable = false;
+      swaylock.enable = enable;
     };
 
     services = {
-      swayidle = {
-        enable = true;
-      };
+      swayidle.enable = enable;
     };
 
     dp.colorpicker = "${pkgs.hyprpicker}/bin/hyprpicker -a";

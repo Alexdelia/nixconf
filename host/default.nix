@@ -39,7 +39,12 @@ in {
         hostname: let
           hostAttrs = hosts.${hostname};
         in
-          map (username: {
+          map (username: (let
+            userConfigName =
+              if username == "alexandre"
+              then "alex"
+              else username;
+          in {
             name = "${username}@${hostname}";
             value = inputs.home-manager.lib.homeManagerConfiguration {
               pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
@@ -65,12 +70,12 @@ in {
                     type = "lite";
                   };
                 })
-                ../user/${username}/home
+                ../user/${userConfigName}/home
 
                 ./${hostname}
               ];
             };
-          })
+          }))
           hostAttrs.users
       ) (
         builtins.attrNames
