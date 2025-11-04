@@ -1,6 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   programs.vscode = {
-    enable = true;
+    enable = !config.targets.genericLinux.enable;
     package = pkgs.vscode.fhsWithPackages (ps: with ps; [rustup zlib openssl.dev pkg-config]);
   };
 

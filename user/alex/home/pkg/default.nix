@@ -62,7 +62,7 @@ in {
       else []
     )
     ++ (
-      if pkgs.system != "aarch64-linux"
+      if (pkgs.system != "aarch64-linux" && !config.targets.genericLinux.enable)
       then [
         slack
       ]
