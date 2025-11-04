@@ -11,7 +11,18 @@
     bash = {
       enable = true;
 
-      initExtra =
+      initExtra = let
+        extraSource =
+          if config.targets.genericLinux.enable
+          then
+            /*
+            bash
+            */
+            ''
+              source ${config.xdg.configHome}/bash/bashrc
+            ''
+          else "";
+      in
         /*
         bash
         */
@@ -50,6 +61,8 @@
           complete -F _complete_alias "''${!BASH_ALIASES[@]}"
 
           PROMPT_COMMAND="''${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+          ${extraSource}
         '';
 
       bashrcExtra =
