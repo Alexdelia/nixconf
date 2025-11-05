@@ -23,7 +23,7 @@
         };
         work = {
           name = "Alexandre Delille";
-          email = "alexandre@terros.io";
+          email = "alexandre.delille@cureety.com";
         };
       };
 
