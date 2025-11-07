@@ -39,10 +39,10 @@
 
             case "$TYPE" in
               file)
-                bat $(type "$1" | sed 's/.*is\s//')
+                bat $(type -p "$1")
                 ;;
               alias)
-                type "$1" | sed 's/.*`//' | sed 's/.$//' | bat -p -l=bash
+                type "$1" | sed 's/.*`//;s/.$//' | bat -p -l=bash
                 ;;
               function)
                 type "$1" | tail +2 | bat -p -l=bash
