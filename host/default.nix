@@ -66,6 +66,7 @@ in {
                   inherit username;
                   inherit (hostAttrs) stateVersion;
                   isNixos = false;
+                  hostOption = {};
                 })
                 ../user/${userConfigName}/home
 
