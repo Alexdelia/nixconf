@@ -36,10 +36,10 @@
     };
     vity-nvim.url = "github:Alexdelia/vity.nvim";
 
-    eww = {
-      url = "github:elkowar/eww";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # eww = {
+    #   url = "github:elkowar/eww";
+    #   # inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs = inputs: let

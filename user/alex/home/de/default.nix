@@ -8,7 +8,7 @@
     # ./hyprland
     ./sway
 
-    ./eww
+    # ./eww
 
     ./gtk
     ./qt
