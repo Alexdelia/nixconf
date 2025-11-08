@@ -22,7 +22,7 @@ in {
 
       margin = "10";
       padding = "3";
-      width = builtins.floor (config.hostOption.spec.width * 7 / 24);
+      width = builtins.floor (config.hostOption.spec.screen.width * 7 / 24);
 
       defaultTimeout = 5 * 1000; # ms
 

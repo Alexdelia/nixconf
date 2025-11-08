@@ -12,8 +12,10 @@
     type = "full";
 
     spec = {
-      width = 2560;
-      height = 1440;
+      screen = {
+        width = 2560;
+        height = 1440;
+      };
     };
 
     entertainment = {

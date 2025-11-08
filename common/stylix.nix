@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   ...
@@ -37,15 +38,14 @@
       };
     };
 
-    # cursor = {
-    #   package = pkgs.vimix-cursor-theme;
-    #   name = "Vimix-Cursors-White";
-    #   # size = 32;
-    # };
     cursor = {
+      # package = pkgs.vimix-cursor-theme;
+      # name = "Vimix-Cursors-White";
+
       package = pkgs.google-cursor;
       name = "GoogleDot-White";
-      size = 16;
+
+      size = lib.mkDefault 16;
     };
   };
 }
