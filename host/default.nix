@@ -67,6 +67,7 @@ in {
                   inherit (hostAttrs) stateVersion;
                   isNixos = false;
                   hostOption = {
+                    work = true;
                     type = "lite";
                   };
                 })

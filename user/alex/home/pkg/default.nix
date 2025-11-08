@@ -62,6 +62,13 @@ in {
       else []
     )
     ++ (
+      if config.hostOption.work
+      then [
+        pkgs.dbeaver-bin
+      ]
+      else []
+    )
+    ++ (
       if (pkgs.system != "aarch64-linux" && !config.targets.genericLinux.enable)
       then [
         slack
