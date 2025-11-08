@@ -56,11 +56,13 @@ in {
               modules = [
                 inputs.sops-nix.homeManagerModules.sops
 
+                inputs.base16.homeManagerModule
+                {inherit scheme;}
+
                 inputs.stylix.homeModules.stylix
                 ../common/stylix.nix
 
-                inputs.base16.homeManagerModule
-                {inherit scheme;}
+                inputs.plasma-manager.homeModules.plasma-manager
 
                 (import ../common/mkHome.nix {
                   inherit username;

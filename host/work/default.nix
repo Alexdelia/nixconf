@@ -1,4 +1,8 @@
 _: {
+  imports = [
+    ./plasma
+  ];
+
   hostOption = {
     work = true;
     type = "lite";
@@ -12,7 +16,9 @@ _: {
   };
 
   stylix = {
-    enable = true;
+    enable = false;
+
+    targets.kde.enable = false;
 
     cursor.size = 24;
   };
