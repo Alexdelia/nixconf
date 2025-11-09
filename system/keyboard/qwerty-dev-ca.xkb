@@ -4,7 +4,7 @@ xkb_symbols "qwerty-dev-ca"
     include "us(basic)"
     include "level3(ralt_switch)"
 
-    name[Group1]= "US keyboard for development with french accents - AltGr combination";
+    name[Group1]= "qwerty layout for development with french accents - AltGr combination";
 
     // key <TLDE> { [ grave,        asciitilde,  dead_grave,             dead_tilde           ] };
     // key <AE01> { [ 1,            exclam,      onesuperior,            exclamdown           ] };
