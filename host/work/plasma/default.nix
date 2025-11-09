@@ -4,7 +4,7 @@
     ./keybind.nix
     # ./touchpad.nix
     ./window-manager.nix
-    ./panel.nix
+    # ./panel.nix
     ./screenlocker.nix
   ];
 

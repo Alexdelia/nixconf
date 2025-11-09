@@ -1,11 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{...}: {
   programs.plasma = {
     hotkeys = {
       commands = {
+        /*
         alacritty = {
           comment = "launch alacritty terminal";
           command = "${config.home.homeDirectory}/.cargo/bin/alacritty";
@@ -23,6 +20,7 @@
           command = "${pkgs.anyrun}/bin/anyrun";
           key = "Meta+D";
         };
+        */
       };
     };
 
