@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  package = (
+  package =
     if !config.targets.genericLinux.enable
     then pkgs.brave
     else
@@ -20,8 +20,7 @@
           newStr = ''export CHROME_DEVEL_SANDBOX=/opt/google/chrome/chrome-sandbox'';
         in
           builtins.replaceStrings [oldStr] [newStr] old.buildCommand;
-      })
-  );
+      });
 in {
   imports = [
     ./extension
