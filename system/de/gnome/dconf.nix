@@ -88,6 +88,17 @@
               "switch-to-workspace-9" = ["<Super>9"];
               "switch-to-workspace-10" = ["<Super>0"];
 
+              "move-to-workspace-1" = ["<Shift><Super>1"];
+              "move-to-workspace-2" = ["<Shift><Super>2"];
+              "move-to-workspace-3" = ["<Shift><Super>3"];
+              "move-to-workspace-4" = ["<Shift><Super>4"];
+              "move-to-workspace-5" = ["<Shift><Super>5"];
+              "move-to-workspace-6" = ["<Shift><Super>6"];
+              "move-to-workspace-7" = ["<Shift><Super>7"];
+              "move-to-workspace-8" = ["<Shift><Super>8"];
+              "move-to-workspace-9" = ["<Shift><Super>9"];
+              "move-to-workspace-10" = ["<Shift><Super>0"];
+
               "switch-windows" = ["<Alt>Tab"];
               "switch-windows-backward" = ["<Shift><Alt>Tab"];
               "switch-applications" = lib.gvariant.mkEmptyArray lib.gvariant.type.string;
