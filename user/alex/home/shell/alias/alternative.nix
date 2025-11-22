@@ -6,7 +6,7 @@
   ca = "${pkgs.uutils-coreutils-noprefix}/bin/cat";
   rat = "bat -pA";
   bar = "bat -pA";
-  man = "bat -l=man";
+  man = "batman";
   bam = "bat -l=man";
   baj = "bat -l=json";
 
