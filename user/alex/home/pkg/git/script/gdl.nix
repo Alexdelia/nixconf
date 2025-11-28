@@ -5,6 +5,10 @@
   bash
   */
   ''
-    git diff "HEAD~''${1:-1}"
+    if [ "$#" -eq 0 ]; then
+    	git show 'HEAD'
+    else
+    	git show "HEAD~$1"
+    fi
   ''
 )
