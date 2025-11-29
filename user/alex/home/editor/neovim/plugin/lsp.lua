@@ -134,7 +134,6 @@ vim.lsp.config("lua_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
-	root_dir = function() return vim.loop.cwd() end,
 	settings = {
 		Lua = {
 			workspace = { checkThirdParty = false },
@@ -152,14 +151,12 @@ vim.lsp.config("nil_ls", {
 	capabilities = capabilities,
 
 	filetypes = { "nix" },
-	root_dir = function(fname)
-		return vim.lsp.util.root_pattern(
-			"flake.nix",
-			"default.nix",
-			"shell.nix",
-			".git"
-		)(fname) or vim.loop.cwd()
-	end,
+	root_markers = {
+		"flake.nix",
+		"default.nix",
+		"shell.nix",
+		".git"
+	},
 
 	settings = {
 		['nil'] = {
@@ -172,14 +169,12 @@ vim.lsp.config("nixd", {
 	capabilities = capabilities,
 
 	filetypes = { "nix" },
-	root_dir = function(fname)
-		return vim.lsp.util.root_pattern(
-			"flake.nix",
-			"default.nix",
-			"shell.nix",
-			".git"
-		)(fname) or vim.loop.cwd()
-	end
+	root_markers = {
+		"flake.nix",
+		"default.nix",
+		"shell.nix",
+		".git"
+	},
 })
 
 -- # rust
@@ -188,10 +183,10 @@ vim.lsp.config("rust_analyzer", {
 	capabilities = capabilities,
 
 	filetypes = { "rust" },
-	root_dir = function(fname)
-		return vim.lsp.util.root_pattern("Cargo.toml", ".git")(fname) or
-			vim.loop.cwd()
-	end,
+	root_markers = {
+		"Cargo.toml",
+		".git"
+	},
 
 	-- https://rust-analyzer.github.io/book/configuration.html
 	settings = {
@@ -282,10 +277,10 @@ vim.lsp.config("gopls", {
 	capabilities = capabilities,
 
 	filetypes = { "go", "gomod" },
-	root_dir = function(fname)
-		return vim.lsp.util.root_pattern("go.mod", ".git")(fname) or
-			vim.loop.cwd()
-	end,
+	root_markers = {
+		"go.mod",
+		".git"
+	},
 
 	settings = {
 		gopls = {
