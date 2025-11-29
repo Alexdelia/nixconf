@@ -130,6 +130,7 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- # lua
 require('neodev').setup()
+vim.lsp.enable("lua_ls")
 vim.lsp.config("lua_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -146,6 +147,7 @@ vim.lsp.config("lua_ls", {
 })
 
 -- # nix
+vim.lsp.enable("nil_ls")
 vim.lsp.config("nil_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -164,6 +166,7 @@ vim.lsp.config("nil_ls", {
 		}
 	}
 })
+vim.lsp.enable("nixd")
 vim.lsp.config("nixd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -178,6 +181,7 @@ vim.lsp.config("nixd", {
 })
 
 -- # rust
+vim.lsp.enable("rust_analyzer")
 vim.lsp.config("rust_analyzer", {
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -265,6 +269,7 @@ vim.lsp.config("rust_analyzer", {
 
 -- # c/c++
 --[[
+vim.lsp.enable("clangd")
 vim.lsp.config("clangd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -272,6 +277,7 @@ vim.lsp.config("clangd", {
 --]]
 
 -- # go
+vim.lsp.enable("gopls")
 vim.lsp.config("gopls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
@@ -300,12 +306,14 @@ vim.lsp.config("gopls", {
 })
 
 -- # dart
+vim.lsp.enable("dartls")
 vim.lsp.config("dartls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
 
 -- # agnostic
+vim.lsp.enable("typos_lsp")
 vim.lsp.config("typos_lsp", {
 	-- cmd_env = { RUST_LOG = "error" },
 	init_options = { diagnosticSeverity = "Warning" }
