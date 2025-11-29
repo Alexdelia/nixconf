@@ -49,6 +49,7 @@
 
       ## agnostic
       typos-lsp
+      clang
 
       ## utils
       fd
