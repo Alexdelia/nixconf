@@ -128,11 +128,9 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- disable snippet
 -- capabilities.textDocument.completion.completionItem.snippetSupport = false
 
-local lspconfig = require('lspconfig')
-
 -- # lua
 require('neodev').setup()
-lspconfig.lua_ls.setup {
+vim.lsp.config("lua_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
@@ -146,16 +144,16 @@ lspconfig.lua_ls.setup {
 			},
 		}
 	}
-}
+})
 
 -- # nix
-lspconfig.nil_ls.setup {
+vim.lsp.config("nil_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
 	filetypes = { "nix" },
 	root_dir = function(fname)
-		return lspconfig.util.root_pattern(
+		return vim.lsp.util.root_pattern(
 			"flake.nix",
 			"default.nix",
 			"shell.nix",
@@ -168,30 +166,30 @@ lspconfig.nil_ls.setup {
 			formatting = { command = { "alejandra" } }
 		}
 	}
-}
-lspconfig.nixd.setup {
+})
+vim.lsp.config("nixd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
 	filetypes = { "nix" },
 	root_dir = function(fname)
-		return lspconfig.util.root_pattern(
+		return vim.lsp.util.root_pattern(
 			"flake.nix",
 			"default.nix",
 			"shell.nix",
 			".git"
 		)(fname) or vim.loop.cwd()
 	end
-}
+})
 
 -- # rust
-lspconfig.rust_analyzer.setup {
+vim.lsp.config("rust_analyzer", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
 	filetypes = { "rust" },
 	root_dir = function(fname)
-		return lspconfig.util.root_pattern("Cargo.toml", ".git")(fname) or
+		return vim.lsp.util.root_pattern("Cargo.toml", ".git")(fname) or
 			vim.loop.cwd()
 	end,
 
@@ -268,24 +266,24 @@ lspconfig.rust_analyzer.setup {
 			},
 		}
 	}
-}
+})
 
 -- # c/c++
 --[[
-lspconfig.clangd.setup {
+vim.lsp.config("clangd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 --]]
 
 -- # go
-lspconfig.gopls.setup {
+vim.lsp.config("gopls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
 	filetypes = { "go", "gomod" },
 	root_dir = function(fname)
-		return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
+		return vim.lsp.util.root_pattern("go.mod", ".git")(fname) or
 			vim.loop.cwd()
 	end,
 
@@ -304,16 +302,16 @@ lspconfig.gopls.setup {
 			staticcheck = true
 		}
 	}
-}
+})
 
 -- # dart
-lspconfig.dartls.setup {
+vim.lsp.config("dartls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
 -- # agnostic
-lspconfig.typos_lsp.setup {
+vim.lsp.config("typos_lsp", {
 	-- cmd_env = { RUST_LOG = "error" },
 	init_options = { diagnosticSeverity = "Warning" }
-}
+})
