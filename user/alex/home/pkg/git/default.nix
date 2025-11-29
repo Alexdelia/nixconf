@@ -9,7 +9,7 @@
   programs.git = {
     enable = true;
 
-    extraConfig = {
+    settings = {
       user = {
         useConfigOnly = true;
 
@@ -55,13 +55,13 @@
         tabs = 4;
         line-numbers = true;
       };
-    };
 
-    aliases = {
-      vommit = "commit";
+      alias = {
+        vommit = "commit";
 
-      identity = "! git-identity";
-      id = "! git-identity";
+        identity = "! git-identity";
+        id = "! git-identity";
+      };
     };
   };
 }
