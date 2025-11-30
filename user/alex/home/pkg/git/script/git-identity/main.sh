@@ -1,4 +1,4 @@
-#! /usr/bin/env -S nix shell nixpkgs#bash nixpkgs#uutils-coreutils-noprefix nixpkgs#git nixpkgs#ripgrep nixpkgs#skim nixpkgs#bat --command bash
+#!/usr/bin/env bash
 
 IDENTITIES=$(git config --global --name-only --get-regexp "user.*..name" | rg 'user\.(.*)\.name' -or '$1')
 ID=$(
