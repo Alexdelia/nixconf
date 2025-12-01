@@ -254,6 +254,13 @@ vim.lsp.config("clangd", {
 })
 --]]
 
+-- # python
+vim.lsp.enable("ruff")
+vim.lsp.config("ruff", {
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
 -- # go
 vim.lsp.enable("gopls")
 vim.lsp.config("gopls", {
