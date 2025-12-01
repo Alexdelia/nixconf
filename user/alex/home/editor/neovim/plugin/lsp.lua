@@ -114,7 +114,7 @@ vim.api.nvim_create_augroup('AutoFormat', {})
 vim.api.nvim_create_autocmd(
 	'BufWritePre',
 	{
-		pattern = '*.nix,*.lua,*.dart',
+		pattern = '*.nix,*.lua,*.py,*.dart',
 		group = 'AutoFormat',
 		callback = function()
 			vim.lsp.buf.format({ async = false })
