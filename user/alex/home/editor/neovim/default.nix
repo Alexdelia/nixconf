@@ -16,16 +16,12 @@
       -- # early nvim-web-devicons config
       ${builtins.readFile ./plugin/icons.lua}
 
-         -- # option.lua
-         ${builtins.readFile ./option.lua}
+      ${builtins.readFile ./option.lua}
+      ${builtins.readFile ./alias.lua}
+      ${builtins.readFile ./keymap.lua}
+      ${builtins.readFile ./whitespace.lua}
 
-         -- # alias.lua
-         ${builtins.readFile ./alias.lua}
-
-         -- # keymap.lua
-         ${builtins.readFile ./keymap.lua}
-
-         ${import ./plugin/custom {inherit (pkgs) lib;}}
+      ${import ./plugin/custom {inherit (pkgs) lib;}}
     '';
 
     extraPackages = with pkgs; [
