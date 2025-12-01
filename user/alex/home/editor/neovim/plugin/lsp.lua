@@ -152,14 +152,6 @@ vim.lsp.config("nil_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
-	filetypes = { "nix" },
-	root_markers = {
-		"flake.nix",
-		"default.nix",
-		"shell.nix",
-		".git"
-	},
-
 	settings = {
 		['nil'] = {
 			formatting = { command = { "alejandra" } }
@@ -170,14 +162,6 @@ vim.lsp.enable("nixd")
 vim.lsp.config("nixd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-
-	filetypes = { "nix" },
-	root_markers = {
-		"flake.nix",
-		"default.nix",
-		"shell.nix",
-		".git"
-	},
 })
 
 -- # rust
@@ -185,12 +169,6 @@ vim.lsp.enable("rust_analyzer")
 vim.lsp.config("rust_analyzer", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-
-	filetypes = { "rust" },
-	root_markers = {
-		"Cargo.toml",
-		".git"
-	},
 
 	-- https://rust-analyzer.github.io/book/configuration.html
 	settings = {
@@ -281,12 +259,6 @@ vim.lsp.enable("gopls")
 vim.lsp.config("gopls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-
-	filetypes = { "go", "gomod" },
-	root_markers = {
-		"go.mod",
-		".git"
-	},
 
 	settings = {
 		gopls = {
