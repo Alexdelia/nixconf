@@ -144,6 +144,11 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = builtins.readFile ./comment.lua;
   }
+  {
+    plugin = guess-indent-nvim;
+    type = "lua";
+    config = "require('guess-indent').setup {}";
+  }
   nvim-ts-context-commentstring
   {
     plugin = rust-vim;
