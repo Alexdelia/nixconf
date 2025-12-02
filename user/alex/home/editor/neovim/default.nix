@@ -40,6 +40,11 @@
       rustfmt
       clippy
 
+      ## python
+      python3
+      ruff
+      ty
+
       ## go
       gopls
 
