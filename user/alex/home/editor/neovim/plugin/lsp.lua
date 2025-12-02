@@ -260,6 +260,7 @@ vim.lsp.config("ruff", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
+vim.lsp.enable("pyright") -- until ruff supports static analysis
 
 -- # go
 vim.lsp.enable("gopls")
