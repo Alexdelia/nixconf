@@ -264,6 +264,15 @@ vim.lsp.enable("ty")
 vim.lsp.config("ty", {
 	on_attach = on_attach,
 	capabilities = capabilities,
+
+	settings = {
+		ty = {
+			inlayHints = {
+				variableTypes = true,
+				callArgumentNames = true,
+			},
+		},
+	},
 })
 
 -- # go
