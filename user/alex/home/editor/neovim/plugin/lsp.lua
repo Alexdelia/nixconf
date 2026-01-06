@@ -312,6 +312,22 @@ lspconfig.dartls.setup {
 	capabilities = capabilities,
 }
 
+-- # sql
+lspconfig.postgres_lsp.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+--[[
+lspconfig.sqls.setup {
+on_attach = on_attach,
+capabilities = capabilities,
+}
+--]]
+lspconfig.sqruff.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+
 -- # agnostic
 lspconfig.typos_lsp.setup {
 	-- cmd_env = { RUST_LOG = "error" },

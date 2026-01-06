@@ -47,6 +47,12 @@
       ## go
       gopls
 
+      ## sql
+      postgresql
+      # postgres-language-server
+      # sqls
+      sqruff
+
       ## agnostic
       typos-lsp
 
