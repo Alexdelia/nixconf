@@ -328,6 +328,12 @@ lspconfig.sqruff.setup {
 	capabilities = capabilities,
 }
 
+-- # bash
+lspconfig.bashls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+
 -- # agnostic
 lspconfig.typos_lsp.setup {
 	-- cmd_env = { RUST_LOG = "error" },

@@ -53,6 +53,9 @@
       # sqls
       sqruff
 
+      ## bash
+      bash-language-server
+
       ## agnostic
       typos-lsp
 
