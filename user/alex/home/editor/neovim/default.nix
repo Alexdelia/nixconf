@@ -50,7 +50,7 @@
 
       ## sql
       postgresql
-      # postgres-language-server
+      postgres-language-server
       # sqls
       sqruff
 
