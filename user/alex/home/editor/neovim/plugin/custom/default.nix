@@ -3,6 +3,7 @@
     "quit"
     "delete_backward"
     "open_remote_rev"
+    "run_sql"
   ];
 in
   lib.concatStringsSep "\n" (

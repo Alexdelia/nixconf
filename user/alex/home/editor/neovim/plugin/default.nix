@@ -48,6 +48,13 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = "require('crates').setup()";
   }
+  vim-dadbod
+  # {
+  #   plugin = vim-dadbod-ui;
+  #   type = "lua";
+  #   config = builtins.readFile ./dadbod-ui.lua;
+  # }
+  vim-dadbod-completion
 
   ## tree sitter
   {

@@ -48,6 +48,15 @@
       ## go
       gopls
 
+      ## sql
+      postgresql
+      # postgres-language-server
+      # sqls
+      sqruff
+
+      ## bash
+      bash-language-server
+
       ## agnostic
       typos-lsp
       clang

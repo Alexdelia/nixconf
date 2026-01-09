@@ -305,6 +305,28 @@ vim.lsp.config("dartls", {
 	capabilities = capabilities,
 })
 
+-- # sql
+lspconfig.postgres_lsp.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+--[[
+lspconfig.sqls.setup {
+on_attach = on_attach,
+capabilities = capabilities,
+}
+--]]
+lspconfig.sqruff.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+
+-- # bash
+lspconfig.bashls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+
 -- # agnostic
 vim.lsp.enable("typos_lsp")
 vim.lsp.config("typos_lsp", {

@@ -1,6 +1,6 @@
 local opt = {
 	noremap = true, -- non-recursive mapping
-	silent = true   -- do not print the command in the command-line
+	silent = true -- do not print the command in the command-line
 }
 
 local kmap = vim.api.nvim_set_keymap
@@ -26,7 +26,10 @@ local mapping_by_mode = {
 		["<A-j>"] = ":m '>+1<CR>gv=gv",
 
 		["<C-m>"] = ":lua vim.diagnostic.goto_next()<CR>",
-		["<C-n>"] = ":lua vim.diagnostic.goto_prev()<CR>"
+		["<C-n>"] = ":lua vim.diagnostic.goto_prev()<CR>",
+
+		-- ["<C-CR>"] = ":lua vim.lsp.buf.code_action()<CR>"
+		["<C-CR>"] = "<cmd>RunSql<CR>" -- until I I finish to setup lsp for sql
 	},
 	-- # normal mode keymaps
 	n = {
