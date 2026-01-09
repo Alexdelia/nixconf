@@ -114,7 +114,7 @@ vim.api.nvim_create_augroup('AutoFormat', {})
 vim.api.nvim_create_autocmd(
 	'BufWritePre',
 	{
-		pattern = '*.nix,*.lua,*.dart',
+		pattern = '*.nix,*.lua,*.py,*.dart',
 		group = 'AutoFormat',
 		callback = function()
 			vim.lsp.buf.format({ async = false })
@@ -128,15 +128,13 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- disable snippet
 -- capabilities.textDocument.completion.completionItem.snippetSupport = false
 
-local lspconfig = require('lspconfig')
-
 -- # lua
 require('neodev').setup()
-lspconfig.lua_ls.setup {
+vim.lsp.enable("lua_ls")
+vim.lsp.config("lua_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
-	root_dir = function() return vim.loop.cwd() end,
 	settings = {
 		Lua = {
 			workspace = { checkThirdParty = false },
@@ -146,54 +144,31 @@ lspconfig.lua_ls.setup {
 			},
 		}
 	}
-}
+})
 
 -- # nix
-lspconfig.nil_ls.setup {
+vim.lsp.enable("nil_ls")
+vim.lsp.config("nil_ls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-
-	filetypes = { "nix" },
-	root_dir = function(fname)
-		return lspconfig.util.root_pattern(
-			"flake.nix",
-			"default.nix",
-			"shell.nix",
-			".git"
-		)(fname) or vim.loop.cwd()
-	end,
 
 	settings = {
 		['nil'] = {
 			formatting = { command = { "alejandra" } }
 		}
 	}
-}
-lspconfig.nixd.setup {
+})
+vim.lsp.enable("nixd")
+vim.lsp.config("nixd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-
-	filetypes = { "nix" },
-	root_dir = function(fname)
-		return lspconfig.util.root_pattern(
-			"flake.nix",
-			"default.nix",
-			"shell.nix",
-			".git"
-		)(fname) or vim.loop.cwd()
-	end
-}
+})
 
 -- # rust
-lspconfig.rust_analyzer.setup {
+vim.lsp.enable("rust_analyzer")
+vim.lsp.config("rust_analyzer", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-
-	filetypes = { "rust" },
-	root_dir = function(fname)
-		return lspconfig.util.root_pattern("Cargo.toml", ".git")(fname) or
-			vim.loop.cwd()
-	end,
 
 	-- https://rust-analyzer.github.io/book/configuration.html
 	settings = {
@@ -268,26 +243,43 @@ lspconfig.rust_analyzer.setup {
 			},
 		}
 	}
-}
+})
 
 -- # c/c++
 --[[
-lspconfig.clangd.setup {
+vim.lsp.enable("clangd")
+vim.lsp.config("clangd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 --]]
 
--- # go
-lspconfig.gopls.setup {
+-- # python
+vim.lsp.enable("ruff")
+vim.lsp.config("ruff", {
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+vim.lsp.enable("ty")
+vim.lsp.config("ty", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 
-	filetypes = { "go", "gomod" },
-	root_dir = function(fname)
-		return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
-			vim.loop.cwd()
-	end,
+	settings = {
+		ty = {
+			inlayHints = {
+				variableTypes = true,
+				callArgumentNames = true,
+			},
+		},
+	},
+})
+
+-- # go
+vim.lsp.enable("gopls")
+vim.lsp.config("gopls", {
+	on_attach = on_attach,
+	capabilities = capabilities,
 
 	settings = {
 		gopls = {
@@ -304,38 +296,44 @@ lspconfig.gopls.setup {
 			staticcheck = true
 		}
 	}
-}
+})
 
 -- # dart
-lspconfig.dartls.setup {
+vim.lsp.enable("dartls")
+vim.lsp.config("dartls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
 -- # sql
-lspconfig.postgres_lsp.setup {
+vim.lsp.enable("postgres_lsp")
+vim.lsp.config("postgres_lsp", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 --[[
-lspconfig.sqls.setup {
-on_attach = on_attach,
-capabilities = capabilities,
-}
---]]
-lspconfig.sqruff.setup {
+vim.lsp.enable("sqls")
+vim.lsp.config("sqls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
+--]]
+vim.lsp.enable("sqruff")
+vim.lsp.config("sqruff", {
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
 
 -- # bash
-lspconfig.bashls.setup {
+vim.lsp.enable("bashls")
+vim.lsp.config("bashls", {
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
 -- # agnostic
-lspconfig.typos_lsp.setup {
+vim.lsp.enable("typos_lsp")
+vim.lsp.config("typos_lsp", {
 	-- cmd_env = { RUST_LOG = "error" },
 	init_options = { diagnosticSeverity = "Warning" }
-}
+})

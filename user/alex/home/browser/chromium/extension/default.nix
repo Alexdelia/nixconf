@@ -5,13 +5,12 @@
 
       (import ./material_icons_for_github.nix)
       (import ./improved_intra_42.nix)
+
+      (import ./markdown_here.nix)
     ]
     ++ (
       if config.hostOption.type == "full"
       then [
-        (import ./language_tool.nix)
-        (import ./markdown_here.nix)
-
         # (import ./tampermonkey.nix)
       ]
       else []

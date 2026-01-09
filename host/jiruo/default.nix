@@ -5,7 +5,7 @@
     inputs.disko.nixosModules.disko
     ./disko.nix
     ./nvidia.nix
-    ./docker.nix
+    # ./docker.nix
   ];
 
   hostOption = {

@@ -12,11 +12,9 @@
   config = lib.mkIf (config.hostOption.type == "full") {
     hostOption.spec.wlroots = false;
 
-    services.xserver = {
-      enable = true;
-
-      displayManager.gdm.enable = true;
+    services = {
       desktopManager.gnome.enable = true;
+      displayManager.gdm.enable = true;
     };
 
     stylix.enable = true;

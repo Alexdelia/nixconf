@@ -13,7 +13,9 @@
       epiphany # web browser
       geary # email reader
       evince # document viewer
+      papers # document viewer
       totem # video player
+      showtime # video player
       tali # poker game
       iagno # go game
       hitori # sudoku game
