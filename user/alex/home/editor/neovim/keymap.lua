@@ -54,7 +54,9 @@ local mapping_by_mode = {
 		["<leader>mi"] = "<cmd>Inspect<CR>",
 
 		-- ctrl+/ to comment current line
-		["<C-/>"] = ":norm gcc<CR>"
+		["<C-/>"] = ":norm gcc<CR>",
+
+		["<leader>b"] = "<cmd>Gitsigns blame_line<CR>"
 	},
 	-- # insert mode keymaps
 	i = {
