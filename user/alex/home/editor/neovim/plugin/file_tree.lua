@@ -47,7 +47,7 @@ nvim_tree.setup {
 
 	update_focused_file = { enable = true, update_cwd = true, ignore_list = {} },
 
-	view = { width = 30, side = "left", number = false, relativenumber = false },
+	view = { width = 36, side = "left", number = false, relativenumber = false },
 	sort = { sorter = "case_sensitive" },
 	filters = { dotfiles = false, git_ignored = false },
 
