@@ -9,7 +9,6 @@ in {
     ./nix
     ./image
     ./docker
-    ./ani-cli
   ];
 
   options.customScript = lib.mkOption {

@@ -1,5 +1,5 @@
 {
   imports = [
-    ./anime.nix
+    ./anime
   ];
 }
