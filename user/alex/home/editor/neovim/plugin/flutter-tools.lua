@@ -2,11 +2,18 @@ require("flutter-tools").setup({
 	lsp = {
 		color = {
 			enabled = true,
-			background = true,
+			background = false,
 			background_color = nil,
-			foreground = true,
+			foreground = false,
 			virtual_text = true,
-			virtual_text_str = "■",
+			virtual_text_str = "",
 		},
-	}
+	},
+
+	closing_tags = {
+		enabled = true,
+		highlight = "LspInlayHint",
+		prefix = "/> ",
+		-- priority = 10,
+	},
 })

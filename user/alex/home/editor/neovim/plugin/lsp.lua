@@ -39,7 +39,7 @@ vim.diagnostic.config({
 			end
 
 			return prefix
-				and string.format("%s %s", prefix, diagnostic.message)
+				and string.format("%s : %s", prefix, diagnostic.message)
 				or diagnostic.message
 		end,
 	},
