@@ -53,6 +53,12 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = "require('crates').setup()";
   }
+  {
+    plugin = flutter-tools-nvim;
+    type = "lua";
+    config = builtins.readFile ./flutter-tools.lua;
+  }
+  plenary-nvim # dependency of flutter-tools
   vim-dadbod
   # {
   #   plugin = vim-dadbod-ui;
@@ -99,7 +105,7 @@ with pkgs.vimPlugins; [
       p.tree-sitter-gosum
 
       ### dart/flutter
-      p.tree-sitter-dart
+      # p.tree-sitter-dart # incompatibility with dartls
 
       ### web
       p.tree-sitter-typescript

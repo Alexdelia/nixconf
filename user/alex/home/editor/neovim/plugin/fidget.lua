@@ -20,6 +20,6 @@ require('fidget').setup(
 			},
 		},
 
-		notification = { window = { avoid = { "NvimTree" } } }
+		-- notification = { window = { avoid = { "NvimTree" } } }
 	}
 )

@@ -101,14 +101,13 @@ local on_attach = function(_, bufnr)
 			vim.lsp.buf.hover()
 		end
 	end)
-
-	vim.api.nvim_buf_create_user_command(
-		bufnr,
-		'Format',
-		function(_) vim.lsp.buf.format() end,
-		{}
-	)
 end
+
+vim.api.nvim_create_user_command(
+	'Format',
+	function() vim.lsp.buf.format() end,
+	{}
+)
 
 vim.api.nvim_create_augroup('AutoFormat', {})
 vim.api.nvim_create_autocmd(
@@ -296,13 +295,6 @@ vim.lsp.config("gopls", {
 			staticcheck = true
 		}
 	}
-})
-
--- # dart
-vim.lsp.enable("dartls")
-vim.lsp.config("dartls", {
-	on_attach = on_attach,
-	capabilities = capabilities,
 })
 
 -- # sql
