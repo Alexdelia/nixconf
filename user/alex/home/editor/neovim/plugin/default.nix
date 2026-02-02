@@ -42,6 +42,11 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = builtins.readFile ./lsp.lua;
   }
+  {
+    plugin = fidget-nvim;
+    type = "lua";
+    config = builtins.readFile ./fidget.lua;
+  }
   neodev-nvim
   {
     plugin = crates-nvim;
