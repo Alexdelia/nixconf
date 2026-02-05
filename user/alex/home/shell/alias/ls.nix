@@ -8,7 +8,7 @@
 
   ignore = "--git-ignore --ignore-glob='.git'";
 in {
-  l = "${cmd} --long --all --icons=always --no-permissions --no-filesize --no-user --no-time --git";
+  l = "${cmd} {list_node}";
   ll = "${cmd} --long --all --icons=always --group --octal-permissions --header --no-git --group-directories-first";
 
   lr = "${cmd} ${list_recursive} ${ignore}";
