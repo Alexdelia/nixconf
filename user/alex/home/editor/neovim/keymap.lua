@@ -48,7 +48,9 @@ local mapping_by_mode = {
 
 		["<leader>f"] = "<cmd>Telescope find_files<CR>",
 		["<leader>g"] = "<cmd>Telescope live_grep<CR>",
+
 		["<leader>h"] = ":lua vim.diagnostic.open_float()<CR>",
+		["<leader>k"] = ":lua vim.lsp.buf.hover()<CR>",
 
 		["<leader>mh"] = "<cmd>Telescope highlights<CR>",
 		["<leader>mi"] = "<cmd>Inspect<CR>",
