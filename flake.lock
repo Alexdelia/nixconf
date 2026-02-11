@@ -369,11 +369,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770741375,
-        "narHash": "sha256-f5qSP6X4XHlWQp8Q/Naj/yfDFO5naIPU8losw1T0xqE=",
+        "lastModified": 1770766818,
+        "narHash": "sha256-12RCFLyAedyMOdenUi7cN3ioJPEGjA/ZG1BLjugfUVs=",
         "owner": "nix-community",
         "repo": "plasma-manager",
-        "rev": "4d5bb6b427206989eb46f97ffc3a00ab11b351c3",
+        "rev": "44b928068359b7d2310a34de39555c63c93a2c90",
         "type": "github"
       },
       "original": {
@@ -626,11 +626,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1770207860,
-        "narHash": "sha256-xhWrJP5IF/Q4hrfC/fOuhtV57amTnIlPjnhEuRRcFBY=",
+        "lastModified": 1770804009,
+        "narHash": "sha256-MVk2IIwWrdOzyNWLnEpx0ir4WTxftwlHym/BMI3aMJE=",
         "owner": "Alexdelia",
         "repo": "vity.nvim",
-        "rev": "928caaba9320e045708c7b35ea7e9488b7ad3f9a",
+        "rev": "5e5819c9c8446e8235b46c92aad2da3d64724bb6",
         "type": "github"
       },
       "original": {
