@@ -4,6 +4,7 @@
   ...
 }: let
   passwordGen = import ./password-gen.nix {inherit pkgs;};
+  killOnPort = import ./kill-on-port.nix {inherit pkgs;};
 in {
   imports = [
     ./nix
@@ -22,10 +23,12 @@ in {
   config = {
     home.packages = [
       passwordGen
+      killOnPort
     ];
 
     customScript = {
       passwordGen = "${passwordGen}/bin/password-gen";
+      killOnPort = "${killOnPort}/bin/kill-on-port";
     };
   };
 }
