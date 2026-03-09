@@ -18,6 +18,7 @@ in {
 
   c = "cargo";
   mk = "make";
+  f = "flutter";
 
   nd = "${nom} develop";
   nb = "${nom} build";
