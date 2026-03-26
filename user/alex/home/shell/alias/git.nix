@@ -20,7 +20,7 @@ in {
   gops = "git reset HEAD~1 --soft";
 
   gl = "git pull";
-  gp = "git push";
+  gp = "git push --quiet";
   gf = "git fetch";
 
   go = "git checkout";
