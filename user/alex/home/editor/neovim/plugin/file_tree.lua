@@ -67,7 +67,6 @@ nvim_tree.setup {
 
 			git_placement = "signcolumn",
 			modified_placement = "signcolumn",
-			hidden = "after",
 
 			glyphs = {
 				default = "",
