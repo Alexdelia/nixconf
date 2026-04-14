@@ -58,7 +58,16 @@ nvim_tree.setup {
 		root_folder_modifier = ":t",
 
 		icons = {
-			show = { file = true, folder = true, folder_arrow = true, git = true },
+			show = {
+				file = true,
+				folder = true,
+				folder_arrow = false,
+				git = true,
+			},
+
+			git_placement = "signcolumn",
+			modified_placement = "signcolumn",
+			hidden = "after",
 
 			glyphs = {
 				default = "",
