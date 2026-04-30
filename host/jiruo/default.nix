@@ -6,6 +6,8 @@
     ./disko.nix
     ./nvidia.nix
     # ./docker.nix
+
+    ./opentabletdriver.nix
   ];
 
   hostOption = {
