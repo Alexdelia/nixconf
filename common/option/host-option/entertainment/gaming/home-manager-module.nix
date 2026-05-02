@@ -1,6 +1,7 @@
 {
   imports = [
     # ./osu.nix
-    ./minecraft.nix
+    ./lutris.nix
+    # ./minecraft.nix
   ];
 }
