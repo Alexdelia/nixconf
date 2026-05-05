@@ -1,4 +1,5 @@
 {
+  pkgs,
   config,
   lib,
   ...
@@ -9,5 +10,9 @@
 in {
   config = lib.mkIf enable {
     programs.lutris.enable = true;
+
+    home.packages = with pkgs; [
+      wine
+    ];
   };
 }
