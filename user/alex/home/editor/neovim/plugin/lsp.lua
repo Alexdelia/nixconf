@@ -75,6 +75,7 @@ vim.diagnostic.config({
 })
 
 vim.lsp.inlay_hint.enable(true)
+vim.lsp.document_color.enable(true, nil, { style = '' })
 
 local on_attach = function(_, bufnr)
 	local bufmap = function(keys, func)
