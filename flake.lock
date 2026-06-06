@@ -475,11 +475,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1780684873,
-        "narHash": "sha256-GM4O0ZSiK/bknRnPY4nNsFVhQHbVtkRrqUj9TE0Ud6s=",
+        "lastModified": 1780702455,
+        "narHash": "sha256-+srjPGNy67nKytYwdlepycL51IG6S34sS4MKRZXK8G0=",
         "owner": "nix-community",
         "repo": "stylix",
-        "rev": "497618de21c0d0ffd82505f9d6f231cfcf419f32",
+        "rev": "54fa19702f4f2c7f6a981a92850678933588af9a",
         "type": "github"
       },
       "original": {
@@ -606,11 +606,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1780691840,
-        "narHash": "sha256-vL//OpCbZ/pyIG9LSuOiicQNEiixUOI3RQnWEu2a+eg=",
+        "lastModified": 1780736392,
+        "narHash": "sha256-lPXASqqOUqStTlqKBEvevK8wLub2srEUKiOcIEsYKCQ=",
         "owner": "Alexdelia",
         "repo": "vity.nvim",
-        "rev": "7e743c7555477b536651b1be0f302ab80f5d05e5",
+        "rev": "1081c61e17f127406107eaef506fc30702fcea41",
         "type": "github"
       },
       "original": {
