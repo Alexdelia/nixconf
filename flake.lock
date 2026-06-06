@@ -606,11 +606,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1780736392,
-        "narHash": "sha256-lPXASqqOUqStTlqKBEvevK8wLub2srEUKiOcIEsYKCQ=",
+        "lastModified": 1780740320,
+        "narHash": "sha256-N8hGDCUBzTZOHf3/C3NjaVbKtjVPADNF2zBBTXNK3xk=",
         "owner": "Alexdelia",
         "repo": "vity.nvim",
-        "rev": "1081c61e17f127406107eaef506fc30702fcea41",
+        "rev": "723aa6d5efcb731f6c0eb58d7d3443afa2217a55",
         "type": "github"
       },
       "original": {
