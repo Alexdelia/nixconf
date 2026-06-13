@@ -1,9 +1,25 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  shell = import ./shell.nix {inherit pkgs;};
+in {
   home.packages = [
     (import ./nr.nix {inherit pkgs;})
-    (import ./ns.nix {inherit pkgs;})
-    (import ./nus.nix {inherit pkgs;})
-    (import ./nsu.nix {inherit pkgs;})
-    (import ./nusu.nix {inherit pkgs;})
+
+    (shell {
+      name = "ns";
+      argRequired = false;
+    })
+    (shell {
+      name = "nsu";
+      unfree = true;
+    })
+    (shell {
+      name = "nus";
+      unstable = true;
+    })
+    (shell {
+      name = "nusu";
+      unstable = true;
+      unfree = true;
+    })
   ];
 }
