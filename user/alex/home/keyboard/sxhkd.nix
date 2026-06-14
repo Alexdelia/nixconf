@@ -8,7 +8,7 @@
 
     keybindings = let
       playerctl = "${pkgs.playerctl}/bin/playerctl";
-      mpc = "${pkgs.mpc-cli}/bin/mpc";
+      mpc = "${pkgs.mpc}/bin/mpc";
     in {
       # apps
       # "super + c" = config.dp.term;

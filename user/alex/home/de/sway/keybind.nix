@@ -10,7 +10,7 @@
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
-  mpc = "${pkgs.mpc-cli}/bin/mpc";
+  mpc = "${pkgs.mpc}/bin/mpc";
 
   notify = "${pkgs.libnotify}/bin/notify-send";
 in {
