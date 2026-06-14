@@ -11,6 +11,9 @@
     vimAlias = true;
     vimdiffAlias = true;
 
+    withRuby = false;
+    withPython3 = false;
+
     # TODO avoid duplicate
     extraLuaConfig = ''
       -- # early nvim-web-devicons config
