@@ -175,7 +175,7 @@ with pkgs.vimPlugins; [
         owner = "42Paris";
         repo = "42header";
         rev = "master";
-        sha256 = "sha256-WflranTZgaAoRTBqHsRuQEdvL15fv21ZRX77BzDMg0I=";
+        sha256 = "sha256-xdH/SeGv1bfKMmJ9cHYd5V+ynFohzprnUC8eVer1VcI=";
       };
     };
     type = "lua";
