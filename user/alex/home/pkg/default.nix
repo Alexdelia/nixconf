@@ -79,8 +79,6 @@ in {
       builtins.elem (lib.getName pkg) [
         "copilot.vim"
         "slack"
-        "code"
-        "vscode"
       ];
   };
 }
