@@ -1,4 +1,4 @@
-{...}: {
+{
   hostOption.spec.nvidia = true;
 
   hardware.graphics = {
