@@ -30,7 +30,7 @@ with pkgs.vimPlugins; [
   {
     plugin = pkgs.vimUtils.buildVimPlugin {
       name = "vity";
-      src = inputs.vity-nvim.packages.${pkgs.system}.default;
+      src = inputs.vity-nvim.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
     type = "lua";
     config = builtins.readFile ./colorscheme.lua;

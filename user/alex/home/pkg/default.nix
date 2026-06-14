@@ -67,22 +67,20 @@ in {
     #   else []
     # )
     ++ (
-      if (pkgs.system != "aarch64-linux" && !config.targets.genericLinux.enable)
+      if (pkgs.stdenv.hostPlatform.system != "aarch64-linux" && !config.targets.genericLinux.enable)
       then [
         slack
       ]
       else []
     );
 
-  nixpkgs.config.allowUnfreePredicate =
-    lib.mkIf config.targets.genericLinux.enable
-    (
-      pkg:
-        builtins.elem (lib.getName pkg) [
-          "copilot.vim"
-          "slack"
-          "code"
-          "vscode"
-        ]
-    );
+  nixpkgs.config = lib.mkIf config.targets.genericLinux.enable {
+    allowUnfreePredicate = pkg:
+      builtins.elem (lib.getName pkg) [
+        "copilot.vim"
+        "slack"
+        "code"
+        "vscode"
+      ];
+  };
 }
