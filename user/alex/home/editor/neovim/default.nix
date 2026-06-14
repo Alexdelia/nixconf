@@ -15,7 +15,7 @@
     withPython3 = false;
 
     # TODO avoid duplicate
-    extraLuaConfig = ''
+    initLua = ''
       -- # early nvim-web-devicons config
       ${builtins.readFile ./plugin/icons.lua}
 
