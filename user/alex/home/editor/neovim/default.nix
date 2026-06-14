@@ -28,6 +28,8 @@
     '';
 
     extraPackages = with pkgs; [
+      luaPackages.tree-sitter-cli
+
       ## lua
       lua-language-server
 
