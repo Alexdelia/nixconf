@@ -20,11 +20,6 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = builtins.readFile ./colorizer.lua;
   }
-  {
-    plugin = bufferline-nvim;
-    type = "lua";
-    config = builtins.readFile ./bufferline.lua;
-  }
 
   ## colorscheme
   {
@@ -34,6 +29,13 @@ with pkgs.vimPlugins; [
     };
     type = "lua";
     config = builtins.readFile ./colorscheme.lua;
+  }
+
+  ## non-lsp post colorscheme
+  {
+    plugin = bufferline-nvim;
+    type = "lua";
+    config = builtins.readFile ./bufferline.lua;
   }
 
   ## lsp
