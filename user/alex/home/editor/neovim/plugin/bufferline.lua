@@ -18,13 +18,13 @@ local HL = {
 local HL_SELECTED = {
 	fg = {
 		attribute = "fg",
-		highlight = "Normal",
+		highlight = "StatusLine",
 	},
 	bg = {
 		attribute = "bg",
 		highlight = SELECTION,
 	},
-	bold = true,
+	bold = false,
 	italic = false,
 }
 
@@ -301,10 +301,8 @@ bufferline.setup({
 			bg = HL.bg,
 		},
 
-		--[[
-			indicator_visible
-			indicator_selected
-		]] --
+		indicator_visible = HL,
+		indicator_selected = HL_SELECTED,
 
 		--[[
 			pick
