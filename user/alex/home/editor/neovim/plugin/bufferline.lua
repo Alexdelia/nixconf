@@ -2,7 +2,7 @@ local bufferline = require('bufferline')
 
 require('bufferline.constants').sep_chars.slope = { "", "" }
 
-local SELECTION = "TelescopeSelection"
+local SELECTION = "CursorLine"
 
 local HL = {
 	fg = {
