@@ -1,5 +1,7 @@
 local bufferline = require('bufferline')
 
+require('bufferline.constants').sep_chars.slope = { "", "" }
+
 local SELECTION = "TelescopeSelection"
 
 local HL = {
@@ -209,7 +211,7 @@ bufferline.setup({
 		show_tab_indicators = false,
 		show_duplicate_prefix = false,
 
-		separator_style = { '', '' },
+		separator_style = "slope",
 
 		enforce_regular_tabs = false,
 		always_show_bufferline = false,
@@ -286,8 +288,14 @@ bufferline.setup({
 			duplicate_selected
 		]] --
 
-		separator = HL,
-		separator_visible = HL,
+		separator = {
+			fg = HL.bg,
+			bg = HL.bg,
+		},
+		separator_visible = {
+			fg = HL.bg,
+			bg = HL.bg,
+		},
 		separator_selected = {
 			fg = HL_SELECTED.bg,
 			bg = HL.bg,
