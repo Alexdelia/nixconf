@@ -30,11 +30,20 @@ telescope.setup({
 
 		layout_strategy = 'horizontal',
 
+		prompt_title = false,
+		results_title = false,
+		preview_title = false,
+		borderchars = {
+			prompt  = { " ", "│", " ", " ", " ", "│", "│", " " },
+			results = { "─", "│", " ", " ", "─", "┤", "│", " " },
+			preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+		},
+
 		layout_config = {
 			horizontal = {
-				width = { padding = 2 },
-				height = { padding = 1 },
-				prompt_position = "bottom",
+				width = { padding = 0 },
+				height = { padding = 0 },
+				prompt_position = "top",
 				results_width = 0.4,
 				preview_width = 0.6,
 				preview_cutoff = 1,
@@ -50,5 +59,12 @@ telescope.setup({
 		},
 
 		sorting_strategy = 'ascending',
+	},
+
+	pickers = {
+		live_grep = { prompt_title = false, preview_title = false },
+		grep_string = { prompt_title = false, preview_title = false },
+		find_files = { prompt_title = false, preview_title = false },
+		buffers = { prompt_title = false, preview_title = false },
 	},
 })
