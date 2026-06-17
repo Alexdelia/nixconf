@@ -1,5 +1,7 @@
 local bufferline = require('bufferline')
 
+local SELECTION = "TelescopeSelection"
+
 local HL = {
 	fg = {
 		attribute = "fg",
@@ -18,7 +20,7 @@ local HL_SELECTED = {
 	},
 	bg = {
 		attribute = "bg",
-		highlight = "Selection",
+		highlight = SELECTION,
 	},
 	bold = true,
 	italic = false,
@@ -49,7 +51,7 @@ local HINT_HL_SELECTED = {
 	},
 	bg = {
 		attribute = "bg",
-		highlight = "Selection",
+		highlight = SELECTION,
 	},
 	bold = HL_SELECTED.bold,
 	italic = HL_SELECTED.italic,
@@ -80,7 +82,7 @@ local INFO_HL_SELECTED = {
 	},
 	bg = {
 		attribute = "bg",
-		highlight = "Selection",
+		highlight = SELECTION,
 	},
 	bold = HL_SELECTED.bold,
 	italic = HL_SELECTED.italic,
@@ -111,7 +113,7 @@ local WARN_HL_SELECTED = {
 	},
 	bg = {
 		attribute = "bg",
-		highlight = "Selection",
+		highlight = SELECTION,
 	},
 	bold = HL_SELECTED.bold,
 	italic = HL_SELECTED.italic,
@@ -142,7 +144,7 @@ local ERROR_HL_SELECTED = {
 	},
 	bg = {
 		attribute = "bg",
-		highlight = "Selection",
+		highlight = SELECTION,
 	},
 	bold = HL_SELECTED.bold,
 	italic = HL_SELECTED.italic,
@@ -165,7 +167,7 @@ local MODIFIED_HL_SELECTED = {
 	},
 	bg = {
 		attribute = "bg",
-		highlight = "Selection",
+		highlight = SELECTION,
 	},
 	bold = HL_SELECTED.bold,
 	italic = HL_SELECTED.italic,
