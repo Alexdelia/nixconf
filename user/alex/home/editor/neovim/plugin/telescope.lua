@@ -17,6 +17,27 @@ telescope.setup({
 			'--sort=path',
 		},
 
+		layout_strategy = 'horizontal',
+		prompt_title = false,
+		results_title = false,
+		preview_title = false,
+		borderchars = {
+			prompt  = { " ", "│", " ", " ", " ", "│", "│", " " },
+			results = { "─", "│", " ", " ", "─", "┤", "│", " " },
+			preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+		},
+		layout_config = {
+			horizontal = {
+				width = { padding = 0 },
+				height = { padding = 0 },
+				prompt_position = "top",
+				results_width = 0.4,
+				preview_width = 0.6,
+				preview_cutoff = 1,
+			},
+		},
+		sorting_strategy = 'ascending',
+
 		mappings = {
 			i = {
 				["<C-Up>"] = actions.cycle_history_prev,
@@ -28,37 +49,9 @@ telescope.setup({
 			},
 		},
 
-		layout_strategy = 'horizontal',
-
-		prompt_title = false,
-		results_title = false,
-		preview_title = false,
-		borderchars = {
-			prompt  = { " ", "│", " ", " ", " ", "│", "│", " " },
-			results = { "─", "│", " ", " ", "─", "┤", "│", " " },
-			preview = { " ", " ", " ", " ", " ", " ", " ", " " },
-		},
-
-		layout_config = {
-			horizontal = {
-				width = { padding = 0 },
-				height = { padding = 0 },
-				prompt_position = "top",
-				results_width = 0.4,
-				preview_width = 0.6,
-				preview_cutoff = 1,
-			},
-
-			-- bottom_pane = {
-			-- height = 8,
-			-- preview_cutoff = 1,
-			-- prompt_position = "bottom",
-			-- width = { padding = 16 },
-			-- mirror = false,
-			-- },
-		},
-
-		sorting_strategy = 'ascending',
+		prompt_prefix = "",
+		selection_caret = "",
+		entry_prefix = "",
 	},
 
 	pickers = {
