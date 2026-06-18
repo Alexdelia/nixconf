@@ -67,7 +67,7 @@
       ]
       ++ (
         if config.hostOption.entertainment.gaming
-        then ["steam" "steam-unwrapped" "osu-lazer-bin"]
+        then ["steam" "steam-unwrapped" "osu-lazer-bin" "android-studio"]
         else []
       )
       ++ (

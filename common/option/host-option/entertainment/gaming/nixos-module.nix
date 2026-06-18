@@ -1,7 +1,7 @@
 {
   imports = [
     ./steam.nix
-    ./waydroid.nix
+    ./android-emulator.nix
     ./osu.nix
     # ./tetrio.nix
     # ./minecraft.nix

@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  users,
   ...
 }: let
   enable =
@@ -9,10 +10,12 @@
     && config.hostOption.type == "full";
 in {
   config = lib.mkIf enable {
-    virtualisation.waydroid.enable = true;
-
     environment.systemPackages = with pkgs; [
-      wl-clipboard
+      android-studio
+      android-tools # adb
+      steam-run
     ];
+
+    users.extraGroups.kvm.members = users;
   };
 }
