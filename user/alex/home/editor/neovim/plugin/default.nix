@@ -20,11 +20,6 @@ with pkgs.vimPlugins; [
     type = "lua";
     config = builtins.readFile ./colorizer.lua;
   }
-  {
-    plugin = bufferline-nvim;
-    type = "lua";
-    config = builtins.readFile ./bufferline.lua;
-  }
 
   ## colorscheme
   {
@@ -34,6 +29,22 @@ with pkgs.vimPlugins; [
     };
     type = "lua";
     config = builtins.readFile ./colorscheme.lua;
+  }
+
+  ## non-lsp post colorscheme
+  {
+    plugin = bufferline-nvim.overrideAttrs (old: {
+      postPatch =
+        (old.postPatch or "")
+        + ''
+          substituteInPlace lua/bufferline/ui.lua \
+            --replace-fail \
+              'if is_slant(style) then return { text = symbol, highlight = highlight } end' \
+              'if is_slant(style) then return { text = symbol, highlight = curr_hl.buffer } end'
+        '';
+    });
+    type = "lua";
+    config = builtins.readFile ./bufferline.lua;
   }
 
   ## lsp

@@ -34,6 +34,7 @@ in {
       ### rust
       ripgrep
       xcp
+      fd
       sd
       bfs
       dysk
