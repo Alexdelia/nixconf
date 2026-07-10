@@ -391,6 +391,7 @@
         "pre-commit-hooks": "pre-commit-hooks",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
+        "swhkd": "swhkd",
         "vity-base24": "vity-base24",
         "vity-nvim": "vity-nvim"
       }
@@ -464,6 +465,26 @@
         "owner": "nix-community",
         "ref": "release-26.05",
         "repo": "stylix",
+        "type": "github"
+      }
+    },
+    "swhkd": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777188791,
+        "narHash": "sha256-Q1EaYUfSMKkwKq+GfBDPIjfe4oS0rhwpPD1sS9nvKpI=",
+        "owner": "waycrate",
+        "repo": "swhkd",
+        "rev": "cbbfc4a981aa263155e3216a42549c9a3ae645fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "waycrate",
+        "repo": "swhkd",
         "type": "github"
       }
     },

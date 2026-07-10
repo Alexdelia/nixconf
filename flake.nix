@@ -41,6 +41,12 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    # not yet in nixpkgs (https://github.com/NixOS/nixpkgs/pull/306159)
+    swhkd = {
+      url = "github:waycrate/swhkd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # eww = {
     #   url = "github:elkowar/eww";
     #   # inputs.nixpkgs.follows = "nixpkgs";
