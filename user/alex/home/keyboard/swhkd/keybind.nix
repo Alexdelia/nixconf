@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -28,8 +29,27 @@
     "super + x" = "${playerctl} next";
     "super + shift + z" = "${mpc} toggle";
   };
+
+  isNonNixos = config.targets.genericLinux.enable;
+  localConfig = "${config.xdg.configHome}/swhkd/local.swhkdrc";
+  localInclude = lib.optionalString isNonNixos "include ${localConfig}\n";
 in {
   xdg.configFile."swhkd/swhkdrc".text =
-    lib.concatStringsSep "\n"
+    localInclude
+    + lib.concatStringsSep "\n"
     (lib.mapAttrsToList (hotkey: command: "${hotkey}\n\t${command}\n") keybind);
+
+  home.activation = lib.mkIf isNonNixos {
+    swhkdLocalConfig =
+      lib.hm.dag.entryAfter ["writeBoundary"]
+      /*
+      bash
+      */
+      ''
+        if [[ ! -e ${lib.escapeShellArg localConfig} ]]; then
+        	run mkdir -p ${lib.escapeShellArg (dirOf localConfig)}
+        	run touch ${lib.escapeShellArg localConfig}
+        fi
+      '';
+  };
 }
