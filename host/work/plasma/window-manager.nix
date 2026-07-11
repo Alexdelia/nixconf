@@ -25,8 +25,8 @@
       names = [
         "code"
         "tty"
+        "tui"
         "process"
-        "4"
         "5"
         "6"
         "7"
@@ -36,4 +36,41 @@
       ];
     };
   };
+
+  programs.plasma.window-rules = [
+    {
+      description = "singleton: slack";
+      match.window-class = {
+        value = "Slack";
+        type = "exact";
+      };
+      apply = {
+        desktops = {
+          value = "Desktop_9";
+          apply = "force";
+        };
+        activity = {
+          value = "";
+          apply = "force";
+        };
+      };
+    }
+    {
+      description = "singleton: brave";
+      match.window-class = {
+        value = "brave-browser";
+        type = "exact";
+      };
+      apply = {
+        desktops = {
+          value = "Desktop_10";
+          apply = "force";
+        };
+        activity = {
+          value = "";
+          apply = "force";
+        };
+      };
+    }
+  ];
 }

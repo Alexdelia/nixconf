@@ -1,28 +1,19 @@
-_: {
+{
   programs.plasma = {
-    hotkeys = {
-      commands = {
-        /*
-        alacritty = {
-          comment = "launch alacritty terminal";
-          command = "${config.home.homeDirectory}/.cargo/bin/alacritty";
-          key = "Meta+C";
-        };
+    # shortcuts.kwin = {
+    #   "Switch to Desktop 1" = "Meta+1";
+    #   "Switch to Desktop 2" = "Meta+2";
+    #   "Switch to Desktop 3" = "Meta+3";
+    #   "Switch to Desktop 4" = "Meta+4";
+    #   "Switch to Desktop 5" = "Meta+5";
+    #   "Switch to Desktop 6" = "Meta+6";
+    #   "Switch to Desktop 7" = "Meta+7";
+    #   "Switch to Desktop 8" = ["Meta+8" "Meta+M"];
+    #   "Switch to Desktop 9" = ["Meta+9" "Meta+V"];
+    #   "Switch to Desktop 10" = ["Meta+0" "Meta+B"];
+    # };
 
-        chromium = {
-          comment = "launch chromium browser";
-          command = "chromium";
-          key = "Meta+B";
-        };
-
-        anyrun = {
-          comment = "launch anyrun dmenu";
-          command = "${pkgs.anyrun}/bin/anyrun";
-          key = "Meta+D";
-        };
-        */
-      };
-    };
+    # hotkeys.commands = {};
 
     spectacle.shortcuts = {
       captureRectangularRegion = "Meta+S";
