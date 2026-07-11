@@ -1,6 +1,6 @@
 {
   imports = [
-    ./swhkd
+    # ./swhkd
   ];
 
   home.keyboard = null;

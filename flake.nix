@@ -42,10 +42,10 @@
     };
 
     # not yet in nixpkgs (https://github.com/NixOS/nixpkgs/pull/306159)
-    swhkd = {
-      url = "github:waycrate/swhkd";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # swhkd = {
+    #   url = "github:waycrate/swhkd";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # eww = {
     #   url = "github:elkowar/eww";
