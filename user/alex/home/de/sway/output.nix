@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  monitor = config.hostOption.spec.monitor;
+  inherit (config.hostOption.spec) monitor;
 
   mkMode = m: "${toString m.width}x${toString m.height}" + lib.optionalString (m.refresh != null) "@${m.refresh}Hz";
 
