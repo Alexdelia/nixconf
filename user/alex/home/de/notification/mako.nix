@@ -1,9 +1,16 @@
 {
   config,
+  lib,
   scheme ? {},
   ...
 }: let
   s = (config.scheme or scheme).withHashtag;
+
+  primary = lib.filterAttrs (_: m: m.primary) config.hostOption.spec.monitor;
+  primaryWidth =
+    if primary == {}
+    then 1920
+    else (lib.head (lib.attrValues primary)).width;
 in {
   services.mako = {
     enable = true;
@@ -22,7 +29,7 @@ in {
 
       margin = "10";
       padding = "3";
-      width = builtins.floor (config.hostOption.spec.screen.width * 7 / 24);
+      width = builtins.floor (primaryWidth * 7 / 24);
 
       defaultTimeout = 5 * 1000; # ms
 

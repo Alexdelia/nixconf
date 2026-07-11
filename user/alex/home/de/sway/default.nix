@@ -14,6 +14,7 @@ in {
     (import ./input.nix {inherit checkConfig;})
     ./keybind.nix
     ./window.nix
+    ./output.nix
 
     ../notification/mako.nix
     ../runner/anyrun.nix
@@ -30,12 +31,6 @@ in {
 
         terminal = config.dp.term;
         menu = config.dp.dmenu;
-
-        output = {
-          "Virtual-1" = {
-            mode = "1920x1080@60.000Hz";
-          };
-        };
 
         bars = [];
       };

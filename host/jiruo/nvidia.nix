@@ -38,4 +38,9 @@
     # might enable for CUDA kernel https://github.com/Alexdelia/puzzle compute
     # nvidiaPersistenced = true;
   };
+
+  programs.sway = {
+    extraOptions = ["--unsupported-gpu"];
+    extraSessionCommands = "export WLR_NO_HARDWARE_CURSORS=1";
+  };
 }

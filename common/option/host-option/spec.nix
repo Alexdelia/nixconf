@@ -1,36 +1,76 @@
 {lib, ...}: {
   options.hostOption.spec = lib.mkOption {
-    description = "spec/hardware related options";
+    description = "hardware spec of this host";
 
     type = lib.types.submodule {
       options = {
         wlroots = lib.mkOption {
-          description = "Whether the system uses wlroots-based compositor.";
+          description = "uses a wlroots-based compositor";
           type = lib.types.bool;
           default = true;
         };
 
         nvidia = lib.mkOption {
-          description = "Whether the system has an NVIDIA GPU.";
+          description = "has an NVIDIA GPU";
           type = lib.types.bool;
           default = false;
         };
 
-        screen = lib.mkOption {
-          type = lib.types.submodule {
+        laptop = lib.mkOption {
+          description = "host is a laptop";
+          type = lib.types.bool;
+          default = false;
+        };
+
+        monitor = lib.mkOption {
+          description = ''
+            monitor of this host, keyed by connector name (e.g. "DP-1", "HDMI-A-1")
+
+            one entry should be `primary = true`
+          '';
+          default = {};
+          type = lib.types.attrsOf (lib.types.submodule {
             options = {
               width = lib.mkOption {
-                description = "Screen width in pixels.";
+                description = "mode width in pixel";
                 type = lib.types.int;
-                default = 1920;
               };
               height = lib.mkOption {
-                description = "Screen height in pixels.";
+                description = "mode height in pixel";
                 type = lib.types.int;
-                default = 1080;
+              };
+              refresh = lib.mkOption {
+                description = ''refresh rate in Hz as a string (e.g. "144.003"); null uses the preferred mode'';
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+              };
+              x = lib.mkOption {
+                description = "position x in the output layout";
+                type = lib.types.int;
+                default = 0;
+              };
+              y = lib.mkOption {
+                description = "position y in the output layout";
+                type = lib.types.int;
+                default = 0;
+              };
+              scale = lib.mkOption {
+                description = "output scale factor";
+                type = lib.types.float;
+                default = 1.0;
+              };
+              primary = lib.mkOption {
+                description = "primary monitor";
+                type = lib.types.bool;
+                default = false;
+              };
+              media = lib.mkOption {
+                description = "monitor is used exclusively for media";
+                type = lib.types.bool;
+                default = false;
               };
             };
-          };
+          });
         };
       };
     };

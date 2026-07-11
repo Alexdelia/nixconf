@@ -8,9 +8,13 @@ _: {
     type = "lite";
 
     spec = {
-      screen = {
-        width = 2880;
-        height = 1800;
+      monitor = {
+        # TODO: set correct monitor name
+        "eDP-1" = {
+          width = 2880;
+          height = 1800;
+          primary = true;
+        };
       };
     };
   };

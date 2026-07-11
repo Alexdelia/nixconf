@@ -11,12 +11,26 @@
   ];
 
   hostOption = {
-    type = "full";
+    type = "lite";
 
     spec = {
-      screen = {
-        width = 2560;
-        height = 1440;
+      monitor = {
+        "DP-1" = {
+          width = 2560;
+          height = 1440;
+          refresh = "144.003";
+          x = 0;
+          y = 0;
+          primary = true;
+        };
+
+        "HDMI-A-1" = {
+          width = 1920;
+          height = 1080;
+          x = 2560;
+          y = 0;
+          media = true;
+        };
       };
     };
 

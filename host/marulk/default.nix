@@ -4,6 +4,10 @@
   hostOption = {
     type = "lite";
 
+    spec = {
+      laptop = true;
+    };
+
     entertainment = {
       music = true;
       video = true;
