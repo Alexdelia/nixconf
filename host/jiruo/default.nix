@@ -22,6 +22,7 @@
           x = 0;
           y = 0;
           primary = true;
+          adaptiveSync = true;
         };
 
         "HDMI-A-1" = {

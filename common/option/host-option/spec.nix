@@ -59,6 +59,11 @@
                 type = lib.types.float;
                 default = 1.0;
               };
+              adaptiveSync = lib.mkOption {
+                description = "enable variable refresh rate (VRR)";
+                type = lib.types.bool;
+                default = false;
+              };
               primary = lib.mkOption {
                 description = "primary monitor";
                 type = lib.types.bool;

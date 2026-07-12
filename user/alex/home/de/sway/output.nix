@@ -15,6 +15,7 @@
           position = "${toString m.x} ${toString m.y}";
         }
         // lib.optionalAttrs (m.scale != 1.0) {scale = toString m.scale;}
+        // lib.optionalAttrs m.adaptiveSync {adaptive_sync = "on";}
     )
     monitor;
 
