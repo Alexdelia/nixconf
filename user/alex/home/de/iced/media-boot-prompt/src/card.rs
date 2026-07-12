@@ -9,7 +9,7 @@ use widget::{palette as p, unit::vh};
 use crate::{Message, State, action, prompt};
 
 pub fn view(state: &State) -> Element<'_, Message> {
-    let radius = vh(state.size, 2.0);
+    let radius = vh(state.size, 8.0);
     let card = container(
         column![prompt::view(state), action::view(state),]
             .spacing(vh(state.size, 10.0))
@@ -22,8 +22,8 @@ pub fn view(state: &State) -> Element<'_, Message> {
         background: Some(Background::Color(p::base01())),
         border: Border {
             radius: radius.into(),
-            width: 1.0,
-            color: p::base0d(),
+            width: 0.0,
+            color: p::base01(),
         },
         text_color: Some(p::base05()),
         ..Default::default()
