@@ -1,3 +1,11 @@
-/.pre-commit-config.yaml
+# nix
 /result
+
+# hook
+/.pre-commit-config.yaml
+
+# rust
+target/
+
+# extra
 /.doc/
