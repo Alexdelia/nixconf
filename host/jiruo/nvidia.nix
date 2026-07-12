@@ -39,8 +39,8 @@
     # nvidiaPersistenced = true;
   };
 
-  programs.sway = {
-    extraOptions = ["--unsupported-gpu"];
-    extraSessionCommands = "export WLR_NO_HARDWARE_CURSORS=1";
+  environment.sessionVariables = {
+    SWAY_UNSUPPORTED_GPU = "true";
+    WLR_NO_HARDWARE_CURSORS = "1";
   };
 }
