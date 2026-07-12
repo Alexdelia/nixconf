@@ -7,7 +7,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace.dependencies]
-iced = {version = "0.14", features = ["tokio"]}
+iced = {version = "0.14", features = ["tokio", "advanced"]}
 iced_layershell = "0.19"
 widget = {path = "lib"}
 
