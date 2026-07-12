@@ -31,11 +31,17 @@
   media = lib.attrNames (lib.filterAttrs (_: m: m.media) monitor);
 
   appWorkspace = lib.drop (role.globalFrom - 1) role.list;
+  activityRole = lib.take (role.globalFrom - 1) role.list;
   appAssign = lib.optionals (primary != null) (map (ws: {
       workspace = ws;
       output = primary;
     })
     appWorkspace);
+  defaultAssign = lib.optionals (primary != null) (map (r: {
+      workspace = "default:${r}";
+      output = primary;
+    })
+    activityRole);
   mediaAssign =
     map (name: {
       workspace = "media";
@@ -46,7 +52,10 @@ in {
   config = lib.mkIf (monitor != {}) {
     wayland.windowManager.sway.config = {
       inherit output;
-      workspaceOutputAssign = appAssign ++ mediaAssign;
+      workspaceOutputAssign = appAssign ++ defaultAssign ++ mediaAssign;
+      startup = lib.optionals (primary != null && media != []) [
+        {command = "swaymsg 'workspace media; focus output ${primary}'";}
+      ];
     };
   };
 }
