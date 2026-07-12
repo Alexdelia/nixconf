@@ -4,23 +4,19 @@
   lib,
   ...
 }: let
-  media = lib.attrNames (lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor);
-  mediaOutput =
-    if media == []
-    then ""
-    else lib.head media;
-
   slackTo = "move container to workspace communication, workspace communication";
 
   bravePlace = pkgs.writeShellApplication {
     name = "sway-brave-place";
-    runtimeInputs = [pkgs.sway pkgs.jq];
+    runtimeInputs = with pkgs; [sway jaq];
     text = ''
-      media=${lib.escapeShellArg mediaOutput}
+      # on/off written by hdmi-watch (hdmi.nix); absent -> treat TV as off
+      state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-state"
 
       hdmi_on() {
-        [ -n "$media" ] || return 1
-        swaymsg -t get_outputs | jq -e --arg o "$media" 'any(.[]; .name == $o and .active)' >/dev/null
+        local s
+        read -r s <"$state" 2>/dev/null || return 1
+        [ "$s" = on ]
       }
 
       place() {
@@ -33,18 +29,18 @@
       }
 
       brave_id() {
-        swaymsg -t get_tree | jq -r 'first(recurse(.nodes[]?, .floating_nodes[]?)
+        swaymsg -t get_tree | jaq -r 'first(recurse(.nodes[]?, .floating_nodes[]?)
           | select(.app_id == "brave-browser" or (.window_properties.class? == "brave-browser"))
           | .id) // empty'
       }
 
       swaymsg -t subscribe -m '["window", "output"]' | while read -r ev; do
-        if [ "$(jq -r 'has("container")' <<<"$ev")" = true ]; then
-          [ "$(jq -r '.change' <<<"$ev")" = new ] || continue
-          appid="$(jq -r '.container.app_id // empty' <<<"$ev")"
-          class="$(jq -r '.container.window_properties.class // empty' <<<"$ev")"
+        if [ "$(jaq -r 'has("container")' <<<"$ev")" = true ]; then
+          [ "$(jaq -r '.change' <<<"$ev")" = new ] || continue
+          appid="$(jaq -r '.container.app_id // empty' <<<"$ev")"
+          class="$(jaq -r '.container.window_properties.class // empty' <<<"$ev")"
           if [ "$appid" = brave-browser ] || [ "$class" = brave-browser ]; then
-            place "$(jq -r '.container.id' <<<"$ev")" 1
+            place "$(jaq -r '.container.id' <<<"$ev")" 1
           fi
         else
           id="$(brave_id)"

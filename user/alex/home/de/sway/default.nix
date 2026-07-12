@@ -17,6 +17,7 @@ in {
     ./output.nix
     ./workspace.nix
     ./singleton.nix
+    ./hdmi.nix
 
     ../notification/mako.nix
     ../runner/fuzzel.nix

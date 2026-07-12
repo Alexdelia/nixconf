@@ -34,7 +34,7 @@
 
     cur_role() {
       local suffix ri k r
-      suffix="$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused).name')"
+      suffix="$(swaymsg -t get_workspaces | jaq -r '.[] | select(.focused).name')"
       suffix="''${suffix##*:}"
       ri=1
       k=0
@@ -49,7 +49,7 @@
     activity_create() {
       local id ri
       id="branch-$(date +%H%M%S)"
-      grep -qxF "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
+      rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
       ri="$(cur_role)"
       printf '%s\n' "$id" >"$state/current"
       swaymsg workspace "$(ws_name "$ri" "$id")" >/dev/null
@@ -58,7 +58,7 @@
     # empty = no window in the activity's per-activity workspaces (globals don't count)
     activity_empty() {
       local act="$1" cnt
-      cnt="$(swaymsg -t get_tree | jq --arg p "$act:" '
+      cnt="$(swaymsg -t get_tree | jaq --arg p "$act:" '
         [ recurse(.nodes[]?, .floating_nodes[]?)
           | select(.type == "workspace" and (.name | startswith($p)))
           | recurse(.nodes[]?, .floating_nodes[]?)
@@ -71,7 +71,8 @@
   mkScript = name: body:
     pkgs.writeShellApplication {
       inherit name;
-      runtimeInputs = [pkgs.sway pkgs.jq pkgs.coreutils pkgs.gnugrep];
+      runtimeInputs = with pkgs; [sway jaq uutils-coreutils-noprefix ripgrep];
+      excludeShellChecks = ["SC2016"];
       text = prelude + body;
     };
 
@@ -108,7 +109,7 @@
         else "0"
       }
       browser="$(ws_name 10 "$(cur)")"
-      focused="$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused).name')"
+      focused="$(swaymsg -t get_workspaces | jaq -r '.[] | select(.focused).name')"
 
       if [ "$focused" = media ]; then
         target="$browser"
@@ -168,7 +169,7 @@
       for i in $(seq 1 "$last"); do
         from="$(ws_name "$i" "$c")"
         to="$(ws_name "$i" default)"
-        mapfile -t ids < <(swaymsg -t get_tree | jq -r --arg ws "$from" '
+        mapfile -t ids < <(swaymsg -t get_tree | jaq -r --arg ws "$from" '
           recurse(.nodes[]?, .floating_nodes[]?)
           | select(.type == "workspace" and .name == $ws)
           | recurse(.nodes[]?, .floating_nodes[]?)
@@ -179,7 +180,7 @@
         done
       done
 
-      grep -vxF "$c" "$state/list" >"$state/list.tmp"
+      rg -vFx "$c" "$state/list" >"$state/list.tmp"
       mv "$state/list.tmp" "$state/list"
       printf 'default\n' >"$state/current"
       swaymsg workspace "$(ws_name 1 default)" >/dev/null
@@ -205,7 +206,7 @@
         done
 
         ri="$(cur_role)"
-        grep -vxF "$c" "$state/list" >"$state/list.tmp"
+        rg -vFx "$c" "$state/list" >"$state/list.tmp"
         mv "$state/list.tmp" "$state/list"
 
         target=default
@@ -219,7 +220,7 @@
       }
 
       swaymsg -t subscribe -m '["window"]' | while read -r ev; do
-        [ "$(jq -r '.change' <<<"$ev")" = close ] || continue
+        [ "$(jaq -r '.change' <<<"$ev")" = close ] || continue
         reap
       done
     '';

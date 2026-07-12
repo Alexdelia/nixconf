@@ -2,6 +2,8 @@
   imports = [
     ./listenbrainz.nix
     ./wakatime.nix
+
+    ./jiruo.nix
   ];
 
   sops = {
