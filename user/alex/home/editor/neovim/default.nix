@@ -30,6 +30,8 @@
     extraPackages = with pkgs; [
       ## lua
       lua-language-server
+      stylua
+      efm-langserver
 
       ## nix
       nil

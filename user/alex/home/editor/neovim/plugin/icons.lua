@@ -1,11 +1,11 @@
-local devicons = require('nvim-web-devicons')
+local devicons = require("nvim-web-devicons")
 
 local icons = {
 	default = { icon = "", color = "#6d8086", name = "Default" },
 	license = { icon = "", color = "#333333", name = "License" },
 	lock = { icon = "", color = "#444444", name = "Lock" },
 	sh = { icon = "", color = "#ff7043", name = "Shell" },
-	rs = { icon = "", color = "#8a3510", name = "Rs" }
+	rs = { icon = "", color = "#8a3510", name = "Rs" },
 }
 
 devicons.setup({
@@ -19,7 +19,7 @@ devicons.setup({
 		lock = icons.lock,
 		sh = icons.sh,
 		rs = icons.rs,
-	}
+	},
 })
 
 devicons.set_default_icon(icons.default.icon, icons.default.color, 65)

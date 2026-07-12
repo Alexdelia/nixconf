@@ -1,6 +1,6 @@
-local bufferline = require('bufferline')
+local bufferline = require("bufferline")
 
-require('bufferline.constants').sep_chars.slope = { "", "" }
+require("bufferline.constants").sep_chars.slope = { "", "" }
 
 local SELECTION = "CursorLine"
 
@@ -185,7 +185,7 @@ bufferline.setup({
 
 		-- TODO: bubble highlight as indicator
 		indicator = {
-			style = 'none' -- 'icon' | 'underline' | 'none',
+			style = "none", -- 'icon' | 'underline' | 'none',
 			-- icon = '▎',
 		},
 
@@ -200,8 +200,8 @@ bufferline.setup({
 				filetype = "NvimTree",
 				text = "",
 				-- text_align = "left" | "center" | "right"
-				separator = true
-			}
+				separator = true,
+			},
 		},
 
 		color_icons = true,
@@ -217,7 +217,7 @@ bufferline.setup({
 		always_show_bufferline = false,
 		auto_toggle_bufferline = true,
 		hover = { enabled = false },
-		sort_by = 'insert_after_current',
+		sort_by = "insert_after_current",
 		--[[ sort_by = 'insert_after_current' |'insert_at_end' | 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs' | function(buffer_a, buffer_b)
                 -- add custom logic
                 return buffer_a.modified > buffer_b.modified
@@ -235,13 +235,13 @@ bufferline.setup({
 			tab_separator
 			tab_separator_selected
 			tab_close
-		]] --
+		]]
 
 		--[[
 			close_button
 			close_button_visible
 			close_button_selected
-		]] --
+		]]
 
 		buffer_visible = HL,
 		buffer_selected = HL_SELECTED,
@@ -286,7 +286,7 @@ bufferline.setup({
 			duplicate
 			duplicate_visible
 			duplicate_selected
-		]] --
+		]]
 
 		separator = {
 			fg = HL.bg,
@@ -308,7 +308,7 @@ bufferline.setup({
 			pick
 			pick_visible
 			pick_selected
-		]] --
+		]]
 
 		offset_separator = {
 			fg = {

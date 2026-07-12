@@ -12,23 +12,21 @@ local function nvim_tree_on_attach(bufnr)
 			buffer = bufnr,
 			noremap = true,
 			silent = true,
-			nowait = true
+			nowait = true,
 		}
 	end
 
 	api.config.mappings.default_on_attach(bufnr)
 
-	vim.keymap.set('n', '<Right>', api.node.open.edit, opts('Open'))
-	vim.keymap.set('n', 'l', api.node.open.edit, opts('Open'))
-	vim.keymap.set('n', '<Left>', api.node.navigate.parent_close,
-		opts('Close Folder'))
-	vim.keymap.set('n', 'h', api.node.navigate.parent_close,
-		opts('Close Folder'))
+	vim.keymap.set("n", "<Right>", api.node.open.edit, opts("Open"))
+	vim.keymap.set("n", "l", api.node.open.edit, opts("Open"))
+	vim.keymap.set("n", "<Left>", api.node.navigate.parent_close, opts("Close Folder"))
+	vim.keymap.set("n", "h", api.node.navigate.parent_close, opts("Close Folder"))
 end
 
 -- `:help nvim-tree.OPTION_NAME`
 
-nvim_tree.setup {
+nvim_tree.setup({
 	on_attach = nvim_tree_on_attach,
 
 	disable_netrw = true,
@@ -41,7 +39,7 @@ nvim_tree.setup {
 
 	diagnostics = {
 		enable = false,
-		icons = { hint = "", info = "", warning = "", error = "" }
+		icons = { hint = "", info = "", warning = "", error = "" },
 	},
 	git = { enable = true, ignore = true, timeout = 500 },
 
@@ -78,16 +76,16 @@ nvim_tree.setup {
 					deleted = "",
 					ignored = "◌",
 					staged = "󰖌",
-					unmerged = "󱓌"
+					unmerged = "󱓌",
 				},
 				folder = {
 					default = "",
 					open = "",
 					empty = "",
 					empty_open = "",
-					symlink = ""
-				}
-			}
-		}
-	}
-}
+					symlink = "",
+				},
+			},
+		},
+	},
+})

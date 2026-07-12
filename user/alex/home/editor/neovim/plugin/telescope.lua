@@ -1,28 +1,28 @@
-local telescope = require('telescope')
-local actions = require('telescope.actions')
+local telescope = require("telescope")
+local actions = require("telescope.actions")
 
-telescope.load_extension('fzf')
-telescope.load_extension('notify')
+telescope.load_extension("fzf")
+telescope.load_extension("notify")
 
 telescope.setup({
 	defaults = {
 		vimgrep_arguments = {
-			'rg',
-			'--color=never',
-			'--no-heading',
-			'--with-filename',
-			'--line-number',
-			'--column',
-			'--smart-case',
-			'--sort=path',
+			"rg",
+			"--color=never",
+			"--no-heading",
+			"--with-filename",
+			"--line-number",
+			"--column",
+			"--smart-case",
+			"--sort=path",
 		},
 
-		layout_strategy = 'horizontal',
+		layout_strategy = "horizontal",
 		prompt_title = false,
 		results_title = false,
 		preview_title = false,
 		borderchars = {
-			prompt  = { " ", "│", " ", " ", " ", "│", "│", " " },
+			prompt = { " ", "│", " ", " ", " ", "│", "│", " " },
 			results = { "─", "│", " ", " ", "─", "┤", "│", " " },
 			preview = { " ", " ", " ", " ", " ", " ", " ", " " },
 		},
@@ -36,7 +36,7 @@ telescope.setup({
 				preview_cutoff = 1,
 			},
 		},
-		sorting_strategy = 'ascending',
+		sorting_strategy = "ascending",
 
 		mappings = {
 			i = {

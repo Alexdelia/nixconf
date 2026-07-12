@@ -1,6 +1,6 @@
-require('colorizer').setup({
+require("colorizer").setup({
 	-- '*',
-	css = { names = true, css = true }
+	css = { names = true, css = true },
 }, {
 	RGB = true,
 	RRGGBB = true,
@@ -13,5 +13,5 @@ require('colorizer').setup({
 	css = false,
 	css_fn = true,
 
-	mode = 'background'
+	mode = "background",
 })

@@ -2,19 +2,19 @@
 
 IDENTITIES=$(git config --global --name-only --get-regexp "user.*..name" | rg 'user\.(.*)\.name' -or '$1')
 ID=$(
-	echo "${IDENTITIES}" |
-		sk --preview='git-identity-preview {}' \
-			--preview-window=down:3
+  echo "${IDENTITIES}" |
+    sk --preview='git-identity-preview {}' \
+      --preview-window=down:3
 )
 
 if ! git config --global --get-regexp "user.${ID}.name" >/dev/null; then
-	exit 78
+  exit 78
 fi
 
 git config user.name "$(git config user.${ID}.name)"
 git config user.email "$(git config user.${ID}.email)"
 
 printf "name:\t%s\nemail:\t%s\n" \
-	"$(git config user.name)" \
-	"$(git config user.email)" |
-	bat --color=always -pp -l=qml
+  "$(git config user.name)" \
+  "$(git config user.email)" |
+  bat --color=always -pp -l=qml

@@ -1,5 +1,5 @@
 local opt = {
-	clipboard = 'unnamedplus',
+	clipboard = "unnamedplus",
 
 	number = true,
 	relativenumber = false,
@@ -7,11 +7,13 @@ local opt = {
 	tabstop = 4,
 	shiftwidth = 4,
 
-	mouse = 'a',
+	mouse = "a",
 
 	termguicolors = true,
 
-	splitright = true
+	splitright = true,
 }
 
-for k, v in pairs(opt) do vim.opt[k] = v end
+for k, v in pairs(opt) do
+	vim.opt[k] = v
+end

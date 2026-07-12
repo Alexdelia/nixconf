@@ -1,14 +1,13 @@
-@import '/home/alex/.config/rice/color.scss';
+@import "/home/alex/.config/rice/color.scss";
 
 * {
-  /* all: unset; */
-  transition:
-    background-color 0.5s,
+	/* all: unset; */
+	transition: background-color 0.5s;
 }
 
-@import './info_hub/eww.scss';
-@import './powermenu/eww.scss';
+@import "./info_hub/eww.scss";
+@import "./powermenu/eww.scss";
 
 .background {
-  background-color: transparent;
+	background-color: transparent;
 }

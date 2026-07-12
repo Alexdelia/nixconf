@@ -1,7 +1,7 @@
-require('nvim-treesitter').setup({})
+require("nvim-treesitter").setup({})
 
-vim.api.nvim_create_autocmd('FileType', {
-	group = vim.api.nvim_create_augroup('nc_treesitter', { clear = true }),
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("nc_treesitter", { clear = true }),
 	callback = function(args)
 		local buf = args.buf
 		local lang = vim.treesitter.language.get_lang(vim.bo[buf].filetype)
