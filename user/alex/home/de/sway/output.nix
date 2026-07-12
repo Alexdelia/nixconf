@@ -3,6 +3,8 @@
   lib,
   ...
 }: let
+  role = import ./role.nix;
+
   inherit (config.hostOption.spec) monitor;
 
   mkMode = m: "${toString m.width}x${toString m.height}" + lib.optionalString (m.refresh != null) "@${m.refresh}Hz";
@@ -28,12 +30,12 @@
 
   media = lib.attrNames (lib.filterAttrs (_: m: m.media) monitor);
 
-  gridWorkspace = map toString (lib.range 1 10);
-  gridAssign = lib.optionals (primary != null) (map (ws: {
+  appWorkspace = lib.drop (role.globalFrom - 1) role.list;
+  appAssign = lib.optionals (primary != null) (map (ws: {
       workspace = ws;
       output = primary;
     })
-    gridWorkspace);
+    appWorkspace);
   mediaAssign =
     map (name: {
       workspace = "media";
@@ -44,7 +46,7 @@ in {
   config = lib.mkIf (monitor != {}) {
     wayland.windowManager.sway.config = {
       inherit output;
-      workspaceOutputAssign = gridAssign ++ mediaAssign;
+      workspaceOutputAssign = appAssign ++ mediaAssign;
     };
   };
 }

@@ -15,6 +15,8 @@ in {
     ./keybind.nix
     ./window.nix
     ./output.nix
+    ./workspace.nix
+    ./singleton.nix
 
     ../notification/mako.nix
     ../runner/fuzzel.nix
