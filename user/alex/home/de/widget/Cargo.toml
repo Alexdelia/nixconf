@@ -1,0 +1,16 @@
+[workspace]
+resolver = "2"
+members = ["lib", "media-boot-prompt"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+
+[workspace.dependencies]
+iced = {version = "0.14", features = ["tokio"]}
+iced_layershell = "0.19"
+widget = {path = "lib"}
+
+[profile.release]
+lto = "thin"
+strip = true
