@@ -41,6 +41,5 @@
 
   environment.sessionVariables = {
     SWAY_UNSUPPORTED_GPU = "true";
-    WLR_NO_HARDWARE_CURSORS = "1";
   };
 }
