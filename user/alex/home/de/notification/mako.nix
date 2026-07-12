@@ -18,11 +18,11 @@ in {
     settings = {
       anchor = "bottom-right";
 
-      backgroundColor = "${s.base00}ab";
-      borderColor = "${s.base0D}80";
-      borderRadius = 15;
-      borderSize = 3;
-      # progressColor = "source ${s.base0D}00";
+      background-color = "${s.base00}ab";
+      border-color = "${s.base0D}80";
+      border-radius = 15;
+      border-size = 3;
+      # progress-color = "source ${s.base0D}00";
 
       font = "monospace 16";
       icons = true;
@@ -31,18 +31,18 @@ in {
       padding = "3";
       width = builtins.floor (primaryWidth * 7 / 24);
 
-      defaultTimeout = 5 * 1000; # ms
+      default-timeout = 5 * 1000; # ms
 
       "outer-margin" = "0,5,20,0";
 
       "urgency=low" = {
-        borderColor = "${s.base04}80";
+        border-color = "${s.base04}80";
       };
       "urgency=normal" = {
-        borderColor = "${s.base0D}80";
+        border-color = "${s.base0D}80";
       };
       "urgency=high" = {
-        borderColor = "${s.base08}80";
+        border-color = "${s.base08}80";
       };
     };
   };
