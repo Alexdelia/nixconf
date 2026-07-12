@@ -29,6 +29,41 @@
     }
 
     cur() { printf '%s' "$(<"$state/current")"; }
+
+    cur_role() {
+      local suffix ri k r
+      suffix="$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused).name')"
+      suffix="''${suffix##*:}"
+      ri=1
+      k=0
+      for r in "''${role[@]}"; do
+        k=$((k + 1))
+        if [ "$r" = "$suffix" ]; then ri="$k"; break; fi
+      done
+      if [ "$ri" -ge "$global_from" ]; then ri=1; fi
+      printf '%s' "$ri"
+    }
+
+    activity_create() {
+      local id ri
+      id="branch-$(date +%H%M%S)"
+      grep -qxF "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
+      ri="$(cur_role)"
+      printf '%s\n' "$id" >"$state/current"
+      swaymsg workspace "$(ws_name "$ri" "$id")" >/dev/null
+    }
+
+    # empty = no window in the activity's per-activity workspaces (globals don't count)
+    activity_empty() {
+      local act="$1" cnt
+      cnt="$(swaymsg -t get_tree | jq --arg p "$act:" '
+        [ recurse(.nodes[]?, .floating_nodes[]?)
+          | select(.type == "workspace" and (.name | startswith($p)))
+          | recurse(.nodes[]?, .floating_nodes[]?)
+          | select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)
+        ] | length')"
+      [ "$cnt" -eq 0 ]
+    }
   '';
 
   mkScript = name: body:
@@ -64,10 +99,7 @@
     bash
     */
     ''
-      id="branch-$(date +%H%M%S)"
-      grep -qxF "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
-      printf '%s\n' "$id" >"$state/current"
-      swaymsg workspace "$(ws_name 1 "$id")" >/dev/null
+      activity_create
     '';
 
   activityCycle =
@@ -76,10 +108,9 @@
     bash
     */
     ''
-      dir="''${1:-next}"
       mapfile -t acts <"$state/list"
       n="''${#acts[@]}"
-      if [ "$n" -lt 2 ]; then exit 0; fi
+      if [ "$n" -lt 2 ]; then activity_create; exit 0; fi
 
       c="$(cur)"
       i=0
@@ -87,20 +118,11 @@
         if [ "$a" = "$c" ]; then break; fi
         i=$((i + 1))
       done
-      if [ "$dir" = prev ]; then j=$(((i - 1 + n) % n)); else j=$(((i + 1) % n)); fi
+      j=$(((i + 1) % n))
       next="''${acts[$j]}"
-      printf '%s\n' "$next" >"$state/current"
 
-      # land on the same role index as the focused workspace, else role 1
-      suffix="$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused).name')"
-      suffix="''${suffix##*:}"
-      ri=1
-      k=0
-      for r in "''${role[@]}"; do
-        k=$((k + 1))
-        if [ "$r" = "$suffix" ]; then ri="$k"; break; fi
-      done
-      if [ "$ri" -ge "$global_from" ]; then ri=1; fi
+      ri="$(cur_role)"
+      printf '%s\n' "$next" >"$state/current"
       swaymsg workspace "$(ws_name "$ri" "$next")" >/dev/null
     '';
 
@@ -134,6 +156,45 @@
       swaymsg workspace "$(ws_name 1 default)" >/dev/null
     '';
 
+  activityReap =
+    mkScript "sway-activity-reap"
+    /*
+    bash
+    */
+    ''
+      reap() {
+        local c ri m idx off cand target
+        c="$(cur)"
+        [ "$c" = default ] && return 0
+        activity_empty "$c" || return 0
+
+        mapfile -t acts <"$state/list"
+        m="''${#acts[@]}"
+        idx=0
+        for ((k = 0; k < m; k++)); do
+          if [ "''${acts[$k]}" = "$c" ]; then idx="$k"; break; fi
+        done
+
+        ri="$(cur_role)"
+        grep -vxF "$c" "$state/list" >"$state/list.tmp"
+        mv "$state/list.tmp" "$state/list"
+
+        target=default
+        for ((off = 1; off < m; off++)); do
+          cand="''${acts[$(((idx + off) % m))]}"
+          if [ "$cand" != "$c" ]; then target="$cand"; break; fi
+        done
+
+        printf '%s\n' "$target" >"$state/current"
+        swaymsg workspace "$(ws_name "$ri" "$target")" >/dev/null
+      }
+
+      swaymsg -t subscribe -m '["window"]' | while read -r ev; do
+        [ "$(jq -r '.change' <<<"$ev")" = close ] || continue
+        reap
+      done
+    '';
+
   gridBind = lib.listToAttrs (lib.concatMap (i: let
     key =
       if i == 10
@@ -151,9 +212,8 @@
   ]) (lib.range 1 10));
 
   activityBind = {
-    "${modifier}+Control+n" = "exec ${activityCreate}/bin/sway-activity-create";
-    "${modifier}+Control+Right" = "exec ${activityCycle}/bin/sway-activity-cycle next";
-    "${modifier}+Control+Left" = "exec ${activityCycle}/bin/sway-activity-cycle prev";
+    "${modifier}+grave" = "exec ${activityCreate}/bin/sway-activity-create";
+    "${modifier}+Tab" = "exec ${activityCycle}/bin/sway-activity-cycle";
     "${modifier}+Control+w" = "exec ${activityClose}/bin/sway-activity-close";
   };
 in {
@@ -161,5 +221,20 @@ in {
     home.packages = [wsSwitch wsMove activityCreate activityCycle activityClose];
 
     wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (gridBind // activityBind);
+
+    systemd.user.services.sway-activity-reap = {
+      Unit = {
+        Description = "auto-delete empty sway activity";
+        PartOf = ["graphical-session.target"];
+        After = ["graphical-session.target"];
+      };
+
+      Service = {
+        ExecStart = "${activityReap}/bin/sway-activity-reap";
+        Restart = "on-failure";
+      };
+
+      Install.WantedBy = ["graphical-session.target"];
+    };
   };
 }
