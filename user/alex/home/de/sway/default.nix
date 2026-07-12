@@ -17,7 +17,7 @@ in {
     ./output.nix
 
     ../notification/mako.nix
-    ../runner/anyrun.nix
+    ../runner/fuzzel.nix
   ];
 
   config = lib.mkIf enable {
