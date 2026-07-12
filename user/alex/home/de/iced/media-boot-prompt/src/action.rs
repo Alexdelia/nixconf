@@ -10,7 +10,7 @@ pub fn view(state: &State) -> Element<'static, Message> {
         option("no", Choice::No, size, state.selected),
         option("yes", Choice::Yes, size, state.selected),
     ]
-    .spacing(vh(state.size, 3.0))
+    .spacing(vh(state.size, 10.0))
     .into()
 }
 

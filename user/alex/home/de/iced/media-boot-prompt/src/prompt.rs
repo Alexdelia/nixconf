@@ -18,7 +18,7 @@ pub fn view(state: &State) -> Element<'static, Message> {
             .size(vh(state.size, 10.0))
             .color(p::base04()),
     ]
-    .spacing(vh(state.size, 3.0))
+    .spacing(vh(state.size, 7.0))
     .align_x(Center)
     .into()
 }

@@ -11,8 +11,8 @@ use crate::{Message, State, action, prompt};
 pub fn view(state: &State) -> Element<'_, Message> {
     let radius = vh(state.size, 2.0);
     let card = container(
-        column![prompt::view(state), action::view(state)]
-            .spacing(vh(state.size, 5.0))
+        column![prompt::view(state), action::view(state),]
+            .spacing(vh(state.size, 10.0))
             .align_x(Center),
     )
     .padding(vh(state.size, 4.0))

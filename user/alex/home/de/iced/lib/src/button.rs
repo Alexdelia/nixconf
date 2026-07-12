@@ -1,16 +1,30 @@
 use iced::{
-    Background, Border,
+    Background, Border, Padding,
     widget::button::{Button, Status, Style},
 };
 
 use crate::{font, palette as p};
 
 const PADDING_RATIO: f32 = 0.3;
+// lowercase-only labels leave the cap/ascender zone empty, so trim the top to re-center
+const PADDING_TOP_RATIO: f32 = 0.1;
+
 const RADIUS_RATIO: f32 = 0.3;
 
 fn bare<'a, Message: Clone + 'a>(label: &'a str, size: f32) -> Button<'a, Message> {
-    iced::widget::button(iced::widget::text(label).size(size).font(font::NUMERIC))
-        .padding(size * PADDING_RATIO)
+    iced::widget::button(
+        iced::widget::text(label)
+            .size(size)
+            .font(font::DEFAULT)
+            .line_height(1.0)
+            .center(),
+    )
+    .padding(Padding {
+        top: size * PADDING_TOP_RATIO,
+        right: size * PADDING_RATIO,
+        bottom: size * PADDING_RATIO,
+        left: size * PADDING_RATIO,
+    })
 }
 
 pub fn icon<'a, Message: Clone + 'a>(
