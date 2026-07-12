@@ -47,11 +47,9 @@
       '';
     };
 
-  widget = [
-    (import ./media-boot-prompt {inherit mkWidget;})
-  ];
+  mediaBootPrompt = import ./media-boot-prompt {inherit mkWidget;};
 in {
   config = lib.mkIf (config.wayland.windowManager.sway.enable && mediaEnabled) {
-    home.packages = widget;
+    dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
   };
 }

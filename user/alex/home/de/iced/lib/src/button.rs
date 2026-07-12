@@ -6,6 +6,7 @@ use iced::{
 use crate::{font, palette as p};
 
 const PADDING_RATIO: f32 = 0.3;
+const HOVER_ALPHA: f32 = 0.5;
 // lowercase-only labels leave the cap/ascender zone empty, so trim the top to re-center
 const PADDING_TOP_RATIO: f32 = 0.1;
 
@@ -57,16 +58,16 @@ pub fn text<'a, Message: Clone + 'a>(
 ) -> Button<'a, Message> {
     bare(label, size).style(move |_theme, status| {
         let hovered = matches!(status, Status::Hovered | Status::Pressed);
-        let background = if selected {
-            if hovered { p::base0c() } else { p::base0d() }
-        } else if hovered {
-            p::base03()
+        let background = if hovered {
+            p::base0b().scale_alpha(HOVER_ALPHA)
+        } else if selected {
+            p::base0b()
         } else {
             p::base02()
         };
         Style {
             background: Some(Background::Color(background)),
-            text_color: if selected { p::base00() } else { p::base05() },
+            text_color: if selected { p::base01() } else { p::base05() },
             border: Border {
                 radius: (size * RADIUS_RATIO).into(),
                 ..Default::default()
