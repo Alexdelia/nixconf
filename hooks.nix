@@ -10,16 +10,21 @@
       )
     );
 
+  treefmtEval = forSystems (
+    system:
+      inputs.treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} ./treefmt.nix
+  );
+
   checks = forSystems (
     system: {
       pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
         src = ./.;
         hooks = {
-          alejandra = {
+          treefmt = {
             enable = true;
             stages = ["pre-commit"];
 
-            settings.verbosity = "quiet";
+            packageOverrides.treefmt = treefmtEval.${system}.config.build.wrapper;
           };
 
           deadnix = {
@@ -39,6 +44,8 @@
   );
 in {
   inherit checks;
+
+  formatter = forSystems (system: treefmtEval.${system}.config.build.wrapper);
 
   devShells = forSystems (
     system: {
