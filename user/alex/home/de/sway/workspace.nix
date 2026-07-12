@@ -8,6 +8,8 @@
 
   inherit (config.wayland.windowManager.sway.config) modifier;
 
+  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != {};
+
   prelude = ''
     state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/sway-activity"
     mkdir -p "$state"
@@ -91,6 +93,33 @@
       name="$(ws_name "$1" "$(cur)")"
       swaymsg "move container to workspace \"$name\"" >/dev/null
       swaymsg workspace "$name" >/dev/null
+    '';
+
+  # super+shift+0 toggles the focused window between browser (role 10) and media
+  wsMoveMedia =
+    mkScript "sway-ws-move-media"
+    /*
+    bash
+    */
+    ''
+      media_enabled=${
+        if mediaEnabled
+        then "1"
+        else "0"
+      }
+      browser="$(ws_name 10 "$(cur)")"
+      focused="$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused).name')"
+
+      if [ "$focused" = media ]; then
+        target="$browser"
+      elif [ "$focused" = "$browser" ] && [ "$media_enabled" = 1 ]; then
+        target=media
+      else
+        target="$browser"
+      fi
+
+      swaymsg "move container to workspace \"$target\"" >/dev/null
+      swaymsg workspace "$target" >/dev/null
     '';
 
   activityCreate =
@@ -216,11 +245,13 @@
     "${modifier}+Tab" = "exec ${activityCycle}/bin/sway-activity-cycle";
     "${modifier}+Control+w" = "exec ${activityClose}/bin/sway-activity-close";
   };
+
+  mediaToggleBind."${modifier}+Shift+0" = "exec ${wsMoveMedia}/bin/sway-ws-move-media";
 in {
   config = lib.mkIf config.wayland.windowManager.sway.enable {
-    home.packages = [wsSwitch wsMove activityCreate activityCycle activityClose];
+    home.packages = [wsSwitch wsMove wsMoveMedia activityCreate activityCycle activityClose];
 
-    wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (gridBind // activityBind);
+    wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (gridBind // activityBind // mediaToggleBind);
 
     systemd.user.services.sway-activity-reap = {
       Unit = {
