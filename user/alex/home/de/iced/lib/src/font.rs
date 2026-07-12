@@ -9,7 +9,8 @@ const fn name(env: Option<&'static str>, fallback: &'static str) -> &'static str
 
 pub const DEFAULT: Font = Font::with_name(name(
     option_env!("WIDGET_FONT_DEFAULT"),
-    "RobotoMono Nerd Font",
+    "Maple Mono NL",
+    // "RobotoMono Nerd Font",
 ));
 pub const NUMERIC: Font =
     Font::with_name(name(option_env!("WIDGET_FONT_NUMERIC"), "Maple Mono NL"));

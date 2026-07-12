@@ -1,0 +1,9 @@
+[package]
+name = "media-boot-prompt"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+iced.workspace = true
+iced_layershell.workspace = true
+widget.workspace = true

@@ -32,11 +32,13 @@
       nativeBuildInputs = with pkgs; [pkg-config];
       buildInputs = runtime ++ extraBuildInputs;
 
-      env =
+      env = let
+        maple = "Maple Mono NL";
+      in
         palette
         // {
-          WIDGET_FONT_DEFAULT = config.stylix.fonts.sansSerif.name;
-          WIDGET_FONT_NUMERIC = "Maple Mono NL";
+          WIDGET_FONT_DEFAULT = maple; # config.stylix.fonts.sansSerif.name;
+          WIDGET_FONT_NUMERIC = maple;
         };
 
       # iced dlopens the wayland/gpu stack at runtime; rpath so it resolves
