@@ -1,6 +1,7 @@
 let
   root = builtins.getFlake (toString ../../../../..);
   pkgs = root.inputs.nixpkgs.legacyPackages.${builtins.currentSystem};
+  inherit (pkgs) lib;
 
   runtime = with pkgs; [
     wayland
@@ -10,24 +11,21 @@ let
   ];
 in
   pkgs.mkShell {
-    nativeBuildInputs = with pkgs; [pkg-config];
+    packages = with pkgs; [
+      rustc
+      cargo
+      clippy
+      rustfmt
+      rust-analyzer
+      pkg-config
+    ];
 
-    buildInputs =
-      (with pkgs; [
-        rustc
-        cargo
-        clippy
-        rustfmt
-        rust-analyzer
-      ])
-      ++ runtime;
-
-    # iced dlopens the wayland/gpu stack at runtime; dev builds have no rpath
     shellHook =
       /*
       bash
       */
       ''
-        export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath runtime}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+        export PKG_CONFIG_PATH="${lib.makeSearchPathOutput "dev" "lib/pkgconfig" runtime}''${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+        export LD_LIBRARY_PATH="${lib.makeLibraryPath runtime}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
       '';
   }
