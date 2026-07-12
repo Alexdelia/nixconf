@@ -8,8 +8,7 @@
 
   hostFile = config.sops.secrets."jiruo/hdmi-host".path;
 
-  hdmiSink = "alsa_output.pci-0000_01_00.1.hdmi-stereo";
-  analogSink = "alsa_output.pci-0000_00_1f.3.analog-stereo";
+  sink = import ./sink.nix;
 
   armShutdown = false;
 
@@ -26,12 +25,14 @@
     ];
     excludeShellChecks = ["SC2016"];
     text = ''
-      state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-state"
       arm=${
         if armShutdown
         then "1"
         else "0"
       }
+
+      state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-state"
+      grace="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-grace"
 
       interval_on=1
       need_on=1
@@ -41,7 +42,14 @@
 
       acquire_max=44
 
+      grace_active() {
+        local until
+        until="$(cat "$grace" 2>/dev/null)" || return 1
+        [ -n "$until" ] && [ "$(date +%s)" -lt "$until" ]
+      }
+
       probe() {
+        grace_active && return 0
         local host out
         host="$(cat ${lib.escapeShellArg hostFile} 2>/dev/null)"
         [ -n "$host" ] || return 1
@@ -83,10 +91,8 @@
       }
 
       shutdown_prompt() {
-        local d h t
-        d="$(date +%u)"
-        h=$((10#$(date +%H)))
-        [ "$d" -ge 1 ] && [ "$d" -le 5 ] && [ "$h" -lt 17 ] || return 0
+        local t
+        ${config.customScript.isMediaDefaultTime} || return 0
 
         notify-send -u critical "Shutdown" "Shutting down in 60 seconds. Turn the TV back on to cancel."
         spd-say "Shutting down in 60 seconds. Turn the television back on to cancel." || true
@@ -108,12 +114,12 @@
       }
 
       on_hdmi() {
-        switch_sink ${lib.escapeShellArg hdmiSink}
+        switch_sink ${lib.escapeShellArg sink.hdmi}
         move_ws browser media 1
       }
 
       off_hdmi() {
-        switch_sink ${lib.escapeShellArg analogSink}
+        switch_sink ${lib.escapeShellArg sink.analog}
         move_ws media browser 0
         shutdown_prompt &
       }
@@ -151,8 +157,14 @@
         done
       }
 
-      printf 'off\n' >"$state"
-      cur=off
+      if grace_active; then
+        cur=on
+        printf 'on\n' >"$state"
+        watch_session
+      else
+        printf 'off\n' >"$state"
+        cur=off
+      fi
 
       swaymsg -t subscribe -m '["output"]' | while read -r _; do
         watch_session

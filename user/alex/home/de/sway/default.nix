@@ -18,6 +18,7 @@ in {
     ./workspace.nix
     ./singleton.nix
     ./hdmi.nix
+    ./media-boot.nix
 
     ../notification/mako.nix
     ../runner/fuzzel.nix

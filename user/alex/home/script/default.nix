@@ -6,6 +6,7 @@
   passwordGen = import ./password-gen.nix {inherit pkgs;};
   killOnPort = import ./kill-on-port.nix {inherit pkgs;};
   baj = import ./baj.nix {inherit pkgs;};
+  isMediaDefaultTime = import ./is-media-default-time.nix {inherit pkgs;};
 in {
   imports = [
     ./nix
@@ -32,6 +33,7 @@ in {
       passwordGen = "${passwordGen}/bin/password-gen";
       killOnPort = "${killOnPort}/bin/kill-on-port";
       baj = "${baj}/bin/baj";
+      isMediaDefaultTime = "${isMediaDefaultTime}/bin/is-media-default-time";
     };
   };
 }
