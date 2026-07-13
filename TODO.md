@@ -1,6 +1,7 @@
 - bluetooth (probably with [overskride](https://github.com/kaii-lb/overskride))
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
   - correct keybind for sound
+  - shortcut to move window to next activity
 - logiops config
 - enhance [rmpc](https://github.com/mierak/rmpc)
   - add [queue information](https://mierak.github.io/rmpc/next/configuration/header/#queuelength)
