@@ -40,19 +40,8 @@
   };
 in {
   config = lib.mkIf (config.wayland.windowManager.sway.enable && mediaEnabled) {
-    systemd.user.services.media-boot = {
-      Unit = {
-        Description = "login prompt to use the TV, then switch sound to HDMI + open browser on media";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session.target"];
-      };
-
-      Service = {
-        Type = "oneshot";
-        ExecStart = "${mediaBoot}/bin/media-boot";
-      };
-
-      Install.WantedBy = ["graphical-session.target"];
-    };
+    wayland.windowManager.sway.config.startup = [
+      {command = "${mediaBoot}/bin/media-boot";}
+    ];
   };
 }
