@@ -33,7 +33,7 @@
       done
 
       swaymsg workspace media
-      swaymsg exec ${config.dp.browser}
+      swaymsg exec '${config.dp.browser} --profile-directory="Profile 2"'
 
       systemctl --user restart hdmi-watch
     '';
