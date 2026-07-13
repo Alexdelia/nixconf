@@ -10,7 +10,7 @@
 
   sink = import ./sink.nix;
 
-  armShutdown = false;
+  armShutdown = true;
 
   hdmiWatch = pkgs.writeShellApplication {
     name = "hdmi-watch";
@@ -82,6 +82,11 @@
         done || true
       }
 
+      window_count() {
+        swaymsg -t get_tree | jaq '[recurse(.nodes[]?, .floating_nodes[]?)
+          | select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)] | length'
+      }
+
       brave_quit() {
         local pid
         pid="$(swaymsg -t get_tree | jaq -r 'first(recurse(.nodes[]?, .floating_nodes[]?)
@@ -91,16 +96,22 @@
       }
 
       shutdown_prompt() {
-        local t
+        local t baseline
         ${config.customScript.isMediaDefaultTime} || return 0
 
-        notify-send -u critical "Shutdown" "Shutting down in 60 seconds. Turn the TV back on to cancel."
-        spd-say "Shutting down in 60 seconds. Turn the television back on to cancel." || true
+        baseline="$(window_count)"
+
+        notify-send -u critical "shutdown" "shutting down in 60 seconds"
+        spd-say "Shutting down in 60 seconds." || true
 
         for ((t = 0; t < 60; t++)); do
           sleep 1
           if [ "$(cat "$state" 2>/dev/null)" = on ]; then
-            notify-send "Shutdown" "Cancelled — TV back on."
+            notify-send "shutdown" "cancelled"
+            return 0
+          fi
+          if [ "$(window_count)" -gt "$baseline" ]; then
+            notify-send "shutdown" "cancelled"
             return 0
           fi
         done
@@ -109,7 +120,7 @@
         if [ "$arm" = 1 ]; then
           systemctl poweroff
         else
-          notify-send -u critical "Shutdown (dry-run)" "armShutdown off — would power off now."
+          notify-send -u critical "shutdown" "dry-run"
         fi
       }
 
