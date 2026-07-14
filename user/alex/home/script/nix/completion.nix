@@ -1,5 +1,6 @@
 {lib, ...}: {
-  programs.bash.initExtra = lib.mkAfter (
+  programs.bash.initExtra =
+    lib.mkAfter
     /*
     bash
     */
@@ -27,6 +28,5 @@
       }
 
       complete -F _nc_nix_shell_complete nr ns nsu nus nusu
-    ''
-  );
+    '';
 }
