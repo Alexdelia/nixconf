@@ -18,6 +18,7 @@
   mkWidget = {
     name,
     extraBuildInputs ? [],
+    extraEnv ? {},
   }:
     pkgs.rustPlatform.buildRustPackage {
       pname = name;
@@ -39,7 +40,9 @@
         // {
           WIDGET_FONT_DEFAULT = maple; # config.stylix.fonts.sansSerif.name;
           WIDGET_FONT_NUMERIC = maple;
-        };
+          WIDGET_FONT_SYMBOL = config.stylix.fonts.sansSerif.name;
+        }
+        // extraEnv;
 
       # iced dlopens the wayland/gpu stack at runtime; rpath so it resolves
       postFixup = ''
@@ -48,8 +51,12 @@
     };
 
   mediaBootPrompt = import ./media-boot-prompt {inherit mkWidget;};
+  volumeOsd = import ./volume-osd {inherit mkWidget pkgs lib;};
 in {
-  config = lib.mkIf (config.wayland.windowManager.sway.enable && mediaEnabled) {
-    dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
-  };
+  config = lib.mkIf config.wayland.windowManager.sway.enable (lib.mkMerge [
+    {dp.volumeOsd = "${volumeOsd}/bin/volume-osd";}
+    (lib.mkIf mediaEnabled {
+      dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
+    })
+  ]);
 }

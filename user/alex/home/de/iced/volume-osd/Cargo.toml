@@ -1,0 +1,10 @@
+[package]
+name = "volume-osd"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+iced.workspace = true
+iced_layershell.workspace = true
+widget.workspace = true
+tokio = {version = "1", features = ["process", "io-util"]}

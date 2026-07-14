@@ -14,3 +14,7 @@ pub const DEFAULT: Font = Font::with_name(name(
 ));
 pub const NUMERIC: Font =
     Font::with_name(name(option_env!("WIDGET_FONT_NUMERIC"), "Maple Mono NL"));
+pub const SYMBOL: Font = Font::with_name(name(
+    option_env!("WIDGET_FONT_SYMBOL"),
+    "RobotoMono Nerd Font",
+));
