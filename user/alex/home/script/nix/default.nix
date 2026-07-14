@@ -1,6 +1,10 @@
 {pkgs, ...}: let
   shell = import ./shell.nix {inherit pkgs;};
 in {
+  imports = [
+    ./completion.nix
+  ];
+
   home.packages = [
     (import ./nr.nix {inherit pkgs;})
 
