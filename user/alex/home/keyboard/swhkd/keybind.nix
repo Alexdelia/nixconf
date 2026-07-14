@@ -7,6 +7,14 @@
   keybind = let
     playerctl = "${pkgs.playerctl}/bin/playerctl";
     mpc = "${pkgs.mpc}/bin/mpc";
+
+    wpctl = "${pkgs.wireplumber}/bin/wpctl";
+    baseVolumeChange = 2;
+    highVolumeChange = baseVolumeChange * 4;
+
+    brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+    baseBrightnessChange = 2;
+    highBrightnessChange = baseBrightnessChange * 4;
   in {
     # apps
     # "super + c" = config.dp.term;
@@ -24,10 +32,28 @@
     # "super + s" = "screenshot";
     # "super + q" = "colorpicker";
 
-    # sound
+    # media audio
     "super + z" = "${playerctl} play-pause";
-    "super + x" = "${playerctl} next";
+    "xf86audioplay" = "${playerctl} play-pause";
     "super + shift + z" = "${mpc} toggle";
+    "super + x" = "${playerctl} next";
+    "xf86audionext" = "${playerctl} next";
+    "super + shift + x" = "${mpc} next";
+    "xf86audioprev" = "${playerctl} previous";
+    "xf86audiostop" = "${playerctl} stop";
+
+    # volume
+    "volumeup" = "${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${baseVolumeChange}%+";
+    "volumedown" = "${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${baseVolumeChange}%-";
+    "shift + volumeup" = "${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${highVolumeChange}%+";
+    "shift + volumedown" = "${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${highVolumeChange}%-";
+    "mute" = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+
+    # brightness
+    "brightnessup" = "${brightnessctl} set ${baseBrightnessChange}%+";
+    "brightnessdown" = "${brightnessctl} set ${baseBrightnessChange}%-";
+    "shift + brightnessup" = "${brightnessctl} set ${highBrightnessChange}%+";
+    "shift + brightnessdown" = "${brightnessctl} set ${highBrightnessChange}%-";
   };
 
   isNonNixos = config.targets.genericLinux.enable;
