@@ -1,13 +1,10 @@
 - bluetooth (probably with [overskride](https://github.com/kaii-lb/overskride))
 - hotkey daemon (like [swhkd](https://github.com/waycrate/swhkd))
-  - correct keybind for sound
-    - shift + volume up/down -> change volume by base% \* 4
   - shortcut to move window to next activity
 - logiops config
 - enhance [rmpc](https://github.com/mierak/rmpc)
   - add [queue information](https://mierak.github.io/rmpc/next/configuration/header/#queuelength)
   - add ScanStatus
-- popup for volume and brightness change
 - info hub (common or separate)
   - shortcut to open
   - datetime
@@ -16,9 +13,9 @@
   - bluetooth status
   - active music
 - alert for too long use of headset
-- waybar (maybe)
 - pass for:
   - ssh connection password
 - use [pipe-operators](https://youtu.be/WOw8MJYZjRI) everywhere
 - clean host/\*/default.nix
 - better sway border for non-full screen windows
+- switch away from alacritty
