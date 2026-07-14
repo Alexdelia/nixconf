@@ -19,3 +19,4 @@
 - clean host/\*/default.nix
 - better sway border for non-full screen windows
 - switch away from alacritty
+- make my own colorpicker
