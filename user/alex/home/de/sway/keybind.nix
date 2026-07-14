@@ -6,8 +6,6 @@
 }: let
   inherit (config.wayland.windowManager.sway.config) modifier;
 
-  notify = "${pkgs.libnotify}/bin/notify-send";
-
   playerctl = "${pkgs.playerctl}/bin/playerctl";
 
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
@@ -19,11 +17,6 @@
   highBrightnessChange = baseBrightnessChange * 4;
 in {
   wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault {
-    # widgets
-    "${modifier}+d" = "exec ${config.dp.dmenu}";
-    "${modifier}+a" = "exec ${config.dp.infoHub or notify + " 'no infoHub'"}";
-    "${modifier}+w" = "exec ${config.dp.powermenu or notify + " 'no powermenu'"}";
-
     # screen read
     "${modifier}+s" = "exec ${config.customScript.screenshot}";
     "${modifier}+i" = "exec ${config.customScript.imageEdit}";

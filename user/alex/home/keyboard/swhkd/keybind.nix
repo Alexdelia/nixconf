@@ -5,7 +5,8 @@
   ...
 }: let
   keybind = let
-    notify = "${pkgs.libnotify}/bin/notify-send";
+    notifyError = "${pkgs.libnotify}/bin/notify-send -u critical";
+    withNotifyMissing = name: config.${name} or "${notifyError} 'no ${name}'";
 
     playerctl = "${pkgs.playerctl}/bin/playerctl";
     mpc = "${pkgs.mpc}/bin/mpc";
@@ -15,12 +16,12 @@
     "super + b" = config.dp.browser;
     "super + m" = config.dp.music;
     "super + k" = config.dp.calculator;
-    "super + f" = "${config.dp.fileManager or notify + " 'no fileManager'"}";
+    "super + f" = withNotifyMissing "dp.fileManager";
 
     # widget
-    # "super + d" = config.dp.dmenu;
-    # "super + a" = config.dp.infoHub;
-    # "super + w" = config.dp.powermenu;
+    "super + d" = config.dp.dmenu;
+    "super + a" = withNotifyMissing "dp.infoHub";
+    "super + w" = withNotifyMissing "dp.powermenu";
 
     # screen read
     # "super + s" = "screenshot";
