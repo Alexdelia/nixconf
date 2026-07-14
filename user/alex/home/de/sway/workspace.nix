@@ -132,6 +132,21 @@
       activity_create
     '';
 
+  activityMove =
+    mkScript "sway-activity-move"
+    /*
+    bash
+    */
+    ''
+      ri="$(cur_role)"
+      id="branch-$(date +%H%M%S)"
+      rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
+      target="$(ws_name "$ri" "$id")"
+      swaymsg "move container to workspace \"$target\"" >/dev/null
+      printf '%s\n' "$id" >"$state/current"
+      swaymsg workspace "$target" >/dev/null
+    '';
+
   activityCycle =
     mkScript "sway-activity-cycle"
     /*
@@ -243,6 +258,7 @@
 
   activityBind = {
     "${modifier}+grave" = "exec ${activityCreate}/bin/sway-activity-create";
+    "${modifier}+Shift+grave" = "exec ${activityMove}/bin/sway-activity-move";
     "${modifier}+Tab" = "exec ${activityCycle}/bin/sway-activity-cycle";
     "${modifier}+Control+w" = "exec ${activityClose}/bin/sway-activity-close";
   };
@@ -250,7 +266,7 @@
   mediaToggleBind."${modifier}+Shift+0" = "exec ${wsMoveMedia}/bin/sway-ws-move-media";
 in {
   config = lib.mkIf config.wayland.windowManager.sway.enable {
-    home.packages = [wsSwitch wsMove wsMoveMedia activityCreate activityCycle activityClose];
+    home.packages = [wsSwitch wsMove wsMoveMedia activityCreate activityMove activityCycle activityClose];
 
     wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (gridBind // activityBind // mediaToggleBind);
 
