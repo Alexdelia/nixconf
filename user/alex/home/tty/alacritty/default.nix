@@ -1,9 +1,21 @@
 {
   pkgs,
+  lib,
   config,
   scheme ? {},
   ...
 }: {
+  terminal = {
+    command = "${pkgs.alacritty-graphics}/bin/alacritty";
+    exec = {
+      command,
+      fontSize ? null,
+    }:
+      config.terminal.command
+      + lib.optionalString (fontSize != null) " -o font.size=${toString fontSize}"
+      + " -e ${command}";
+  };
+
   programs = {
     alacritty = {
       enable = true;

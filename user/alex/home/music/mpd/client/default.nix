@@ -5,7 +5,7 @@
 }: {
   dp.music =
     lib.mkIf config.hostOption.entertainment.music
-    "alacritty -e rmpc";
+    (config.terminal.exec {command = "rmpc";});
 
   imports = [
     ./mpc.nix

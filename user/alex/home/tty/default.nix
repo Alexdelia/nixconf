@@ -1,5 +1,5 @@
-{pkgs, ...}: {
-  dp.term = "${pkgs.alacritty}/bin/alacritty";
+{config, ...}: {
+  dp.term = config.terminal.command;
 
   imports = [
     ./alacritty

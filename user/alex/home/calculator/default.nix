@@ -1,5 +1,12 @@
-{pkgs, ...}: {
-  dp.calculator = "${pkgs.alacritty}/bin/alacritty -o 'font.size=48' -e ${pkgs.numbat}/bin/numbat";
+{
+  pkgs,
+  config,
+  ...
+}: {
+  dp.calculator = config.terminal.exec {
+    command = "${pkgs.numbat}/bin/numbat";
+    fontSize = 48;
+  };
 
   imports = [
     ./numbat

@@ -21,7 +21,7 @@ in {
       bash
       */
       ''
-        ${config.dp.term} -e ${name}
+        ${config.terminal.exec {command = name;}}
       '')
   ];
 }
