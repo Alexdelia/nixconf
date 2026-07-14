@@ -1,6 +1,6 @@
 {
   imports = [
     ./uinput.nix
-    # ./swhkd.nix
+    ./swhkd.nix
   ];
 }
