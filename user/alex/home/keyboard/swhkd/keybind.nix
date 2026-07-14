@@ -43,17 +43,17 @@
     "xf86audiostop" = "${playerctl} stop";
 
     # volume
-    "volumeup" = "${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${baseVolumeChange}%+";
-    "volumedown" = "${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${baseVolumeChange}%-";
-    "shift + volumeup" = "${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${highVolumeChange}%+";
-    "shift + volumedown" = "${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${highVolumeChange}%-";
+    "volumeup" = "${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%+";
+    "volumedown" = "${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%-";
+    "shift + volumeup" = "${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%+";
+    "shift + volumedown" = "${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%-";
     "mute" = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
 
     # brightness
-    "brightnessup" = "${brightnessctl} set ${baseBrightnessChange}%+";
-    "brightnessdown" = "${brightnessctl} set ${baseBrightnessChange}%-";
-    "shift + brightnessup" = "${brightnessctl} set ${highBrightnessChange}%+";
-    "shift + brightnessdown" = "${brightnessctl} set ${highBrightnessChange}%-";
+    "brightnessup" = "${brightnessctl} set ${toString baseBrightnessChange}%+";
+    "brightnessdown" = "${brightnessctl} set ${toString baseBrightnessChange}%-";
+    "shift + brightnessup" = "${brightnessctl} set ${toString highBrightnessChange}%+";
+    "shift + brightnessdown" = "${brightnessctl} set ${toString highBrightnessChange}%-";
   };
 
   isNonNixos = config.targets.genericLinux.enable;
