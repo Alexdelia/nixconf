@@ -60,4 +60,10 @@
     # recheck number with `journalctl -b | grep ata`
     kernelParams = ["libata.force=8:disable"];
   };
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
 }
