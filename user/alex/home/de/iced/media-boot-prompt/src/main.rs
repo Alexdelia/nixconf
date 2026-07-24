@@ -1,6 +1,9 @@
 mod action;
 mod card;
+mod password_field;
 mod prompt;
+
+use std::io::Write;
 
 use iced::{Color, Size, Subscription, Task, Theme, keyboard, window};
 use iced_layershell::{
@@ -12,22 +15,17 @@ use iced_layershell::{
 
 use widget::{font, palette as p};
 
-#[derive(Debug, Clone, Copy, PartialEq, Default)]
-pub enum Choice {
-    No,
-    #[default]
-    Yes,
-}
+pub const FIELD_ID: &str = "password";
 
 pub struct State {
-    pub selected: Choice,
+    pub password: String,
     pub size: Size,
 }
 
 impl Default for State {
     fn default() -> Self {
         Self {
-            selected: Choice::default(),
+            password: String::new(),
             size: Size::new(1920.0, 1080.0),
         }
     }
@@ -36,18 +34,24 @@ impl Default for State {
 #[to_layer_message]
 #[derive(Debug, Clone)]
 pub enum Message {
-    Choose(Choice),
-    Key(keyboard::key::Named),
+    Input(String),
+    Submit,
+    Cancel,
     Resized(Size),
 }
 
-fn finish(choice: Choice) -> ! {
-    let (code, label) = match choice {
-        Choice::Yes => (0, "yes"),
-        Choice::No => (1, "no"),
-    };
-    println!("{label}");
-    std::process::exit(code);
+fn submit(password: &str) -> ! {
+    print!("{password}");
+    let _ = std::io::stdout().flush();
+    std::process::exit(0);
+}
+
+fn cancel() -> ! {
+    std::process::exit(1);
+}
+
+fn boot() -> (State, Task<Message>) {
+    (State::default(), iced::widget::operation::focus(FIELD_ID))
 }
 
 fn namespace() -> String {
@@ -56,21 +60,14 @@ fn namespace() -> String {
 
 fn update(state: &mut State, message: Message) -> Task<Message> {
     match message {
-        Message::Choose(choice) => finish(choice),
-        Message::Resized(size) => {
-            state.size = size;
+        Message::Input(password) => {
+            state.password = password;
             Task::none()
         }
-        Message::Key(named) => {
-            match named {
-                keyboard::key::Named::ArrowLeft => state.selected = Choice::No,
-                keyboard::key::Named::ArrowRight => state.selected = Choice::Yes,
-                keyboard::key::Named::Enter => finish(state.selected),
-                keyboard::key::Named::Escape | keyboard::key::Named::Backspace => {
-                    finish(Choice::No)
-                }
-                _ => {}
-            }
+        Message::Submit => submit(&state.password),
+        Message::Cancel => cancel(),
+        Message::Resized(size) => {
+            state.size = size;
             Task::none()
         }
         _ => Task::none(),
@@ -81,9 +78,9 @@ fn subscription(_state: &State) -> Subscription<Message> {
     Subscription::batch([
         keyboard::listen().filter_map(|event| match event {
             keyboard::Event::KeyPressed {
-                key: keyboard::Key::Named(named),
+                key: keyboard::Key::Named(keyboard::key::Named::Escape),
                 ..
-            } => Some(Message::Key(named)),
+            } => Some(Message::Cancel),
             _ => None,
         }),
         window::resize_events().map(|(_id, size)| Message::Resized(size)),
@@ -98,7 +95,7 @@ fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
 }
 
 fn main() -> Result<(), iced_layershell::Error> {
-    application(State::default, namespace, update, card::view)
+    application(boot, namespace, update, card::view)
         .style(style)
         .subscription(subscription)
         .settings(Settings {

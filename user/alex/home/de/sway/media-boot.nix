@@ -17,10 +17,12 @@
       pulseaudio
       systemd
       uutils-coreutils-noprefix
+      gnome-keyring
     ];
     text = ''
       ${config.customScript.isMediaDefaultTime} || exit 0
-      ${config.dp.mediaBootPrompt} || exit 0
+
+      password="$(${config.dp.mediaBootPrompt})" || exit 0
 
       state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-state"
       grace="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-grace"
@@ -33,7 +35,13 @@
       done
 
       swaymsg workspace media
-      swaymsg exec '${config.dp.browser} --profile-directory="Profile 2"'
+
+      if [ -n "$password" ]; then
+        printf '%s' "$password" | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
+      fi
+      unset password
+
+      swaymsg exec '${config.dp.browser} --password-store=gnome-libsecret --profile-directory="Profile 2"'
 
       systemctl --user restart hdmi-watch
     '';
