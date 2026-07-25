@@ -21,7 +21,7 @@
     # widget
     "super + d" = config.dp.dmenu;
     "super + a" = withNotifyMissing "dp.infoHub";
-    "super + w" = withNotifyMissing "dp.powermenu";
+    "super + w" = withNotifyMissing "dp.powerMenu";
 
     # screen read
     # "super + s" = "screenshot";

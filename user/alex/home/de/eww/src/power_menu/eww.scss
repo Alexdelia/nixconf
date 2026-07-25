@@ -1,4 +1,4 @@
-.powermenu-btn {
+.power-menu-btn {
 	background-color: $base01;
 
 	border: none;
@@ -18,16 +18,16 @@
 	// text-shadow: 0.2rem 0.2rem 0.2rem $base00;
 }
 
-.powermenu-btn:focus {
+.power-menu-btn:focus {
 	outline: none;
 	// background-color: $base0E;
 	color: $base0E;
 }
 
-.powermenu-btn:hover {
+.power-menu-btn:hover {
 	background-color: $base02;
 }
 
-.powermenu-btn:active {
+.power-menu-btn:active {
 	background-color: $base03;
 }

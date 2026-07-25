@@ -1,4 +1,4 @@
-(defwindow powermenu
+(defwindow power_menu
 	:monitor 0
 	:geometry (geometry
 		:x "0px"
@@ -16,15 +16,15 @@
 		:valign "center"
 		:space-evenly false
 
-		(powermenu_btn :text "" :onclick "poweroff")
-		(powermenu_btn :text "" :onclick "reboot")
-		(powermenu_btn :text "" :onclick "systemctl hibernate")
+		(power_menu_btn :text "" :onclick "poweroff")
+		(power_menu_btn :text "" :onclick "reboot")
+		(power_menu_btn :text "" :onclick "systemctl hibernate")
 	)
 )
 
-(defwidget powermenu_btn [text onclick]
+(defwidget power_menu_btn [text onclick]
 	(button
-		:class "powermenu-btn"
+		:class "power-menu-btn"
 		:onclick onclick
 		:timeout "30s"
 

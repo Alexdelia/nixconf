@@ -19,7 +19,7 @@
 
       "$mod, D, exec, ${config.dp.dmenu}"
       "$mod, A, exec, ${config.dp.infoHub}"
-      "$mod, W, exec, ${config.dp.powermenu}"
+      "$mod, W, exec, ${config.dp.powerMenu}"
 
       "$mod, S, exec, ${config.customScript.screenshot}"
       "$mod, I, exec, ${config.customScript.imageEdit}"

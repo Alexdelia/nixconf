@@ -11,17 +11,17 @@
   infoHub =
     pkgs.writers.writeBashBin "info-hub" {} "${open} info_hub";
 
-  powermenu =
-    pkgs.writers.writeBashBin "powermenu" {} "${open} powermenu";
+  powerMenu =
+    pkgs.writers.writeBashBin "power-menu" {} "${open} power_menu";
 in {
   config = lib.mkIf (config.hostOption.type == "lite" && pkgs.system != "aarch64-linux") {
     home.packages = [
       infoHub
-      powermenu
+      powerMenu
     ];
 
     dp.infoHub = "${infoHub}/bin/info-hub";
-    dp.powermenu = "${powermenu}/bin/powermenu";
+    dp.powerMenu = "${powerMenu}/bin/power-menu";
 
     programs.eww = {
       enable = true;

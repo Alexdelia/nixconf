@@ -1,2 +1,2 @@
 (include "info_hub/eww.yuck")
-(include "powermenu/eww.yuck")
+(include "power_menu/eww.yuck")
