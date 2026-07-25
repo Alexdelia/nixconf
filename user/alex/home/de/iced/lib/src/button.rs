@@ -19,8 +19,8 @@ const PADDING_TOP_RATIO: f32 = 0.1;
 
 const RADIUS_RATIO: f32 = 0.3;
 
-const ICON_GLYPH_RATIO: f32 = 8.0 / 15.0;
-const ICON_RADIUS_RATIO: f32 = 2.0 / 15.0;
+const ICON_GLYPH_RATIO: f32 = 3.0 / 4.0;
+const ICON_RADIUS_RATIO: f32 = 1.0 / 4.0;
 
 const FADE_MS: u64 = 300;
 

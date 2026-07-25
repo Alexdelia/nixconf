@@ -7,8 +7,8 @@ use widget::{button, unit::vh};
 
 use crate::{ENTRY, Message, State};
 
-const SIDE_VH: f32 = 22.0;
-const GAP_VH: f32 = 3.0;
+const SIDE_VH: f32 = 100.0 / 3.0;
+const GAP_VH: f32 = SIDE_VH / 2.0;
 
 pub fn view(state: &State) -> Element<'_, Message> {
     let side = vh(state.size, SIDE_VH);
