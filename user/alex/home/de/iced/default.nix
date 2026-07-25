@@ -40,7 +40,7 @@
         // {
           WIDGET_FONT_DEFAULT = maple; # config.stylix.fonts.sansSerif.name;
           WIDGET_FONT_NUMERIC = maple;
-          WIDGET_FONT_SYMBOL = config.stylix.fonts.sansSerif.name;
+          WIDGET_FONT_SYMBOL = "${config.stylix.fonts.sansSerif.name} Propo";
         }
         // extraEnv;
 
@@ -51,10 +51,24 @@
     };
 
   mediaBootPrompt = import ./media-boot-prompt {inherit mkWidget;};
+  powerMenuWidget = import ./power-menu {inherit mkWidget;};
   volumeOsd = import ./volume-osd {inherit mkWidget pkgs lib;};
+
+  powerMenu = pkgs.writeShellApplication {
+    name = "power-menu";
+    runtimeInputs = with pkgs; [systemd];
+    text = ''
+      choice="$(${powerMenuWidget}/bin/power-menu)" || exit 0
+      read -ra cmd <<<"$choice"
+      exec "''${cmd[@]}"
+    '';
+  };
 in {
   config = lib.mkIf config.wayland.windowManager.sway.enable (lib.mkMerge [
-    {dp.volumeOsd = "${volumeOsd}/bin/volume-osd";}
+    {
+      dp.volumeOsd = "${volumeOsd}/bin/volume-osd";
+      dp.powerMenu = "${powerMenu}/bin/power-menu";
+    }
     (lib.mkIf mediaEnabled {
       dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
     })

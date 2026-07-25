@@ -2435,6 +2435,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "power-menu"
+version = "0.1.0"
+dependencies = [
+ "iced",
+ "iced_layershell",
+ "widget",
+]
+
+[[package]]
 name = "presser"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

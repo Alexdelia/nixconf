@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["lib", "media-boot-prompt", "volume-osd"]
+members = ["lib", "media-boot-prompt", "power-menu", "volume-osd"]
 
 [workspace.package]
 version = "0.1.0"

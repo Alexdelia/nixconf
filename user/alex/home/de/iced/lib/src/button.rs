@@ -4,8 +4,8 @@ use iced::advanced::widget::{Tree, tree};
 use iced::advanced::{Clipboard, Renderer as _, Shell, Widget, mouse};
 use iced::time::Instant;
 use iced::{
-    Background, Border, Color, Element, Event, Length, Padding, Rectangle, Shadow, Size, Theme,
-    window,
+    Background, Border, Color, Element, Event, Font, Length, Padding, Point, Rectangle, Shadow,
+    Size, Theme, window,
 };
 
 use crate::animation::{Fade, Lerp};
@@ -19,17 +19,21 @@ const PADDING_TOP_RATIO: f32 = 0.1;
 
 const RADIUS_RATIO: f32 = 0.3;
 
+const ICON_GLYPH_RATIO: f32 = 8.0 / 15.0;
+const ICON_RADIUS_RATIO: f32 = 2.0 / 15.0;
+
 const FADE_MS: u64 = 300;
 
 pub fn icon<'a, Message: Clone + 'a>(
     label: &'a str,
-    size: f32,
+    side: f32,
     selected: bool,
 ) -> AnimatedButton<'a, Message> {
-    AnimatedButton::new(
+    let mut button = AnimatedButton::new(
         label,
-        size,
+        side * ICON_GLYPH_RATIO,
         selected,
+        font::SYMBOL,
         Palette {
             idle_off: p::base01(),
             idle_on: p::base01(),
@@ -37,7 +41,10 @@ pub fn icon<'a, Message: Clone + 'a>(
             text_off: p::base05(),
             text_on: p::base0e(),
         },
-    )
+    );
+    button.side = Some(side);
+    button.radius = side * ICON_RADIUS_RATIO;
+    button
 }
 
 pub fn text<'a, Message: Clone + 'a>(
@@ -49,6 +56,7 @@ pub fn text<'a, Message: Clone + 'a>(
         label,
         size,
         selected,
+        font::DEFAULT,
         Palette {
             idle_off: p::base02(),
             idle_on: p::base0b(),
@@ -74,14 +82,15 @@ pub struct AnimatedButton<'a, Message> {
     color: Palette,
     radius: f32,
     padding: Padding,
+    side: Option<f32>,
 }
 
 impl<'a, Message: 'a> AnimatedButton<'a, Message> {
-    fn new(label: &'a str, size: f32, selected: bool, color: Palette) -> Self {
+    fn new(label: &'a str, size: f32, selected: bool, font: Font, color: Palette) -> Self {
         Self {
             content: iced::widget::text(label)
                 .size(size)
-                .font(font::DEFAULT)
+                .font(font)
                 .line_height(1.0)
                 .center()
                 .into(),
@@ -95,6 +104,7 @@ impl<'a, Message: 'a> AnimatedButton<'a, Message> {
                 bottom: size * PADDING_RATIO,
                 left: size * PADDING_RATIO,
             },
+            side: None,
         }
     }
 
@@ -138,9 +148,15 @@ impl<'a, Message: Clone + 'a> Widget<Message, Theme, iced::Renderer>
     }
 
     fn size(&self) -> Size<Length> {
-        Size {
-            width: Length::Shrink,
-            height: Length::Shrink,
+        match self.side {
+            Some(side) => Size {
+                width: Length::Fixed(side),
+                height: Length::Fixed(side),
+            },
+            None => Size {
+                width: Length::Shrink,
+                height: Length::Shrink,
+            },
         }
     }
 
@@ -150,17 +166,33 @@ impl<'a, Message: Clone + 'a> Widget<Message, Theme, iced::Renderer>
         renderer: &iced::Renderer,
         limits: &layout::Limits,
     ) -> layout::Node {
-        layout::padded(
-            limits,
-            Length::Shrink,
-            Length::Shrink,
-            self.padding,
-            |limits| {
-                self.content
-                    .as_widget_mut()
-                    .layout(&mut tree.children[0], renderer, limits)
-            },
-        )
+        match self.side {
+            Some(side) => {
+                let square = Size::new(side, side);
+                let content = self.content.as_widget_mut().layout(
+                    &mut tree.children[0],
+                    renderer,
+                    &layout::Limits::new(Size::ZERO, square),
+                );
+                let glyph = content.size();
+                let content = content.move_to(Point::new(
+                    (side - glyph.width) / 2.0,
+                    (side - glyph.height) / 2.0,
+                ));
+                layout::Node::with_children(square, vec![content])
+            }
+            None => layout::padded(
+                limits,
+                Length::Shrink,
+                Length::Shrink,
+                self.padding,
+                |limits| {
+                    self.content
+                        .as_widget_mut()
+                        .layout(&mut tree.children[0], renderer, limits)
+                },
+            ),
+        }
     }
 
     fn update(

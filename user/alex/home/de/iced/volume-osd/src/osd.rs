@@ -8,7 +8,7 @@ use crate::{Message, audio::Volume};
 
 const MAX: f32 = 1.5;
 
-const MUTE: &str = " ";
+const MUTE: &str = "";
 
 const UNIT_VH: f32 = 3.0;
 const PAD_VH: f32 = UNIT_VH / 2.0;
