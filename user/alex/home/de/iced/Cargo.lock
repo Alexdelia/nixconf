@@ -1209,6 +1209,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfa686283ad6dd069f105e5ab091b04c62850d3e4cf5d67debad1933f55023df"
 
 [[package]]
+name = "hmerr"
+version = "0.1.0"
+source = "git+https://github.com/Alexdelia/yahmrslib.git#4c05a8b1024e666f3b194d746575a368186384c9"
+
+[[package]]
 name = "iced"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2438,6 +2443,16 @@ dependencies = [
 name = "power-menu"
 version = "0.1.0"
 dependencies = [
+ "iced",
+ "iced_layershell",
+ "widget",
+]
+
+[[package]]
+name = "power-tray"
+version = "0.1.0"
+dependencies = [
+ "hmerr",
  "iced",
  "iced_layershell",
  "widget",

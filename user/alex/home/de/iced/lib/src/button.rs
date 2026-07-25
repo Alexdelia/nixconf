@@ -22,7 +22,17 @@ const RADIUS_RATIO: f32 = 0.3;
 const ICON_GLYPH_RATIO: f32 = 3.0 / 4.0;
 const ICON_RADIUS_RATIO: f32 = 1.0 / 4.0;
 
-const FADE_MS: u64 = 300;
+pub const FADE_MS: u64 = 300;
+
+pub fn icon_palette() -> Palette {
+    Palette {
+        idle_off: p::base01(),
+        idle_on: p::base01(),
+        hover: p::base02(),
+        text_off: p::base05(),
+        text_on: p::base0e(),
+    }
+}
 
 pub fn icon<'a, Message: Clone + 'a>(
     label: &'a str,
@@ -34,13 +44,7 @@ pub fn icon<'a, Message: Clone + 'a>(
         side * ICON_GLYPH_RATIO,
         selected,
         font::SYMBOL,
-        Palette {
-            idle_off: p::base01(),
-            idle_on: p::base01(),
-            hover: p::base02(),
-            text_off: p::base05(),
-            text_on: p::base0e(),
-        },
+        icon_palette(),
     );
     button.side = Some(side);
     button.radius = side * ICON_RADIUS_RATIO;
@@ -67,12 +71,12 @@ pub fn text<'a, Message: Clone + 'a>(
     )
 }
 
-struct Palette {
-    idle_off: Color,
-    idle_on: Color,
-    hover: Color,
-    text_off: Color,
-    text_on: Color,
+pub struct Palette {
+    pub idle_off: Color,
+    pub idle_on: Color,
+    pub hover: Color,
+    pub text_off: Color,
+    pub text_on: Color,
 }
 
 pub struct AnimatedButton<'a, Message> {

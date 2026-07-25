@@ -25,7 +25,12 @@
       version = "0.1.0";
 
       src = ./.;
-      cargoLock.lockFile = ./Cargo.lock;
+      cargoLock = {
+        lockFile = ./Cargo.lock;
+        outputHashes = {
+          "hmerr-0.1.0" = "sha256-sstQowDd0onxnHylO4CjdTOZjHpmrRjh+0bJnHDZaAQ=";
+        };
+      };
 
       cargoBuildFlags = ["-p" name];
       doCheck = false;
@@ -52,6 +57,7 @@
 
   mediaBootPrompt = import ./media-boot-prompt {inherit mkWidget;};
   powerMenuWidget = import ./power-menu {inherit mkWidget;};
+  powerTray = import ./power-tray {inherit mkWidget;};
   volumeOsd = import ./volume-osd {inherit mkWidget pkgs lib;};
 
   powerMenu = pkgs.writeShellApplication {
@@ -71,6 +77,7 @@ in {
     }
     (lib.mkIf mediaEnabled {
       dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
+      dp.powerTray = "${powerTray}/bin/power-tray";
     })
   ]);
 }

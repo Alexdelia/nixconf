@@ -20,6 +20,7 @@ in {
 
     ./hdmi.nix
     ./media-boot.nix
+    ./power-tray.nix
 
     ./volume-osd.nix
 
