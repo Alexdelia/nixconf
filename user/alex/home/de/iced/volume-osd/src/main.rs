@@ -18,6 +18,8 @@ use widget::{animation::Fade, font, palette as p};
 
 use crate::audio::Volume;
 
+const NAMESPACE: &str = env!("CARGO_PKG_NAME");
+
 const HOLD_MS: u64 = 1000;
 const FADE_MS: u64 = 200;
 
@@ -65,16 +67,12 @@ fn layer() -> NewLayerShellSettings {
         keyboard_interactivity: KeyboardInteractivity::None,
         output_option: OutputOption::default(),
         events_transparent: true,
-        namespace: Some(namespace()),
+        namespace: Some(NAMESPACE.to_string()),
     }
 }
 
 fn boot() -> (State, Task<Message>) {
     (State::new(), Task::perform(audio::query(), Message::Seed))
-}
-
-fn namespace() -> String {
-    String::from("volume-osd")
 }
 
 fn update(state: &mut State, message: Message) -> Task<Message> {
@@ -157,7 +155,7 @@ fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
 }
 
 fn main() -> Result<(), iced_layershell::Error> {
-    daemon(boot, namespace, update, view)
+    daemon(boot, NAMESPACE, update, view)
         .style(style)
         .subscription(subscription)
         .settings(Settings {

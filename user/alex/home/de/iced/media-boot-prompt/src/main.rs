@@ -54,10 +54,6 @@ fn boot() -> (State, Task<Message>) {
     (State::default(), iced::widget::operation::focus(FIELD_ID))
 }
 
-fn namespace() -> String {
-    String::from("media-boot-prompt")
-}
-
 fn update(state: &mut State, message: Message) -> Task<Message> {
     match message {
         Message::Input(password) => {
@@ -95,7 +91,7 @@ fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
 }
 
 fn main() -> Result<(), iced_layershell::Error> {
-    application(boot, namespace, update, card::view)
+    application(boot, env!("CARGO_PKG_NAME"), update, card::view)
         .style(style)
         .subscription(subscription)
         .settings(Settings {

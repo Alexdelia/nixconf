@@ -72,10 +72,6 @@ fn boot() -> (State, Task<Message>) {
     (State::default(), Task::none())
 }
 
-fn namespace() -> String {
-    String::from("power-menu")
-}
-
 fn update(state: &mut State, message: Message) -> Task<Message> {
     match message {
         Message::Move(step) => {
@@ -130,7 +126,7 @@ fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
 }
 
 fn main() -> Result<(), iced_layershell::Error> {
-    application(boot, namespace, update, menu::view)
+    application(boot, env!("CARGO_PKG_NAME"), update, menu::view)
         .style(style)
         .subscription(subscription)
         .settings(Settings {
