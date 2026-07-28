@@ -15,7 +15,7 @@
     # app
     "super + c" = config.dp.term;
     "super + b" = config.dp.browser;
-    "super + m" = config.dp.music;
+    "super + m" = withNotifyMissing "dp.music";
     "super + k" = config.dp.calculator;
     "super + f" = withNotifyMissing "dp.fileManager";
 
