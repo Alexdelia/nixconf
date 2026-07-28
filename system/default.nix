@@ -77,12 +77,7 @@
       ));
 
   nixpkgs.overlays = [
-    (final: _: {
-      unstable = import inputs.nixpkgs-unstable {
-        inherit (final.stdenv.hostPlatform) system;
-        inherit (final) config;
-      };
-    })
+    (import ../common/overlay.nix inputs)
   ];
 
   # This value determines the NixOS release from which the default

@@ -47,7 +47,10 @@ in {
           in {
             name = "${username}@${hostname}";
             value = inputs.home-manager.lib.homeManagerConfiguration {
-              pkgs = inputs.nixpkgs.legacyPackages.${hostAttrs.system};
+              pkgs = import inputs.nixpkgs {
+                inherit (hostAttrs) system;
+                overlays = [(import ../common/overlay.nix inputs)];
+              };
 
               extraSpecialArgs = {
                 inherit inputs;
