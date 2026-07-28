@@ -6,7 +6,8 @@
 }: let
   keybind = let
     notifyError = "${pkgs.libnotify}/bin/notify-send -u critical";
-    withNotifyMissing = name: config.${name} or "${notifyError} 'no ${name}'";
+    withNotifyMissing = name:
+      lib.attrByPath (lib.splitString "." name) "${notifyError} 'no ${name}'" config;
 
     playerctl = "${pkgs.playerctl}/bin/playerctl";
     mpc = "${pkgs.mpc}/bin/mpc";
