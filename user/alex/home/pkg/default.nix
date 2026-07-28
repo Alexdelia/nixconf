@@ -62,13 +62,23 @@ in {
       ]
       else []
     )
-    # ++ (
-    #   if config.hostOption.work
-    #   then []
-    #   else []
-    # )
     ++ (
-      if (pkgs.stdenv.hostPlatform.system != "aarch64-linux" && !config.targets.genericLinux.enable)
+      if config.hostOption.work
+      then
+        with pkgs.unstable; [
+          ruff
+          ty
+        ]
+      else []
+    )
+    ++ (
+      if
+        (
+          config.hostOption.type
+          == "full"
+          && pkgs.stdenv.hostPlatform.system != "aarch64-linux"
+          && !config.targets.genericLinux.enable
+        )
       then [
         slack
       ]
