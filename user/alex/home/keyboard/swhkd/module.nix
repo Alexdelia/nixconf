@@ -41,6 +41,7 @@ in {
       Service = {
         ExecStart = swhkdBin;
         Restart = "on-failure";
+        KillMode = "process";
       };
 
       Install.WantedBy = ["graphical-session.target"];
