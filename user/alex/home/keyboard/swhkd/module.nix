@@ -4,7 +4,7 @@
   inputs,
   ...
 }: let
-  swhkd = inputs.swhkd.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  swhkd = inputs.swhkd.packages.${pkgs.stdenv.hostPlatform.system}.swhkd-no-rfkill;
 
   swhkdBin =
     if config.targets.genericLinux.enable
