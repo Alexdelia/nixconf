@@ -1,0 +1,69 @@
+--- a/swhkd/src/daemon.rs
++++ b/swhkd/src/daemon.rs
+@@ -227,11 +227,11 @@
+                 .expect("Failed to get user info")
+                 .unwrap_or_else(|| panic!("User with UID {} not found", invoking_uid));
+ 
++            let credentials = perms::UserCredentials::resolve_before_fork(&user);
++
+             let mut cmd = Command::new("sh");
+             cmd.arg("-c")
+                 .arg(command)
+-                .uid(invoking_uid)
+-                .gid(user.gid.as_raw())
+                 .stdin(Stdio::null())
+                 .stdout(match File::options().append(true).open(&log) {
+                     Ok(file) => file,
+@@ -255,6 +255,10 @@
+                 cmd.env(key, value);
+             }
+ 
++            unsafe {
++                cmd.pre_exec(move || credentials.apply_with_syscalls_only());
++            }
++
+             match cmd.spawn() {
+                 Ok(child) => {
+                     log::info!("Command executed successfully.");
+--- a/swhkd/src/perms.rs
++++ b/swhkd/src/perms.rs
+@@ -1,5 +1,37 @@
+-use nix::unistd::{Gid, Uid, User};
+-use std::{ffi::CString, process::exit};
++use nix::errno::Errno;
++use nix::unistd::{getgrouplist, setgid, setgroups, setuid, Gid, Uid, User};
++use std::{ffi::CString, io, process::exit};
++
++#[derive(Clone)]
++pub struct UserCredentials {
++    uid: Uid,
++    gid: Gid,
++    supplementary_groups: Vec<Gid>,
++}
++
++impl UserCredentials {
++    pub fn resolve_before_fork(user: &User) -> Self {
++        let username = CString::new(user.name.as_str())
++            .expect("Failed to convert username to CString");
++
++        let supplementary_groups = getgrouplist(&username, user.gid).unwrap_or_else(|e| {
++            log::error!("Failed to resolve supplementary groups: {:#?}", e);
++            vec![user.gid]
++        });
++
++        Self { uid: user.uid, gid: user.gid, supplementary_groups }
++    }
++
++    pub fn apply_with_syscalls_only(&self) -> io::Result<()> {
++        setgroups(&self.supplementary_groups).map_err(errno_to_io)?;
++        setgid(self.gid).map_err(errno_to_io)?;
++        setuid(self.uid).map_err(errno_to_io)
++    }
++}
++
++fn errno_to_io(errno: Errno) -> io::Error {
++    io::Error::from_raw_os_error(errno as i32)
++}
+ 
+ pub fn _drop_privileges(user_uid: u32) {
+     let user_uid = Uid::from_raw(user_uid);

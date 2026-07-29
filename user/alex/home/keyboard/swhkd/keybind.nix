@@ -38,39 +38,11 @@
   isNonNixos = config.targets.genericLinux.enable;
   localConfig = "${config.xdg.configHome}/swhkd/local.swhkdrc";
   localInclude = lib.optionalString isNonNixos "include ${localConfig}\n";
-
-  systemdRun =
-    if isNonNixos
-    then "/usr/bin/systemd-run"
-    else "${pkgs.systemd}/bin/systemd-run";
-
-  envPassthrough = [
-    "WAYLAND_DISPLAY"
-    "DISPLAY"
-    "XAUTHORITY"
-    "XDG_CURRENT_DESKTOP"
-    "XDG_SESSION_TYPE"
-  ];
-
-  runAsUser = command:
-    lib.concatStringsSep " " ([
-        systemdRun
-        "--user"
-        "--collect"
-        "--quiet"
-      ]
-      ++ map (v: "--setenv=${v}") envPassthrough
-      ++ [
-        "--"
-        "${pkgs.bash}/bin/bash"
-        "-c"
-        (lib.escapeShellArg command)
-      ]);
 in {
   xdg.configFile."swhkd/swhkdrc".text =
     localInclude
     + lib.concatStringsSep "\n"
-    (lib.mapAttrsToList (hotkey: command: "${hotkey}\n\t${runAsUser command}\n") keybind);
+    (lib.mapAttrsToList (hotkey: command: "${hotkey}\n\t${command}\n") keybind);
 
   home.activation = lib.mkIf isNonNixos {
     swhkdLocalConfig =
