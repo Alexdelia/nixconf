@@ -9,6 +9,8 @@
     homeDirectory = "/home/${username}";
 
     inherit stateVersion;
+
+    preferXdgDirectories = true;
   };
 
   # imports = [../common/option];

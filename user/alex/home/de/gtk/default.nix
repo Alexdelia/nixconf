@@ -11,6 +11,8 @@
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
     };
+
+    gtk2.force = true;
   };
 
   # stylix.targets.gtk.enable = false;
