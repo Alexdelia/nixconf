@@ -6,6 +6,7 @@
   imports = [
     ./font.nix
     ./keybind.nix
+    ./locale.nix
     # ./touchpad.nix
     ./window-manager.nix
     ./workspace.nix
