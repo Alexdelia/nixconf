@@ -1,10 +1,14 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ./font.nix
     ./keybind.nix
     # ./touchpad.nix
     ./window-manager.nix
-    # ./activity.nix
+    ./workspace.nix
     # ./panel.nix
     ./screenlocker.nix
   ];
@@ -16,6 +20,11 @@
       resetFiles = [
         # "${config.home.homeDirectory}/.gtkrc-2.0"
       ];
+
+      configFile.kglobalshortcutsrc =
+        lib.mapAttrs
+        (_: lib.mapAttrs (_: _: {immutable = true;}))
+        config.programs.plasma.shortcuts;
 
       workspace = {
         enableMiddleClickPaste = false;

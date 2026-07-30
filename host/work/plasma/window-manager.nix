@@ -1,4 +1,6 @@
-{
+let
+  role = import ../../../user/alex/home/de/sway/role.nix;
+in {
   programs.plasma.kwin = {
     borderlessMaximizedWindows = true;
 
@@ -21,19 +23,8 @@
     };
 
     virtualDesktops = {
-      number = 10;
-      names = [
-        "code"
-        "tty"
-        "tui"
-        "process"
-        "5"
-        "6"
-        "7"
-        "music"
-        "communication"
-        "browser"
-      ];
+      number = builtins.length role.list;
+      names = role.list;
     };
   };
 
