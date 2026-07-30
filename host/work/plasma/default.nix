@@ -22,10 +22,17 @@
         # "${config.home.homeDirectory}/.gtkrc-2.0"
       ];
 
-      configFile.kglobalshortcutsrc =
-        lib.mapAttrs
-        (_: lib.mapAttrs (_: _: {immutable = true;}))
-        config.programs.plasma.shortcuts;
+      configFile = {
+        kdeglobals.KDE.AnimationDurationFactor = {
+          value = 0;
+          immutable = true;
+        };
+
+        kglobalshortcutsrc =
+          lib.mapAttrs
+          (_: lib.mapAttrs (_: _: {immutable = true;}))
+          config.programs.plasma.shortcuts;
+      };
 
       workspace = {
         enableMiddleClickPaste = false;

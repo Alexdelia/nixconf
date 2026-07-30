@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -6,6 +7,8 @@
   role = import ../../../user/alex/home/de/sway/role.nix;
 
   qdbus = "${pkgs.kdePackages.qttools}/bin/qdbus";
+
+  wallpaper = toString config.programs.plasma.workspace.wallpaper;
 
   prelude = ''
     global_from=${toString role.globalFrom}
@@ -35,6 +38,25 @@
           }
         }
       "
+    }
+
+    keep_wallpaper() {
+      ${qdbus} org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "
+        const group = ['Wallpaper', 'org.kde.image', 'General'];
+
+        const image = desktops().reduce((found, d) => {
+          d.currentConfigGroup = group;
+          return found || d.readConfig('Image');
+        }, null) || '${wallpaper}';
+
+        desktops().forEach(d => {
+          d.currentConfigGroup = group;
+          if (!d.readConfig('Image')) {
+            d.wallpaperPlugin = 'org.kde.image';
+            d.writeConfig('Image', image);
+          }
+        });
+      " >/dev/null
     }
 
     new_activity() {
@@ -71,6 +93,7 @@
     ''
       am SetCurrentActivity "$(new_activity)" >/dev/null
       globalize
+      keep_wallpaper
     '';
 
   activityMove =
@@ -88,6 +111,7 @@
       "
       am SetCurrentActivity "$id" >/dev/null
       globalize
+      keep_wallpaper
     '';
 
   activityClose =
