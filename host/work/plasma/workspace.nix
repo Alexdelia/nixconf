@@ -10,8 +10,6 @@
 
   wallpaper = toString config.programs.plasma.workspace.wallpaper;
 
-  debounceMs = 250;
-
   globalizeScript = pkgs.writeText "plasma-globalize.js" ''
     const globalFrom = ${toString role.globalFrom};
     const promoted = new Set();
@@ -137,14 +135,6 @@
     bash
     */
     ''
-      state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/plasma-activity-next"
-      now="''${EPOCHREALTIME//[.,]/}"
-      if [ -e "$state" ]; then
-      	last="$(<"$state")"
-      	if [ "$((now - last))" -lt ${toString (debounceMs * 1000)} ]; then exit 0; fi
-      fi
-      printf '%s' "$now" >"$state"
-
       mapfile -t acts < <(am ListActivities)
       if [ "''${#acts[@]}" -lt 2 ]; then
       	am SetCurrentActivity "$(new_activity)" >/dev/null
