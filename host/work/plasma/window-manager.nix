@@ -40,10 +40,6 @@ in {
           value = "Desktop_9";
           apply = "force";
         };
-        activity = {
-          value = "";
-          apply = "force";
-        };
       };
     }
     {
@@ -55,10 +51,6 @@ in {
       apply = {
         desktops = {
           value = "Desktop_10";
-          apply = "force";
-        };
-        activity = {
-          value = "";
           apply = "force";
         };
       };
