@@ -36,7 +36,7 @@
       ## nix
       nil
       nixd
-      alejandra
+      nixfmt
 
       ## rust
       rust-analyzer

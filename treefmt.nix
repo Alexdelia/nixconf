@@ -2,7 +2,7 @@ _: {
   projectRootFile = "flake.nix";
 
   programs = {
-    alejandra.enable = true;
+    nixfmt.enable = true;
 
     rustfmt.enable = true;
 

@@ -53,7 +53,7 @@ in {
       nh
       nil
       nix-output-monitor
-      alejandra
+      nixfmt
     ]
     ++ (
       if config.hostOption.type == "full"
