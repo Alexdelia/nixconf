@@ -17,6 +17,7 @@ in {
 
     environment.loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ] && [ -L "/home/${mainUser}/.config/hypr/hyprland.conf" ]; then
+        [ -f "$HOME/.profile" ] && . "$HOME/.profile"
         exec Hyprland
       fi
     '';
