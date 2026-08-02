@@ -1,2 +1,4 @@
-{mkWidget}:
-mkWidget {name = "media-boot-prompt";}
+{...}: {
+  name = "media-boot-prompt";
+  env = {};
+}

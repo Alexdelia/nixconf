@@ -1,2 +1,4 @@
-{mkWidget}:
-mkWidget {name = "power-tray";}
+{...}: {
+  name = "power-tray";
+  env = {};
+}
