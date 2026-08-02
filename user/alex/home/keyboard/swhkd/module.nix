@@ -35,10 +35,12 @@ in {
         PartOf = ["graphical-session.target"];
         After = ["graphical-session.target" "swhks.service"];
         Requires = ["swhks.service"];
+        X-SwitchMethod = "reload";
       };
 
       Service = {
         ExecStart = swhkdBin;
+        ExecReload = "${pkgs.uutils-coreutils-noprefix}/bin/kill -s HUP $MAINPID";
         Restart = "on-failure";
         KillMode = "process";
       };
