@@ -122,7 +122,6 @@ with pkgs.vimPlugins; [
       p.tree-sitter-typescript
       p.tree-sitter-javascript
       p.tree-sitter-tsx
-      p.tree-sitter-vue
       p.tree-sitter-json
       p.tree-sitter-html
       p.tree-sitter-css
@@ -131,7 +130,7 @@ with pkgs.vimPlugins; [
       p.tree-sitter-http
 
       ### esoteric and unusual
-      p.tree-sitter-yuck
+      # p.tree-sitter-yuck
     ]);
     type = "lua";
     config = builtins.readFile ./treesitter.lua;
