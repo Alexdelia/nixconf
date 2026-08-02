@@ -3,61 +3,58 @@
   config,
   scheme,
   ...
-}: {
+}:
+{
   dp.dmenu = "${pkgs.anyrun}/bin/anyrun";
 
   programs.anyrun = {
     enable = true;
 
-    config = let
-      width = 1.0 / 2.0;
-    in {
-      hideIcons = false;
-      ignoreExclusiveZones = false;
-      hidePluginInfo = true;
+    config =
+      let
+        width = 1.0 / 2.0;
+      in
+      {
+        hideIcons = false;
+        ignoreExclusiveZones = false;
+        hidePluginInfo = true;
 
-      showResultsImmediately = false;
-      maxEntries = null;
+        showResultsImmediately = false;
+        maxEntries = null;
 
-      x.fraction = 1.0 / 2.0;
-      y.fraction = 1.0 / 5.0;
-      width.fraction = width;
+        x.fraction = 1.0 / 2.0;
+        y.fraction = 1.0 / 5.0;
+        width.fraction = width;
 
-      layer = "overlay";
+        layer = "overlay";
 
-      closeOnClick = true;
+        closeOnClick = true;
 
-      plugins = [
-        "${pkgs.anyrun}/lib/libapplications.so"
-      ];
-    };
+        plugins = [
+          "${pkgs.anyrun}/lib/libapplications.so"
+        ];
+      };
 
     extraConfigFiles = {
-      "applications.ron".text =
-        /*
-        ron
-        */
-        ''
-          Config(
-          	desktop_actions: false,
-          	max_entries: 4,
-          	terminal: Some(Terminal(
-          		command: "${config.dp.term}"
-          		args: "{}"
-          	)),
-          )
-        '';
+      "applications.ron".text = /* ron */ ''
+        Config(
+        	desktop_actions: false,
+        	max_entries: 4,
+        	terminal: Some(Terminal(
+        		command: "${config.dp.term}"
+        		args: "{}"
+        	)),
+        )
+      '';
     };
 
     # Inline comments are supported for language injection into
     # multi-line strings with Treesitter! (Depends on your editor)
-    extraCss = let
-      s = (config.scheme or scheme).withHashtag;
-    in
-      /*
-      css
-      */
-      ''
+    extraCss =
+      let
+        s = (config.scheme or scheme).withHashtag;
+      in
+      /* css */ ''
         * {
         	all: unset;
 

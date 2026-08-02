@@ -2,14 +2,16 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   home.packages =
-    if (config.hostOption.type == "lite")
-    then
-      with pkgs; [
+    if (config.hostOption.type == "lite") then
+      with pkgs;
+      [
         brightnessctl
       ]
-    else [];
+    else
+      [ ];
 
   wayland.windowManager.hyprland.settings = {
     bind = [

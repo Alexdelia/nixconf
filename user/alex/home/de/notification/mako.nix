@@ -1,17 +1,16 @@
 {
   config,
   lib,
-  scheme ? {},
+  scheme ? { },
   ...
-}: let
+}:
+let
   s = (config.scheme or scheme).withHashtag;
 
   primary = lib.filterAttrs (_: m: m.primary) config.hostOption.spec.monitor;
-  primaryWidth =
-    if primary == {}
-    then 1920
-    else (lib.head (lib.attrValues primary)).width;
-in {
+  primaryWidth = if primary == { } then 1920 else (lib.head (lib.attrValues primary)).width;
+in
+{
   services.mako = {
     enable = true;
 

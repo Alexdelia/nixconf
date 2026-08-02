@@ -1,7 +1,9 @@
-{scheme}:
-with scheme.withHashtag; let
+{ scheme }:
+with scheme.withHashtag;
+let
   back_primary = "#524554";
-in {
+in
+{
   colors = {
     normal = {
       black = base10;

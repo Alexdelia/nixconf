@@ -1,21 +1,27 @@
 {
   config,
-  scheme ? {},
+  scheme ? { },
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   c = (config.scheme or scheme).withHashtag;
 
-  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != {};
+  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
 
-  runtime = with pkgs; [wayland vulkan-loader libxkbcommon libGL];
+  runtime = with pkgs; [
+    wayland
+    vulkan-loader
+    libxkbcommon
+    libGL
+  ];
 
-  palette =
-    lib.mapAttrs' (n: v: lib.nameValuePair "WIDGET_${lib.toUpper n}" v)
-    (lib.filterAttrs (n: v: builtins.isString v && builtins.match "base[0-9A-Fa-f]{2}" n != null) c);
+  palette = lib.mapAttrs' (n: v: lib.nameValuePair "WIDGET_${lib.toUpper n}" v) (
+    lib.filterAttrs (n: v: builtins.isString v && builtins.match "base[0-9A-Fa-f]{2}" n != null) c
+  );
 
-  spec = map (w: import w {inherit pkgs lib;}) [
+  spec = map (w: import w { inherit pkgs lib; }) [
     ./media-boot-prompt
     ./power-menu
     ./power-tray
@@ -36,12 +42,13 @@
 
     doCheck = false;
 
-    nativeBuildInputs = with pkgs; [pkg-config];
+    nativeBuildInputs = with pkgs; [ pkg-config ];
     buildInputs = runtime;
 
-    env = let
-      maple = "Maple Mono NL";
-    in
+    env =
+      let
+        maple = "Maple Mono NL";
+      in
       palette
       // {
         WIDGET_FONT_DEFAULT = maple; # config.stylix.fonts.sansSerif.name;
@@ -55,8 +62,9 @@
     '';
   };
 
-  bin = name:
-    pkgs.runCommand name {} ''
+  bin =
+    name:
+    pkgs.runCommand name { } ''
       mkdir -p $out/bin
       cp ${workspace}/bin/${name} $out/bin/
     '';
@@ -68,22 +76,25 @@
 
   powerMenu = pkgs.writeShellApplication {
     name = "power-menu";
-    runtimeInputs = with pkgs; [systemd];
+    runtimeInputs = with pkgs; [ systemd ];
     text = ''
       choice="$(${powerMenuWidget}/bin/power-menu)" || exit 0
       read -ra cmd <<<"$choice"
       exec "''${cmd[@]}"
     '';
   };
-in {
-  config = lib.mkIf config.wayland.windowManager.sway.enable (lib.mkMerge [
-    {
-      dp.volumeOsd = "${volumeOsd}/bin/volume-osd";
-      dp.powerMenu = "${powerMenu}/bin/power-menu";
-    }
-    (lib.mkIf mediaEnabled {
-      dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
-      dp.powerTray = "${powerTray}/bin/power-tray";
-    })
-  ]);
+in
+{
+  config = lib.mkIf config.wayland.windowManager.sway.enable (
+    lib.mkMerge [
+      {
+        dp.volumeOsd = "${volumeOsd}/bin/volume-osd";
+        dp.powerMenu = "${powerMenu}/bin/power-menu";
+      }
+      (lib.mkIf mediaEnabled {
+        dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
+        dp.powerTray = "${powerTray}/bin/power-tray";
+      })
+    ]
+  );
 }

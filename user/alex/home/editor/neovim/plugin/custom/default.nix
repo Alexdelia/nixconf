@@ -1,4 +1,5 @@
-{lib}: let
+{ lib }:
+let
   plugins = [
     "quit"
     "delete_backward"
@@ -6,10 +7,6 @@
     "run_sql"
   ];
 in
-  lib.concatStringsSep "\n" (
-    map (
-      plugin:
-        "-- # custom/${plugin}.lua\n" + builtins.readFile ./${plugin}.lua
-    )
-    plugins
-  )
+lib.concatStringsSep "\n" (
+  map (plugin: "-- # custom/${plugin}.lua\n" + builtins.readFile ./${plugin}.lua) plugins
+)

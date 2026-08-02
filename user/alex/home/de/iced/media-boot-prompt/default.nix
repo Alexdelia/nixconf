@@ -1,4 +1,4 @@
 _: {
   name = "media-boot-prompt";
-  env = {};
+  env = { };
 }

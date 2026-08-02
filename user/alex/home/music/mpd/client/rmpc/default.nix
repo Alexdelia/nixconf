@@ -1,12 +1,14 @@
 {
   config,
-  scheme ? {},
+  scheme ? { },
   ...
-}: let
+}:
+let
   themeName = "theme";
 
   schemeHex = (config.scheme or scheme).withHashtag;
-in {
+in
+{
   programs.rmpc = {
     enable = config.hostOption.entertainment.music;
 
@@ -16,5 +18,7 @@ in {
     };
   };
 
-  xdg.configFile."rmpc/themes/${themeName}.ron".text = import ./theme.nix {scheme = schemeHex;};
+  xdg.configFile."rmpc/themes/${themeName}.ron".text = import ./theme.nix {
+    scheme = schemeHex;
+  };
 }

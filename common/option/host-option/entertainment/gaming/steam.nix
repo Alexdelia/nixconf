@@ -3,7 +3,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.hostOption.entertainment.gaming {
     programs.steam = {
       enable = true;

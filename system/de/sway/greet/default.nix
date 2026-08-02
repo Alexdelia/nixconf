@@ -3,9 +3,11 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   mainUser = builtins.elemAt users 0;
-in {
+in
+{
   # imports = [
   #   ./regreet
   # ];

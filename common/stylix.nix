@@ -3,7 +3,8 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   stylix = {
     image = pkgs.fetchurl {
       url = "https://w.wallhaven.cc/full/o3/wallhaven-o31o2p.png";
@@ -14,29 +15,31 @@
 
     base16Scheme = "${config.scheme}";
 
-    fonts = let
-      mono = {
-        package = pkgs.nerd-fonts.sauce-code-pro;
-        name = "SourceCodePro Nerd Font";
-      };
-      rest = {
-        package = pkgs.nerd-fonts.roboto-mono;
-        name = "RobotoMono Nerd Font";
-      };
-    in {
-      monospace = mono;
+    fonts =
+      let
+        mono = {
+          package = pkgs.nerd-fonts.sauce-code-pro;
+          name = "SourceCodePro Nerd Font";
+        };
+        rest = {
+          package = pkgs.nerd-fonts.roboto-mono;
+          name = "RobotoMono Nerd Font";
+        };
+      in
+      {
+        monospace = mono;
 
-      serif = rest;
-      sansSerif = rest;
-      emoji = rest;
+        serif = rest;
+        sansSerif = rest;
+        emoji = rest;
 
-      sizes = {
-        applications = 14;
-        desktop = 14;
-        popups = 14;
-        terminal = 16;
+        sizes = {
+          applications = 14;
+          desktop = 14;
+          popups = 14;
+          terminal = 16;
+        };
       };
-    };
 
     cursor = {
       # package = pkgs.vimix-cursor-theme;

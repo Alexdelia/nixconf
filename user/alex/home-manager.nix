@@ -2,7 +2,8 @@
   username,
   inputs,
   stateVersion,
-}: {config, ...}: {
+}:
+{ config, ... }: {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -18,7 +19,7 @@
     };
 
     users.${username} =
-      (import ./home {})
+      (import ./home { })
       // (import ../../common/mkHome.nix {
         inherit username;
         inherit stateVersion;

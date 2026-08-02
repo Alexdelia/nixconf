@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   security.wrappers.swhkd = {
     source = "${pkgs.swhkd-no-rfkill}/bin/swhkd";
     owner = "root";

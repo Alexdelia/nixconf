@@ -3,12 +3,13 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   role = import ./role.nix;
 
   inherit (config.wayland.windowManager.sway.config) modifier;
 
-  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != {};
+  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
 
   prelude = ''
     state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/sway-activity"
@@ -68,193 +69,158 @@
     }
   '';
 
-  mkScript = name: body:
+  mkScript =
+    name: body:
     pkgs.writeShellApplication {
       inherit name;
-      runtimeInputs = with pkgs; [sway jaq uutils-coreutils-noprefix ripgrep];
-      excludeShellChecks = ["SC2016"];
+      runtimeInputs = with pkgs; [
+        sway
+        jaq
+        uutils-coreutils-noprefix
+        ripgrep
+      ];
+      excludeShellChecks = [ "SC2016" ];
       text = prelude + body;
     };
 
-  wsSwitch =
-    mkScript "sway-ws-switch"
-    /*
-    bash
-    */
-    ''
-      swaymsg workspace "$(ws_name "$1" "$(cur)")" >/dev/null
-    '';
+  wsSwitch = mkScript "sway-ws-switch" /* bash */ ''
+    swaymsg workspace "$(ws_name "$1" "$(cur)")" >/dev/null
+  '';
 
-  wsMove =
-    mkScript "sway-ws-move"
-    /*
-    bash
-    */
-    ''
-      name="$(ws_name "$1" "$(cur)")"
-      swaymsg "move container to workspace \"$name\"" >/dev/null
-      swaymsg workspace "$name" >/dev/null
-    '';
+  wsMove = mkScript "sway-ws-move" /* bash */ ''
+    name="$(ws_name "$1" "$(cur)")"
+    swaymsg "move container to workspace \"$name\"" >/dev/null
+    swaymsg workspace "$name" >/dev/null
+  '';
 
   # super+shift+0 toggles the focused window between browser (role 10) and media
-  wsMoveMedia =
-    mkScript "sway-ws-move-media"
-    /*
-    bash
-    */
-    ''
-      media_enabled=${
-        if mediaEnabled
-        then "1"
-        else "0"
-      }
-      browser="$(ws_name 10 "$(cur)")"
-      focused="$(swaymsg -t get_workspaces | jaq -r '.[] | select(.focused).name')"
+  wsMoveMedia = mkScript "sway-ws-move-media" /* bash */ ''
+    media_enabled=${if mediaEnabled then "1" else "0"}
+    browser="$(ws_name 10 "$(cur)")"
+    focused="$(swaymsg -t get_workspaces | jaq -r '.[] | select(.focused).name')"
 
-      if [ "$focused" = media ]; then
-        target="$browser"
-      elif [ "$focused" = "$browser" ] && [ "$media_enabled" = 1 ]; then
-        target=media
-      else
-        target="$browser"
-      fi
+    if [ "$focused" = media ]; then
+      target="$browser"
+    elif [ "$focused" = "$browser" ] && [ "$media_enabled" = 1 ]; then
+      target=media
+    else
+      target="$browser"
+    fi
 
-      swaymsg "move container to workspace \"$target\"" >/dev/null
-      swaymsg workspace "$target" >/dev/null
-    '';
+    swaymsg "move container to workspace \"$target\"" >/dev/null
+    swaymsg workspace "$target" >/dev/null
+  '';
 
-  activityCreate =
-    mkScript "sway-activity-create"
-    /*
-    bash
-    */
-    ''
-      activity_create
-    '';
+  activityCreate = mkScript "sway-activity-create" /* bash */ ''
+    activity_create
+  '';
 
-  activityMove =
-    mkScript "sway-activity-move"
-    /*
-    bash
-    */
-    ''
-      ri="$(cur_role)"
-      id="branch-$(date +%H%M%S)"
-      rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
-      target="$(ws_name "$ri" "$id")"
-      swaymsg "move container to workspace \"$target\"" >/dev/null
-      printf '%s\n' "$id" >"$state/current"
-      swaymsg workspace "$target" >/dev/null
-    '';
+  activityMove = mkScript "sway-activity-move" /* bash */ ''
+    ri="$(cur_role)"
+    id="branch-$(date +%H%M%S)"
+    rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
+    target="$(ws_name "$ri" "$id")"
+    swaymsg "move container to workspace \"$target\"" >/dev/null
+    printf '%s\n' "$id" >"$state/current"
+    swaymsg workspace "$target" >/dev/null
+  '';
 
-  activityCycle =
-    mkScript "sway-activity-cycle"
-    /*
-    bash
-    */
-    ''
+  activityCycle = mkScript "sway-activity-cycle" /* bash */ ''
+    mapfile -t acts <"$state/list"
+    n="''${#acts[@]}"
+    if [ "$n" -lt 2 ]; then activity_create; exit 0; fi
+
+    c="$(cur)"
+    i=0
+    for a in "''${acts[@]}"; do
+      if [ "$a" = "$c" ]; then break; fi
+      i=$((i + 1))
+    done
+    j=$(((i + 1) % n))
+    next="''${acts[$j]}"
+
+    ri="$(cur_role)"
+    printf '%s\n' "$next" >"$state/current"
+    swaymsg workspace "$(ws_name "$ri" "$next")" >/dev/null
+  '';
+
+  activityClose = mkScript "sway-activity-close" /* bash */ ''
+    c="$(cur)"
+    if [ "$c" = default ]; then exit 0; fi
+
+    last=$((global_from - 1))
+    for i in $(seq 1 "$last"); do
+      from="$(ws_name "$i" "$c")"
+      to="$(ws_name "$i" default)"
+      mapfile -t ids < <(swaymsg -t get_tree | jaq -r --arg ws "$from" '
+        recurse(.nodes[]?, .floating_nodes[]?)
+        | select(.type == "workspace" and .name == $ws)
+        | recurse(.nodes[]?, .floating_nodes[]?)
+        | select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)
+        | .id')
+      for id in "''${ids[@]}"; do
+        swaymsg "[con_id=$id] move container to workspace \"$to\"" >/dev/null
+      done
+    done
+
+    rg -vFx "$c" "$state/list" >"$state/list.tmp"
+    mv "$state/list.tmp" "$state/list"
+    printf 'default\n' >"$state/current"
+    swaymsg workspace "$(ws_name 1 default)" >/dev/null
+  '';
+
+  activityReap = mkScript "sway-activity-reap" /* bash */ ''
+    reap() {
+      local c ri m idx off cand target
+      c="$(cur)"
+      [ "$c" = default ] && return 0
+      activity_empty "$c" || return 0
+
       mapfile -t acts <"$state/list"
-      n="''${#acts[@]}"
-      if [ "$n" -lt 2 ]; then activity_create; exit 0; fi
-
-      c="$(cur)"
-      i=0
-      for a in "''${acts[@]}"; do
-        if [ "$a" = "$c" ]; then break; fi
-        i=$((i + 1))
+      m="''${#acts[@]}"
+      idx=0
+      for ((k = 0; k < m; k++)); do
+        if [ "''${acts[$k]}" = "$c" ]; then idx="$k"; break; fi
       done
-      j=$(((i + 1) % n))
-      next="''${acts[$j]}"
 
       ri="$(cur_role)"
-      printf '%s\n' "$next" >"$state/current"
-      swaymsg workspace "$(ws_name "$ri" "$next")" >/dev/null
-    '';
-
-  activityClose =
-    mkScript "sway-activity-close"
-    /*
-    bash
-    */
-    ''
-      c="$(cur)"
-      if [ "$c" = default ]; then exit 0; fi
-
-      last=$((global_from - 1))
-      for i in $(seq 1 "$last"); do
-        from="$(ws_name "$i" "$c")"
-        to="$(ws_name "$i" default)"
-        mapfile -t ids < <(swaymsg -t get_tree | jaq -r --arg ws "$from" '
-          recurse(.nodes[]?, .floating_nodes[]?)
-          | select(.type == "workspace" and .name == $ws)
-          | recurse(.nodes[]?, .floating_nodes[]?)
-          | select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)
-          | .id')
-        for id in "''${ids[@]}"; do
-          swaymsg "[con_id=$id] move container to workspace \"$to\"" >/dev/null
-        done
-      done
-
       rg -vFx "$c" "$state/list" >"$state/list.tmp"
       mv "$state/list.tmp" "$state/list"
-      printf 'default\n' >"$state/current"
-      swaymsg workspace "$(ws_name 1 default)" >/dev/null
-    '';
 
-  activityReap =
-    mkScript "sway-activity-reap"
-    /*
-    bash
-    */
-    ''
-      reap() {
-        local c ri m idx off cand target
-        c="$(cur)"
-        [ "$c" = default ] && return 0
-        activity_empty "$c" || return 0
-
-        mapfile -t acts <"$state/list"
-        m="''${#acts[@]}"
-        idx=0
-        for ((k = 0; k < m; k++)); do
-          if [ "''${acts[$k]}" = "$c" ]; then idx="$k"; break; fi
-        done
-
-        ri="$(cur_role)"
-        rg -vFx "$c" "$state/list" >"$state/list.tmp"
-        mv "$state/list.tmp" "$state/list"
-
-        target=default
-        for ((off = 1; off < m; off++)); do
-          cand="''${acts[$(((idx + off) % m))]}"
-          if [ "$cand" != "$c" ]; then target="$cand"; break; fi
-        done
-
-        printf '%s\n' "$target" >"$state/current"
-        swaymsg workspace "$(ws_name "$ri" "$target")" >/dev/null
-      }
-
-      swaymsg -t subscribe -m '["window"]' | while read -r ev; do
-        [ "$(jaq -r '.change' <<<"$ev")" = close ] || continue
-        reap
+      target=default
+      for ((off = 1; off < m; off++)); do
+        cand="''${acts[$(((idx + off) % m))]}"
+        if [ "$cand" != "$c" ]; then target="$cand"; break; fi
       done
-    '';
 
-  gridBind = lib.listToAttrs (lib.concatMap (i: let
-    key =
-      if i == 10
-      then "0"
-      else toString i;
-  in [
-    {
-      name = "${modifier}+${key}";
-      value = "exec ${wsSwitch}/bin/sway-ws-switch ${toString i}";
+      printf '%s\n' "$target" >"$state/current"
+      swaymsg workspace "$(ws_name "$ri" "$target")" >/dev/null
     }
-    {
-      name = "${modifier}+Shift+${key}";
-      value = "exec ${wsMove}/bin/sway-ws-move ${toString i}";
-    }
-  ]) (lib.range 1 10));
+
+    swaymsg -t subscribe -m '["window"]' | while read -r ev; do
+      [ "$(jaq -r '.change' <<<"$ev")" = close ] || continue
+      reap
+    done
+  '';
+
+  gridBind = lib.listToAttrs (
+    lib.concatMap (
+      i:
+      let
+        key = if i == 10 then "0" else toString i;
+      in
+      [
+        {
+          name = "${modifier}+${key}";
+          value = "exec ${wsSwitch}/bin/sway-ws-switch ${toString i}";
+        }
+        {
+          name = "${modifier}+Shift+${key}";
+          value = "exec ${wsMove}/bin/sway-ws-move ${toString i}";
+        }
+      ]
+    ) (lib.range 1 10)
+  );
 
   activityBind = {
     "${modifier}+grave" = "exec ${activityCreate}/bin/sway-activity-create";
@@ -264,17 +230,28 @@
   };
 
   mediaToggleBind."${modifier}+Shift+0" = "exec ${wsMoveMedia}/bin/sway-ws-move-media";
-in {
+in
+{
   config = lib.mkIf config.wayland.windowManager.sway.enable {
-    home.packages = [wsSwitch wsMove wsMoveMedia activityCreate activityMove activityCycle activityClose];
+    home.packages = [
+      wsSwitch
+      wsMove
+      wsMoveMedia
+      activityCreate
+      activityMove
+      activityCycle
+      activityClose
+    ];
 
-    wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (gridBind // activityBind // mediaToggleBind);
+    wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (
+      gridBind // activityBind // mediaToggleBind
+    );
 
     systemd.user.services.sway-activity-reap = {
       Unit = {
         Description = "auto-delete empty sway activity";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session.target"];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
       };
 
       Service = {
@@ -282,7 +259,7 @@ in {
         Restart = "on-failure";
       };
 
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

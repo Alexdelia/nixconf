@@ -1,9 +1,11 @@
 {
   pkgs,
   config,
-}: let
+}:
+let
   nom = "${pkgs.nix-output-monitor}/bin/nom";
-in {
+in
+{
   s = "sudo";
   pk = "pkill";
 

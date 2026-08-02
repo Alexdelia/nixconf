@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   home.packages =
     (with pkgs.nerd-fonts; [
       roboto-mono
@@ -12,10 +12,10 @@
     enable = true;
 
     defaultFonts = {
-      monospace = ["RobotoMono Nerd Font"];
+      monospace = [ "RobotoMono Nerd Font" ];
 
-      serif = ["RobotoMono Nerd Font"];
-      sansSerif = ["RobotoMono Nerd Font"];
+      serif = [ "RobotoMono Nerd Font" ];
+      sansSerif = [ "RobotoMono Nerd Font" ];
     };
   };
 }

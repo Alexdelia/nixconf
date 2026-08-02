@@ -3,8 +3,9 @@
   pkgs,
   lib,
   ...
-}: let
-  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != {};
+}:
+let
+  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
 
   hostFile = config.sops.secrets."jiruo/hdmi-host".path;
 
@@ -23,13 +24,9 @@
       libnotify
       speechd
     ];
-    excludeShellChecks = ["SC2016"];
+    excludeShellChecks = [ "SC2016" ];
     text = ''
-      arm=${
-        if armShutdown
-        then "1"
-        else "0"
-      }
+      arm=${if armShutdown then "1" else "0"}
 
       state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-state"
       grace="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-grace"
@@ -183,13 +180,14 @@
       done
     '';
   };
-in {
+in
+{
   config = lib.mkIf (config.wayland.windowManager.sway.enable && mediaEnabled) {
     systemd.user.services.hdmi-watch = {
       Unit = {
         Description = "track HDMI media screen power, drive sound & workspace + work-hours shutdown";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session.target"];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
       };
 
       Service = {
@@ -197,7 +195,7 @@ in {
         Restart = "on-failure";
       };
 
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

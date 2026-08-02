@@ -3,14 +3,15 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.hostOption.spec) monitor;
 
-  mediaEnabled = lib.filterAttrs (_: m: m.media) monitor != {};
+  mediaEnabled = lib.filterAttrs (_: m: m.media) monitor != { };
 
-  screen =
-    lib.concatStringsSep ";"
-    (lib.mapAttrsToList (name: m: "${name}:${toString m.height}") monitor);
+  screen = lib.concatStringsSep ";" (
+    lib.mapAttrsToList (name: m: "${name}:${toString m.height}") monitor
+  );
 
   start = pkgs.writeShellApplication {
     name = "power-tray-start";
@@ -19,13 +20,14 @@
       exec ${config.dp.powerTray}
     '';
   };
-in {
+in
+{
   config = lib.mkIf (config.wayland.windowManager.sway.enable && mediaEnabled) {
     systemd.user.services.power-tray = {
       Unit = {
         Description = "power icon for media session, on every screen";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session.target"];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
       };
 
       Service = {
@@ -37,7 +39,7 @@ in {
         Restart = "on-failure";
       };
 
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

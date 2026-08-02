@@ -1,8 +1,5 @@
-{pkgs}:
-/*
-kbd
-*/
-''
+{ pkgs }:
+/* kbd */ ''
   #|(defcfg
   	danger-enable-cmd yes
   )|#

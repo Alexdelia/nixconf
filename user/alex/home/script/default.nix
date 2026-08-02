@@ -2,12 +2,14 @@
   pkgs,
   lib,
   ...
-}: let
-  passwordGen = import ./password-gen.nix {inherit pkgs;};
-  killOnPort = import ./kill-on-port.nix {inherit pkgs;};
-  baj = import ./baj.nix {inherit pkgs;};
-  isMediaDefaultTime = import ./is-media-default-time.nix {inherit pkgs;};
-in {
+}:
+let
+  passwordGen = import ./password-gen.nix { inherit pkgs; };
+  killOnPort = import ./kill-on-port.nix { inherit pkgs; };
+  baj = import ./baj.nix { inherit pkgs; };
+  isMediaDefaultTime = import ./is-media-default-time.nix { inherit pkgs; };
+in
+{
   imports = [
     ./nix
     ./image
@@ -19,7 +21,7 @@ in {
 
     type = lib.types.attrsOf lib.types.path;
 
-    default = {};
+    default = { };
   };
 
   config = {

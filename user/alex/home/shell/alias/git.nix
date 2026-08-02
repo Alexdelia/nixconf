@@ -1,6 +1,7 @@
 let
   basic_git_tree = "git log --graph --oneline --decorate --all";
-in {
+in
+{
   gg = "git clone --recurse-submodules";
   gcl = "git clone --recurse-submodules";
 

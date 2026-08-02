@@ -3,12 +3,16 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   slackTo = "move container to workspace communication, workspace communication";
 
   bravePlace = pkgs.writeShellApplication {
     name = "sway-brave-place";
-    runtimeInputs = with pkgs; [sway jaq];
+    runtimeInputs = with pkgs; [
+      sway
+      jaq
+    ];
     text = ''
       # on/off written by hdmi-watch (hdmi.nix); absent -> treat TV as off
       state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-state"
@@ -49,7 +53,8 @@
       done
     '';
   };
-in {
+in
+{
   config = lib.mkIf config.wayland.windowManager.sway.enable {
     wayland.windowManager.sway.config.window.commands = [
       {
@@ -65,8 +70,8 @@ in {
     systemd.user.services.sway-brave-place = {
       Unit = {
         Description = "HDMI brave window placement for sway";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session.target"];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
       };
 
       Service = {
@@ -74,7 +79,7 @@ in {
         Restart = "on-failure";
       };
 
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

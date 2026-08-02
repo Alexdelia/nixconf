@@ -1,5 +1,5 @@
 {
-  imports = [../../system];
+  imports = [ ../../system ];
 
   hostOption = {
     type = "lite";

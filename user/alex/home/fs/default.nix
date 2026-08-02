@@ -1,6 +1,8 @@
-{config, ...}: let
+{ config, ... }:
+let
   home = config.home.homeDirectory;
-in {
+in
+{
   xdg = {
     enable = true;
 

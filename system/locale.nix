@@ -1,6 +1,7 @@
 let
   locale = import ../common/locale.nix;
-in {
+in
+{
   i18n = {
     defaultLocale = locale.lang;
 

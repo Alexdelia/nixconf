@@ -3,7 +3,8 @@
   stateVersion,
   isNixos,
   hostOption,
-}: {
+}:
+{
   home = {
     inherit username;
     homeDirectory = "/home/${username}";

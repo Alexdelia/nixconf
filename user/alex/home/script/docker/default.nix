@@ -1,5 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   home.packages = [
-    (import ./drm.nix {inherit pkgs;})
+    (import ./drm.nix { inherit pkgs; })
   ];
 }

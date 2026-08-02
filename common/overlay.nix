@@ -6,9 +6,9 @@ inputs: final: _: {
 
   swhkd-no-rfkill =
     inputs.swhkd.packages.${final.stdenv.hostPlatform.system}.swhkd-no-rfkill.overrideAttrs
-    (old: {
-      patches =
-        (old.patches or [])
-        ++ [./patch/swhkd-preserve-supplementary-groups.patch];
-    });
+      (old: {
+        patches = (old.patches or [ ]) ++ [
+          ./patch/swhkd-preserve-supplementary-groups.patch
+        ];
+      });
 }

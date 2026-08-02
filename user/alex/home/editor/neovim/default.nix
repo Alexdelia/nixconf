@@ -3,7 +3,8 @@
   inputs,
   pkgs,
   ...
-}: {
+}:
+{
   programs.neovim = {
     enable = true;
 
@@ -24,7 +25,7 @@
       ${builtins.readFile ./keymap.lua}
       ${builtins.readFile ./whitespace.lua}
 
-      ${import ./plugin/custom {inherit (pkgs) lib;}}
+      ${import ./plugin/custom { inherit (pkgs) lib; }}
     '';
 
     extraPackages = with pkgs; [
@@ -68,14 +69,10 @@
 
       ## utils
       fd
-      (
-        if config.hostOption.spec.wlroots
-        then wl-clipboard-rs
-        else wl-clipboard
-      )
+      (if config.hostOption.spec.wlroots then wl-clipboard-rs else wl-clipboard)
     ];
 
-    plugins = import ./plugin {inherit pkgs inputs;};
+    plugins = import ./plugin { inherit pkgs inputs; };
   };
 
   xdg.configFile.clangd = {

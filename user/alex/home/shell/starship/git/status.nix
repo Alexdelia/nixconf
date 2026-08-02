@@ -1,4 +1,5 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   ahead = {
     symbol = "";
     style = "dimmed yellow";
@@ -7,7 +8,8 @@
     symbol = "";
     style = "bold red";
   };
-in {
+in
+{
   format = lib.concatStrings [
     "["
 

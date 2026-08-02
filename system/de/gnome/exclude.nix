@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf (config.hostOption.type == "full") {
     environment.gnome.excludePackages = with pkgs; [
       gedit # text editor

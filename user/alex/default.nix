@@ -2,7 +2,8 @@
   inputs,
   stateVersion,
   username,
-}: {
+}:
+{
   imports = [
     (import ./system.nix {
       inherit username;

@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{ inputs, ... }: {
   imports = [
     ../../system
 
@@ -58,7 +58,7 @@
     # `8` = probe-order ATA port (DVD drive)
     # /!\ motherboard/CPU/GPU change can reorder ports
     # recheck number with `journalctl -b | grep ata`
-    kernelParams = ["libata.force=8:disable"];
+    kernelParams = [ "libata.force=8:disable" ];
   };
 
   hardware.bluetooth = {

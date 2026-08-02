@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   programs.plasma.kscreenlocker = {
     autoLock = false;
     lockOnResume = true;

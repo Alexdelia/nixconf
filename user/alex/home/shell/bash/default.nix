@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     ./readline.nix
   ];
@@ -11,22 +12,17 @@
     bash = {
       enable = true;
 
-      initExtra = let
-        extraSource =
-          if config.targets.genericLinux.enable
-          then
-            /*
-            bash
-            */
-            ''
-              source ${config.xdg.configHome}/bash/bashrc
-            ''
-          else "";
-      in
-        /*
-        bash
-        */
-        ''
+      initExtra =
+        let
+          extraSource =
+            if config.targets.genericLinux.enable then
+              /* bash */ ''
+                source ${config.xdg.configHome}/bash/bashrc
+              ''
+            else
+              "";
+        in
+        /* bash */ ''
           export EDITOR="vim"
 
           function wa() {
@@ -65,15 +61,11 @@
           ${extraSource}
         '';
 
-      bashrcExtra =
-        /*
-        bash
-        */
-        ''
-          source ${pkgs.complete-alias}/bin/complete_alias
-        '';
+      bashrcExtra = /* bash */ ''
+        source ${pkgs.complete-alias}/bin/complete_alias
+      '';
 
-      shellAliases = import ../alias {inherit config pkgs;};
+      shellAliases = import ../alias { inherit config pkgs; };
 
       # https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
       shellOptions = [
@@ -93,17 +85,19 @@
       # TODO: test `progcomp_alias` instead of `complete_alias`
 
       historyFileSize =
-        if (config.hostOption.type == "full")
-        then 10000000 # 10M
-        else if (config.hostOption.type == "minimal")
-        then 1000 # 1K
-        else 100000; # 100K
+        if (config.hostOption.type == "full") then
+          10000000 # 10M
+        else if (config.hostOption.type == "minimal") then
+          1000 # 1K
+        else
+          100000; # 100K
       historySize =
-        if (config.hostOption.type == "full")
-        then 100000 # 100K
-        else if (config.hostOption.type == "minimal")
-        then 100 # 100
-        else 10000; # 10K
+        if (config.hostOption.type == "full") then
+          100000 # 100K
+        else if (config.hostOption.type == "minimal") then
+          100 # 100
+        else
+          10000; # 10K
 
       historyControl = [
         "erasedups"

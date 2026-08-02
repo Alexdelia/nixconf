@@ -1,6 +1,8 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   package = pkgs.brave;
-in {
+in
+{
   imports = [
     ./extension
   ];

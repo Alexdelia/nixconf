@@ -2,12 +2,14 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   sway-conf = pkgs.writeText "sway-gtkgreet-config" ''
     exec "${config.programs.regreet.package}/bin/regreet; ${config.programs.sway.package}/bin/swaymsg exit"
     include /etc/sway/config.d/*
   '';
-in {
+in
+{
   services.greetd = {
     enable = true;
     settings = {

@@ -58,34 +58,36 @@
     # };
   };
 
-  outputs = inputs: let
-    hosts = {
-      jiruo = {
-        system = "x86_64-linux";
-        stateVersion = "24.05";
-        isNixos = true;
-        users = ["alex"];
+  outputs =
+    inputs:
+    let
+      hosts = {
+        jiruo = {
+          system = "x86_64-linux";
+          stateVersion = "24.05";
+          isNixos = true;
+          users = [ "alex" ];
+        };
+        marulk = {
+          system = "x86_64-linux";
+          stateVersion = "24.05";
+          isNixos = true;
+          users = [ "alex" ];
+        };
+        riko = {
+          system = "x86_64-linux";
+          stateVersion = "24.05";
+          isNixos = true;
+          users = [ "alex" ];
+        };
+        work = {
+          system = "x86_64-linux";
+          stateVersion = "24.05";
+          isNixos = false;
+          users = [ "alexandre" ];
+        };
       };
-      marulk = {
-        system = "x86_64-linux";
-        stateVersion = "24.05";
-        isNixos = true;
-        users = ["alex"];
-      };
-      riko = {
-        system = "x86_64-linux";
-        stateVersion = "24.05";
-        isNixos = true;
-        users = ["alex"];
-      };
-      work = {
-        system = "x86_64-linux";
-        stateVersion = "24.05";
-        isNixos = false;
-        users = ["alexandre"];
-      };
-    };
-  in
+    in
     (import ./host {
       inherit inputs;
       inherit hosts;

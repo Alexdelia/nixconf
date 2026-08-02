@@ -1,6 +1,8 @@
-{config, ...}: let
+{ config, ... }:
+let
   dataDir = "${config.xdg.dataHome}/mpd";
-in {
+in
+{
   imports = [
     ./client
     ./listenbrainz.nix

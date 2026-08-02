@@ -1,4 +1,4 @@
-{config, ...}: {
+{ config, ... }: {
   services.listenbrainz-mpd = {
     enable = config.hostOption.entertainment.music;
 

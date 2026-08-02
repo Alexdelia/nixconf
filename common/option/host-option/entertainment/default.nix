@@ -1,4 +1,4 @@
-{lib, ...}: {
+{ lib, ... }: {
   options.hostOption.entertainment = lib.mkOption {
     description = "entertainment options";
 

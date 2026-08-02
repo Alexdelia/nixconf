@@ -1,4 +1,4 @@
-{lib, ...}: {
+{ lib, ... }: {
   options.terminal = {
     command = lib.mkOption {
       description = "current terminal emulator binary";

@@ -2,7 +2,8 @@
   config,
   # username,
   ...
-}: {
+}:
+{
   sops = {
     secrets."listenbrainz/user_token" = {
       # owner = username;

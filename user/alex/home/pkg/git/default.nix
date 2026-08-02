@@ -1,10 +1,11 @@
 # https://nixos.wiki/wiki/git
-{pkgs, ...}: {
-  home.packages = with pkgs;
+{ pkgs, ... }: {
+  home.packages =
+    with pkgs;
     [
       delta
     ]
-    ++ (import ./script {inherit pkgs;});
+    ++ (import ./script { inherit pkgs; });
 
   programs.git = {
     enable = true;

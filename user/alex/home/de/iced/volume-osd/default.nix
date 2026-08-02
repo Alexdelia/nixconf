@@ -2,7 +2,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   name = "volume-osd";
   env = {
     VOLUME_OSD_WPCTL = lib.getExe' pkgs.wireplumber "wpctl";

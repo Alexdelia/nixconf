@@ -1,9 +1,11 @@
-_: let
+_:
+let
   layout = "qwerty-dev-ca";
   # compiledLayout = pkgs.runCommand "compiled-keyboard-layout" {} ''
   # ${pkgs.xorg.xkbcomp}/bin/xkbcomp ${layout} $out
   # '';
-in {
+in
+{
   # environment.systemPackages = [pkgs.xorg.xkbcomp];
 
   # Load custom keyboard layout on boot/resume
@@ -19,7 +21,11 @@ in {
     inherit layout;
     extraLayouts.${layout} = {
       description = layout;
-      languages = ["en" "fr" "ca"];
+      languages = [
+        "en"
+        "fr"
+        "ca"
+      ];
       symbolsFile = ./${layout}.xkb;
     };
   };

@@ -1,4 +1,4 @@
-{lib, ...}: {
+{ lib, ... }: {
   options.dm = lib.mkOption {
     description = "preferred application for mime type";
 

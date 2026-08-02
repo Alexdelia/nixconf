@@ -3,9 +3,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   mainUser = builtins.elemAt users 0;
-in {
+in
+{
   config = lib.mkIf (config.hostOption.type == "lite") {
     programs.hyprland = {
       enable = true;

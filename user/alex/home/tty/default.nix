@@ -1,4 +1,4 @@
-{config, ...}: {
+{ config, ... }: {
   dp.term = config.terminal.command;
 
   imports = [

@@ -1,6 +1,7 @@
 let
   SIGNAL_PREFIX = "[SIG](dimmed red)";
-in {
+in
+{
   disabled = false;
 
   format = "[$status $symbol$signal_name[$common_meaning](dimmed red)]($style)\n";

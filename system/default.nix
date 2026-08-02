@@ -6,41 +6,48 @@
   config,
   lib,
   ...
-}: {
-  imports =
-    [
-      ../host/${hostname}/hardware-configuration.nix
+}:
+{
+  imports = [
+    ../host/${hostname}/hardware-configuration.nix
 
-      # ./boot.nix
-      ./group.nix
-      ./locale.nix
-      ./zone.nix
-      ./keyboard
-      ./sound
-      ./service
-      ./de
-      ./networking.nix
-    ]
-    ++
+    # ./boot.nix
+    ./group.nix
+    ./locale.nix
+    ./zone.nix
+    ./keyboard
+    ./sound
+    ./service
+    ./de
+    ./networking.nix
+  ]
+  ++
     /*
-    (
-      users |> map (username: (import ../user/${username} {
-        inherit username inputs stateVersion;
-      }))
-    );
+      (
+        users |> map (username: (import ../user/${username} {
+          inherit username inputs stateVersion;
+        }))
+      );
     */
-    (
-      map (username: (import ../user/${username} {
+    (map (
+      username:
+      (import ../user/${username} {
         inherit username inputs stateVersion;
-      }))
-      users
-    );
+      })
+    ) users);
 
   nix = {
     settings = {
-      experimental-features = ["nix-command" "flakes" "pipe-operators"];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+        "pipe-operators"
+      ];
 
-      trusted-users = ["root" "@wheel"];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
 
       keep-outputs = true;
       keep-derivations = true;
@@ -49,32 +56,42 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than ${
-        if config.hostOption.type == "full"
-        then "70d"
-        else "14d"
-      }";
+      options = "--delete-older-than ${if config.hostOption.type == "full" then "70d" else "14d"}";
     };
   };
 
   # nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) ([
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) (
+      [
         "copilot.vim"
         "slack"
         "code"
         "vscode"
       ]
       ++ (
-        if config.hostOption.entertainment.gaming
-        then ["steam" "steam-unwrapped" "osu-lazer-bin" "android-studio"]
-        else []
+        if config.hostOption.entertainment.gaming then
+          [
+            "steam"
+            "steam-unwrapped"
+            "osu-lazer-bin"
+            "android-studio"
+          ]
+        else
+          [ ]
       )
       ++ (
-        if config.hostOption.spec.nvidia
-        then [lib.hasPrefix "nvidia" (lib.getName pkg)]
-        else []
-      ));
+        if config.hostOption.spec.nvidia then
+          [
+            lib.hasPrefix
+            "nvidia"
+            (lib.getName pkg)
+          ]
+        else
+          [ ]
+      )
+    );
 
   nixpkgs.overlays = [
     (import ../common/overlay.nix inputs)

@@ -1,9 +1,11 @@
-{config, ...}: let
+{ config, ... }:
+let
   secret_path = "wakatime/api_key";
   file = ".wakatime.cfg";
-in {
+in
+{
   sops = {
-    secrets.${secret_path} = {};
+    secrets.${secret_path} = { };
 
     templates.${file} = {
       content = ''

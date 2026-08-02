@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ./font.nix
     ./keybind.nix
@@ -28,10 +29,9 @@
           immutable = true;
         };
 
-        kglobalshortcutsrc =
-          lib.mapAttrs
-          (_: lib.mapAttrs (_: _: {immutable = true;}))
-          config.programs.plasma.shortcuts;
+        kglobalshortcutsrc = lib.mapAttrs (
+          _: lib.mapAttrs (_: _: { immutable = true; })
+        ) config.programs.plasma.shortcuts;
       };
 
       workspace = {

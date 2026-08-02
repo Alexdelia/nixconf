@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.wayland.windowManager.sway.config) modifier;
 
   playerctl = "${pkgs.playerctl}/bin/playerctl";
@@ -15,7 +16,8 @@
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   baseBrightnessChange = 2;
   highBrightnessChange = baseBrightnessChange * 4;
-in {
+in
+{
   wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault {
     # screen read
     "${modifier}+s" = "exec ${config.customScript.screenshot}";
@@ -35,10 +37,14 @@ in {
     "XF86AudioStop" = "exec ${playerctl} stop";
 
     # volume
-    "XF86AudioRaiseVolume" = "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%+";
-    "XF86AudioLowerVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%-";
-    "Shift+XF86AudioRaiseVolume" = "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%+";
-    "Shift+XF86AudioLowerVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%-";
+    "XF86AudioRaiseVolume" =
+      "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%+";
+    "XF86AudioLowerVolume" =
+      "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%-";
+    "Shift+XF86AudioRaiseVolume" =
+      "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%+";
+    "Shift+XF86AudioLowerVolume" =
+      "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%-";
     "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
 
     # brightness

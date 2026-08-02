@@ -1,11 +1,13 @@
 {
   pkgs,
   config,
-  scheme ? {},
+  scheme ? { },
   ...
-}: let
+}:
+let
   s = config.scheme or scheme;
-in {
+in
+{
   dp.dmenu = "${pkgs.fuzzel}/bin/fuzzel";
 
   programs.fuzzel = {

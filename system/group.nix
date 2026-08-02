@@ -1,3 +1,3 @@
 {
-  users.groups.uinput = {};
+  users.groups.uinput = { };
 }

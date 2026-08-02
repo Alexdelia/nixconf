@@ -3,8 +3,9 @@
   pkgs,
   lib,
   ...
-}: let
-  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != {};
+}:
+let
+  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
 
   sink = import ./sink.nix;
 
@@ -46,10 +47,11 @@
       systemctl --user restart hdmi-watch
     '';
   };
-in {
+in
+{
   config = lib.mkIf (config.wayland.windowManager.sway.enable && mediaEnabled) {
     wayland.windowManager.sway.config.startup = [
-      {command = "${mediaBoot}/bin/media-boot";}
+      { command = "${mediaBoot}/bin/media-boot"; }
     ];
   };
 }

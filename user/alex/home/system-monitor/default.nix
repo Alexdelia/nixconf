@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   dp.systemMonitor = "${pkgs.btop}/bin/btop";
 
   imports = [

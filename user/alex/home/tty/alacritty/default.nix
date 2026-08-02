@@ -2,15 +2,17 @@
   pkgs,
   lib,
   config,
-  scheme ? {},
+  scheme ? { },
   ...
-}: {
+}:
+{
   terminal = {
     command = "${pkgs.alacritty-graphics}/bin/alacritty";
-    exec = {
-      command,
-      fontSize ? null,
-    }:
+    exec =
+      {
+        command,
+        fontSize ? null,
+      }:
       config.terminal.command
       + lib.optionalString (fontSize != null) " -o font.size=${toString fontSize}"
       + " -e ${command}";
@@ -22,43 +24,41 @@
 
       package = pkgs.alacritty-graphics;
 
-      settings =
-        {
-          env = {
-            TERM = "xterm-256color";
+      settings = {
+        env = {
+          TERM = "xterm-256color";
+        };
+
+        general.live_config_reload = false;
+
+        font = {
+          size = 16.0;
+
+          normal = {
+            family = "SauceCodeProNerdFont";
+            style = "Regular";
           };
-
-          general.live_config_reload = false;
-
-          font = {
-            size = 16.0;
-
-            normal = {
-              family = "SauceCodeProNerdFont";
-              style = "Regular";
-            };
-            bold = {
-              family = "SauceCodeProNerdFont";
-              style = "Black";
-            };
+          bold = {
+            family = "SauceCodeProNerdFont";
+            style = "Black";
           };
+        };
 
-          window = {
-            opacity = 1.0;
+        window = {
+          opacity = 1.0;
 
-            decorations = "None";
-            startup_mode = "Maximized";
+          decorations = "None";
+          startup_mode = "Maximized";
 
-            dimensions = {
-              columns = 128;
-              lines = 32;
-            };
+          dimensions = {
+            columns = 128;
+            lines = 32;
           };
-        }
-        // (import ./scheme.nix {
-          scheme =
-            config.scheme or scheme;
-        });
+        };
+      }
+      // (import ./scheme.nix {
+        scheme = config.scheme or scheme;
+      });
     };
   };
 

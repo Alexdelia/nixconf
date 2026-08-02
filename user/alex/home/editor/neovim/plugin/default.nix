@@ -2,7 +2,8 @@
   pkgs,
   inputs,
 }:
-with pkgs.vimPlugins; [
+with pkgs.vimPlugins;
+[
   ## non-lsp info
   nvim-web-devicons
   {
@@ -34,14 +35,12 @@ with pkgs.vimPlugins; [
   ## non-lsp post colorscheme
   {
     plugin = bufferline-nvim.overrideAttrs (old: {
-      postPatch =
-        (old.postPatch or "")
-        + ''
-          substituteInPlace lua/bufferline/ui.lua \
-            --replace-fail \
-              'if is_slant(style) then return { text = symbol, highlight = highlight } end' \
-              'if is_slant(style) then return { text = symbol, highlight = curr_hl.buffer } end'
-        '';
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace lua/bufferline/ui.lua \
+          --replace-fail \
+            'if is_slant(style) then return { text = symbol, highlight = highlight } end' \
+            'if is_slant(style) then return { text = symbol, highlight = curr_hl.buffer } end'
+      '';
     });
     type = "lua";
     config = builtins.readFile ./bufferline.lua;
@@ -189,13 +188,11 @@ with pkgs.vimPlugins; [
       };
     };
     type = "lua";
-    config = let
-      login = "adelille";
-    in
-      /*
-      lua
-      */
-      ''
+    config =
+      let
+        login = "adelille";
+      in
+      /* lua */ ''
         vim.g.user42 = '${login}'
         vim.g.mail42 = '${login}@student.42.fr'
       '';

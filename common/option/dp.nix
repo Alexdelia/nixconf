@@ -2,7 +2,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   options.dp = lib.mkOption {
     description = "preferred packages (default packages|program|path)";
 

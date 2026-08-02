@@ -1,26 +1,28 @@
 {
   programs = {
     plasma = {
-      fonts = let
-        family = "RobotoMono Nerd Font";
-        baseSize = 14;
+      fonts =
+        let
+          family = "RobotoMono Nerd Font";
+          baseSize = 14;
 
-        baseFont = {
-          inherit family;
-          pointSize = baseSize;
-        };
-      in {
-        fixedWidth = baseFont;
-        general = baseFont;
+          baseFont = {
+            inherit family;
+            pointSize = baseSize;
+          };
+        in
+        {
+          fixedWidth = baseFont;
+          general = baseFont;
 
-        menu = baseFont;
-        small = {
-          inherit family;
-          pointSize = baseSize - 2;
+          menu = baseFont;
+          small = {
+            inherit family;
+            pointSize = baseSize - 2;
+          };
+          toolbar = baseFont;
+          windowTitle = baseFont;
         };
-        toolbar = baseFont;
-        windowTitle = baseFont;
-      };
     };
   };
 }

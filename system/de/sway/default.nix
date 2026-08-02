@@ -3,7 +3,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ./greet
   ];
@@ -26,10 +27,10 @@
       enable = true;
 
       /*
-      targets = {
-        sway.enable = true;
-        swaylock.enable = false;
-      };
+        targets = {
+          sway.enable = true;
+          swaylock.enable = false;
+        };
       */
     };
   };

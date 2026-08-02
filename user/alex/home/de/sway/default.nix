@@ -3,15 +3,17 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   checkConfig = true;
 
   enable =
     (config.hostOption.type == "minimal" || config.hostOption.type == "lite")
     && !config.targets.genericLinux.enable;
-in {
+in
+{
   imports = [
-    (import ./input.nix {inherit checkConfig;})
+    (import ./input.nix { inherit checkConfig; })
     ./keybind.nix
     ./window.nix
     ./output.nix
@@ -40,7 +42,7 @@ in {
         terminal = config.dp.term;
         menu = config.dp.dmenu;
 
-        bars = [];
+        bars = [ ];
       };
     };
 

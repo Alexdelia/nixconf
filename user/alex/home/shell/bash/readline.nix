@@ -1,4 +1,4 @@
-{config, ...}: {
+{ config, ... }: {
   programs.bash.initExtra = ''
     export INPUTRC="${config.xdg.configHome}/inputrc"
   '';

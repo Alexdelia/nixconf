@@ -1,6 +1,7 @@
 let
   role = import ../../../user/alex/home/de/sway/role.nix;
-in {
+in
+{
   programs.plasma.kwin = {
     borderlessMaximizedWindows = true;
 

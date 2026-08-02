@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   role = import ../../../user/alex/home/de/sway/role.nix;
 
   qdbus = "${pkgs.kdePackages.qttools}/bin/qdbus";
@@ -112,118 +113,100 @@
     }
   '';
 
-  mkScript = name: body:
+  mkScript =
+    name: body:
     pkgs.writeShellApplication {
       inherit name;
-      runtimeInputs = [pkgs.uutils-coreutils-noprefix];
+      runtimeInputs = [ pkgs.uutils-coreutils-noprefix ];
       text = prelude + body;
     };
 
-  activityCreate =
-    mkScript "plasma-activity-create"
-    /*
-    bash
-    */
-    ''
-      am SetCurrentActivity "$(new_activity)" >/dev/null
-      keep_wallpaper
-    '';
+  activityCreate = mkScript "plasma-activity-create" /* bash */ ''
+    am SetCurrentActivity "$(new_activity)" >/dev/null
+    keep_wallpaper
+  '';
 
-  activityNext =
-    mkScript "plasma-activity-next"
-    /*
-    bash
-    */
-    ''
-      mapfile -t acts < <(am ListActivities)
-      if [ "''${#acts[@]}" -lt 2 ]; then
-      	am SetCurrentActivity "$(new_activity)" >/dev/null
-      	keep_wallpaper
-      	exit 0
-      fi
+  activityNext = mkScript "plasma-activity-next" /* bash */ ''
+    mapfile -t acts < <(am ListActivities)
+    if [ "''${#acts[@]}" -lt 2 ]; then
+    	am SetCurrentActivity "$(new_activity)" >/dev/null
+    	keep_wallpaper
+    	exit 0
+    fi
 
-      cur="$(am CurrentActivity)"
-      i=0
-      for a in "''${acts[@]}"; do
-      	if [ "$a" = "$cur" ]; then break; fi
-      	i=$((i + 1))
-      done
-      j=$(((i + 1) % ''${#acts[@]}))
+    cur="$(am CurrentActivity)"
+    i=0
+    for a in "''${acts[@]}"; do
+    	if [ "$a" = "$cur" ]; then break; fi
+    	i=$((i + 1))
+    done
+    j=$(((i + 1) % ''${#acts[@]}))
 
-      want="$(desktop)"
-      am SetCurrentActivity "''${acts[$j]}" >/dev/null
-      keep_desktop "$want"
-    '';
+    want="$(desktop)"
+    am SetCurrentActivity "''${acts[$j]}" >/dev/null
+    keep_desktop "$want"
+  '';
 
-  activityMove =
-    mkScript "plasma-activity-move"
-    /*
-    bash
-    */
-    ''
-      id="$(new_activity)"
-      kwin_js activity-move "
-        const w = workspace.activeWindow;
+  activityMove = mkScript "plasma-activity-move" /* bash */ ''
+    id="$(new_activity)"
+    kwin_js activity-move "
+      const w = workspace.activeWindow;
+      if (w) {
+        w.activities = [\"$id\"];
+      }
+    "
+    am SetCurrentActivity "$id" >/dev/null
+    keep_wallpaper
+  '';
+
+  activityClose = mkScript "plasma-activity-close" /* bash */ ''
+    cur="$(am CurrentActivity)"
+    base="$(base_activity)"
+    if [ "$cur" = "$base" ]; then exit 0; fi
+
+    kwin_js activity-close "
+      for (const w of workspace.windowList()) {
+        if (w.activities.length === 1 && w.activities[0] === \"$cur\") {
+          w.activities = [\"$base\"];
+        }
+      }
+    "
+
+    am SetCurrentActivity "$base" >/dev/null
+    am RemoveActivity "$cur"
+  '';
+
+  globalizeLoad = mkScript "plasma-globalize-load" /* bash */ ''
+    ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript globalize >/dev/null 2>&1 || true
+    ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript ${globalizeScript} globalize >/dev/null
+    ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
+  '';
+
+  wsMove = mkScript "plasma-ws-move" /* bash */ ''
+    kwin_js ws-move "
+      const d = workspace.desktops[$1 - 1];
+      const w = workspace.activeWindow;
+      if (d) {
         if (w) {
-          w.activities = [\"$id\"];
+          w.desktops = [d];
         }
-      "
-      am SetCurrentActivity "$id" >/dev/null
-      keep_wallpaper
-    '';
+        workspace.currentDesktop = d;
+      }
+    "
+  '';
 
-  activityClose =
-    mkScript "plasma-activity-close"
-    /*
-    bash
-    */
-    ''
-      cur="$(am CurrentActivity)"
-      base="$(base_activity)"
-      if [ "$cur" = "$base" ]; then exit 0; fi
-
-      kwin_js activity-close "
-        for (const w of workspace.windowList()) {
-          if (w.activities.length === 1 && w.activities[0] === \"$cur\") {
-            w.activities = [\"$base\"];
-          }
-        }
-      "
-
-      am SetCurrentActivity "$base" >/dev/null
-      am RemoveActivity "$cur"
-    '';
-
-  globalizeLoad =
-    mkScript "plasma-globalize-load"
-    /*
-    bash
-    */
-    ''
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript globalize >/dev/null 2>&1 || true
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript ${globalizeScript} globalize >/dev/null
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
-    '';
-
-  wsMove =
-    mkScript "plasma-ws-move"
-    /*
-    bash
-    */
-    ''
-      kwin_js ws-move "
-        const d = workspace.desktops[$1 - 1];
-        const w = workspace.activeWindow;
-        if (d) {
-          if (w) {
-            w.desktops = [d];
-          }
-          workspace.currentDesktop = d;
-        }
-      "
-    '';
-
-  shifted = ["!" "@" "#" "$" "%" "^" "&" "*" "(" ")"];
+  shifted = [
+    "!"
+    "@"
+    "#"
+    "$"
+    "%"
+    "^"
+    "&"
+    "*"
+    "("
+    ")"
+  ];
 
   desktops = lib.range 1 (builtins.length role.list);
 
@@ -234,14 +217,24 @@
     startupNotify = false;
     type = "Application";
   };
-in {
-  home.packages = [activityCreate activityNext activityMove activityClose wsMove];
+in
+{
+  home.packages = [
+    activityCreate
+    activityNext
+    activityMove
+    activityClose
+    wsMove
+  ];
 
   systemd.user.services.plasma-globalize = {
     Unit = {
       Description = "keep global-role workspaces on every activity";
-      PartOf = ["graphical-session.target"];
-      After = ["graphical-session.target" "plasma-kwin_wayland.service"];
+      PartOf = [ "graphical-session.target" ];
+      After = [
+        "graphical-session.target"
+        "plasma-kwin_wayland.service"
+      ];
     };
 
     Service = {
@@ -250,7 +243,7 @@ in {
       ExecStart = lib.getExe globalizeLoad;
     };
 
-    Install.WantedBy = ["graphical-session.target"];
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 
   xdg.desktopEntries = {
@@ -259,18 +252,17 @@ in {
     "net.local.activity-move" = launcher activityMove;
     "net.local.activity-close" = launcher activityClose;
 
-    "net.local.ws-move" =
-      (launcher wsMove)
-      // {
-        actions = lib.listToAttrs (map (i: {
-            name = toString i;
-            value = {
-              name = "move window to ${builtins.elemAt role.list (i - 1)}";
-              exec = "${lib.getExe wsMove} ${toString i}";
-            };
-          })
-          desktops);
-      };
+    "net.local.ws-move" = (launcher wsMove) // {
+      actions = lib.listToAttrs (
+        map (i: {
+          name = toString i;
+          value = {
+            name = "move window to ${builtins.elemAt role.list (i - 1)}";
+            exec = "${lib.getExe wsMove} ${toString i}";
+          };
+        }) desktops
+      );
+    };
   };
 
   programs.plasma.shortcuts = {
@@ -279,11 +271,12 @@ in {
     "services/net.local.activity-move.desktop"._launch = "Meta+~";
     "services/net.local.activity-close.desktop"._launch = "Meta+Ctrl+W";
 
-    "services/net.local.ws-move.desktop" = lib.listToAttrs (map (i: {
+    "services/net.local.ws-move.desktop" = lib.listToAttrs (
+      map (i: {
         name = toString i;
         value = "Meta+${builtins.elemAt shifted (i - 1)}";
-      })
-      desktops);
+      }) desktops
+    );
 
     plasmashell."switch to next activity" = "none";
 

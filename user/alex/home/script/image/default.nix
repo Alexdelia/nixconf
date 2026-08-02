@@ -2,10 +2,12 @@
   config,
   pkgs,
   ...
-}: let
-  screenshot = import ./screenshot.nix {inherit config pkgs;};
-  imageEdit = import ./image-edit.nix {inherit config pkgs;};
-in {
+}:
+let
+  screenshot = import ./screenshot.nix { inherit config pkgs; };
+  imageEdit = import ./image-edit.nix { inherit config pkgs; };
+in
+{
   home.packages = [
     screenshot
     imageEdit

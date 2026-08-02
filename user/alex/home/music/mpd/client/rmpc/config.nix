@@ -1,8 +1,5 @@
-{themeName, ...}:
-/*
-ron
-*/
-''
+{ themeName, ... }:
+/* ron */ ''
   #![enable(implicit_some)]
   #![enable(unwrap_newtypes)]
   #![enable(unwrap_variant_newtypes)]

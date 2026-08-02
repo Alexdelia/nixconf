@@ -3,12 +3,11 @@
   pkgs,
   config,
   ...
-}: let
-  clipboard =
-    if config.hostOption.spec.wlroots
-    then pkgs.wl-clipboard-rs
-    else pkgs.wl-clipboard;
-in {
+}:
+let
+  clipboard = if config.hostOption.spec.wlroots then pkgs.wl-clipboard-rs else pkgs.wl-clipboard;
+in
+{
   dp = {
     clipboard-copy = "${clipboard}/bin/wl-copy";
     clipboard-paste = "${clipboard}/bin/wl-paste";
@@ -28,7 +27,8 @@ in {
     # ./kanata
   ];
 
-  home.packages = with pkgs;
+  home.packages =
+    with pkgs;
     [
       ## shell essentials
       ### rust
@@ -56,37 +56,41 @@ in {
       nixfmt
     ]
     ++ (
-      if config.hostOption.type == "full"
-      then [
-        libreoffice-still
-      ]
-      else []
+      if config.hostOption.type == "full" then
+        [
+          libreoffice-still
+        ]
+      else
+        [ ]
     )
     ++ (
-      if config.hostOption.work
-      then
-        with pkgs.unstable; [
+      if config.hostOption.work then
+        with pkgs.unstable;
+        [
           ruff
           ty
         ]
-      else []
+      else
+        [ ]
     )
     ++ (
       if
         (
-          config.hostOption.type
-          == "full"
+          config.hostOption.type == "full"
           && pkgs.stdenv.hostPlatform.system != "aarch64-linux"
           && !config.targets.genericLinux.enable
         )
-      then [
-        slack
-      ]
-      else []
+      then
+        [
+          slack
+        ]
+      else
+        [ ]
     );
 
   nixpkgs.config = lib.mkIf config.targets.genericLinux.enable {
-    allowUnfreePredicate = pkg:
+    allowUnfreePredicate =
+      pkg:
       builtins.elem (lib.getName pkg) [
         "copilot.vim"
         "slack"

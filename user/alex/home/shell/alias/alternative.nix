@@ -1,4 +1,4 @@
-{pkgs}: {
+{ pkgs }: {
   j = "z";
   cp = "xcp -r";
 
