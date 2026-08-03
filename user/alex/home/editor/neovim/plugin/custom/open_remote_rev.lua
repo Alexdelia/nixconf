@@ -29,8 +29,12 @@ local function open_remote_rev()
 	local remote_url = vim.fn.system("git config --get remote.origin.url"):gsub("\n", "")
 	remote_url = remote_url:gsub(".git$", ""):gsub("^git@", "https://"):gsub("com:", "com/")
 
+	local head_rev = vim.fn.system("git rev-parse HEAD"):gsub("%s+$", "")
+	local head_filename =
+		vim.fn.system("git ls-files --full-name -- " .. vim.fn.shellescape(vim.fn.expand("%"))):gsub("%s+$", "")
+
 	local commit_url = remote_url .. "/commit/" .. t.rev
-	local file_url = remote_url .. "/blob/" .. t.rev .. "/" .. t.filename .. "#L" .. line_num
+	local file_url = remote_url .. "/blob/" .. head_rev .. "/" .. head_filename .. "#L" .. line_num
 
 	vim.fn.system({ "xdg-open", commit_url })
 	vim.fn.system({ "xdg-open", file_url })
