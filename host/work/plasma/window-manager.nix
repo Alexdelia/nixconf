@@ -28,33 +28,4 @@ in
       names = role.list;
     };
   };
-
-  programs.plasma.window-rules = [
-    {
-      description = "singleton: slack";
-      match.window-class = {
-        value = "Slack";
-        type = "exact";
-      };
-      apply = {
-        desktops = {
-          value = "Desktop_9";
-          apply = "force";
-        };
-      };
-    }
-    {
-      description = "singleton: brave";
-      match.window-class = {
-        value = "brave-browser";
-        type = "exact";
-      };
-      apply = {
-        desktops = {
-          value = "Desktop_10";
-          apply = "force";
-        };
-      };
-    }
-  ];
 }

@@ -13,6 +13,7 @@
     ./workspace.nix
     # ./panel.nix
     ./screenlocker.nix
+    ./singleton.nix
   ];
 
   programs = {
