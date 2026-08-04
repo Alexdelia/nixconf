@@ -1,0 +1,54 @@
+diff --git a/complete_alias b/complete_alias
+index 5386dfb..870b2ee 100644
+--- a/complete_alias
++++ b/complete_alias
+@@ -344,7 +344,7 @@ __compal__split_cmd_line() {
+             fi
+         elif [[ "${sta[-1]}" == ')' ]]; then
+             if [[ ')' == "${str:j:1}" ]]; then
+-                unset sta[-1]
++                unset 'sta[-1]'
+             elif [[ '$(' == "${str:j:2}" ]]; then
+                 sta+=( ')' )
+                 (( j++ ))
+@@ -373,7 +373,7 @@ __compal__split_cmd_line() {
+             fi
+         elif [[ "${sta[-1]}" == '}' ]]; then
+             if [[ '}' == "${str:j:1}" ]]; then
+-                unset sta[-1]
++                unset 'sta[-1]'
+             elif [[ '$(' == "${str:j:2}" ]]; then
+                 sta+=( ')' )
+                 (( j++ ))
+@@ -402,7 +402,7 @@ __compal__split_cmd_line() {
+             fi
+         elif [[ "${sta[-1]}" == '`' ]]; then
+             if [[ '`' == "${str:j:1}" ]]; then
+-                unset sta[-1]
++                unset 'sta[-1]'
+             elif [[ '$(' == "${str:j:2}" ]]; then
+                 sta+=( ')' )
+                 (( j++ ))
+@@ -429,11 +429,11 @@ __compal__split_cmd_line() {
+             fi
+         elif [[ "${sta[-1]}" == "'" ]]; then
+             if [[ "'" == "${str:j:1}" ]]; then
+-                unset sta[-1]
++                unset 'sta[-1]'
+             fi
+         elif [[ "${sta[-1]}" == '"' ]]; then
+             if [[ '"' == "${str:j:1}" ]]; then
+-                unset sta[-1]
++                unset 'sta[-1]'
+             elif [[ '$(' == "${str:j:2}" ]]; then
+                 sta+=( ')' )
+                 (( j++ ))
+@@ -705,7 +705,7 @@ __compal__unmask_alias_auto() {
+                 local _cspec_cmd="${_cspec_args[-1]}"
+                 if [[ "$_cspec_cmd" == "$cmd" ]]; then
+                     __compal__vanilla_cspecs["$_cspec_cmd"]="$_cspec"
+-                    unset __compal__raw_vanilla_cspecs["$_cspec"]
++                    unset "__compal__raw_vanilla_cspecs[$_cspec]"
+                     __compal__run_cspec_args "${_cspec_args[@]}"
+                     return
+                 fi
