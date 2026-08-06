@@ -44,6 +44,32 @@ let
     workspace.windowAdded.connect(track);
   '';
 
+  reapScript = pkgs.writeText "plasma-activity-reap.js" ''
+    const globalFrom = ${toString role.globalFrom};
+
+    function isLocalTo(w, activity) {
+      return w.normalWindow
+        && w.activities.includes(activity)
+        && !w.desktops.some(d => d.x11DesktopNumber >= globalFrom);
+    }
+
+    workspace.windowRemoved.connect(() => {
+      const activity = workspace.currentActivity;
+      if (workspace.windowList().some(w => isLocalTo(w, activity))) {
+        return;
+      }
+
+      callDBus(
+        "org.freedesktop.systemd1",
+        "/org/freedesktop/systemd1",
+        "org.freedesktop.systemd1.Manager",
+        "StartUnit",
+        "plasma-activity-reap@" + activity + ".service",
+        "replace"
+      );
+    });
+  '';
+
   prelude = ''
     am() {
       local method="$1"
@@ -176,11 +202,66 @@ let
     am RemoveActivity "$cur"
   '';
 
-  globalizeLoad = mkScript "plasma-globalize-load" /* bash */ ''
-    ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript globalize >/dev/null 2>&1 || true
-    ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript ${globalizeScript} globalize >/dev/null
-    ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
+  activityReap = mkScript "plasma-activity-reap" /* bash */ ''
+    id="$1"
+    base="$(base_activity)"
+    if [ "$id" = "$base" ]; then exit 0; fi
+    if [ "$id" != "$(am CurrentActivity)" ]; then exit 0; fi
+
+    mapfile -t acts < <(am ListActivities)
+    n="''${#acts[@]}"
+    i=0
+    for a in "''${acts[@]}"; do
+      if [ "$a" = "$id" ]; then break; fi
+      i=$((i + 1))
+    done
+
+    target="$base"
+    for ((off = 1; off < n; off++)); do
+      cand="''${acts[$(((i + off) % n))]}"
+      if [ "$cand" != "$id" ]; then
+        target="$cand"
+        break
+      fi
+    done
+
+    want="$(desktop)"
+    am SetCurrentActivity "$target" >/dev/null
+    keep_desktop "$want"
+    am RemoveActivity "$id"
   '';
+
+  kwinScriptService =
+    {
+      name,
+      script,
+      description,
+    }:
+    let
+      load = mkScript "plasma-${name}-load" /* bash */ ''
+        ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript ${name} >/dev/null 2>&1 || true
+        ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript ${script} ${name} >/dev/null
+        ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
+      '';
+    in
+    {
+      Unit = {
+        Description = description;
+        PartOf = [ "graphical-session.target" ];
+        After = [
+          "graphical-session.target"
+          "plasma-kwin_wayland.service"
+        ];
+      };
+
+      Service = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = lib.getExe load;
+      };
+
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
 
   wsMove = mkScript "plasma-ws-move" /* bash */ ''
     kwin_js ws-move "
@@ -227,23 +308,27 @@ in
     wsMove
   ];
 
-  systemd.user.services.plasma-globalize = {
-    Unit = {
-      Description = "keep global-role workspaces on every activity";
-      PartOf = [ "graphical-session.target" ];
-      After = [
-        "graphical-session.target"
-        "plasma-kwin_wayland.service"
-      ];
+  systemd.user.services = {
+    plasma-globalize = kwinScriptService {
+      name = "globalize";
+      script = globalizeScript;
+      description = "keep global-role workspaces on every activity";
     };
 
-    Service = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = lib.getExe globalizeLoad;
+    plasma-activity-watch = kwinScriptService {
+      name = "activity-reap";
+      script = reapScript;
+      description = "watch activities emptied by a closing window";
     };
 
-    Install.WantedBy = [ "graphical-session.target" ];
+    "plasma-activity-reap@" = {
+      Unit.Description = "auto-delete the emptied activity %i";
+
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${lib.getExe activityReap} %i";
+      };
+    };
   };
 
   xdg.desktopEntries = {
