@@ -2,8 +2,8 @@
   dp.term = config.terminal.command;
 
   imports = [
-    ./alacritty
     ./foot
+    # ./alacritty
     # ./kitty
     # ./warp
   ];

@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   scheme ? { },
@@ -6,9 +7,25 @@
 }:
 let
   fontFamily = "SauceCodeProNerdFont";
-  fontSize = 16;
+  defaultFontSize = 16;
+
+  font = style: size: "${fontFamily}:style=${style}:size=${toString size}";
 in
 {
+  terminal = {
+    command = "${pkgs.foot}/bin/foot";
+    exec =
+      {
+        command,
+        fontSize ? null,
+      }:
+      config.terminal.command
+      + lib.optionalString (
+        fontSize != null
+      ) " -o main.font=${font "Regular" fontSize} -o main.font-bold=${font "Black" fontSize}"
+      + " ${command}";
+  };
+
   programs.foot = {
     enable = true;
 
@@ -17,8 +34,8 @@ in
         # term = "foot";
         # term = "xterm-256color";
 
-        font = "${fontFamily}:style=Regular:size=${toString fontSize}";
-        font-bold = "${fontFamily}:style=Black:size=${toString fontSize}";
+        font = font "Regular" defaultFontSize;
+        font-bold = font "Black" defaultFontSize;
 
         initial-window-mode = "maximized";
         initial-window-size-chars = "128x32";

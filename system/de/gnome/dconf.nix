@@ -11,7 +11,7 @@
 
       profiles.user.databases =
         let
-          openInTerm = "alacritty -e";
+          openInTerm = "foot";
         in
         [
           {
@@ -54,8 +54,8 @@
                 ];
               };
               "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-                name = "alacritty";
-                command = "alacritty";
+                name = "foot";
+                command = "foot";
                 binding = "<Super>c";
               };
               "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {

@@ -10,7 +10,7 @@
     type = lib.types.attrsOf lib.types.path;
 
     default = {
-      term = "${pkgs.alacritty}/bin/alacritty";
+      term = "${pkgs.foot}/bin/foot";
       shell = "${pkgs.bash}/bin/bash";
       editor = "${pkgs.vim}/bin/vim";
 
