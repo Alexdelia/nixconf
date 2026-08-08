@@ -3,6 +3,7 @@
 
   imports = [
     ./alacritty
+    ./foot
     # ./kitty
     # ./warp
   ];
