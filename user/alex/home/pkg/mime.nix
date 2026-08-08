@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, lib, ... }:
+{
   xdg = {
     mimeApps = {
       enable = true;
@@ -12,7 +13,17 @@
 
         "video/mp4" = config.dm.browser;
         "video/webm" = config.dm.browser;
-      };
+      }
+      // lib.genAttrs [
+        "image/png"
+        "image/jpeg"
+        "image/gif"
+        "image/svg+xml"
+        "image/webp"
+        "image/bmp"
+        "image/apng"
+        "image/avif"
+      ] (_: config.dm.browser);
     };
     configFile."mimeapps.list".force = true;
     dataFile."applications/mimeapps.list".force = true;
