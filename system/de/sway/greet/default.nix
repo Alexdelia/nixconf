@@ -1,7 +1,5 @@
 {
   users,
-  lib,
-  config,
   ...
 }:
 let
@@ -12,7 +10,7 @@ in
   #   ./regreet
   # ];
 
-  config = lib.mkIf (config.hostOption.type == "minimal" || config.hostOption.type == "lite") {
+  config = {
     services.getty.autologinUser = mainUser;
 
     environment.loginShellInit = ''

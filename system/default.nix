@@ -76,7 +76,7 @@
             "steam"
             "steam-unwrapped"
             "osu-lazer-bin"
-            "android-studio"
+            # "android-studio"
           ]
         else
           [ ]

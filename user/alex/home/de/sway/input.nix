@@ -5,7 +5,7 @@
   ...
 }:
 {
-  config = lib.mkIf (config.hostOption.type == "minimal" || config.hostOption.type == "lite") {
+  config = lib.mkIf (!config.targets.genericLinux.enable) {
     wayland.windowManager.sway.config.input = {
       "type:pointer" = {
         accel_profile = "flat";

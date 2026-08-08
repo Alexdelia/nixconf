@@ -11,7 +11,7 @@
   ];
 
   hostOption = {
-    type = "lite";
+    type = "full";
 
     spec = {
       monitor = {

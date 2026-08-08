@@ -1,7 +1,5 @@
 {
   pkgs,
-  config,
-  lib,
   ...
 }:
 {
@@ -9,7 +7,7 @@
     ./greet
   ];
 
-  config = lib.mkIf (config.hostOption.type == "lite" || config.hostOption.type == "minimal") {
+  config = {
     programs.sway = {
       enable = true;
       wrapperFeatures.gtk = true;

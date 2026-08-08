@@ -7,9 +7,7 @@
 let
   checkConfig = true;
 
-  enable =
-    (config.hostOption.type == "minimal" || config.hostOption.type == "lite")
-    && !config.targets.genericLinux.enable;
+  enable = !config.targets.genericLinux.enable;
 in
 {
   imports = [
