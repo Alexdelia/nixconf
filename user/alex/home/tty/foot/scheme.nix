@@ -4,7 +4,7 @@ let
   back_primary = "524554";
 in
 {
-  colors = {
+  colors-dark = {
     regular0 = base10;
     regular1 = base08;
     regular2 = base0B;

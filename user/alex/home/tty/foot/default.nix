@@ -24,7 +24,7 @@ in
         initial-window-size-chars = "128x32";
       };
 
-      colors.alpha = 1.0;
+      colors-dark.alpha = 1.0;
 
       csd.preferred = "none";
     } (import ./scheme.nix { scheme = config.scheme or scheme; });
