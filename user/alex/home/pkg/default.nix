@@ -58,7 +58,7 @@ in
     ++ (
       if config.hostOption.type == "full" then
         [
-          libreoffice-still
+          onlyoffice-desktopeditors
         ]
       else
         [ ]
