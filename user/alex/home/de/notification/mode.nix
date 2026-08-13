@@ -1,0 +1,3 @@
+{
+  dnd = "do-not-disturb";
+}

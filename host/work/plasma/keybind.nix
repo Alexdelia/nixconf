@@ -32,7 +32,7 @@ in
 
     spectacle.shortcuts = {
       captureRectangularRegion = "Meta+S";
-      recordRegion = "Meta+Shift+S";
+      recordRegion = "none";
     };
   };
 }

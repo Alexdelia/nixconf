@@ -7,6 +7,8 @@
 let
   s = (config.scheme or scheme).withHashtag;
 
+  mode = import ./mode.nix;
+
   primary = lib.filterAttrs (_: m: m.primary) config.hostOption.spec.monitor;
   primaryWidth = if primary == { } then 1920 else (lib.head (lib.attrValues primary)).width;
 in
@@ -32,7 +34,13 @@ in
 
       default-timeout = 5 * 1000; # ms
 
+      max-history = 100;
+
       "outer-margin" = "0,5,20,0";
+
+      "mode=${mode.dnd}" = {
+        invisible = true;
+      };
 
       "urgency=low" = {
         border-color = "${s.base04}80";
