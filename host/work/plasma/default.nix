@@ -8,6 +8,7 @@
     ./font.nix
     ./keybind.nix
     ./locale.nix
+    ./record.nix
     # ./touchpad.nix
     ./window-manager.nix
     ./workspace.nix
