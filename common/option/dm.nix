@@ -5,6 +5,8 @@
     type = lib.types.attrsOf lib.types.str;
 
     default = {
+      editor = "vim.desktop";
+
       browser = "firefox.desktop";
     };
   };
