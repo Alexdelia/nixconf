@@ -1,6 +1,7 @@
 _: {
   imports = [
     ./plasma
+    ./forgejo-tunnel.nix
   ];
 
   hostOption = {
