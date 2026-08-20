@@ -1,5 +1,5 @@
 - bluetooth (probably with [overskride](https://github.com/kaii-lb/overskride))
-- logiops config
+- logiops/openlogi config
 - enhance [rmpc](https://github.com/mierak/rmpc)
   - add [queue information](https://mierak.github.io/rmpc/next/configuration/header/#queuelength)
   - add ScanStatus
