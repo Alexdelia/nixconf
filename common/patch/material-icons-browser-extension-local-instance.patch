@@ -1,0 +1,29 @@
+diff --git a/src/manifests/base.json b/src/manifests/base.json
+index 6708912..0d91875 100644
+--- a/src/manifests/base.json
++++ b/src/manifests/base.json
+@@ -21,7 +21,8 @@
+         "*://gitee.com/*",
+         "*://sourceforge.net/*",
+         "*://codeberg.org/*",
+-        "*://tangled.org/*"
++        "*://tangled.org/*",
++        "*://localhost/*"
+       ],
+       "js": [
+         "./main.js"
+diff --git a/src/providers/forgejo.ts b/src/providers/forgejo.ts
+index 30c254c..a7fa736 100644
+--- a/src/providers/forgejo.ts
++++ b/src/providers/forgejo.ts
+@@ -8,6 +8,10 @@ export default function forgejo(): Provider {
+         host: 'codeberg.org',
+         test: /^codeberg\.org$/,
+       },
++      {
++        host: 'self-hosted-forgejo.invalid',
++        test: /^self-hosted-forgejo.invalid$/,
++      },
+     ],
+     selectors: {
+       // Primary Forgejo structure + a fallback for older Gitea-like markup

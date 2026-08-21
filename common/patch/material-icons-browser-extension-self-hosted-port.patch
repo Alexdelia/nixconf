@@ -1,0 +1,225 @@
+diff --git a/src/lib/user-config.test.ts b/src/lib/user-config.test.ts
+index 5f564fc..0649652 100644
+--- a/src/lib/user-config.test.ts
++++ b/src/lib/user-config.test.ts
+@@ -27,14 +27,16 @@ vi.mock('webextension-polyfill', () => ({
+   },
+ }));
+ 
++const setLocationHost = (host: string) =>
++  Object.defineProperty(window, 'location', {
++    value: { host, hostname: host.split(':')[0] },
++    writable: true,
++  });
++
+ describe('user-config', () => {
+   beforeEach(() => {
+     vi.clearAllMocks();
+-    // Set a default hostname for tests
+-    Object.defineProperty(window, 'location', {
+-      value: { hostname: 'github.com' },
+-      writable: true,
+-    });
++    setLocationHost('github.com');
+   });
+ 
+   describe('hardDefaults', () => {
+@@ -124,13 +126,23 @@ describe('user-config', () => {
+       });
+     });
+ 
+-    it('uses window.location.hostname as default domain', () => {
++    it('uses window.location.host as default domain', () => {
+       setConfig('iconSize', 'lg');
+ 
+       expect(mockSet).toHaveBeenCalledWith({
+         'github.com:iconSize': 'lg',
+       });
+     });
++
++    it('keeps the port of a self hosted instance in the key', () => {
++      setLocationHost('localhost:8080');
++
++      setConfig('iconSize', 'lg');
++
++      expect(mockSet).toHaveBeenCalledWith({
++        'localhost:8080:iconSize': 'lg',
++      });
++    });
+   });
+ 
+   describe('clearConfig', () => {
+@@ -140,7 +152,7 @@ describe('user-config', () => {
+       expect(mockRemove).toHaveBeenCalledWith('github.com:iconPack');
+     });
+ 
+-    it('uses window.location.hostname as default domain', () => {
++    it('uses window.location.host as default domain', () => {
+       clearConfig('extEnabled');
+ 
+       expect(mockRemove).toHaveBeenCalledWith('github.com:extEnabled');
+diff --git a/src/lib/user-config.ts b/src/lib/user-config.ts
+index dabf132..8d02c2e 100644
+--- a/src/lib/user-config.ts
++++ b/src/lib/user-config.ts
+@@ -22,7 +22,7 @@ type ConfigValueType<T extends keyof UserConfig> = UserConfig[T];
+ 
+ export const getConfig = async <T extends keyof UserConfig>(
+   configName: T,
+-  domain = window.location.hostname,
++  domain = window.location.host,
+   useDefault = true
+ ): Promise<ConfigValueType<T>> => {
+   const keys = {
+@@ -41,7 +41,7 @@ export const getConfig = async <T extends keyof UserConfig>(
+ export const setConfig = <T extends keyof UserConfig>(
+   configName: T,
+   value: ConfigValueType<T>,
+-  domain = window.location.hostname
++  domain = window.location.host
+ ) => {
+   Browser.storage.sync.set({
+     [`${domain}:${configName}`]: value,
+@@ -50,13 +50,13 @@ export const setConfig = <T extends keyof UserConfig>(
+ 
+ export const clearConfig = (
+   configName: keyof UserConfig,
+-  domain = window.location.hostname
++  domain = window.location.host
+ ) => Browser.storage.sync.remove(`${domain}:${configName}`);
+ 
+ export const addConfigChangeListener = (
+   configName: keyof UserConfig,
+   handler: Function,
+-  domain = window.location.hostname
++  domain = window.location.host
+ ) =>
+   Browser.storage.onChanged.addListener(
+     (changes) =>
+diff --git a/src/providers/index.test.ts b/src/providers/index.test.ts
+new file mode 100644
+index 0000000..571be58
+--- /dev/null
++++ b/src/providers/index.test.ts
+@@ -0,0 +1,50 @@
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import Browser from 'webextension-polyfill';
++import { addGitProvider, getGitProvider, removeGitProvider } from './index';
++
++vi.mock('webextension-polyfill', () => ({
++  default: {
++    storage: {
++      sync: {
++        get: vi.fn(),
++        set: vi.fn(),
++      },
++    },
++  },
++}));
++
++const mockGet = Browser.storage.sync.get as ReturnType<typeof vi.fn>;
++
++describe('getGitProvider', () => {
++  beforeEach(() => {
++    vi.clearAllMocks();
++    mockGet.mockResolvedValue({});
++  });
++
++  it('resolves a built in provider by domain', async () => {
++    const provider = await getGitProvider('https://github.com/foo/bar');
++
++    expect(provider?.name).toBe('github');
++  });
++
++  it('resolves a custom provider hosted on a port', async () => {
++    addGitProvider('localhost:8080', 'forgejo');
++
++    const provider = await getGitProvider('http://localhost:8080/foo/bar');
++
++    expect(provider?.name).toBe('localhost:8080');
++    expect(provider?.selectors.row).toBe(
++      '#repo-files-table .entry, #repo-files-table .repo-file-item'
++    );
++
++    removeGitProvider('localhost:8080');
++  });
++
++  it('does not resolve a custom provider on a different port', async () => {
++    addGitProvider('127.0.0.1:8080', 'forgejo');
++
++    expect(await getGitProvider('http://127.0.0.1:9000/foo/bar')).toBeNull();
++
++    removeGitProvider('127.0.0.1:8080');
++  });
++});
+diff --git a/src/ui/popup/api/access.ts b/src/ui/popup/api/access.ts
+index 01959d2..6c78af4 100644
+--- a/src/ui/popup/api/access.ts
++++ b/src/ui/popup/api/access.ts
+@@ -1,11 +1,9 @@
+ import Browser from 'webextension-polyfill';
+ 
+ export function checkAccess(tab: Browser.Tabs.Tab) {
+-  const { host } = new URL(tab.url ?? '');
+-
+   const perm = {
+     permissions: ['activeTab'],
+-    origins: [`*://${host}/*`],
++    origins: [originPattern(tab)],
+   };
+ 
+   return Browser.permissions.contains(perm).then(async (r) => {
+@@ -20,11 +18,9 @@ export function checkAccess(tab: Browser.Tabs.Tab) {
+ }
+ 
+ export function requestAccess(tab: Browser.Tabs.Tab) {
+-  const { host } = new URL(tab.url ?? '');
+-
+   const perm: Browser.Permissions.Permissions = {
+     permissions: ['activeTab'],
+-    origins: [`*://${host}/*`],
++    origins: [originPattern(tab)],
+   };
+ 
+   // request the permission
+@@ -42,13 +38,11 @@ export function requestAccess(tab: Browser.Tabs.Tab) {
+ }
+ 
+ async function ensureContentScriptRegistered(tab: Browser.Tabs.Tab) {
+-  const { host } = new URL(tab.url ?? '');
+-
+   const scripts = await Browser.scripting.getRegisteredContentScripts({
+     ids: ['material-icons'],
+   });
+ 
+-  const pattern: string = `*://${host}/*`;
++  const pattern: string = originPattern(tab);
+ 
+   if (!scripts.length) {
+     // run the script now in the current tab to prevent need for reloading
+@@ -86,3 +80,13 @@ async function ensureContentScriptRegistered(tab: Browser.Tabs.Tab) {
+     },
+   ]);
+ }
++
++/**
++ * Match patterns cannot contain a port, so a self hosted instance reachable on
++ * a non default port has to be granted for every port of its hostname.
++ */
++function originPattern(tab: Browser.Tabs.Tab) {
++  const { hostname } = new URL(tab.url ?? '');
++
++  return `*://${hostname}/*`;
++}
+diff --git a/src/ui/popup/api/helper.ts b/src/ui/popup/api/helper.ts
+index 65e2963..4e07771 100644
+--- a/src/ui/popup/api/helper.ts
++++ b/src/ui/popup/api/helper.ts
+@@ -23,6 +23,6 @@ export function getCurrentTab() {
+ export function getDomainFromCurrentTab() {
+   return getCurrentTab().then((tab) => {
+     const url = new URL(tab.url ?? '');
+-    return url.hostname;
++    return url.host;
+   });
+ }

@@ -5,6 +5,8 @@ in
 {
   imports = [
     ./extension
+
+    ./self-hosted-forgejo.nix
   ];
 
   programs.chromium = {

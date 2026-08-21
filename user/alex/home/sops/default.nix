@@ -4,6 +4,7 @@
     ./wakatime.nix
 
     ./jiruo.nix
+    ./forgejo-ui.nix
   ];
 
   sops = {

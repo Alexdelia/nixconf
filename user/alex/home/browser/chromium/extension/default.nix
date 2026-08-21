@@ -2,7 +2,6 @@
   programs.chromium.extensions = [
     (import ./dark_reader.nix)
 
-    (import ./material_icons_for_github.nix)
     (import ./improved_intra_42.nix)
 
     (import ./markdown_here.nix)

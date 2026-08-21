@@ -10,6 +10,10 @@ inputs: final: prev: {
     ];
   });
 
+  material-icons-browser-extension =
+    final.callPackage ./package/material-icons-browser-extension.nix
+      { };
+
   swhkd-no-rfkill =
     inputs.swhkd.packages.${final.stdenv.hostPlatform.system}.swhkd-no-rfkill.overrideAttrs
       (old: {
