@@ -1,0 +1,133 @@
+diff --git a/src/providers/forgejo.diff-tree.test.ts b/src/providers/forgejo.diff-tree.test.ts
+new file mode 100644
+index 0000000..c6c655b
+--- /dev/null
++++ b/src/providers/forgejo.diff-tree.test.ts
+@@ -0,0 +1,106 @@
++import { Manifest } from 'material-icon-theme';
++import { beforeEach, describe, expect, it, vi } from 'vitest';
++import { replaceIconInRow } from '../lib/replace-icon';
++import forgejo from './forgejo';
++
++vi.mock('webextension-polyfill', () => ({
++  default: {
++    runtime: {
++      getURL: (name: string) => `chrome-extension://test-id/${name}`,
++    },
++  },
++}));
++
++vi.mock('../icon-list.json', () => ({
++  default: {
++    file: 'file.svg',
++    folder: 'folder.svg',
++    'folder-open': 'folder-open.svg',
++    'folder-src': 'folder-src.svg',
++    'folder-src-open': 'folder-src-open.svg',
++    typescript: 'typescript.svg',
++  },
++}));
++
++const manifest: Manifest = {
++  fileNames: {},
++  fileExtensions: { ts: 'typescript' },
++  languageIds: {},
++  folderNames: { src: 'folder-src' },
++  folderNamesExpanded: { src: 'folder-src-open' },
++};
++
++const provider = forgejo();
++
++const fileItem = `
++  <div class="diff-file-tree-items">
++    <a class="item-file" title="main.ts" href="#diff-0000">
++      <svg class="svg octicon-file"></svg>
++      <span class="gt-ellipsis tw-flex-1">main.ts</span>
++      <svg class="svg octicon-diff-modified text yellow"></svg>
++    </a>
++  </div>`;
++
++const directoryItem = `
++  <div class="diff-file-tree-items">
++    <div class="item-directory" title="src">
++      <svg class="svg octicon-chevron-down"></svg>
++      <svg class="svg text primary octicon-file-directory-fill"></svg>
++      <span class="gt-ellipsis">src</span>
++    </div>
++  </div>`;
++
++const firstRow = () =>
++  document.querySelector(provider.selectors.row) as HTMLElement;
++
++const replacedIcon = (row: HTMLElement) =>
++  row.querySelector('[data-material-icons-extension]');
++
++describe('Forgejo provider - diff file tree', () => {
++  beforeEach(() => {
++    document.body.innerHTML = '';
++  });
++
++  it('should replace the icon of a file item', () => {
++    document.body.innerHTML = fileItem;
++    const row = firstRow();
++
++    replaceIconInRow(row, provider, manifest);
++
++    expect(
++      replacedIcon(row)?.getAttribute('data-material-icons-extension-iconname')
++    ).toBe('typescript.svg');
++    expect(
++      replacedIcon(row)?.getAttribute('data-material-icons-extension-filename')
++    ).toBe('main.ts');
++  });
++
++  it('should leave the diff type icon untouched', () => {
++    document.body.innerHTML = fileItem;
++    const row = firstRow();
++
++    replaceIconInRow(row, provider, manifest);
++
++    expect(row.querySelector('svg.octicon-diff-modified')).not.toBeNull();
++  });
++
++  it('should replace the icon of a directory item with a folder icon', () => {
++    document.body.innerHTML = directoryItem;
++    const row = firstRow();
++
++    replaceIconInRow(row, provider, manifest);
++
++    expect(
++      replacedIcon(row)?.getAttribute('data-material-icons-extension-iconname')
++    ).toBe('folder-src.svg');
++  });
++
++  it('should leave the collapse chevron untouched', () => {
++    document.body.innerHTML = directoryItem;
++    const row = firstRow();
++
++    replaceIconInRow(row, provider, manifest);
++
++    expect(row.querySelector('svg.octicon-chevron-down')).not.toBeNull();
++  });
++});
+diff --git a/src/providers/forgejo.ts b/src/providers/forgejo.ts
+index 30c254c..a1f9264 100644
+--- a/src/providers/forgejo.ts
++++ b/src/providers/forgejo.ts
+@@ -10,10 +10,12 @@ export default function forgejo(): Provider {
+       },
+     ],
+     selectors: {
+-      // Primary Forgejo structure + a fallback for older Gitea-like markup
+-      row: '#repo-files-table .entry, #repo-files-table .repo-file-item',
+-      filename: '.name a, .repo-file-cell.name a',
+-      icon: '.name svg, .repo-file-cell.name svg',
++      // Primary Forgejo structure + a fallback for older Gitea-like markup,
++      // followed by the file tree of the diff view (pull requests and commits)
++      row: '#repo-files-table .entry, #repo-files-table .repo-file-item, .diff-file-tree-items .item-file, .diff-file-tree-items .item-directory',
++      filename:
++        '.name a, .repo-file-cell.name a, .item-file .gt-ellipsis, .item-directory .gt-ellipsis',
++      icon: '.name svg, .repo-file-cell.name svg, .item-file svg.octicon-file, .item-directory svg.octicon-file-directory-fill',
+       // Element by which to detect if the tested domain is forgejs.
+       detect: 'body > .full.height > .page-content[role=main]',
+     },

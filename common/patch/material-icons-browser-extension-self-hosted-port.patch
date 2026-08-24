@@ -98,10 +98,10 @@ index dabf132..8d02c2e 100644
      (changes) =>
 diff --git a/src/providers/index.test.ts b/src/providers/index.test.ts
 new file mode 100644
-index 0000000..571be58
+index 0000000..217795b
 --- /dev/null
 +++ b/src/providers/index.test.ts
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,48 @@
 +import { beforeEach, describe, expect, it, vi } from 'vitest';
 +import Browser from 'webextension-polyfill';
 +import { addGitProvider, getGitProvider, removeGitProvider } from './index';
@@ -137,9 +137,7 @@ index 0000000..571be58
 +    const provider = await getGitProvider('http://localhost:8080/foo/bar');
 +
 +    expect(provider?.name).toBe('localhost:8080');
-+    expect(provider?.selectors.row).toBe(
-+      '#repo-files-table .entry, #repo-files-table .repo-file-item'
-+    );
++    expect(provider?.selectors.row).toContain('#repo-files-table .entry');
 +
 +    removeGitProvider('localhost:8080');
 +  });

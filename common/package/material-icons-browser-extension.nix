@@ -15,6 +15,7 @@ buildNpmPackage {
 
   patches = [
     ../patch/material-icons-browser-extension-self-hosted-port.patch
+    ../patch/material-icons-browser-extension-forgejo-diff-tree.patch
     ../patch/material-icons-browser-extension-local-instance.patch
   ];
 
