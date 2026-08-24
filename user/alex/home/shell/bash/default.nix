@@ -3,6 +3,9 @@
   pkgs,
   ...
 }:
+let
+  historyLines = if (config.hostOption.type == "minimal") then 1000 else 100000;
+in
 {
   imports = [
     ./readline.nix
@@ -84,20 +87,8 @@
       ];
       # TODO: test `progcomp_alias` instead of `complete_alias`
 
-      historyFileSize =
-        if (config.hostOption.type == "full") then
-          10000000 # 10M
-        else if (config.hostOption.type == "minimal") then
-          1000 # 1K
-        else
-          100000; # 100K
-      historySize =
-        if (config.hostOption.type == "full") then
-          100000 # 100K
-        else if (config.hostOption.type == "minimal") then
-          100 # 100
-        else
-          10000; # 10K
+      historyFileSize = historyLines;
+      historySize = historyLines;
 
       historyControl = [
         "erasedups"
