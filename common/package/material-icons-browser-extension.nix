@@ -4,7 +4,7 @@
 }:
 buildNpmPackage {
   pname = "material-icons-browser-extension";
-  version = "1.16.3-unstable-2026-08-21";
+  version = "1.16.3";
 
   src = fetchFromGitHub {
     owner = "material-extensions";
@@ -20,7 +20,7 @@ buildNpmPackage {
 
   npmDepsHash = "sha256-c8i1OUWP/42N1DZHIq5p9PyQzH+FcnbvAjyvLswuEqo=";
 
-  extensionKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx3TQSr97ekiRSwjmJ83wwFj0tfO7/8gMkWdyfI12AA5zYlUKFIOsoxvM6JR3oG9cNOjtg4npK3N+n0DLjdOz1EzYlp1ph5ky2FzyuwvxukCji0VBI1tIXNlwwneR+H/rUNP+lC+zPcRzYwkLg1tntThMjnbsXAX8QjZ50DUsM0OW7hQT6mnkqVQHqHHGlkh7HD/FtIHqCO2s/JQT8trW5U/6Z6yBVuIa9mbIeLla7XUHEEvqriQ9tyJ0Mr3Bid/wxlT3maGxYND8QBiEC/4aWdQwn+sIpmKiedJxgnMv2L5gAmQhu64l7dELySkWoAAyZtNoaS3dk5PJx+Lfbe5GZwIDAQAB";
+  extensionKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0FaVeIhWkhIHqGUs5Yl5NVvcDomeSYnHTeF9qjtp9qKLCiu+Lv9hkjsU69tX5eZanJ5vy6cNaeNXIn6BBAta+HRf8iminZ33Cxs9xW3rqG5HU13d3UoQE/C6AvEGRbMlzxU3KTUpdkxkaTkAAqSlT07gzBC1dKTlPJRrRpqsJvYpcujIfWsGetwDJL6024TEbRRPg4kkd1GJ8if7mZE7frUyne5J3Sa5/Djxlb+ZuVDFYuQFj5j/8iyt1IcFmSSlIb6jVf0HTyI9hDRkvped4cZjDGr/S6jvOyHWoDLoD3ZCyOssaPYFzfp8sGLjtrKPbnEJLq+nQ5iTGedy8UAMZwIDAQAB";
 
   postPatch = ''
     substituteInPlace src/manifests/base.json \
