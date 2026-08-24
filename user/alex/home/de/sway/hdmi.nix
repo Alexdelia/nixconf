@@ -10,6 +10,7 @@ let
   hostFile = config.sops.secrets."jiruo/hdmi-host".path;
 
   sink = import ./sink.nix;
+  switchSink = import ./switch-sink.nix { inherit pkgs; };
 
   armShutdown = true;
 
@@ -19,8 +20,8 @@ let
       curl
       jaq
       sway
+      switchSink
       uutils-coreutils-noprefix
-      pulseaudio
       libnotify
       speechd
     ];
@@ -71,14 +72,6 @@ let
         if [ "$follow" = 1 ]; then swaymsg workspace "$to" >/dev/null; fi
       }
 
-      switch_sink() {
-        local sink="$1" i
-        pactl set-default-sink "$sink" || true
-        pactl list short sink-inputs 2>/dev/null | while read -r i _; do
-          pactl move-sink-input "$i" "$sink" 2>/dev/null || true
-        done || true
-      }
-
       window_count() {
         swaymsg -t get_tree | jaq '[recurse(.nodes[]?, .floating_nodes[]?)
           | select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)] | length'
@@ -122,13 +115,13 @@ let
       }
 
       on_hdmi() {
-        switch_sink ${lib.escapeShellArg sink.hdmi}
         move_ws browser media 1
+        switch-sink ${lib.escapeShellArg sink.hdmi}
       }
 
       off_hdmi() {
-        switch_sink ${lib.escapeShellArg sink.analog}
         move_ws media browser 0
+        switch-sink ${lib.escapeShellArg sink.analog}
         shutdown_prompt &
       }
 

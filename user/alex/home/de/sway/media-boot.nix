@@ -8,6 +8,7 @@ let
   mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
 
   sink = import ./sink.nix;
+  switchSink = import ./switch-sink.nix { inherit pkgs; };
 
   graceTimeSec = 300;
 
@@ -15,7 +16,7 @@ let
     name = "media-boot";
     runtimeInputs = with pkgs; [
       sway
-      pulseaudio
+      switchSink
       systemd
       uutils-coreutils-noprefix
       gnome-keyring
@@ -30,10 +31,7 @@ let
       printf 'on\n' >"$state"
       echo "$(($(date +%s) + ${toString graceTimeSec}))" >"$grace"
 
-      pactl set-default-sink ${lib.escapeShellArg sink.hdmi} || true
-      pactl list short sink-inputs | while read -r i _; do
-        pactl move-sink-input "$i" ${lib.escapeShellArg sink.hdmi} 2>/dev/null || true
-      done
+      switch-sink ${lib.escapeShellArg sink.hdmi} &
 
       swaymsg workspace media
 
