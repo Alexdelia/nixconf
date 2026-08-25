@@ -2,6 +2,7 @@ _: {
   imports = [
     ./plasma
     ./forgejo-tunnel.nix
+    ./forgejo-web-map.nix
   ];
 
   hostOption = {
