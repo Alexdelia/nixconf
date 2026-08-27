@@ -10,6 +10,12 @@ inputs: final: prev: {
     ];
   });
 
+  listenbrainz-mpd = prev.listenbrainz-mpd.overrideAttrs (old: {
+    patches = (old.patches or [ ]) ++ [
+      ./patch/listenbrainz-mpd-set-user-agent.patch
+    ];
+  });
+
   material-icons-browser-extension =
     final.callPackage ./package/material-icons-browser-extension.nix
       { };
