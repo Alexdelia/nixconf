@@ -1,4 +1,4 @@
-{ themeName, ... }:
+{ themeName, copyUuid, ... }:
 /* ron */ ''
   #![enable(implicit_some)]
   #![enable(unwrap_newtypes)]
@@ -60,6 +60,8 @@
   	keybinds: (
   		global: {
   			"I": ShowCurrentSongInfo,
+  			"y": ExternalCommand(command: ["${copyUuid}", "selected"], description: "copy uuid of selected song"),
+  			"Y": ExternalCommand(command: ["${copyUuid}", "current"], description: "copy uuid of playing song"),
   		},
   		navigation: {
   			"i": ShowInfo,
