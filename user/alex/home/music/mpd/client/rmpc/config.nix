@@ -57,6 +57,15 @@
   		],
   	),
 
+  	keybinds: (
+  		global: {
+  			"I": ShowCurrentSongInfo,
+  		},
+  		navigation: {
+  			"i": ShowInfo,
+  		},
+  	),
+
   	enable_config_hot_reload: false,
   )
 ''
