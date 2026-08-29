@@ -6,4 +6,4 @@
   (import ./gdl.nix { inherit pkgs; })
   (import ./gtv.nix { inherit pkgs; })
 ]
-++ (import ./git-identity { inherit pkgs; })
+++ (import ./git-identity.nix { inherit pkgs; })

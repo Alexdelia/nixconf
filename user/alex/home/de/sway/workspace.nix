@@ -21,51 +21,51 @@ let
     global_from=${toString role.globalFrom}
 
     ws_name() {
-      local i="$1"
-      local act="$2"
-      local name="''${role[$((i - 1))]}"
-      if [ "$i" -ge "$global_from" ]; then
-        printf '%s' "$name"
-      else
-        printf '%s:%s' "$act" "$name"
-      fi
+    	local i="$1"
+    	local act="$2"
+    	local name="''${role[$((i - 1))]}"
+    	if [ "$i" -ge "$global_from" ]; then
+    		printf '%s' "$name"
+    	else
+    		printf '%s:%s' "$act" "$name"
+    	fi
     }
 
     cur() { printf '%s' "$(<"$state/current")"; }
 
     cur_role() {
-      local suffix ri k r
-      suffix="$(swaymsg -t get_workspaces | jaq -r '.[] | select(.focused).name')"
-      suffix="''${suffix##*:}"
-      ri=1
-      k=0
-      for r in "''${role[@]}"; do
-        k=$((k + 1))
-        if [ "$r" = "$suffix" ]; then ri="$k"; break; fi
-      done
-      if [ "$ri" -ge "$global_from" ]; then ri=1; fi
-      printf '%s' "$ri"
+    	local suffix ri k r
+    	suffix="$(swaymsg -t get_workspaces | jaq -r '.[] | select(.focused).name')"
+    	suffix="''${suffix##*:}"
+    	ri=1
+    	k=0
+    	for r in "''${role[@]}"; do
+    		k=$((k + 1))
+    		if [ "$r" = "$suffix" ]; then ri="$k"; break; fi
+    	done
+    	if [ "$ri" -ge "$global_from" ]; then ri=1; fi
+    	printf '%s' "$ri"
     }
 
     activity_create() {
-      local id ri
-      id="branch-$(date +%H%M%S)"
-      rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
-      ri="$(cur_role)"
-      printf '%s\n' "$id" >"$state/current"
-      swaymsg workspace "$(ws_name "$ri" "$id")" >/dev/null
+    	local id ri
+    	id="branch-$(date +%H%M%S)"
+    	rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
+    	ri="$(cur_role)"
+    	printf '%s\n' "$id" >"$state/current"
+    	swaymsg workspace "$(ws_name "$ri" "$id")" >/dev/null
     }
 
     # empty = no window in the activity's per-activity workspaces (globals don't count)
     activity_empty() {
-      local act="$1" cnt
-      cnt="$(swaymsg -t get_tree | jaq --arg p "$act:" '
-        [ recurse(.nodes[]?, .floating_nodes[]?)
-          | select(.type == "workspace" and (.name | startswith($p)))
-          | recurse(.nodes[]?, .floating_nodes[]?)
-          | select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)
-        ] | length')"
-      [ "$cnt" -eq 0 ]
+    	local act="$1" cnt
+    	cnt="$(swaymsg -t get_tree | jaq --arg p "$act:" '
+    		[ recurse(.nodes[]?, .floating_nodes[]?)
+    			| select(.type == "workspace" and (.name | startswith($p)))
+    			| recurse(.nodes[]?, .floating_nodes[]?)
+    			| select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)
+    		] | length')"
+    	[ "$cnt" -eq 0 ]
     }
   '';
 
@@ -79,6 +79,7 @@ let
         uutils-coreutils-noprefix
         ripgrep
       ];
+      inheritPath = false;
       excludeShellChecks = [ "SC2016" ];
       text = prelude + body;
     };
@@ -100,11 +101,11 @@ let
     focused="$(swaymsg -t get_workspaces | jaq -r '.[] | select(.focused).name')"
 
     if [ "$focused" = media ]; then
-      target="$browser"
+    	target="$browser"
     elif [ "$focused" = "$browser" ] && [ "$media_enabled" = 1 ]; then
-      target=media
+    	target=media
     else
-      target="$browser"
+    	target="$browser"
     fi
 
     swaymsg "move container to workspace \"$target\"" >/dev/null
@@ -133,8 +134,8 @@ let
     c="$(cur)"
     i=0
     for a in "''${acts[@]}"; do
-      if [ "$a" = "$c" ]; then break; fi
-      i=$((i + 1))
+    	if [ "$a" = "$c" ]; then break; fi
+    	i=$((i + 1))
     done
     j=$(((i + 1) % n))
     next="''${acts[$j]}"
@@ -150,17 +151,17 @@ let
 
     last=$((global_from - 1))
     for i in $(seq 1 "$last"); do
-      from="$(ws_name "$i" "$c")"
-      to="$(ws_name "$i" default)"
-      mapfile -t ids < <(swaymsg -t get_tree | jaq -r --arg ws "$from" '
-        recurse(.nodes[]?, .floating_nodes[]?)
-        | select(.type == "workspace" and .name == $ws)
-        | recurse(.nodes[]?, .floating_nodes[]?)
-        | select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)
-        | .id')
-      for id in "''${ids[@]}"; do
-        swaymsg "[con_id=$id] move container to workspace \"$to\"" >/dev/null
-      done
+    	from="$(ws_name "$i" "$c")"
+    	to="$(ws_name "$i" default)"
+    	mapfile -t ids < <(swaymsg -t get_tree | jaq -r --arg ws "$from" '
+    		recurse(.nodes[]?, .floating_nodes[]?)
+    		| select(.type == "workspace" and .name == $ws)
+    		| recurse(.nodes[]?, .floating_nodes[]?)
+    		| select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)
+    		| .id')
+    	for id in "''${ids[@]}"; do
+    		swaymsg "[con_id=$id] move container to workspace \"$to\"" >/dev/null
+    	done
     done
 
     rg -vFx "$c" "$state/list" >"$state/list.tmp"
@@ -171,35 +172,35 @@ let
 
   activityReap = mkScript "sway-activity-reap" /* bash */ ''
     reap() {
-      local c ri m idx off cand target
-      c="$(cur)"
-      [ "$c" = default ] && return 0
-      activity_empty "$c" || return 0
+    	local c ri m idx off cand target
+    	c="$(cur)"
+    	[ "$c" = default ] && return 0
+    	activity_empty "$c" || return 0
 
-      mapfile -t acts <"$state/list"
-      m="''${#acts[@]}"
-      idx=0
-      for ((k = 0; k < m; k++)); do
-        if [ "''${acts[$k]}" = "$c" ]; then idx="$k"; break; fi
-      done
+    	mapfile -t acts <"$state/list"
+    	m="''${#acts[@]}"
+    	idx=0
+    	for ((k = 0; k < m; k++)); do
+    		if [ "''${acts[$k]}" = "$c" ]; then idx="$k"; break; fi
+    	done
 
-      ri="$(cur_role)"
-      rg -vFx "$c" "$state/list" >"$state/list.tmp"
-      mv "$state/list.tmp" "$state/list"
+    	ri="$(cur_role)"
+    	rg -vFx "$c" "$state/list" >"$state/list.tmp"
+    	mv "$state/list.tmp" "$state/list"
 
-      target=default
-      for ((off = 1; off < m; off++)); do
-        cand="''${acts[$(((idx + off) % m))]}"
-        if [ "$cand" != "$c" ]; then target="$cand"; break; fi
-      done
+    	target=default
+    	for ((off = 1; off < m; off++)); do
+    		cand="''${acts[$(((idx + off) % m))]}"
+    		if [ "$cand" != "$c" ]; then target="$cand"; break; fi
+    	done
 
-      printf '%s\n' "$target" >"$state/current"
-      swaymsg workspace "$(ws_name "$ri" "$target")" >/dev/null
+    	printf '%s\n' "$target" >"$state/current"
+    	swaymsg workspace "$(ws_name "$ri" "$target")" >/dev/null
     }
 
     swaymsg -t subscribe -m '["window"]' | while read -r ev; do
-      [ "$(jaq -r '.change' <<<"$ev")" = close ] || continue
-      reap
+    	[ "$(jaq -r '.change' <<<"$ev")" = close ] || continue
+    	reap
     done
   '';
 

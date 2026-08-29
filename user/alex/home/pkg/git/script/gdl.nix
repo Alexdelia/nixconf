@@ -1,4 +1,8 @@
 { pkgs, ... }:
-(pkgs.writers.writeBashBin "gdl" { } /* bash */ ''
-  git show "HEAD~''${1:-0}"
-'')
+pkgs.writeShellApplication {
+  name = "gdl";
+  runtimeInputs = with pkgs; [ git ];
+  text = ''
+    git show "HEAD~''${1:-0}"
+  '';
+}

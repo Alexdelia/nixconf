@@ -36,7 +36,7 @@ let
       swaymsg workspace media
 
       if [ -n "$password" ]; then
-        printf '%s' "$password" | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
+      	printf '%s' "$password" | gnome-keyring-daemon --unlock >/dev/null 2>&1 || true
       fi
       unset password
 

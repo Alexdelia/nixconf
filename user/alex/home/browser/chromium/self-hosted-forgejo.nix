@@ -30,24 +30,25 @@ let
       pkgs.findutils
       config.programs.chromium.package
     ];
+    inheritPath = false;
     text = ''
       port="$(cat ${portFile})"
       # $0 makes a change to this script itself force a repack too
       stamp="${extension} $port $0"
 
       if [ "$(cat ${stampFile} 2>/dev/null || true)" = "$stamp" ] &&
-        [ -f ${crx} ] &&
-        [ -f "${externalDir}/${id}.json" ]; then
-        exit 0
+      	[ -f ${crx} ] &&
+      	[ -f "${externalDir}/${id}.json" ]; then
+      	exit 0
       fi
 
       # chromium only installs an external crx whose version is higher than the
       # installed one, so every repack has to advertise a new build number
       installed="$(
-        find ${browserDir} -maxdepth 5 -type d -path "*/Extensions/${id}/*" -printf '%f\n' 2>/dev/null |
-          sed -nE 's/^${extension.version}\.([0-9]+)_[0-9]+$/\1/p' |
-          sort -n |
-          tail -1
+      	find ${browserDir} -maxdepth 5 -type d -path "*/Extensions/${id}/*" -printf '%f\n' 2>/dev/null |
+      		sed -nE 's/^${extension.version}\.([0-9]+)_[0-9]+$/\1/p' |
+      		sort -n |
+      		tail -1
       )"
       version="${extension.version}.$(( ''${installed:-0} + 1 ))"
 
@@ -69,7 +70,7 @@ let
       rm -f "${externalDir}/${id}.json"
 
       printf '{"external_crx": "%s", "external_version": "%s"}\n' ${crx} "$version" \
-        > "${externalDir}/${id}.json"
+      	> "${externalDir}/${id}.json"
 
       printf '%s' "$stamp" > ${stampFile}
     '';
