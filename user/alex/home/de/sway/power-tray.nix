@@ -15,7 +15,6 @@ let
 
   start = pkgs.writeShellApplication {
     name = "power-tray-start";
-    inheritPath = false;
     text = ''
       ${config.customScript.isMediaDefaultTime} || exit 0
       exec ${config.dp.powerTray}
