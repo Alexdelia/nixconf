@@ -1,8 +1,5 @@
 - bluetooth (probably with [overskride](https://github.com/kaii-lb/overskride))
 - logiops/openlogi config
-- enhance [rmpc](https://github.com/mierak/rmpc)
-  - add [queue information](https://mierak.github.io/rmpc/next/configuration/header/#queuelength)
-  - add ScanStatus
 - info hub (common or separate)
   - shortcut to open
   - datetime

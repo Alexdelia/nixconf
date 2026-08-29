@@ -53,7 +53,6 @@
   		thumb_style: (fg: "${scheme.base02}"),
   	),
 
-  	// TODO: add (kind: Property(Widget(ScanStatus)))
   	header: (
   		rows: [
   			(
@@ -110,7 +109,37 @@
   						))),
   					),
   				],
-  				right: []
+  				right: [
+  					(
+  						kind: Property(Widget(ScanStatus)),
+  						style: (fg: "#d97f26", modifiers: "Bold"),
+  						default: None,
+  					),
+  					(
+  						kind: Text(" "),
+  						style: (fg: "#1a1a1a", modifiers: "Bold")
+  					),
+  					(
+  						kind: Text(" "),
+  						style: (fg: "${scheme.base04}", bg: "#1a1a1a", modifiers: "Bold")
+  					),
+  					(
+  						kind: Property(Status(QueueLength(thousands_separator: "k"))),
+  						style: (fg: "${scheme.base04}", bg: "#1a1a1a", modifiers: "Bold")
+  					),
+  					(
+  						kind: Text(" "),
+  						style: (fg: "${scheme.base04}", bg: "#1a1a1a", modifiers: "Bold")
+  					),
+  					(
+  						kind: Property(Status(QueueTimeTotal(separator: ""))),
+  						style: (fg: "${scheme.base04}", bg: "#1a1a1a", modifiers: "Bold")
+  					),
+  					(
+  						kind: Text(" "),
+  						style: (fg: "#1a1a1a"),
+  					),
+  				],
   			),
   			(
   				left: [],
