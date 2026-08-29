@@ -1,16 +1,16 @@
 { pkgs, ... }:
-let
-  coreutils = pkgs.uutils-coreutils-noprefix;
+pkgs.writeShellApplication {
+  name = "kill-on-port";
+  runtimeInputs = with pkgs; [
+    findutils
+    lsof
+  ];
+  text = ''
+    if [[ $# -lt 1 ]]; then
+    	printf 'usage: \033[1m%s \033[35m<port>\033[0m\n' "$0"
+    	exit 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
+    fi
 
-  echo = "${coreutils}/bin/echo";
-  lsof = "${pkgs.lsof}/bin/lsof";
-in
-pkgs.writers.writeBashBin "kill-on-port" { } /* bash */ ''
-  if [[ $# -lt 1 ]]; then
-  	${echo} -e "usage: \033[1m$0 \033[35m<port>\033[0m"
-  	exit 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
-  fi
-
-  PORT="$1"
-  ${lsof} -i:"$PORT" -sTCP:LISTEN -t | xargs -r kill
-''
+    lsof -i:"$1" -sTCP:LISTEN -t | xargs -r kill || true
+  '';
+}
