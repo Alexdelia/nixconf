@@ -11,7 +11,7 @@ pkgs.writeShellApplication {
   runtimeInputs = with pkgs; [ ani-cli ];
   text = ''
     if [[ $# -eq 0 ]]; then
-      exec ani-cli${dub} --continue
+    	exec ani-cli${dub} --continue
     fi
 
     exec ani-cli${dub} "$@"
