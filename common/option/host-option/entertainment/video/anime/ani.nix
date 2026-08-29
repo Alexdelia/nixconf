@@ -4,14 +4,16 @@
   ...
 }:
 let
-  ani-cli = "${pkgs.ani-cli}/bin/ani-cli";
-  bin = if !dubbed then ani-cli else "${ani-cli} --dub";
+  dub = pkgs.lib.optionalString dubbed " --dub";
 in
-pkgs.writers.writeBashBin (if !dubbed then "ani" else "anib") { } /* bash */ ''
-  if [[ $# -eq 0 ]]; then
-  	${bin} --continue
-  	exit $?
-  fi
+pkgs.writeShellApplication {
+  name = if dubbed then "anib" else "ani";
+  runtimeInputs = with pkgs; [ ani-cli ];
+  text = ''
+    if [[ $# -eq 0 ]]; then
+      exec ani-cli${dub} --continue
+    fi
 
-  ${bin} "$@"
-''
+    exec ani-cli${dub} "$@"
+  '';
+}
