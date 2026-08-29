@@ -3,9 +3,13 @@
   pkgs,
   ...
 }:
-let
-  grim = "${pkgs.grim}/bin/grim";
-  slurp = "${pkgs.slurp}/bin/slurp";
-  copy = config.dp.clipboard-copy;
-in
-pkgs.writers.writeBashBin "screenshot" { } /* bash */ ''${grim} -g "$(${slurp})" - | ${copy}''
+pkgs.writeShellApplication {
+  name = "screenshot";
+  runtimeInputs = with pkgs; [
+    grim
+    slurp
+  ];
+  text = ''
+    grim -g "$(slurp)" - | ${config.dp.clipboard-copy}
+  '';
+}
