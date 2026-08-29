@@ -14,21 +14,21 @@ let
 
   recordRegion = pkgs.writeShellApplication {
     name = "record-region";
-
     runtimeInputs = with pkgs; [
       mako
-      jq
+      jaq
       procps
       uutils-coreutils-noprefix
     ];
-
+    # jaq filter `$before` must reach jaq literally
+    excludeShellChecks = [ "SC2016" ];
     text = ''
       lastNotificationId() {
-        { makoctl list -j; makoctl history -j; } | jq -s '[.[][].id] | max // 0'
+      	{ makoctl list -j; makoctl history -j; } | jaq -s '[.[][].id] | max // 0'
       }
 
       unhide() {
-        makoctl mode -r ${mode.dnd} >/dev/null
+      	makoctl mode -r ${mode.dnd} >/dev/null
       }
 
       before="$(lastNotificationId)"
@@ -40,22 +40,22 @@ let
 
       appeared=$((SECONDS + 3))
       while [ "$SECONDS" -lt "$appeared" ]; do
-        if pgrep -x spectacle >/dev/null; then break; fi
-        sleep 0.1
+      	if pgrep -x spectacle >/dev/null; then break; fi
+      	sleep 0.1
       done
 
       deadline=$((SECONDS + ${toString maxRecordSec}))
       while [ "$SECONDS" -lt "$deadline" ]; do
-        if ! pgrep -x spectacle >/dev/null; then break; fi
-        sleep 1
+      	if ! pgrep -x spectacle >/dev/null; then break; fi
+      	sleep 1
       done
 
       unhide
       trap - EXIT
 
-      held="$(makoctl history -j | jq --argjson before "$before" '[.[] | select(.id > $before)] | length')"
+      held="$(makoctl history -j | jaq --argjson before "$before" '[.[] | select(.id > $before)] | length')"
       for _ in $(seq 1 "$held"); do
-        makoctl restore
+      	makoctl restore
       done
     '';
   };

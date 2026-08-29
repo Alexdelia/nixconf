@@ -16,28 +16,28 @@ let
     const promoted = new Set();
 
     function isGlobal(w) {
-      return w.desktops.some(d => d.x11DesktopNumber >= globalFrom);
+    	return w.desktops.some(d => d.x11DesktopNumber >= globalFrom);
     }
 
     function apply(w) {
-      if (!w.normalWindow) {
-        return;
-      }
+    	if (!w.normalWindow) {
+    		return;
+    	}
 
-      if (isGlobal(w)) {
-        if (w.activities.length !== 0) {
-          promoted.add(w.internalId);
-          w.activities = [];
-        }
-      } else if (promoted.has(w.internalId)) {
-        promoted.delete(w.internalId);
-        w.activities = [workspace.currentActivity];
-      }
+    	if (isGlobal(w)) {
+    		if (w.activities.length !== 0) {
+    			promoted.add(w.internalId);
+    			w.activities = [];
+    		}
+    	} else if (promoted.has(w.internalId)) {
+    		promoted.delete(w.internalId);
+    		w.activities = [workspace.currentActivity];
+    	}
     }
 
     function track(w) {
-      apply(w);
-      w.desktopsChanged.connect(() => apply(w));
+    	apply(w);
+    	w.desktopsChanged.connect(() => apply(w));
     }
 
     workspace.windowList().forEach(track);
@@ -48,94 +48,94 @@ let
     const globalFrom = ${toString role.globalFrom};
 
     function isLocalTo(w, activity) {
-      return w.normalWindow
-        && w.activities.includes(activity)
-        && !w.desktops.some(d => d.x11DesktopNumber >= globalFrom);
+    	return w.normalWindow
+    		&& w.activities.includes(activity)
+    		&& !w.desktops.some(d => d.x11DesktopNumber >= globalFrom);
     }
 
     workspace.windowRemoved.connect(() => {
-      const activity = workspace.currentActivity;
-      if (workspace.windowList().some(w => isLocalTo(w, activity))) {
-        return;
-      }
+    	const activity = workspace.currentActivity;
+    	if (workspace.windowList().some(w => isLocalTo(w, activity))) {
+    		return;
+    	}
 
-      callDBus(
-        "org.freedesktop.systemd1",
-        "/org/freedesktop/systemd1",
-        "org.freedesktop.systemd1.Manager",
-        "StartUnit",
-        "plasma-activity-reap@" + activity + ".service",
-        "replace"
-      );
+    	callDBus(
+    		"org.freedesktop.systemd1",
+    		"/org/freedesktop/systemd1",
+    		"org.freedesktop.systemd1.Manager",
+    		"StartUnit",
+    		"plasma-activity-reap@" + activity + ".service",
+    		"replace"
+    	);
     });
   '';
 
   prelude = ''
     am() {
-      local method="$1"
-      shift
-      ${qdbus} org.kde.ActivityManager /ActivityManager/Activities "org.kde.ActivityManager.Activities.$method" "$@"
+    	local method="$1"
+    	shift
+    	${qdbus} org.kde.ActivityManager /ActivityManager/Activities "org.kde.ActivityManager.Activities.$method" "$@"
     }
 
     desktop() {
-      ${qdbus} org.kde.KWin /VirtualDesktopManager org.kde.KWin.VirtualDesktopManager.current "$@"
+    	${qdbus} org.kde.KWin /VirtualDesktopManager org.kde.KWin.VirtualDesktopManager.current "$@"
     }
 
     keep_desktop() {
-      local want="$1"
-      for _ in 1 2 3 4 5 6 7 8; do
-        if [ "$(desktop)" = "$want" ]; then return 0; fi
-        desktop "$want" >/dev/null
-        sleep 0.03
-      done
+    	local want="$1"
+    	for _ in 1 2 3 4 5 6 7 8; do
+    		if [ "$(desktop)" = "$want" ]; then return 0; fi
+    		desktop "$want" >/dev/null
+    		sleep 0.03
+    	done
     }
 
     kwin_js() {
-      local name="$1" js="$2" file
-      file="$(mktemp --suffix=.js)"
-      printf '%s\n' "$js" >"$file"
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript "$name" >/dev/null 2>&1 || true
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript "$file" "$name" >/dev/null
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript "$name" >/dev/null 2>&1 || true
-      rm -f "$file"
+    	local name="$1" js="$2" file
+    	file="$(mktemp --suffix=.js)"
+    	printf '%s\n' "$js" >"$file"
+    	${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript "$name" >/dev/null 2>&1 || true
+    	${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript "$file" "$name" >/dev/null
+    	${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
+    	${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript "$name" >/dev/null 2>&1 || true
+    	rm -f "$file"
     }
 
     keep_wallpaper() {
-      ${qdbus} org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "
-        const group = ['Wallpaper', 'org.kde.image', 'General'];
+    	${qdbus} org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "
+    		const group = ['Wallpaper', 'org.kde.image', 'General'];
 
-        const image = desktops().reduce((found, d) => {
-          d.currentConfigGroup = group;
-          return found || d.readConfig('Image');
-        }, null) || '${wallpaper}';
+    		const image = desktops().reduce((found, d) => {
+    			d.currentConfigGroup = group;
+    			return found || d.readConfig('Image');
+    		}, null) || '${wallpaper}';
 
-        desktops().forEach(d => {
-          d.currentConfigGroup = group;
-          if (!d.readConfig('Image')) {
-            d.wallpaperPlugin = 'org.kde.image';
-            d.writeConfig('Image', image);
-          }
-        });
-      " >/dev/null
+    		desktops().forEach(d => {
+    			d.currentConfigGroup = group;
+    			if (!d.readConfig('Image')) {
+    				d.wallpaperPlugin = 'org.kde.image';
+    				d.writeConfig('Image', image);
+    			}
+    		});
+    	" >/dev/null
     }
 
     new_activity() {
-      am AddActivity "branch-$(date +%H%M%S)"
+    	am AddActivity "branch-$(date +%H%M%S)"
     }
 
     base_activity() {
-      local id
-      while read -r id; do
-        case "$(am ActivityName "$id")" in
-          branch-*) ;;
-          *)
-            printf '%s' "$id"
-            return 0
-            ;;
-        esac
-      done < <(am ListActivities)
-      am CurrentActivity
+    	local id
+    	while read -r id; do
+    		case "$(am ActivityName "$id")" in
+    			branch-*) ;;
+    			*)
+    				printf '%s' "$id"
+    				return 0
+    				;;
+    		esac
+    	done < <(am ListActivities)
+    	am CurrentActivity
     }
   '';
 
@@ -176,10 +176,10 @@ let
   activityMove = mkScript "plasma-activity-move" /* bash */ ''
     id="$(new_activity)"
     kwin_js activity-move "
-      const w = workspace.activeWindow;
-      if (w) {
-        w.activities = [\"$id\"];
-      }
+    	const w = workspace.activeWindow;
+    	if (w) {
+    		w.activities = [\"$id\"];
+    	}
     "
     am SetCurrentActivity "$id" >/dev/null
     keep_wallpaper
@@ -191,11 +191,11 @@ let
     if [ "$cur" = "$base" ]; then exit 0; fi
 
     kwin_js activity-close "
-      for (const w of workspace.windowList()) {
-        if (w.activities.length === 1 && w.activities[0] === \"$cur\") {
-          w.activities = [\"$base\"];
-        }
-      }
+    	for (const w of workspace.windowList()) {
+    		if (w.activities.length === 1 && w.activities[0] === \"$cur\") {
+    			w.activities = [\"$base\"];
+    		}
+    	}
     "
 
     am SetCurrentActivity "$base" >/dev/null
@@ -212,17 +212,17 @@ let
     n="''${#acts[@]}"
     i=0
     for a in "''${acts[@]}"; do
-      if [ "$a" = "$id" ]; then break; fi
-      i=$((i + 1))
+    	if [ "$a" = "$id" ]; then break; fi
+    	i=$((i + 1))
     done
 
     target="$base"
     for ((off = 1; off < n; off++)); do
-      cand="''${acts[$(((i + off) % n))]}"
-      if [ "$cand" != "$id" ]; then
-        target="$cand"
-        break
-      fi
+    	cand="''${acts[$(((i + off) % n))]}"
+    	if [ "$cand" != "$id" ]; then
+    		target="$cand"
+    		break
+    	fi
     done
 
     want="$(desktop)"
@@ -265,14 +265,14 @@ let
 
   wsMove = mkScript "plasma-ws-move" /* bash */ ''
     kwin_js ws-move "
-      const d = workspace.desktops[$1 - 1];
-      const w = workspace.activeWindow;
-      if (d) {
-        if (w) {
-          w.desktops = [d];
-        }
-        workspace.currentDesktop = d;
-      }
+    	const d = workspace.desktops[$1 - 1];
+    	const w = workspace.activeWindow;
+    	if (d) {
+    		if (w) {
+    			w.desktops = [d];
+    		}
+    		workspace.currentDesktop = d;
+    	}
     "
   '';
 

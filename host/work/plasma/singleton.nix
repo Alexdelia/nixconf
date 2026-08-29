@@ -5,8 +5,6 @@
   ...
 }:
 let
-  qdbus = "${pkgs.kdePackages.qttools}/bin/qdbus";
-
   singleton = {
     slack = {
       class = "slack";
@@ -40,25 +38,27 @@ let
     // kwin switches desktop before the window is knowable:
     // on `currentDesktopChanged` the active window is still `null`
     workspace.windowActivated.connect(w => {
-      if (!w || pending.size === 0 || Date.now() > deadline) {
-        return;
-      }
+    	if (!w || pending.size === 0 || Date.now() > deadline) {
+    		return;
+    	}
 
-      if (!pending.has(w.resourceClass)) {
-        return;
-      }
+    	if (!pending.has(w.resourceClass)) {
+    		return;
+    	}
 
-      pending.delete(w.resourceClass);
-      workspace.currentDesktop = home;
+    	pending.delete(w.resourceClass);
+    	workspace.currentDesktop = home;
     });
   '';
 
   stayLoad = pkgs.writeShellApplication {
     name = "plasma-singleton-stay-load";
+    runtimeInputs = with pkgs; [ kdePackages.qttools ];
+    inheritPath = false;
     text = ''
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript singleton-stay >/dev/null 2>&1 || true
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript ${stayScript} singleton-stay >/dev/null
-      ${qdbus} org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
+      qdbus org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript singleton-stay >/dev/null 2>&1 || true
+      qdbus org.kde.KWin /Scripting org.kde.kwin.Scripting.loadScript ${stayScript} singleton-stay >/dev/null
+      qdbus org.kde.KWin /Scripting org.kde.kwin.Scripting.start >/dev/null
     '';
   };
 in
