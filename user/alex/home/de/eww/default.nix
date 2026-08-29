@@ -6,12 +6,22 @@
   ...
 }:
 let
+  eww = inputs.eww.packages.${pkgs.system}.eww;
+
   open = "eww open --toggle";
   # open = "eww -c ~/.nc/user/alex/home/de/eww/src/ open --toggle";
 
-  infoHub = pkgs.writers.writeBashBin "info-hub" { } "${open} info_hub";
+  widget =
+    name: target:
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = [ eww ];
+      text = "${open} ${target}";
+    };
 
-  powerMenu = pkgs.writers.writeBashBin "power-menu" { } "${open} power_menu";
+  infoHub = widget "info-hub" "info_hub";
+
+  powerMenu = widget "power-menu" "power_menu";
 in
 {
   config = lib.mkIf (config.hostOption.type == "lite" && pkgs.system != "aarch64-linux") {
@@ -26,7 +36,7 @@ in
     programs.eww = {
       enable = true;
 
-      package = inputs.eww.packages.${pkgs.system}.eww;
+      package = eww;
 
       configDir = ./src;
     };
