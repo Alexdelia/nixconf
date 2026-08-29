@@ -5,39 +5,39 @@
   #![enable(unwrap_variant_newtypes)]
   (
   	text_color: None,
-      background_color: None,
-      modal_background_color: None,
+  	background_color: None,
+  	modal_background_color: None,
 
-      symbols: (
+  	symbols: (
   		song: " ",
   		dir: " ",
   		marker: " ",
   		ellipsis: "󰇘"
   	),
 
-      layout: Split(
-          direction: Vertical,
-          panes: [
-              (
-                  pane: Pane(Tabs),
-                  size: "1",
-              ),
-              (
-                  pane: Pane(TabContent),
-                  size: "100%",
-              ),
-          ],
-      ),
+  	layout: Split(
+  		direction: Vertical,
+  		panes: [
+  			(
+  				pane: Pane(Tabs),
+  				size: "1",
+  			),
+  			(
+  				pane: Pane(TabContent),
+  				size: "100%",
+  			),
+  		],
+  	),
 
   	border_type: None,
-      draw_borders: false,
-      borders_style: (fg: "${scheme.base02}"),
-      highlight_border_style: (),
-      tab_bar: (
-          enabled: true,
-          active_style: (fg: "${scheme.base04}", bg: "${scheme.base00}", modifiers: "Bold"),
-          inactive_style: (fg: "${scheme.base02}", modifiers: "Bold"),
-      ),
+  	draw_borders: false,
+  	borders_style: (fg: "${scheme.base02}"),
+  	highlight_border_style: (),
+  	tab_bar: (
+  		enabled: true,
+  		active_style: (fg: "${scheme.base04}", bg: "${scheme.base00}", modifiers: "Bold"),
+  		inactive_style: (fg: "${scheme.base02}", modifiers: "Bold"),
+  	),
 
   	progress_bar: (
   		symbols: ["█", "", " "],
@@ -46,18 +46,18 @@
   		thumb_style: (fg: "${scheme.base02}"),
   	),
 
-      scrollbar: (
-          symbols: [" ", "█", " ", " "],
-          track_style: (),
-          ends_style: (),
-          thumb_style: (fg: "${scheme.base02}"),
-      ),
+  	scrollbar: (
+  		symbols: [" ", "█", " ", " "],
+  		track_style: (),
+  		ends_style: (),
+  		thumb_style: (fg: "${scheme.base02}"),
+  	),
 
   	// TODO: add (kind: Property(Widget(ScanStatus)))
-      header: (
-          rows: [
-              (
-                  left: [
+  	header: (
+  		rows: [
+  			(
+  				left: [
   					(
   						kind: Text(" "),
   						style: (fg: "#1a1a1a"),
@@ -75,7 +75,7 @@
   						style: (fg: "#1a1a1a", modifiers: "Bold")
   					),
   				],
-                  center: [
+  				center: [
   					(
   						kind: Property(Status(RandomV2(
   							on_label: "", off_label: "",
@@ -110,8 +110,8 @@
   						))),
   					),
   				],
-                  right: []
-              ),
+  				right: []
+  			),
   			(
   				left: [],
   				center: [],
@@ -120,16 +120,16 @@
   			(
   				left: [
   					(kind: Text(" ")),
-                      (
+  					(
   						kind: Property(Song(Artist)), style: (modifiers: "Italic"),
-                          default: None,
-                      ),
+  						default: None,
+  					),
   				],
   				center: [
-                      (
+  					(
   						kind: Property(Song(Title)), style: (modifiers: "Bold"),
   						default: (kind: Text("-"), style: (fg: "dark_gray")),
-                      )
+  					)
   				],
   				right: [
   					(
@@ -142,16 +142,16 @@
   			(
   				left: [
   					(kind: Text(" ")),
-                      (
+  					(
   						kind: Property(Song(Other("artistsort"))), style: (fg: "dark_gray", modifiers: "Italic"),
-                          default: None,
-                      ),
+  						default: None,
+  					),
   				],
   				center: [
-                      (
+  					(
   						kind: Property(Song(Other("titlesort"))), style: (fg: "dark_gray"),
   						default: None,
-                      )
+  					)
   				],
   				right: [
   					(kind: Text(" ")),
@@ -164,11 +164,11 @@
   						kind: Text(""),
   						style: (fg: "${scheme.base02}"),
   					),
-                      (
+  					(
   						kind: Property(Status(Elapsed)),
   						style: (bg: "${scheme.base02}", modifiers: "Bold"),
   					),
-                      (
+  					(
   						kind: Property(Status(StateV2(
   							playing_label: "█ ",
   							paused_label: "🮚 ",
@@ -176,7 +176,7 @@
   						))),
   						style: (fg: "${scheme.base02}", bg: "#1a1a1a"),
   					),
-                      (
+  					(
   						kind: Property(Status(Duration)),
   						style: (bg: "#1a1a1a", modifiers: "Bold"),
   					),
@@ -187,16 +187,16 @@
   				],
   				right: [],
   			),
-          ],
-      ),
+  		],
+  	),
 
-      highlighted_item_style: (fg: "white", bg: "${scheme.base01}", modifiers: "Bold"),
-      current_item_style: (fg: "white", bg: "${scheme.base02}", modifiers: "Bold"),
+  	highlighted_item_style: (fg: "white", bg: "${scheme.base01}", modifiers: "Bold"),
+  	current_item_style: (fg: "white", bg: "${scheme.base02}", modifiers: "Bold"),
 
-      header_background_color: None,
-      show_song_table_header: true,
+  	header_background_color: None,
+  	show_song_table_header: true,
 
-      song_table_format: [
+  	song_table_format: [
   		(
   			label: "",
   			prop: (
@@ -240,28 +240,28 @@
   			width: "6",
   			alignment: Right,
   		),
-      ],
+  	],
 
-      browser_column_widths: [15, 42, 42],
+  	browser_column_widths: [15, 42, 42],
 
-      browser_song_format: [
-          (
-              kind: Group([
-                  (kind: Property(Track)),
-                  (kind: Text(" ")),
-              ])
-          ),
-          (
-              kind: Group([
-                  (kind: Property(Artist), style: (modifiers: "Italic")),
-                  (kind: Text(" - ")),
-                  (kind: Property(Title), style: (fg: "#bfbfbf", modifiers: "Bold")),
-              ]),
-              default: (kind: Property(Filename))
-          ),
-      ],
+  	browser_song_format: [
+  		(
+  			kind: Group([
+  				(kind: Property(Track)),
+  				(kind: Text(" ")),
+  			])
+  		),
+  		(
+  			kind: Group([
+  				(kind: Property(Artist), style: (modifiers: "Italic")),
+  				(kind: Text(" - ")),
+  				(kind: Property(Title), style: (fg: "#bfbfbf", modifiers: "Bold")),
+  			]),
+  			default: (kind: Property(Filename))
+  		),
+  	],
 
 
-      default_album_art_path: None,
+  	default_album_art_path: None,
   )
 ''

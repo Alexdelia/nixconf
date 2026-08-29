@@ -13,13 +13,13 @@
   	select_current_song_on_change: true,
   	center_current_song_on_change: true,
 
-   	tabs: [
+  	tabs: [
   		(
-   			name: "󰮰",
-   			pane: Split(
-   				direction: Horizontal,
-   				panes: [
-   					(size: "100%", pane: Split(
+  			name: "󰮰",
+  			pane: Split(
+  				direction: Horizontal,
+  				panes: [
+  					(size: "100%", pane: Split(
   						direction: Vertical,
   						panes: [
   							(size: "5", pane: Pane(Header)),
@@ -27,23 +27,23 @@
   							(size: "100%", pane: Pane(AlbumArt)),
   						],
   					)),
-   					(size: "100%", pane: Pane(Queue)),
-   				],
-   			),
-   		),
+  					(size: "100%", pane: Pane(Queue)),
+  				],
+  			),
+  		),
   		(
-   			name: "",
-   			pane: Pane(Search),
-   		),
+  			name: "",
+  			pane: Pane(Search),
+  		),
   		(
-   			name: "󰲸",
-   			pane: Pane(Playlists),
-   		),
+  			name: "󰲸",
+  			pane: Pane(Playlists),
+  		),
   		(
-   			name: "",
-   			pane: Pane(Directories),
-   		),
-   	],
+  			name: "",
+  			pane: Pane(Directories),
+  		),
+  	],
 
   	search: (
   		case_sensitive: false,
