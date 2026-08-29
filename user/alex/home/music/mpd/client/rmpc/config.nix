@@ -19,12 +19,12 @@
    			pane: Split(
    				direction: Horizontal,
    				panes: [
-   					(size: "87", pane: Split(
+   					(size: "100%", pane: Split(
   						direction: Vertical,
   						panes: [
-  							(size: "6", pane: Pane(Header)),
+  							(size: "5", pane: Pane(Header)),
   							(size: "1", pane: Pane(ProgressBar)),
-  							(size: "42", pane: Pane(AlbumArt)),
+  							(size: "100%", pane: Pane(AlbumArt)),
   						],
   					)),
    					(size: "100%", pane: Pane(Queue)),

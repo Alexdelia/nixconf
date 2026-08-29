@@ -60,19 +60,19 @@
                   left: [
   					(
   						kind: Text(" "),
-  						style: (fg: "${scheme.base02}"),
+  						style: (fg: "#1a1a1a"),
   					),
   					(
   						kind: Text("󰓃 "),
-  						style: (fg: "#999999", bg: "${scheme.base02}", modifiers: "Bold")
+  						style: (fg: "${scheme.base04}", bg: "#1a1a1a", modifiers: "Bold")
   					),
   					(
   						kind: Property(Status(Volume)),
-  						style: (fg: "#999999", bg: "${scheme.base02}", modifiers: "Bold")
+  						style: (fg: "${scheme.base04}", bg: "#1a1a1a", modifiers: "Bold")
   					),
   					(
   						kind: Text(""),
-  						style: (fg: "${scheme.base02}", modifiers: "Bold")
+  						style: (fg: "#1a1a1a", modifiers: "Bold")
   					),
   				],
                   center: [
@@ -112,11 +112,6 @@
   				],
                   right: []
               ),
-              (
-                  left: [],
-                  center: [],
-                  right: []
-              ),
   			(
   				left: [],
   				center: [],
@@ -145,9 +140,22 @@
   				],
   			),
   			(
-  				left: [],
-  				center: [],
-  				right: [],
+  				left: [
+  					(kind: Text(" ")),
+                      (
+  						kind: Property(Song(Other("artistsort"))), style: (fg: "dark_gray", modifiers: "Italic"),
+                          default: None,
+                      ),
+  				],
+  				center: [
+                      (
+  						kind: Property(Song(Other("titlesort"))), style: (fg: "dark_gray"),
+  						default: None,
+                      )
+  				],
+  				right: [
+  					(kind: Text(" ")),
+  				],
   			),
   			(
   				left: [],
@@ -189,40 +197,49 @@
       show_song_table_header: true,
 
       song_table_format: [
-          (
-  			label: "  ",
-              prop: (
+  		(
+  			label: "",
+  			prop: (
   				kind: Property(Artist), style: (modifiers: "Italic"),
-                  default: None
-              ),
-              width: "25%",
-  			alignment: Right,
+  				default: None,
+  			),
+  			width: "25%",
+  			alignment: Left,
   		),
-          (
-  			label: "  󰗴",
-              prop: (
+  		(
+  			label: "󰒺",
+  			prop: (
+  				kind: Property(Other("artistsort")), style: (fg: "dark_gray", modifiers: "Italic"),
+  				default: None,
+  			),
+  			width: "18%",
+  		),
+  		(
+  			label: "󰗴",
+  			prop: (
   				kind: Property(Title), style: (fg: "#bfbfbf", modifiers: "Bold"),
-  				default: (kind: Text("-"), style: (fg: "${scheme.base04}"))
-              ),
-              width: "42%",
-          ),
-          (
-  			label: "  󱈤",
-              prop: (
-  				kind: Property(Other("genre")), style: (fg: "dark_gray"),
-                  default: None
-              ),
-              width: "28%",
-          ),
-          (
+  				default: (kind: Text("-"), style: (fg: "${scheme.base04}")),
+  			),
+  			width: "32%",
+  			alignment: Left,
+  		),
+  		(
+  			label: "󰒺",
+  			prop: (
+  				kind: Property(Other("titlesort")), style: (fg: "dark_gray"),
+  				default: None,
+  			),
+  			width: "18%",
+  		),
+  		(
   			label: "󰞌  ",
-              prop: (
+  			prop: (
   				kind: Property(Duration), style: (fg: "#bfbfbf"),
   				default: (kind: Text("-:--"), style: (fg: "${scheme.base04}")),
-              ),
-              width: "6",
-              alignment: Right,
-          ),
+  			),
+  			width: "6",
+  			alignment: Right,
+  		),
       ],
 
       browser_column_widths: [15, 42, 42],
