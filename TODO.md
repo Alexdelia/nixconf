@@ -16,3 +16,4 @@
 - make my own colorpicker
 - shortcut visualizer
 - drop `listenbrainz-mpd` User-Agent patch overlay once nixpkgs ships >= 2.6.0
+- fix bug when HDMI is live before computer that it does not detect HDMI being on and switch sink + browser
