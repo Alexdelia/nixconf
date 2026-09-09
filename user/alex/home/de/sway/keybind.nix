@@ -35,6 +35,7 @@ in
     "XF86AudioNext" = "exec ${playerctl} next";
     "XF86AudioPrev" = "exec ${playerctl} previous";
     "XF86AudioStop" = "exec ${playerctl} stop";
+    "${modifier}+o" = "exec ${config.customScript.sinkPick}";
 
     # volume
     "XF86AudioRaiseVolume" =

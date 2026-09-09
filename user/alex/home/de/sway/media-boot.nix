@@ -8,7 +8,6 @@ let
   mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
 
   sink = import ./sink.nix;
-  switchSink = import ./switch-sink.nix { inherit pkgs; };
 
   graceTimeSec = 300;
 
@@ -16,7 +15,6 @@ let
     name = "media-boot";
     runtimeInputs = with pkgs; [
       sway
-      switchSink
       systemd
       uutils-coreutils-noprefix
       gnome-keyring
@@ -31,7 +29,7 @@ let
       printf 'on\n' >"$state"
       echo "$(($(date +%s) + ${toString graceTimeSec}))" >"$grace"
 
-      switch-sink ${lib.escapeShellArg sink.hdmi} &
+      ${config.customScript.switchSink} ${lib.escapeShellArg sink.hdmi} &
 
       swaymsg workspace media
 

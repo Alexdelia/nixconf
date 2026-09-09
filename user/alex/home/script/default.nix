@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -14,6 +15,7 @@ in
   imports = [
     ./nix
     ./image
+    ./sound
     ./docker
   ];
 

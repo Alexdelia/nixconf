@@ -8,7 +8,6 @@ pkgs.writeShellApplication {
   text = ''
     sink="$1"
 
-    # sink shows up only once the card is (re)plugged, can lag the sway output event
     appear_max=20
 
     for ((t = 0; t < appear_max; t++)); do

@@ -22,6 +22,7 @@
       "$mod, D, exec, ${config.dp.dmenu}"
       "$mod, A, exec, ${config.dp.infoHub}"
       "$mod, W, exec, ${config.dp.powerMenu}"
+      "$mod, O, exec, ${config.customScript.sinkPick}"
 
       "$mod, S, exec, ${config.customScript.screenshot}"
       "$mod, I, exec, ${config.customScript.imageEdit}"

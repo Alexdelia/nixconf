@@ -10,7 +10,6 @@ let
   hostFile = config.sops.secrets."jiruo/hdmi-host".path;
 
   sink = import ./sink.nix;
-  switchSink = import ./switch-sink.nix { inherit pkgs; };
 
   armShutdown = true;
 
@@ -20,7 +19,6 @@ let
       curl
       jaq
       sway
-      switchSink
       systemd
       uutils-coreutils-noprefix
       libnotify
@@ -118,12 +116,12 @@ let
 
       on_hdmi() {
       	move_ws browser media 1
-      	switch-sink ${lib.escapeShellArg sink.hdmi}
+      	${config.customScript.switchSink} ${lib.escapeShellArg sink.hdmi}
       }
 
       off_hdmi() {
       	move_ws media browser 0
-      	switch-sink ${lib.escapeShellArg sink.analog}
+      	${config.customScript.switchSink} ${lib.escapeShellArg sink.analog}
       	shutdown_prompt &
       }
 

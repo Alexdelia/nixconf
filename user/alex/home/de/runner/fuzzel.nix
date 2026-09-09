@@ -8,7 +8,10 @@ let
   s = config.scheme or scheme;
 in
 {
-  dp.dmenu = "${pkgs.fuzzel}/bin/fuzzel";
+  dp = {
+    dmenu = "${pkgs.fuzzel}/bin/fuzzel";
+    picker = "${pkgs.fuzzel}/bin/fuzzel --dmenu --only-match";
+  };
 
   programs.fuzzel = {
     enable = true;
