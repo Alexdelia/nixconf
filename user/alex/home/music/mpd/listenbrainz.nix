@@ -1,6 +1,7 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
   services.listenbrainz-mpd = {
     enable = config.hostOption.entertainment.music;
+    package = pkgs.unstable.listenbrainz-mpd;
 
     settings = {
       submission = {
