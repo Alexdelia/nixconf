@@ -9,6 +9,7 @@ pkgs.writeShellApplication {
     rmpc
     jaq
     libnotify
+    util-linux
   ];
   text = ''
     arg=()
@@ -31,7 +32,7 @@ pkgs.writeShellApplication {
     	exit 1
     fi
 
-    ${clipboardCopy} "$uuid"
+    setsid --fork ${clipboardCopy} "$uuid" </dev/null >/dev/null 2>&1
     notify-send "uuid copied" "$uuid"
   '';
 }
