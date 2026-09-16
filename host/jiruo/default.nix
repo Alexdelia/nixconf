@@ -8,6 +8,7 @@
     # ./docker.nix
 
     ./opentabletdriver.nix
+    ./ssh.nix
   ];
 
   hostOption = {
