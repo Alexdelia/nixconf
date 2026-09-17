@@ -12,6 +12,6 @@ pkgs.writeShellApplication {
       ''
         d="$(date +%u)"
         h=$((10#$(date +%H)))
-        [ "$d" -ge 1 ] && [ "$d" -le 5 ] && [ "$h" -ge 9 ] && [ "$h" -lt 17 ]
+        [ "$d" -ge 1 ] && [ "$d" -le 5 ] && [ "$h" -ge 9 ] && [ "$h" -lt 18 ]
       '';
 }
