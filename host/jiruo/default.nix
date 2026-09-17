@@ -4,6 +4,7 @@
 
     inputs.disko.nixosModules.disko
     ./disko.nix
+    ./crash-capture.nix
     ./nvidia.nix
     # ./docker.nix
 
