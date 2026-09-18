@@ -28,6 +28,7 @@ in
 
   config = {
     home.packages = [
+      xo
       passwordGen
       killOnPort
       baj
