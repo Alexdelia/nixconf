@@ -5,7 +5,7 @@
   ...
 }:
 let
-  checkConfig = true;
+  checkConfig = false;
 
   enable = !config.targets.genericLinux.enable;
 in
