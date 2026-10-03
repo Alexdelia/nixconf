@@ -14,9 +14,9 @@ buildNpmPackage {
   };
 
   patches = [
-    ../patch/material-icons-browser-extension-self-hosted-port.patch
-    ../patch/material-icons-browser-extension-forgejo-diff-tree.patch
-    ../patch/material-icons-browser-extension-local-instance.patch
+    ./self-hosted-port.patch
+    ./forgejo-diff-tree.patch
+    ./local-instance.patch
   ];
 
   npmDepsHash = "sha256-c8i1OUWP/42N1DZHIq5p9PyQzH+FcnbvAjyvLswuEqo=";

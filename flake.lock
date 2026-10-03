@@ -247,6 +247,22 @@
         "type": "github"
       }
     },
+    "jerry": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777288767,
+        "narHash": "sha256-R7yNvYk2af4dVYn32qXaAb5RGzxNQ+H/+cqEP6Q3TPQ=",
+        "owner": "justchokingaround",
+        "repo": "jerry",
+        "rev": "ad4329695cb59314fb0a5be5d22f6b7fc5a124ba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "justchokingaround",
+        "repo": "jerry",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1790635395,
@@ -385,6 +401,7 @@
         "base16": "base16",
         "disko": "disko",
         "home-manager": "home-manager",
+        "jerry": "jerry",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "plasma-manager": "plasma-manager",

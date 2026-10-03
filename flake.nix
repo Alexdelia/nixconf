@@ -52,6 +52,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    jerry = {
+      url = "github:justchokingaround/jerry";
+      flake = false;
+    };
+
     # eww = {
     #   url = "github:elkowar/eww";
     #   # inputs.nixpkgs.follows = "nixpkgs";

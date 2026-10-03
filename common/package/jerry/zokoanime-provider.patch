@@ -1,0 +1,91 @@
+--- a/jerry.sh
++++ b/jerry.sh
+@@ -88,7 +88,7 @@
+     --vlc
+       Use VLC as the video player
+     -w, --website
+-      Choose which website to get video links from (default: allanime) (currently supported: allanime, aniwatch, yugen, hdrezka and crunchyroll)
++      Choose which website to get video links from (default: allanime) (currently supported: allanime, aniwatch, yugen, hdrezka, crunchyroll and zokoanime)
+ 
+     Note: 
+       All arguments can be specified in the config file as well.
+@@ -947,6 +947,12 @@
+             eid=$(printf "%s\n" "$response" | sed -nE "s@.*\"id\":\"([^\"]*)\".*@\1@p" | sed -n $((progress + 1))p)
+             episode_info="$(printf "%s\t%s" "$eid" "$title")"
+             ;;
++        zokoanime)
++            mal_id=$(curl -s -X POST "https://graphql.anilist.co" \
++                -H "Content-Type: application/json" \
++                -d "{\"query\":\"query { Media(id: $media_id) { idMal } }\"}" | $sed -nE 's@.*"idMal":([0-9]+).*@\1@p')
++            [ -n "$mal_id" ] && episode_info=$(printf "%s\t%s" "$mal_id" "$title")
++            ;;
+     esac
+ }
+ 
+@@ -1044,10 +1050,34 @@
+             fi
+             [ -z "$video_link" ] && exit 1
+             ;;
++        zokoanime)
++            m3u8_master=$(printf "%s" "$json_data" | $sed -nE 's@.*"src":"([^"]*\.m3u8[^"]*)".*@\1@p')
++            [ -z "$m3u8_master" ] && exit 1
++            links=$(curl -s -A "$agent" -e "$zokoanime_refr" "$m3u8_master" |
++                $sed 's@^#EXT-X-STREAM.*x@@g; s@,.*@p@g; /^#/d; $!N; s@\n@ >@; /EXT-X-I-FRAME/d' |
++                $sed "\@>https*://@!s@>@>${m3u8_master%/*}/@" | sort -g -r -s)
++            video_link=$(select_quality "$quality")
++            zokoanime_subtitle=$(printf "%s" "$json_data" | $sed 's@.*"subtitles":\[@@; s@\].*@@; s@},{@}\n{@g' |
++                $sed -nE "s@.*\"label\":\".${subs_language}[^\"]*\".*\"src\":\"([^\"]*)\".*@\1@p" | head -1)
++            [ -z "$zokoanime_subtitle" ] && [ "$translation_type" = "sub" ] && send_notification "No subtitles found"
++            ;;
+     esac
+     [ "$((progress + 1))" -eq "$episodes_total" ] && status="COMPLETED" || status="CURRENT"
+ }
+ 
++zokoanime_deobfuscate() (
++    bytes="$(printf "%s\n" "$1" | base64 -d | od -v -An -tu1)"
++    set -- 111 116 97 107 117 45 101 109 98 101 100 45 118 49
++    output=""
++    for byte in $bytes; do
++        char=$((byte ^ $1))
++        output="${output}\\0$((char / 64))$(((char / 8) % 8))$((char % 8))"
++        set -- "$@" "$1"
++        shift
++    done
++    printf "%b" "$output"
++)
++
+ decode_tobeparsed() {
+     tmp="$(mktemp)"
+     printf '%s' "$1" | base64 -d >"$tmp"
+@@ -1177,6 +1207,11 @@
+                 video_link=$("$cr_wrapper" --eid "$episode_id" --email "$cr_email" --password "$cr_password")
+             fi
+             ;;
++        zokoanime)
++            embed_page=$(curl -s -A "$agent" "${zokoanime_refr}stream/mal/${episode_id}/$((progress + 1))/${translation_type}")
++            blob=$(printf "%s" "$embed_page" | $sed -nE 's@.*window\.__P="([^"]*)".*@\1@p')
++            [ -n "$blob" ] && json_data=$(zokoanime_deobfuscate "$blob")
++            ;;
+     esac
+ 
+     [ -n "$json_data" ] && extract_from_json
+@@ -1270,6 +1305,7 @@
+             [ -n "$history" ] && resume_from=$(printf "%s" "$history" | cut -f3)
+             opts="$player_arguments"
+             [ "$provider" = "allanime" ] && opts="$opts --http-header-fields-append=Referer:https://allanime.day/"
++            [ "$provider" = "zokoanime" ] && opts="$opts --referrer=$zokoanime_refr${zokoanime_subtitle:+ --sub-file=$zokoanime_subtitle}"
+             if [ -n "$resume_from" ]; then
+                 opts="$opts --start=${resume_from}"
+                 send_notification "Resuming from" "" "" "$resume_from"
+@@ -1667,6 +1703,11 @@
+     hdrezka | rezka) provider="hdrezka" ;;
+     crunchyroll | cr) provider="crunchyroll" ;;
+     aniworld) provider="aniworld" ;;
++    zoko | zokoanime)
++        provider="zokoanime"
++        zokoanime_refr="https://zokoanime.video/"
++        agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
++        ;;
+     *) send_notification "Invalid provider" && exit 1 ;;
+ esac
+ if [ "$image_preview" = true ]; then

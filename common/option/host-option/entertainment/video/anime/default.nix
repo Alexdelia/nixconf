@@ -8,6 +8,8 @@ let
   src = pkgs.unstable;
 in
 {
+  imports = [ ./jerry.nix ];
+
   config = lib.mkIf config.hostOption.entertainment.video {
     home.packages = with src; [
       ani-cli
