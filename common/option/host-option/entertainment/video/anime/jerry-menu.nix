@@ -27,6 +27,7 @@ let
 
   percent = permille: "${toString (permille / 10)}.${toString (pkgs.lib.mod permille 10)}%";
   vertical = permille: percent (permille * screen.width / screen.height);
+  # rofi resolves % against screen height for top/bottom sides and top-left/bottom-right radius corners
   box = permille: "${vertical permille} ${percent permille}";
 
   theme = pkgs.writeText "jerry-menu.rasi" ''
@@ -38,7 +39,7 @@ let
 
     window {
       padding: ${box gap};
-      border-radius: ${percent windowRadius};
+      border-radius: ${box windowRadius};
       background-color: ${color.base00}f5;
     }
 
@@ -71,7 +72,7 @@ let
       children: [ element-text, element-icon ];
       padding: ${box innerGap};
       spacing: ${vertical innerGap};
-      border-radius: ${percent elementRadius};
+      border-radius: ${box elementRadius};
     }
 
     element selected {
@@ -80,7 +81,7 @@ let
 
     element-icon {
       squared: false;
-      border-radius: ${percent iconRadius};
+      border-radius: ${box iconRadius};
     }
 
     element-text {
