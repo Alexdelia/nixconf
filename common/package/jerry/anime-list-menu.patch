@@ -1,0 +1,31 @@
+--- a/jerry.sh
++++ b/jerry.sh
+@@ -427,15 +427,25 @@
+ 
+ #### ANILIST ANIME FUNCTIONS ####
+ get_anime_from_list() {
+-    anime_list=$(curl -s -X POST "$anilist_base" \
++    anime_list_json=$(curl -s -X POST "$anilist_base" \
+         -H 'Content-Type: application/json' \
+         -H "Authorization: Bearer $access_token" \
+-        -d "{\"query\":\"query(\$userId:Int,\$userName:String,\$type:MediaType){MediaListCollection(userId:\$userId,userName:\$userName,type:\$type){lists{name isCustomList isCompletedList:isSplitCompletedList entries{...mediaListEntry}}user{id name avatar{large}mediaListOptions{scoreFormat rowOrder animeList{sectionOrder customLists splitCompletedSectionByFormat theme}mangaList{sectionOrder customLists splitCompletedSectionByFormat theme}}}}}fragment mediaListEntry on MediaList{id mediaId status score progress progressVolumes repeat priority private hiddenFromStatusLists customLists advancedScores notes updatedAt startedAt{year month day}completedAt{year month day}media{id title{userPreferred romaji english native}coverImage{extraLarge large}type format status(version:2)episodes volumes chapters averageScore popularity isAdult countryOfOrigin genres bannerImage nextAiringEpisode{airingAt timeUntilAiring episode} startDate{year month day}}}\",\"variables\":{\"userId\":$user_id,\"type\":\"ANIME\"}}" | $sed "s@},{@\n@g" | $sed -nE "s@.*\"mediaId\":([0-9]*),\"status\":\"($1)\",\"score\":(.*),\"progress\":([0-9]*),.*\"userPreferred\":\"([^\"]*)\".*\"coverImage\":\{\"extraLarge\":\"([^\"]*)\".*\"episode([\"]*)s*[\"]*:([0-9]*).*\"startDate\":\{\"year\":([0-9]*).*@\6\t\1\t\5 \(\9\) \4|\8 episodes \7 \[\3\]@p" | $sed 's/\\\//\//g;s/\"/(releasing)/')
++        -d "{\"query\":\"query(\$userId:Int,\$userName:String,\$type:MediaType){MediaListCollection(userId:\$userId,userName:\$userName,type:\$type){lists{name isCustomList isCompletedList:isSplitCompletedList entries{...mediaListEntry}}user{id name avatar{large}mediaListOptions{scoreFormat rowOrder animeList{sectionOrder customLists splitCompletedSectionByFormat theme}mangaList{sectionOrder customLists splitCompletedSectionByFormat theme}}}}}fragment mediaListEntry on MediaList{id mediaId status score progress progressVolumes repeat priority private hiddenFromStatusLists customLists advancedScores notes updatedAt startedAt{year month day}completedAt{year month day}media{id title{userPreferred romaji english native}coverImage{extraLarge large}type format status(version:2)episodes volumes chapters averageScore popularity isAdult countryOfOrigin genres bannerImage nextAiringEpisode{airingAt timeUntilAiring episode} startDate{year month day}}}\",\"variables\":{\"userId\":$user_id,\"type\":\"ANIME\"}}")
++    anime_list=$(printf "%s" "$anime_list_json" | $sed "s@},{@\n@g" | $sed -nE "s@.*\"mediaId\":([0-9]*),\"status\":\"($1)\",\"score\":(.*),\"progress\":([0-9]*),.*\"userPreferred\":\"([^\"]*)\".*\"coverImage\":\{\"extraLarge\":\"([^\"]*)\".*\"episode([\"]*)s*[\"]*:([0-9]*).*\"startDate\":\{\"year\":([0-9]*).*@\6\t\1\t\5 \(\9\) \4|\8 episodes \7 \[\3\]@p" | $sed 's/\\\//\//g;s/\"/(releasing)/')
+     if [ -z "$anime_list" ]; then
+         send_notification "No anime found in your list" "2000"
+         exit 1
+     fi
+-    if [ "$use_external_menu" = true ]; then
++    if [ -n "$anime_list_menu" ]; then
++        anime_list_row=$(printf "%s" "$anime_list_json" | jq -r --arg status "^($1)$" '[.data.MediaListCollection.lists[].entries[] | select(.status | test($status))] | unique_by(.mediaId) | sort_by(-.updatedAt)[] | [.mediaId, .media.coverImage.extraLarge, .media.title.userPreferred, .progress, (.media.episodes // "?"), .media.status, (.media.startDate.year // "?"), .score] | @tsv')
++        media_id=$(printf "%s\n" "$anime_list_row" | "$anime_list_menu")
++        [ -z "$media_id" ] && exit 1
++        IFS="$(printf '\t')" read -r media_id _ title list_progress episodes_total _ start_year score <<EOF
++$(printf "%s\n" "$anime_list_row" | grep "^$media_id$(printf '\t')")
++EOF
++        [ -z "$progress" ] && progress=$list_progress
++        [ "$episodes_total" = "?" ] && episodes_total=9999
++    elif [ "$use_external_menu" = true ]; then
+         case "$image_preview" in
+             true)
+                 download_thumbnails "$anime_list" "1"
