@@ -1,8 +1,64 @@
 --- a/jerry.sh
 +++ b/jerry.sh
-@@ -427,15 +427,25 @@
+@@ -59,6 +59,8 @@
+   Options:
+     -c, --continue
+       Continue watching from currently watching list (using the user's anilist account)
++    --search
++      Search anime with the external anime menu, then pick voice and episode
+     --dub
+       Allows user to watch anime in dub
+     -e, --edit
+@@ -120,6 +122,7 @@
+     [ -z "$manga_format" ] && manga_format="image"
+     [ -z "$manga_opener" ] && manga_opener="feh"
+     [ -z "$history_file" ] && history_file="$data_dir/jerry_history.txt"
++    [ -z "$voice_file" ] && voice_file="$data_dir/voice"
+     [ -z "$subs_language" ] && subs_language="english"
+     subs_language="$(printf "%s" "$subs_language" | cut -c2-)"
+     [ -z "$use_external_menu" ] && use_external_menu=false
+@@ -426,16 +429,65 @@
+ }
  
  #### ANILIST ANIME FUNCTIONS ####
++load_voice() {
++    sub_or_dub=$($sed -nE "s@^$media_id\t(sub|dub)\$@\1@p" "$voice_file" 2>/dev/null)
++    [ -z "$sub_or_dub" ] && sub_or_dub="sub"
++}
++
++save_voice() {
++    [ -f "$voice_file" ] && $sed -i "/^$media_id\t/d" "$voice_file"
++    printf "%s\t%s\n" "$media_id" "$sub_or_dub" >>"$voice_file"
++}
++
++search_anime_menu() {
++    anime_row=$(ANILIST_TOKEN="$access_token" "$anime_menu" search)
++    [ -z "$anime_row" ] && exit 1
++    IFS="$(printf '\t')" read -r media_id _ title progress episodes_total _ start_year _ episodes_aired <<EOF
++$anime_row
++EOF
++    if [ "$episodes_aired" -lt 1 ]; then
++        send_notification "$title" "" "" "not aired yet"
++        exit 1
++    fi
++
++    load_voice
++    [ "$sub_or_dub" = "dub" ] && voice_index=1 || voice_index=0
++    case "$(printf "original\nenglish\n" | "$anime_menu" pick "voice" "$voice_index")" in
++        original) sub_or_dub="sub" ;;
++        english) sub_or_dub="dub" ;;
++        *) exit 1 ;;
++    esac
++
++    [ "$progress" -lt "$episodes_aired" ] && episode_index=$progress || episode_index=$((episodes_aired - 1))
++    episode=$(seq "$episodes_aired" | "$anime_menu" pick "episode" "$episode_index")
++    [ -z "$episode" ] && exit 1
++
++    save_voice
++    progress=$((episode - 1))
++    [ "$episodes_total" = "?" ] && episodes_total=9999
++}
++
  get_anime_from_list() {
 -    anime_list=$(curl -s -X POST "$anilist_base" \
 +    anime_list_json=$(curl -s -X POST "$anilist_base" \
@@ -16,16 +72,36 @@
          exit 1
      fi
 -    if [ "$use_external_menu" = true ]; then
-+    if [ -n "$anime_list_menu" ]; then
++    if [ -n "$anime_menu" ]; then
 +        anime_list_row=$(printf "%s" "$anime_list_json" | jq -r --arg status "^($1)$" '[.data.MediaListCollection.lists[].entries[] | select(.status | test($status))] | unique_by(.mediaId) | sort_by(-.updatedAt)[] | [.mediaId, .media.coverImage.extraLarge, .media.title.userPreferred, .progress, (.media.episodes // "?"), .media.status, (.media.startDate.year // "?"), .score] | @tsv')
-+        media_id=$(printf "%s\n" "$anime_list_row" | "$anime_list_menu")
++        media_id=$(printf "%s\n" "$anime_list_row" | "$anime_menu" list)
 +        [ -z "$media_id" ] && exit 1
 +        IFS="$(printf '\t')" read -r media_id _ title list_progress episodes_total _ start_year score <<EOF
 +$(printf "%s\n" "$anime_list_row" | grep "^$media_id$(printf '\t')")
 +EOF
 +        [ -z "$progress" ] && progress=$list_progress
 +        [ "$episodes_total" = "?" ] && episodes_total=9999
++        load_voice
 +    elif [ "$use_external_menu" = true ]; then
          case "$image_preview" in
              true)
                  download_thumbnails "$anime_list" "1"
+@@ -1532,6 +1584,10 @@
+             [ -z "$media_type" ] && exit 0
+             get_anilist_info "$media_type"
+             ;;
++        "Search Anime")
++            search_anime_menu
++            binge "ANIME"
++            ;;
+         "Watch New Anime")
+             [ -z "$query" ] && get_input "Search anime: "
+             [ -z "$query" ] && exit 1
+@@ -1573,6 +1629,7 @@
+             break
+             ;;
+         -c | --continue) mode_choice="Watch Anime" && shift ;;
++        --search) mode_choice="Search Anime" && shift ;;
+         --clear-history | --delete-history)
+             while true; do
+                 printf "This will delete your jerry history. Are you sure? [Y/n] "

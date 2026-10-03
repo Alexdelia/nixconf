@@ -21,6 +21,8 @@ let
       "super + m" = withNotifyMissing "dp.music";
       "super + k" = config.dp.calculator;
       "super + f" = withNotifyMissing "dp.fileManager";
+      "super + v" = withNotifyMissing "dp.anime";
+      "super + shift + v" = withNotifyMissing "dp.animeSearch";
 
       # widget
       "super + d" = config.dp.dmenu;
