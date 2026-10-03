@@ -15,13 +15,19 @@ let
     height = 325;
   };
 
-  windowPadding = 15;
-  spacing = 10;
-  elementPadding = 5;
+  gap = 20;
+  innerGap = gap / 2;
+  iconRadius = 12;
+  elementRadius = iconRadius + innerGap;
+  windowRadius = elementRadius + gap;
   maxEntryWidth =
-    maxCoverHeight * screen.height * cover.width / (screen.width * cover.height) + 2 * elementPadding;
+    maxCoverHeight * screen.height * cover.width / (screen.width * cover.height) + 2 * innerGap;
+
+  textFont = "${font.name} ${toString (font.size * 36 / 10)}";
 
   percent = permille: "${toString (permille / 10)}.${toString (pkgs.lib.mod permille 10)}%";
+  vertical = permille: percent (permille * screen.width / screen.height);
+  box = permille: "${vertical permille} ${percent permille}";
 
   theme = pkgs.writeText "jerry-menu.rasi" ''
     * {
@@ -31,12 +37,13 @@ let
     }
 
     window {
-      padding: ${percent windowPadding};
+      padding: ${box gap};
+      border-radius: ${percent windowRadius};
       background-color: ${color.base00}f5;
     }
 
     mainbox {
-      spacing: 2%;
+      spacing: ${vertical gap};
       children: [ inputbar, listview ];
     }
 
@@ -46,7 +53,8 @@ let
 
     entry {
       placeholder: "";
-      cursor-color: ${color.base0B};
+      font: "${textFont}";
+      cursor-color: ${color.base05};
     }
 
     listview {
@@ -54,16 +62,16 @@ let
       fixed-columns: true;
       fixed-height: true;
       flow: horizontal;
-      spacing: ${percent spacing};
+      spacing: ${percent gap};
       scrollbar: false;
     }
 
     element {
       orientation: vertical;
       children: [ element-text, element-icon ];
-      padding: ${percent elementPadding};
-      spacing: ${percent elementPadding};
-      border-radius: 8px;
+      padding: ${box innerGap};
+      spacing: ${vertical innerGap};
+      border-radius: ${percent elementRadius};
     }
 
     element selected {
@@ -72,9 +80,11 @@ let
 
     element-icon {
       squared: false;
+      border-radius: ${percent iconRadius};
     }
 
     element-text {
+      font: "${textFont}";
       horizontal-align: 0.5;
     }
   '';
@@ -106,15 +116,15 @@ pkgs.writeShellApplication {
     	[[ $status == RELEASING ]] && releasing=' <span style="italic" foreground="${color.base0D}">releasing</span>'
 
     	media_id+=("$id")
-    	row+=("<span size=\"larger\" weight=\"bold\" foreground=\"${color.base05}\">$title</span>&#10;<span size=\"small\"><span weight=\"bold\" foreground=\"${color.base0B}\">$progress</span><span foreground=\"${color.base03}\">/</span>$total$releasing</span>")
+    	row+=("<span weight=\"bold\" foreground=\"${color.base05}\">$title</span>&#10;<span weight=\"bold\" foreground=\"${color.base0B}\">$progress</span><span foreground=\"${color.base03}\">/</span>$total$releasing")
     done
     wait
 
     column=$((''${#row[@]} < ${toString maxColumn} ? ''${#row[@]} : ${toString maxColumn}))
-    entry_width=$(((1000 - ${toString (2 * windowPadding)} - (column - 1) * ${toString spacing}) / column))
+    entry_width=$(((1000 - (column + 1) * ${toString gap}) / column))
     entry_width=$((entry_width < ${toString maxEntryWidth} ? entry_width : ${toString maxEntryWidth}))
-    window_width=$((column * entry_width + (column - 1) * ${toString spacing} + ${toString (2 * windowPadding)}))
-    cover_height=$(((entry_width - ${toString (2 * elementPadding)}) * ${
+    window_width=$((column * entry_width + (column + 1) * ${toString gap}))
+    cover_height=$(((entry_width - ${toString (2 * innerGap)}) * ${
       toString (screen.width * cover.height)
     } / ${toString (screen.height * cover.width)}))
     layout="window { width: $(percent "$window_width"); } listview { columns: $column; } element-icon { size: $(percent "$cover_height"); }"
