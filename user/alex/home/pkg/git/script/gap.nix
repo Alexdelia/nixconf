@@ -16,8 +16,8 @@ pkgs.writeShellApplication {
     heartbeat_interval_seconds=60
 
     log_review_while_open() {
-    	local pause
-    	trap 'kill "$pause" 2>/dev/null; exit 0' TERM
+    	local pause=""
+    	trap 'if [[ -n $pause ]]; then kill "$pause" 2>/dev/null || true; fi; exit 0' TERM
     	while :; do
     		wakatime-cli --entity "$root/$1" --category "code reviewing" --plugin "gap/1.0" --sync-ai-disabled >/dev/null 2>&1 || true
     		sleep "$heartbeat_interval_seconds" &
