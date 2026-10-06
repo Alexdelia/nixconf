@@ -77,6 +77,7 @@ in
                       hostOption = { };
                     })
                     ../user/${userConfigName}/home
+                    ../common/standalone-nix.nix
 
                     ./${hostname}
                   ];
