@@ -11,6 +11,10 @@
 
     ./env.nix
 
+    (import ./vault {
+      inherit username;
+    })
+
     (import ./home-manager.nix {
       inherit username;
       inherit inputs;

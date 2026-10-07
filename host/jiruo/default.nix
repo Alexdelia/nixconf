@@ -42,6 +42,11 @@
       video = true;
       gaming = true;
     };
+
+    vault = {
+      usb = "1C34-C9ED";
+      hdd = "/mnt/hdd/vault";
+    };
   };
 
   boot = {
