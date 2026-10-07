@@ -137,17 +137,20 @@ pkgs.writeShellApplication {
     	unlock "$nvme_cipher" "$nvme_mount" -idle ${idle}
     	unlock "$hdd_cipher" "$hdd_mount"
 
-    	if [[ ! -e $usb_repo/.git ]]; then
-    		git init -q -b main "$usb_repo"
-    	fi
+    	for repo in "$usb_repo" "$nvme_mount"; do
+    		if [[ ! -e $repo/.git ]]; then
+    			git init -q -b main "$repo"
+    		fi
+
+    		git -C "$repo" config user.name "$(git config --global user.personal.name)"
+    		git -C "$repo" config user.email "$(git config --global user.personal.email)"
+    	done
 
     	if [[ ! -e $hdd_mount/HEAD ]]; then
     		git init -q --bare -b main "$hdd_mount"
     	fi
 
-    	if [[ ! -e $nvme_mount/.git ]]; then
-    		git init -q -b main "$nvme_mount"
-
+    	if ! git -C "$nvme_mount" rev-parse -q --verify HEAD >/dev/null; then
     		if usb_has_commit; then
     			git -C "$nvme_mount" pull -q "$usb_repo" main
     		else
