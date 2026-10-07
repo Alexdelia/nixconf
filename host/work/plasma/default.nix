@@ -56,4 +56,11 @@
     config.stylix.cursor.package
     config.gtk.iconTheme.package
   ];
+
+  xdg.dataFile = lib.mapAttrs' (
+    id: _:
+    lib.nameValuePair "applications/${id}.desktop" {
+      source = "${config.home.path}/share/applications/${id}.desktop";
+    }
+  ) config.xdg.desktopEntries;
 }
