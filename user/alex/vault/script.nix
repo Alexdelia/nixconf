@@ -3,6 +3,7 @@
   vault,
   usbMount,
   home,
+  link,
   wrapperDir,
 }:
 let
@@ -24,7 +25,7 @@ pkgs.writeShellApplication {
     passphrase="$usb_key/passphrase"
 
     nvme_cipher=${home}/.local/share/vault
-    nvme_mount=${home}/vault
+    nvme_mount="$XDG_RUNTIME_DIR/vault"
     hdd_cipher=${vault.hdd}
     hdd_mount="$XDG_RUNTIME_DIR/vault-hdd"
 
@@ -62,6 +63,14 @@ pkgs.writeShellApplication {
     	fi
     }
 
+    unlock_nvme() {
+    	unlock "$nvme_cipher" "$nvme_mount" -idle ${idle}
+    }
+
+    unlock_hdd() {
+    	unlock "$hdd_cipher" "$hdd_mount"
+    }
+
     lock() {
     	if mountpoint -q "$1"; then
     		${wrapperDir}/fusermount3 -u "$1"
@@ -69,33 +78,35 @@ pkgs.writeShellApplication {
     }
 
     cleanup() {
-    	lock "$hdd_mount"
+    	local status=$?
+
+    	lock "$hdd_mount" || status=1
 
     	if [[ $usb_attached_by_vault == true ]]; then
-    		${wrapperDir}/umount "$usb_mount"
+    		${wrapperDir}/umount "$usb_mount" || status=1
     	fi
+
+    	exit "$status"
     }
 
-    usb_has_commit() {
-    	git -C "$usb_repo" rev-parse -q --verify refs/heads/main >/dev/null
-    }
-
-    nvme_has_commit() {
-    	git -C "$nvme_mount" rev-parse -q --verify HEAD >/dev/null 2>&1
+    has_commit() {
+    	git -C "$1" rev-parse -q --verify refs/heads/main >/dev/null 2>&1
     }
 
     synchronize() {
     	usb_attach
-    	unlock "$nvme_cipher" "$nvme_mount" -idle ${idle}
-    	unlock "$hdd_cipher" "$hdd_mount"
+    	unlock_nvme
+    	unlock_hdd
 
     	git -C "$usb_repo" config receive.denyCurrentBranch updateInstead
 
     	local before
     	before=$(git -C "$nvme_mount" rev-parse HEAD)
-    	if usb_has_commit; then
-    		git -C "$nvme_mount" pull -q --no-rebase --no-edit "$usb_repo" main
-    	fi
+    	for remote in "$usb_repo" "$hdd_mount"; do
+    		if has_commit "$remote"; then
+    			git -C "$nvme_mount" pull -q --no-rebase --no-edit "$remote" main
+    		fi
+    	done
     	git -C "$nvme_mount" diff --stat "$before" HEAD
 
     	git -C "$nvme_mount" push -q "$hdd_mount" main
@@ -112,58 +123,97 @@ pkgs.writeShellApplication {
     	echo "synced"
     }
 
+    ask_passphrase() {
+    	local first second
+    	IFS= read -rsp "passphrase: " first
+    	echo
+    	IFS= read -rsp "repeat: " second
+    	echo
+
+    	if [[ -z $first ]]; then
+    		echo "empty" >&2
+    		exit 1
+    	fi
+
+    	if [[ $first != "$second" ]]; then
+    		echo "mismatch" >&2
+    		exit 1
+    	fi
+
+    	printf '%s' "$first" >"$passphrase"
+    }
+
+    unlock_existing() {
+    	if [[ -e $nvme_cipher/gocryptfs.conf ]]; then
+    		unlock_nvme || return
+    	fi
+
+    	if [[ -e $hdd_cipher/gocryptfs.conf ]]; then
+    		unlock_hdd || return
+    	fi
+    }
+
     initialize() {
     	usb_attach
     	mkdir -p "$usb_key"
 
-    	if [[ ! -e $passphrase ]]; then
-    		local first second
-    		read -rsp "new passphrase: " first
-    		echo
-    		read -rsp "repeat: " second
-    		echo
+    	local created=false
 
-    		if [[ $first != "$second" ]]; then
-    			echo "mismatch" >&2
+    	if [[ ! -e $passphrase ]]; then
+    		ask_passphrase
+    		created=true
+
+    		if ! unlock_existing; then
+    			rm "$passphrase"
     			exit 1
     		fi
-
-    		printf '%s' "$first" >"$passphrase"
     	fi
 
     	for cipher in "$nvme_cipher" "$hdd_cipher"; do
     		if [[ ! -e $cipher/gocryptfs.conf ]]; then
     			mkdir -p "$cipher"
     			gocryptfs -init -q -passfile "$passphrase" "$cipher"
+    			created=true
     		fi
     	done
 
-    	unlock "$nvme_cipher" "$nvme_mount" -idle ${idle}
+    	unlock_nvme
+    	unlock_hdd
 
-    	if nvme_has_commit; then
-    		echo "vault already initialized" >&2
-    		exit 1
-    	fi
-
-    	unlock "$hdd_cipher" "$hdd_mount"
+    	local name email
+    	name=$(git config --global user.personal.name)
+    	email=$(git config --global user.personal.email)
 
     	for repo in "$usb_repo" "$nvme_mount"; do
     		if [[ ! -e $repo/.git ]]; then
     			git init -q -b main "$repo"
+    			created=true
     		fi
 
-    		git -C "$repo" config user.name "$(git config --global user.personal.name)"
-    		git -C "$repo" config user.email "$(git config --global user.personal.email)"
+    		git -C "$repo" config user.name "$name"
+    		git -C "$repo" config user.email "$email"
     	done
 
     	if [[ ! -e $hdd_mount/HEAD ]]; then
     		git init -q --bare -b main "$hdd_mount"
+    		created=true
     	fi
 
-    	if usb_has_commit; then
-    		git -C "$nvme_mount" pull -q "$usb_repo" main
-    	else
-    		git -C "$nvme_mount" commit -q --allow-empty -m init
+    	if ! has_commit "$nvme_mount"; then
+    		created=true
+
+    		if has_commit "$usb_repo"; then
+    			git -C "$nvme_mount" pull -q "$usb_repo" main
+    		elif has_commit "$hdd_mount"; then
+    			git -C "$nvme_mount" pull -q "$hdd_mount" main
+    		else
+    			git -C "$nvme_mount" commit -q --allow-empty -m init
+    		fi
+    	fi
+
+    	if [[ $created == false ]]; then
+    		echo "vault already initialized" >&2
+    		exit 1
     	fi
 
     	synchronize
@@ -173,8 +223,8 @@ pkgs.writeShellApplication {
 
     case "''${1:-}" in
     open)
-    	unlock "$nvme_cipher" "$nvme_mount" -idle ${idle}
-    	echo "$nvme_mount"
+    	unlock_nvme
+    	echo "${link}"
     	;;
     close)
     	lock "$nvme_mount"

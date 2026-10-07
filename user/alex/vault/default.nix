@@ -9,6 +9,7 @@ let
   inherit (config.hostOption) vault;
   user = config.users.users.${username};
   usbMount = "/media/usb";
+  link = "${user.home}/vault";
 in
 {
   config = lib.mkIf (vault != null) {
@@ -28,9 +29,18 @@ in
       "d ${vault.hdd} 0700 ${username} ${user.group} -"
     ];
 
+    systemd.user.tmpfiles.users.${username}.rules = [
+      "L ${link} - - - - %t/vault"
+    ];
+
     users.users.${username}.packages = [
       (import ./script.nix {
-        inherit pkgs vault usbMount;
+        inherit
+          pkgs
+          vault
+          usbMount
+          link
+          ;
         inherit (user) home;
         inherit (config.security) wrapperDir;
       })
