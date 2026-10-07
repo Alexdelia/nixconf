@@ -80,6 +80,10 @@ pkgs.writeShellApplication {
     	git -C "$usb_repo" rev-parse -q --verify refs/heads/main >/dev/null
     }
 
+    nvme_has_commit() {
+    	git -C "$nvme_mount" rev-parse -q --verify HEAD >/dev/null 2>&1
+    }
+
     synchronize() {
     	usb_attach
     	unlock "$nvme_cipher" "$nvme_mount" -idle ${idle}
@@ -135,6 +139,12 @@ pkgs.writeShellApplication {
     	done
 
     	unlock "$nvme_cipher" "$nvme_mount" -idle ${idle}
+
+    	if nvme_has_commit; then
+    		echo "vault already initialized" >&2
+    		exit 1
+    	fi
+
     	unlock "$hdd_cipher" "$hdd_mount"
 
     	for repo in "$usb_repo" "$nvme_mount"; do
@@ -150,12 +160,10 @@ pkgs.writeShellApplication {
     		git init -q --bare -b main "$hdd_mount"
     	fi
 
-    	if ! git -C "$nvme_mount" rev-parse -q --verify HEAD >/dev/null; then
-    		if usb_has_commit; then
-    			git -C "$nvme_mount" pull -q "$usb_repo" main
-    		else
-    			git -C "$nvme_mount" commit -q --allow-empty -m init
-    		fi
+    	if usb_has_commit; then
+    		git -C "$nvme_mount" pull -q "$usb_repo" main
+    	else
+    		git -C "$nvme_mount" commit -q --allow-empty -m init
     	fi
 
     	synchronize
