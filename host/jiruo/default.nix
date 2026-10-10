@@ -55,7 +55,7 @@
         enable = true;
         # useOSProber = true;
         efiSupport = true;
-        # efiInstallAsRemovable = true;
+        efiInstallAsRemovable = true;
       };
 
       # systemd-boot.enable = true;
