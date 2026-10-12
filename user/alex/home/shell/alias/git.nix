@@ -1,5 +1,6 @@
 let
   basic_git_tree = "git log --graph --oneline --decorate --all";
+  pretty = "'%n%C(magenta)╭─ %C(auto)%h%C(magenta) ─ %C(bold green)%an%Creset%C(magenta) ─ %C(green)%ae%C(magenta) ─ %C(bold blue)%ch%Creset%n%C(magenta)╰╴%C(auto)%s%Creset'";
 in
 {
   gg = "git clone --recurse-submodules";
@@ -12,8 +13,8 @@ in
   gd = "git diff";
   gds = "git diff --staged";
 
-  gi = "git log --graph --stat --all --pretty='%n%C(magenta)╭╴%C(auto)%h%C(magenta)╶╴%C(bold green)%an%Creset%C(magenta)╶╴%C(green)%ae%C(magenta)╶╴%C(bold blue)%ch%Creset%n%C(magenta)╰╴%C(auto)%s%Creset'";
-  glast = "git --no-pager log -n1 --pretty='%C(magenta)╭╴%C(auto)%h%C(magenta)╶╴%C(bold green)%an%Creset%C(magenta)╶╴%C(green)%ae%C(magenta)╶╴%C(bold blue)%ch%Creset%n%C(magenta)╰╴%C(auto)%s%Creset'";
+  gi = "git log --graph --stat --pretty=${pretty}";
+  glast = "git --no-pager log -n1 --pretty=${pretty}";
   gt = basic_git_tree;
   gtree = basic_git_tree;
 
