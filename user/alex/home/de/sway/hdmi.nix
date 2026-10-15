@@ -158,14 +158,9 @@ let
       	done
       }
 
-      if grace_active; then
-      	cur=on
-      	printf 'on\n' >"$state"
-      	watch_session
-      else
-      	printf 'off\n' >"$state"
-      	cur=off
-      fi
+      if grace_active; then cur=on; else cur=off; fi
+      printf '%s\n' "$cur" >"$state"
+      watch_session
 
       swaymsg -t subscribe -m '["output"]' | while read -r _; do
       	watch_session
