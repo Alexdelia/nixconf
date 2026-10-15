@@ -17,13 +17,21 @@
      [ -z "$subs_language" ] && subs_language="english"
      subs_language="$(printf "%s" "$subs_language" | cut -c2-)"
      [ -z "$use_external_menu" ] && use_external_menu=false
-@@ -426,16 +429,65 @@
+@@ -426,16 +429,72 @@
  }
  
  #### ANILIST ANIME FUNCTIONS ####
 +load_voice() {
 +    sub_or_dub=$($sed -nE "s@^$media_id\t(sub|dub)\$@\1@p" "$voice_file" 2>/dev/null)
-+    [ -z "$sub_or_dub" ] && sub_or_dub="sub"
++}
++
++pick_voice() {
++    [ "$sub_or_dub" = "dub" ] && voice_index=1 || voice_index=0
++    case "$(printf "original\nenglish\n" | "$anime_menu" pick "voice" "$voice_index")" in
++        original) sub_or_dub="sub" ;;
++        english) sub_or_dub="dub" ;;
++        *) exit 1 ;;
++    esac
 +}
 +
 +save_voice() {
@@ -43,12 +51,7 @@
 +    fi
 +
 +    load_voice
-+    [ "$sub_or_dub" = "dub" ] && voice_index=1 || voice_index=0
-+    case "$(printf "original\nenglish\n" | "$anime_menu" pick "voice" "$voice_index")" in
-+        original) sub_or_dub="sub" ;;
-+        english) sub_or_dub="dub" ;;
-+        *) exit 1 ;;
-+    esac
++    pick_voice
 +
 +    [ "$progress" -lt "$episodes_aired" ] && episode_index=$progress || episode_index=$((episodes_aired - 1))
 +    episode=$(seq "$episodes_aired" | "$anime_menu" pick "episode" "$episode_index")
@@ -82,11 +85,15 @@
 +        [ -z "$progress" ] && progress=$list_progress
 +        [ "$episodes_total" = "?" ] && episodes_total=9999
 +        load_voice
++        if [ -z "$sub_or_dub" ]; then
++            pick_voice
++            save_voice
++        fi
 +    elif [ "$use_external_menu" = true ]; then
          case "$image_preview" in
              true)
                  download_thumbnails "$anime_list" "1"
-@@ -1532,6 +1584,10 @@
+@@ -1532,6 +1591,10 @@
              [ -z "$media_type" ] && exit 0
              get_anilist_info "$media_type"
              ;;
@@ -97,7 +104,7 @@
          "Watch New Anime")
              [ -z "$query" ] && get_input "Search anime: "
              [ -z "$query" ] && exit 1
-@@ -1573,6 +1629,7 @@
+@@ -1573,6 +1636,7 @@
              break
              ;;
          -c | --continue) mode_choice="Watch Anime" && shift ;;
