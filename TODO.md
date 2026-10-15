@@ -11,6 +11,5 @@
 - pass for:
   - ssh connection password
 - clean host/\*/default.nix
-- better sway border for non-full screen windows
 - make my own colorpicker
 - shortcut visualizer
