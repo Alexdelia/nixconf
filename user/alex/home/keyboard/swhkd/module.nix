@@ -37,7 +37,7 @@ in
           "graphical-session.target"
           "swhks.service"
         ];
-        Requires = [ "swhks.service" ];
+        Wants = [ "swhks.service" ];
         X-SwitchMethod = "reload";
       };
 
