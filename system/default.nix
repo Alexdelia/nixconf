@@ -11,7 +11,6 @@
   imports = [
     ../host/${hostname}/hardware-configuration.nix
 
-    # ./boot.nix
     ./group.nix
     ./locale.nix
     ./zone.nix
@@ -60,7 +59,6 @@
     };
   };
 
-  # nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     let
