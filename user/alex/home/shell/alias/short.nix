@@ -24,6 +24,5 @@ in
 
   nd = "${nom} develop";
   nb = "${nom} build";
-  nr = "nix run";
   nf = "nix fmt";
 }
