@@ -3,7 +3,7 @@ pkgs.writeShellApplication {
   name = "gap";
   runtimeInputs = with pkgs; [
     git
-    unstable.wakatime-cli
+    wakatime-cli
   ];
   text = ''
     if [[ $# -eq 0 ]]; then
