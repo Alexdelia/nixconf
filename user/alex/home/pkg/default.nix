@@ -51,7 +51,6 @@ in
 
       ## nix
       nh
-      nil
       nix-output-monitor
       nixfmt
     ]
