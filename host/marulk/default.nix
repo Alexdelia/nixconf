@@ -1,5 +1,8 @@
 {
-  imports = [ ../../system ];
+  imports = [
+    ../../system
+    ../../system/zram.nix
+  ];
 
   hostOption = {
     type = "lite";

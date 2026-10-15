@@ -1,6 +1,7 @@
 {
   imports = [
     ../../system
+    ../../system/zram.nix
   ];
 
   hostOption = {
