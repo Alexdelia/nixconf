@@ -15,4 +15,3 @@
 - better sway border for non-full screen windows
 - make my own colorpicker
 - shortcut visualizer
-- fix bug when HDMI is live before computer that it does not detect HDMI being on and switch sink + browser
