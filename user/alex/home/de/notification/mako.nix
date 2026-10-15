@@ -10,7 +10,7 @@ let
   mode = import ./mode.nix;
 
   primary = lib.filterAttrs (_: m: m.primary) config.hostOption.spec.monitor;
-  primaryWidth = if primary == { } then 1920 else (lib.head (lib.attrValues primary)).width;
+  primaryWidth = if primary == { } then 1920 else (primary |> lib.attrValues |> lib.head).width;
 in
 {
   services.mako = {

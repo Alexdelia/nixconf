@@ -47,8 +47,10 @@ in
 {
   xdg.configFile."swhkd/swhkdrc".text =
     localInclude
-    + lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (hotkey: command: "${hotkey}\n\t${command}\n") keybind
+    + (
+      keybind
+      |> lib.mapAttrsToList (hotkey: command: "${hotkey}\n\t${command}\n")
+      |> lib.concatStringsSep "\n"
     );
 
   home.activation = lib.mkIf isNonNixos {

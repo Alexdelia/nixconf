@@ -5,7 +5,7 @@
   ...
 }:
 let
-  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
+  mediaEnabled = config.hostOption.spec.monitor |> lib.attrValues |> lib.any (m: m.media);
 
   sink = import ./sink.nix;
 

@@ -289,7 +289,7 @@ let
     ")"
   ];
 
-  desktops = lib.range 1 (builtins.length role.list);
+  desktops = role.list |> builtins.length |> lib.range 1;
 
   launcher = script: {
     inherit (script) name;
@@ -338,15 +338,16 @@ in
     "net.local.activity-close" = launcher activityClose;
 
     "net.local.ws-move" = (launcher wsMove) // {
-      actions = lib.listToAttrs (
-        map (i: {
+      actions =
+        desktops
+        |> map (i: {
           name = toString i;
           value = {
             name = "move window to ${builtins.elemAt role.list (i - 1)}";
             exec = "${lib.getExe wsMove} ${toString i}";
           };
-        }) desktops
-      );
+        })
+        |> lib.listToAttrs;
     };
   };
 
@@ -356,12 +357,13 @@ in
     "services/net.local.activity-move.desktop"._launch = "Meta+~";
     "services/net.local.activity-close.desktop"._launch = "Meta+Ctrl+W";
 
-    "services/net.local.ws-move.desktop" = lib.listToAttrs (
-      map (i: {
+    "services/net.local.ws-move.desktop" =
+      desktops
+      |> map (i: {
         name = toString i;
         value = "Meta+${builtins.elemAt shifted (i - 1)}";
-      }) desktops
-    );
+      })
+      |> lib.listToAttrs;
 
     plasmashell."switch to next activity" = "none";
 

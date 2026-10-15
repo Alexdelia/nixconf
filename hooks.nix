@@ -3,11 +3,11 @@
   hosts,
 }:
 let
-  forSystems = inputs.nixpkgs.lib.genAttrs (
-    inputs.nixpkgs.lib.lists.unique (
-      inputs.nixpkgs.lib.mapAttrsToList (_hostname: hostAttrs: hostAttrs.system) hosts
-    )
-  );
+  forSystems =
+    hosts
+    |> inputs.nixpkgs.lib.mapAttrsToList (_hostname: hostAttrs: hostAttrs.system)
+    |> inputs.nixpkgs.lib.unique
+    |> inputs.nixpkgs.lib.genAttrs;
 
   treefmtEval = forSystems (
     system: inputs.treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} ./treefmt.nix

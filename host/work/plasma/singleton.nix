@@ -63,25 +63,31 @@ let
   };
 in
 {
-  programs.plasma.window-rules = lib.mapAttrsToList (name: app: {
-    description = "singleton: ${name}";
-    match.window-class = {
-      value = app.class;
-      type = "exact";
-      match-whole = false;
-    };
-    apply.desktops = {
-      value = "Desktop_${toString app.desktop}";
-      apply = "force";
-    };
-  }) singleton;
+  programs.plasma.window-rules =
+    singleton
+    |> lib.mapAttrsToList (
+      name: app: {
+        description = "singleton: ${name}";
+        match.window-class = {
+          value = app.class;
+          type = "exact";
+          match-whole = false;
+        };
+        apply.desktops = {
+          value = "Desktop_${toString app.desktop}";
+          apply = "force";
+        };
+      }
+    );
 
-  xdg.configFile = lib.mapAttrs' (
-    name: app:
-    lib.nameValuePair "autostart/${name}.desktop" {
-      source = "${autostartEntry name app}/share/applications/${name}.desktop";
-    }
-  ) singleton;
+  xdg.configFile =
+    singleton
+    |> lib.mapAttrs' (
+      name: app:
+      lib.nameValuePair "autostart/${name}.desktop" {
+        source = "${autostartEntry name app}/share/applications/${name}.desktop";
+      }
+    );
 
   systemd.user.services.plasma-singleton-stay = {
     Unit = {

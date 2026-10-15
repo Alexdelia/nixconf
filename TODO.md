@@ -10,7 +10,6 @@
 - alert for too long use of headset
 - pass for:
   - ssh connection password
-- use [pipe-operators](https://youtu.be/WOw8MJYZjRI) everywhere
 - clean host/\*/default.nix
 - better sway border for non-full screen windows
 - make my own colorpicker

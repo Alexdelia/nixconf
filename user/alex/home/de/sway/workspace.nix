@@ -9,7 +9,7 @@ let
 
   inherit (config.wayland.windowManager.sway.config) modifier;
 
-  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
+  mediaEnabled = config.hostOption.spec.monitor |> lib.attrValues |> lib.any (m: m.media);
 
   prelude = ''
     state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/sway-activity"
@@ -204,8 +204,9 @@ let
     done
   '';
 
-  gridBind = lib.listToAttrs (
-    lib.concatMap (
+  gridBind =
+    lib.range 1 10
+    |> lib.concatMap (
       i:
       let
         key = if i == 10 then "0" else toString i;
@@ -220,8 +221,8 @@ let
           value = "exec ${wsMove}/bin/sway-ws-move ${toString i}";
         }
       ]
-    ) (lib.range 1 10)
-  );
+    )
+    |> lib.listToAttrs;
 
   activityBind = {
     "${modifier}+grave" = "exec ${activityCreate}/bin/sway-activity-create";

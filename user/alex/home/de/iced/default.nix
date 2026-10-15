@@ -8,7 +8,7 @@
 let
   c = (config.scheme or scheme).withHashtag;
 
-  mediaEnabled = lib.filterAttrs (_: m: m.media) config.hostOption.spec.monitor != { };
+  mediaEnabled = config.hostOption.spec.monitor |> lib.attrValues |> lib.any (m: m.media);
 
   runtime = with pkgs; [
     wayland
@@ -17,16 +17,19 @@ let
     libGL
   ];
 
-  palette = lib.mapAttrs' (n: v: lib.nameValuePair "WIDGET_${lib.toUpper n}" v) (
-    lib.filterAttrs (n: v: builtins.isString v && builtins.match "base[0-9A-Fa-f]{2}" n != null) c
-  );
+  palette =
+    c
+    |> lib.filterAttrs (n: v: builtins.isString v && builtins.match "base[0-9A-Fa-f]{2}" n != null)
+    |> lib.mapAttrs' (n: v: lib.nameValuePair "WIDGET_${lib.toUpper n}" v);
 
-  spec = map (w: import w { inherit pkgs lib; }) [
-    ./media-boot-prompt
-    ./power-menu
-    ./power-tray
-    ./volume-osd
-  ];
+  spec =
+    [
+      ./media-boot-prompt
+      ./power-menu
+      ./power-tray
+      ./volume-osd
+    ]
+    |> map (w: import w { inherit pkgs lib; });
 
   workspace = pkgs.rustPlatform.buildRustPackage {
     pname = "iced-widget";
@@ -55,7 +58,7 @@ let
         WIDGET_FONT_NUMERIC = maple;
         WIDGET_FONT_SYMBOL = "${config.stylix.fonts.sansSerif.name} Propo";
       }
-      // lib.mergeAttrsList (map (w: w.env) spec);
+      // (spec |> map (w: w.env) |> lib.mergeAttrsList);
 
     postFixup = ''
       patchelf --add-rpath ${lib.makeLibraryPath runtime} $out/bin/*

@@ -7,11 +7,10 @@
 let
   inherit (config.hostOption.spec) monitor;
 
-  mediaEnabled = lib.filterAttrs (_: m: m.media) monitor != { };
+  mediaEnabled = monitor |> lib.attrValues |> lib.any (m: m.media);
 
-  screen = lib.concatStringsSep ";" (
-    lib.mapAttrsToList (name: m: "${name}:${toString m.height}") monitor
-  );
+  screen =
+    monitor |> lib.mapAttrsToList (name: m: "${name}:${toString m.height}") |> lib.concatStringsSep ";";
 
   start = pkgs.writeShellApplication {
     name = "power-tray-start";

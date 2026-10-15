@@ -31,9 +31,8 @@
           immutable = true;
         };
 
-        kglobalshortcutsrc = lib.mapAttrs (
-          _: lib.mapAttrs (_: _: { immutable = true; })
-        ) config.programs.plasma.shortcuts;
+        kglobalshortcutsrc =
+          config.programs.plasma.shortcuts |> lib.mapAttrs (_: lib.mapAttrs (_: _: { immutable = true; }));
       };
 
       workspace = {
@@ -57,10 +56,12 @@
     config.gtk.iconTheme.package
   ];
 
-  xdg.dataFile = lib.mapAttrs' (
-    id: _:
-    lib.nameValuePair "applications/${id}.desktop" {
-      source = "${config.home.path}/share/applications/${id}.desktop";
-    }
-  ) config.xdg.desktopEntries;
+  xdg.dataFile =
+    config.xdg.desktopEntries
+    |> lib.mapAttrs' (
+      id: _:
+      lib.nameValuePair "applications/${id}.desktop" {
+        source = "${config.home.path}/share/applications/${id}.desktop";
+      }
+    );
 }

@@ -2,8 +2,11 @@
 let
   role = import ../../../user/alex/home/de/sway/role.nix;
 
-  desktopSwitch = lib.listToAttrs (
-    lib.concatMap (
+  desktopSwitch =
+    role.list
+    |> builtins.length
+    |> lib.range 1
+    |> lib.concatMap (
       i:
       let
         n = toString i;
@@ -19,8 +22,8 @@ let
           value = "none";
         }
       ]
-    ) (lib.range 1 (builtins.length role.list))
-  );
+    )
+    |> lib.listToAttrs;
 in
 {
   programs.plasma = {

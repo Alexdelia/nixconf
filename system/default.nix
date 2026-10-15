@@ -20,20 +20,15 @@
     ./de
     ./networking.nix
   ]
-  ++
-    /*
-      (
-        users |> map (username: (import ../user/${username} {
-          inherit username inputs stateVersion;
-        }))
-      );
-    */
-    (map (
+  ++ (
+    users
+    |> map (
       username:
-      (import ../user/${username} {
+      import ../user/${username} {
         inherit username inputs stateVersion;
-      })
-    ) users);
+      }
+    )
+  );
 
   nix = {
     settings = {
