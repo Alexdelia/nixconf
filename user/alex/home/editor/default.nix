@@ -4,7 +4,6 @@
 
   imports = [
     ./neovim
-    # ./vscode
     # ./helix
   ];
 }

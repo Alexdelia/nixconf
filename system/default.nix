@@ -68,8 +68,6 @@
       [
         "copilot.vim"
         "slack"
-        "code"
-        "vscode"
       ]
       ++ (
         if config.hostOption.entertainment.gaming then
