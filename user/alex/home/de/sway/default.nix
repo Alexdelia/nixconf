@@ -48,10 +48,6 @@ in
       swaylock.enable = enable;
     };
 
-    services = {
-      swayidle.enable = enable;
-    };
-
     dp.colorpicker = "${pkgs.hyprpicker}/bin/hyprpicker -a";
   };
 }
