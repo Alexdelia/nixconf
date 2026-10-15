@@ -63,7 +63,10 @@
   # nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate =
     pkg:
-    builtins.elem (lib.getName pkg) (
+    let
+      name = lib.getName pkg;
+    in
+    builtins.elem name (
       [
         "copilot.vim"
         "slack"
@@ -81,17 +84,8 @@
         else
           [ ]
       )
-      ++ (
-        if config.hostOption.spec.nvidia then
-          [
-            lib.hasPrefix
-            "nvidia"
-            (lib.getName pkg)
-          ]
-        else
-          [ ]
-      )
-    );
+    )
+    || (config.hostOption.spec.nvidia && lib.hasPrefix "nvidia" name);
 
   nixpkgs.overlays = [
     (import ../common/overlay.nix inputs)
