@@ -13,3 +13,4 @@
 - clean host/\*/default.nix
 - make my own colorpicker
 - shortcut visualizer
+- `fwupd` on `work` host
