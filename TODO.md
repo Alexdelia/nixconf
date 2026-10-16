@@ -15,3 +15,5 @@
 - shortcut visualizer
 - `fwupd` on `work` host
 - enable `programs.git.signing`
+- improve colorscheme access
+- improve screenshot tool
