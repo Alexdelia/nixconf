@@ -13,4 +13,3 @@
 - clean host/\*/default.nix
 - make my own colorpicker
 - shortcut visualizer
-- `auto-optimise-store = true` on work host

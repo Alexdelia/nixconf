@@ -21,6 +21,8 @@ _: {
     };
   };
 
+  nix.settings.auto-optimise-store = true;
+
   stylix = {
     enable = false;
 
