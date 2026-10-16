@@ -14,3 +14,4 @@
 - make my own colorpicker
 - shortcut visualizer
 - `fwupd` on `work` host
+- enable `programs.git.signing`
