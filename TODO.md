@@ -17,3 +17,5 @@
 - enable `programs.git.signing`
 - improve colorscheme access
 - improve screenshot tool
+  - have screenshot related shortcut in swhkd
+  - allow video
