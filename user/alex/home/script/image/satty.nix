@@ -8,7 +8,7 @@ let
 in
 {
   programs.satty = {
-    enable = true;
+    enable = config.customScript ? imageEdit;
 
     settings = {
       general = {

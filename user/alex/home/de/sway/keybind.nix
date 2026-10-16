@@ -18,40 +18,44 @@ let
   highBrightnessChange = baseBrightnessChange * 4;
 in
 {
-  wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault {
-    # screen read
-    "${modifier}+s" = "exec ${config.customScript.screenshot}";
-    "${modifier}+i" = "exec ${config.customScript.imageEdit}";
-    "${modifier}+q" = "exec ${config.dp.colorpicker}";
+  wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (
+    {
+      # screen read
+      "${modifier}+s" = "exec ${config.customScript.screenshot}";
+      "${modifier}+q" = "exec ${config.dp.colorpicker}";
 
-    # script
-    "${modifier}+p" = "exec ${config.customScript.passwordGen} | ${config.dp.clipboard-copy}";
+      # script
+      "${modifier}+p" = "exec ${config.customScript.passwordGen} | ${config.dp.clipboard-copy}";
 
-    # window manager
-    "${modifier}+Shift+q" = "kill";
+      # window manager
+      "${modifier}+Shift+q" = "kill";
 
-    # media audio
-    "XF86AudioPlay" = "exec ${playerctl} play-pause";
-    "XF86AudioNext" = "exec ${playerctl} next";
-    "XF86AudioPrev" = "exec ${playerctl} previous";
-    "XF86AudioStop" = "exec ${playerctl} stop";
-    "${modifier}+o" = "exec ${config.customScript.sinkPick}";
+      # media audio
+      "XF86AudioPlay" = "exec ${playerctl} play-pause";
+      "XF86AudioNext" = "exec ${playerctl} next";
+      "XF86AudioPrev" = "exec ${playerctl} previous";
+      "XF86AudioStop" = "exec ${playerctl} stop";
+      "${modifier}+o" = "exec ${config.customScript.sinkPick}";
 
-    # volume
-    "XF86AudioRaiseVolume" =
-      "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%+";
-    "XF86AudioLowerVolume" =
-      "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%-";
-    "Shift+XF86AudioRaiseVolume" =
-      "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%+";
-    "Shift+XF86AudioLowerVolume" =
-      "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%-";
-    "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+      # volume
+      "XF86AudioRaiseVolume" =
+        "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%+";
+      "XF86AudioLowerVolume" =
+        "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString baseVolumeChange}%-";
+      "Shift+XF86AudioRaiseVolume" =
+        "exec ${wpctl} set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%+";
+      "Shift+XF86AudioLowerVolume" =
+        "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ ${toString highVolumeChange}%-";
+      "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
 
-    # brightness
-    "XF86MonBrightnessUp" = "exec ${brightnessctl} set ${toString baseBrightnessChange}%+";
-    "XF86MonBrightnessDown" = "exec ${brightnessctl} set ${toString baseBrightnessChange}%-";
-    "Shift+XF86MonBrightnessUp" = "exec ${brightnessctl} set ${toString highBrightnessChange}%+";
-    "Shift+XF86MonBrightnessDown" = "exec ${brightnessctl} set ${toString highBrightnessChange}%-";
-  };
+      # brightness
+      "XF86MonBrightnessUp" = "exec ${brightnessctl} set ${toString baseBrightnessChange}%+";
+      "XF86MonBrightnessDown" = "exec ${brightnessctl} set ${toString baseBrightnessChange}%-";
+      "Shift+XF86MonBrightnessUp" = "exec ${brightnessctl} set ${toString highBrightnessChange}%+";
+      "Shift+XF86MonBrightnessDown" = "exec ${brightnessctl} set ${toString highBrightnessChange}%-";
+    }
+    // lib.optionalAttrs (config.customScript ? imageEdit) {
+      "${modifier}+i" = "exec ${config.customScript.imageEdit}";
+    }
+  );
 }

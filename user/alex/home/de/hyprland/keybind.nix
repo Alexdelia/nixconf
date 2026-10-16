@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -25,7 +26,6 @@
       "$mod, O, exec, ${config.customScript.sinkPick}"
 
       "$mod, S, exec, ${config.customScript.screenshot}"
-      "$mod, I, exec, ${config.customScript.imageEdit}"
       "$mod, Q, exec, ${config.dp.colorpicker}"
 
       "$mod, P, exec, ${config.customScript.passwordGen} | ${config.dp.clipboard-copy}"
@@ -54,7 +54,8 @@
       "$mod SHIFT, 8, movetoworkspace, 8"
       "$mod SHIFT, 9, movetoworkspace, 9"
       "$mod SHIFT, 0, movetoworkspace, 10"
-    ];
+    ]
+    ++ lib.optional (config.customScript ? imageEdit) "$mod, I, exec, ${config.customScript.imageEdit}";
 
     # e -> repeat, will repeat when held.
     # l -> locked, will also work when an input inhibitor (e.g. a lockscreen) is active.
