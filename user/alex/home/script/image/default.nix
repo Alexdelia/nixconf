@@ -8,6 +8,8 @@ let
   imageEdit = import ./image-edit.nix { inherit config pkgs; };
 in
 {
+  imports = [ ./satty.nix ];
+
   home.packages = [
     screenshot
     imageEdit

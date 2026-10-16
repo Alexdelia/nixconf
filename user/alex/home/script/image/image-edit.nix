@@ -5,8 +5,8 @@
 }:
 pkgs.writeShellApplication {
   name = "image-edit";
-  runtimeInputs = with pkgs; [ swappy ];
+  runtimeInputs = with pkgs; [ satty ];
   text = ''
-    ${config.dp.clipboard-paste} | swappy -f -
+    ${config.dp.clipboard-paste} | satty -f -
   '';
 }
