@@ -1,6 +1,5 @@
 {
   config,
-  scheme ? { },
   pkgs,
   ...
 }:
@@ -22,7 +21,7 @@
 
   home.file."${config.xdg.configHome}/rice/color.scss".text =
     let
-      c = (config.scheme or scheme).withHashtag;
+      c = config.scheme.withHashtag;
     in
     ''
       $base00:${c.base00};

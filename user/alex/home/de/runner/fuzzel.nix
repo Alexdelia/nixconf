@@ -1,11 +1,10 @@
 {
   pkgs,
   config,
-  scheme ? { },
   ...
 }:
 let
-  s = config.scheme or scheme;
+  s = config.scheme;
 in
 {
   dp = {

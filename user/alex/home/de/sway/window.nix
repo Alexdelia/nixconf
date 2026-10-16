@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  scheme ? { },
   ...
 }:
 let
-  c = (config.scheme or scheme).withHashtag;
+  c = config.scheme.withHashtag;
 
   floatingPadding = 16;
 

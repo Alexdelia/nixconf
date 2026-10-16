@@ -1,13 +1,12 @@
 {
   pkgs,
   config,
-  scheme ? { },
   ...
 }:
 let
   themeName = "theme";
 
-  schemeHex = (config.scheme or scheme).withHashtag;
+  schemeHex = config.scheme.withHashtag;
 
   copyUuid = import ./copy-uuid.nix {
     inherit pkgs;

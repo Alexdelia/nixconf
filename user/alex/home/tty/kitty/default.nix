@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  scheme ? { },
   ...
 }:
 {
@@ -47,7 +46,7 @@
         linux_display_server = "x11";
       }
       // (import ./scheme.nix {
-        scheme = config.scheme or scheme;
+        scheme = config.scheme;
       });
     };
   };

@@ -1,10 +1,9 @@
 {
   config,
-  scheme ? { },
   ...
 }:
 let
-  color = (config.scheme or scheme).withHashtag;
+  color = config.scheme.withHashtag;
 in
 {
   programs.satty = {

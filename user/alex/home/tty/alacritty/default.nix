@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  scheme ? { },
   ...
 }:
 {
@@ -57,7 +56,7 @@
         };
       }
       // (import ./scheme.nix {
-        scheme = config.scheme or scheme;
+        scheme = config.scheme;
       });
     };
   };

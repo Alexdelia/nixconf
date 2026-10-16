@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  scheme,
   ...
 }:
 {
@@ -52,7 +51,7 @@
     # multi-line strings with Treesitter! (Depends on your editor)
     extraCss =
       let
-        s = (config.scheme or scheme).withHashtag;
+        s = config.scheme.withHashtag;
       in
       /* css */ ''
         * {

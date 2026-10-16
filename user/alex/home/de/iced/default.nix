@@ -1,12 +1,11 @@
 {
   config,
-  scheme ? { },
   pkgs,
   lib,
   ...
 }:
 let
-  c = (config.scheme or scheme).withHashtag;
+  c = config.scheme.withHashtag;
 
   mediaEnabled = config.hostOption.spec.monitor |> lib.attrValues |> lib.any (m: m.media);
 

@@ -2,13 +2,12 @@
   pkgs,
   config,
   lib,
-  scheme ? { },
   ...
 }:
 let
   menu = import ./jerry-menu.nix {
     pkgs = pkgs.unstable;
-    color = (config.scheme or scheme).withHashtag;
+    color = config.scheme.withHashtag;
     font = {
       inherit (config.stylix.fonts.sansSerif) name;
       size = config.stylix.fonts.sizes.popups;

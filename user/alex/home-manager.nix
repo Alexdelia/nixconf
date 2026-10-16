@@ -10,12 +10,14 @@
 
     sharedModules = [
       inputs.sops-nix.homeManagerModules.sops
+
+      inputs.base16.homeManagerModule
+      { inherit (config) scheme; }
     ];
 
     extraSpecialArgs = {
       inherit inputs;
       inherit username;
-      inherit (config) scheme;
     };
 
     users.${username} =

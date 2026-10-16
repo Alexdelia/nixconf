@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  scheme ? { },
   ...
 }:
 let
@@ -44,7 +43,7 @@ in
       colors-dark.alpha = 1.0;
 
       csd.preferred = "none";
-    } (import ./scheme.nix { scheme = config.scheme or scheme; });
+    } (import ./scheme.nix { scheme = config.scheme; });
   };
 
   stylix.targets.foot.enable = false;

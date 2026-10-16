@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  scheme ? { },
   ...
 }:
 let
-  s = (config.scheme or scheme).withHashtag;
+  s = config.scheme.withHashtag;
 
   mode = import ./mode.nix;
 
