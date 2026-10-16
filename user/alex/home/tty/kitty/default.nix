@@ -46,7 +46,7 @@
         linux_display_server = "x11";
       }
       // (import ./scheme.nix {
-        scheme = config.scheme;
+        inherit (config) scheme;
       });
     };
   };

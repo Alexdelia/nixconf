@@ -56,7 +56,7 @@
         };
       }
       // (import ./scheme.nix {
-        scheme = config.scheme;
+        inherit (config) scheme;
       });
     };
   };

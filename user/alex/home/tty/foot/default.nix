@@ -43,7 +43,7 @@ in
       colors-dark.alpha = 1.0;
 
       csd.preferred = "none";
-    } (import ./scheme.nix { scheme = config.scheme; });
+    } (import ./scheme.nix { inherit (config) scheme; });
   };
 
   stylix.targets.foot.enable = false;
