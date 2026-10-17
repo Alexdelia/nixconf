@@ -408,6 +408,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "capture"
+version = "0.1.0"
+dependencies = [
+ "iced",
+ "iced_layershell",
+ "libc",
+ "serde",
+ "serde_json",
+ "tokio",
+ "widget",
+]
+
+[[package]]
 name = "cc"
 version = "1.2.67"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -821,6 +834,12 @@ name = "find-msvc-tools"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582"
+
+[[package]]
+name = "float_next_after"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8bf7cc16383c4b8d58b9905a8509f02926ce3058053c056376248d958c9df1e8"
 
 [[package]]
 name = "fnv"
@@ -1312,6 +1331,7 @@ dependencies = [
  "iced_core",
  "iced_futures",
  "log",
+ "lyon_path",
  "raw-window-handle",
  "rustc-hash 2.1.3",
  "thiserror 2.0.18",
@@ -1425,6 +1445,7 @@ dependencies = [
  "iced_debug",
  "iced_graphics",
  "log",
+ "lyon",
  "rustc-hash 2.1.3",
  "thiserror 2.0.18",
  "wgpu",
@@ -1478,6 +1499,12 @@ dependencies = [
  "equivalent",
  "hashbrown 0.17.1",
 ]
+
+[[package]]
+name = "itoa"
+version = "1.0.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "jni"
@@ -1704,6 +1731,58 @@ name = "lru"
 version = "0.16.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f66e8d5d03f609abc3a39e6f08e4164ebf1447a732906d39eb9b99b7919ef39"
+
+[[package]]
+name = "lyon"
+version = "1.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd0578bdecb7d6d88987b8b2b1e3a4e2f81df9d0ece1078623324a567904e7b7"
+dependencies = [
+ "lyon_algorithms",
+ "lyon_tessellation",
+]
+
+[[package]]
+name = "lyon_algorithms"
+version = "1.0.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cdfa8785f95e57914ddb35e3b59994aeba6f5e79e9cfd03da1c269f010f36009"
+dependencies = [
+ "lyon_path",
+ "num-traits",
+]
+
+[[package]]
+name = "lyon_geom"
+version = "1.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4336502e29e32af93cf2dad2214ed6003c17ceb5bd499df77b1de663b9042b92"
+dependencies = [
+ "arrayvec",
+ "euclid",
+ "num-traits",
+]
+
+[[package]]
+name = "lyon_path"
+version = "1.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c463f9c428b7fc5ec885dcd39ce4aa61e29111d0e33483f6f98c74e89d8621e"
+dependencies = [
+ "lyon_geom",
+ "num-traits",
+]
+
+[[package]]
+name = "lyon_tessellation"
+version = "1.0.22"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "43b8dcf906637ecef61b3c0740c7a4e7f27caeb31257cfac0cc579ce15be6005"
+dependencies = [
+ "float_next_after",
+ "lyon_path",
+ "num-traits",
+]
 
 [[package]]
 name = "malloc_buf"
@@ -2734,6 +2813,19 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "serde_json"
+version = "1.0.154"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6"
+dependencies = [
+ "itoa",
+ "memchr",
+ "serde",
+ "serde_core",
+ "zmij",
 ]
 
 [[package]]
@@ -4249,6 +4341,12 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "zmij"
+version = "1.0.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
 
 [[package]]
 name = "zvariant"

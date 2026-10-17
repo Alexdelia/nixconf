@@ -21,7 +21,7 @@ in
   wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault (
     {
       # screen read
-      "${modifier}+s" = "exec ${config.customScript.screenshot}";
+      "${modifier}+s" = null; # owned by swhkd
       "${modifier}+q" = "exec ${config.dp.colorpicker}";
 
       # script

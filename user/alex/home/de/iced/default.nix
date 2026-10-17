@@ -23,6 +23,7 @@ let
 
   spec =
     [
+      ./capture
       ./media-boot-prompt
       ./power-menu
       ./power-tray
@@ -71,6 +72,12 @@ let
       cp ${workspace}/bin/${name} $out/bin/
     '';
 
+  capture = pkgs.writeShellApplication {
+    name = "capture";
+    text = ''
+      CAPTURE_CLIPBOARD_COPY=${config.dp.clipboard-copy} exec ${workspace}/bin/capture "$@"
+    '';
+  };
   mediaBootPrompt = bin "media-boot-prompt";
   powerMenuWidget = bin "power-menu";
   powerTray = bin "power-tray";
@@ -87,16 +94,22 @@ let
   };
 in
 {
-  config = lib.mkIf config.wayland.windowManager.sway.enable (
-    lib.mkMerge [
-      {
-        dp.volumeOsd = "${volumeOsd}/bin/volume-osd";
-        dp.powerMenu = "${powerMenu}/bin/power-menu";
-      }
-      (lib.mkIf mediaEnabled {
-        dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
-        dp.powerTray = "${powerTray}/bin/power-tray";
-      })
-    ]
-  );
+  config = lib.mkMerge [
+    {
+      home.packages = [ capture ];
+      customScript.capture = "${capture}/bin/capture";
+    }
+    (lib.mkIf config.wayland.windowManager.sway.enable (
+      lib.mkMerge [
+        {
+          dp.volumeOsd = "${volumeOsd}/bin/volume-osd";
+          dp.powerMenu = "${powerMenu}/bin/power-menu";
+        }
+        (lib.mkIf mediaEnabled {
+          dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
+          dp.powerTray = "${powerTray}/bin/power-tray";
+        })
+      ]
+    ))
+  ];
 }

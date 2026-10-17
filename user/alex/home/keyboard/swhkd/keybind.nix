@@ -30,7 +30,6 @@ let
       "super + w" = withNotifyMissing "dp.powerMenu";
 
       # screen read
-      # "super + s" = "screenshot";
       # "super + q" = "colorpicker";
 
       # media audio
@@ -38,6 +37,10 @@ let
       "super + shift + z" = "${mpc} toggle";
       "super + x" = "${playerctl} next";
       "super + shift + x" = "${mpc} next";
+    }
+    // lib.optionalAttrs (!config.targets.genericLinux.enable) {
+      "super + s" = "${config.customScript.capture} screenshot";
+      "super + shift + s" = "${config.customScript.capture} video";
     };
 
   isNonNixos = config.targets.genericLinux.enable;

@@ -25,7 +25,6 @@
       "$mod, W, exec, ${config.dp.powerMenu}"
       "$mod, O, exec, ${config.customScript.sinkPick}"
 
-      "$mod, S, exec, ${config.customScript.screenshot}"
       "$mod, Q, exec, ${config.dp.colorpicker}"
 
       "$mod, P, exec, ${config.customScript.passwordGen} | ${config.dp.clipboard-copy}"
