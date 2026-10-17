@@ -1,4 +1,5 @@
 use std::os::unix::fs::{DirBuilderExt, PermissionsExt};
+use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -84,6 +85,17 @@ pub fn copy_args(file: &Path) -> Vec<String> {
     ]
 }
 
+pub fn tie_to_parent(command: &mut Command) -> &mut Command {
+    unsafe {
+        command.pre_exec(|| {
+            if libc::prctl(libc::PR_SET_PDEATHSIG, libc::SIGINT) == -1 {
+                return Err(std::io::Error::last_os_error());
+            }
+            Ok(())
+        })
+    }
+}
+
 pub struct Recording {
     child: Child,
     file: PathBuf,
@@ -95,7 +107,7 @@ impl Recording {
         let rect = rect.even().ok_or("selection too small")?;
         let file = prepare(&dir()).map_err(|error| format!("video dir: {error}"))?;
         let mute = Mute::start();
-        let child = Command::new(tool::wf_recorder())
+        let child = tie_to_parent(&mut Command::new(tool::wf_recorder()))
             .args(recorder_args(rect, &file))
             .stdin(Stdio::null())
             .stdout(Stdio::null())
@@ -144,6 +156,33 @@ mod test {
             std::env::temp_dir().join(format!("capture-test-video-{}-{name}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         dir
+    }
+
+    #[test]
+    fn tied_child_dies_with_spawning_thread() {
+        let mut child = std::thread::spawn(|| {
+            tie_to_parent(Command::new("sleep").arg("30"))
+                .spawn()
+                .unwrap()
+        })
+        .join()
+        .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(2);
+        let status = loop {
+            if let Some(status) = child.try_wait().unwrap() {
+                break Some(status);
+            }
+            if std::time::Instant::now() > deadline {
+                let _ = child.kill();
+                break None;
+            }
+            std::thread::sleep(Duration::from_millis(20));
+        };
+        use std::os::unix::process::ExitStatusExt;
+        assert_eq!(
+            status.and_then(|status| status.signal()),
+            Some(libc::SIGINT)
+        );
     }
 
     #[test]

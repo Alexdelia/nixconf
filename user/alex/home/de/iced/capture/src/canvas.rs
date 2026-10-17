@@ -68,27 +68,47 @@ fn dim(frame: &mut Frame, bounds: Rectangle, rect: Rect) {
     });
 }
 
+pub fn translate(
+    output: &str,
+    pressed: &mut bool,
+    event: &Event,
+    bounds: Rectangle,
+    cursor: mouse::Cursor,
+) -> Option<Message> {
+    match event {
+        Event::Mouse(mouse::Event::ButtonPressed(mouse::Button::Left)) => {
+            let point = point_of(cursor.position_in(bounds)?);
+            *pressed = true;
+            Some(Message::Press(output.to_owned(), point))
+        }
+        Event::Mouse(mouse::Event::CursorMoved { .. }) if *pressed => {
+            let position = cursor.position()?;
+            let clamped = iced::Point::new(
+                position.x.clamp(bounds.x, bounds.x + bounds.width) - bounds.x,
+                position.y.clamp(bounds.y, bounds.y + bounds.height) - bounds.y,
+            );
+            Some(Message::Drag(output.to_owned(), point_of(clamped)))
+        }
+        Event::Mouse(mouse::Event::ButtonReleased(mouse::Button::Left)) if *pressed => {
+            *pressed = false;
+            Some(Message::Release)
+        }
+        _ => None,
+    }
+}
+
 impl Program<Message> for Overlay<'_> {
-    type State = ();
+    type State = bool;
 
     fn update(
         &self,
-        _state: &mut Self::State,
+        pressed: &mut Self::State,
         event: &Event,
         bounds: Rectangle,
         cursor: mouse::Cursor,
     ) -> Option<Action<Message>> {
-        let point = point_of(cursor.position_in(bounds)?);
-        let output = self.output.to_owned();
-        let message = match event {
-            Event::Mouse(mouse::Event::ButtonPressed(mouse::Button::Left)) => {
-                Message::Press(output, point)
-            }
-            Event::Mouse(mouse::Event::CursorMoved { .. }) => Message::Drag(output, point),
-            Event::Mouse(mouse::Event::ButtonReleased(mouse::Button::Left)) => Message::Release,
-            _ => return None,
-        };
-        Some(Action::publish(message).and_capture())
+        translate(self.output, pressed, event, bounds, cursor)
+            .map(|message| Action::publish(message).and_capture())
     }
 
     fn draw(
@@ -149,5 +169,96 @@ impl Program<Message> for Overlay<'_> {
             Some(Handle::TopRight | Handle::BottomLeft) => mouse::Interaction::ResizingDiagonallyUp,
             None => mouse::Interaction::Crosshair,
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    fn bounds() -> Rectangle {
+        Rectangle::new(iced::Point::ORIGIN, Size::new(100.0, 100.0))
+    }
+
+    fn at(x: f32, y: f32) -> mouse::Cursor {
+        mouse::Cursor::Available(iced::Point::new(x, y))
+    }
+
+    fn press() -> Event {
+        Event::Mouse(mouse::Event::ButtonPressed(mouse::Button::Left))
+    }
+
+    fn release() -> Event {
+        Event::Mouse(mouse::Event::ButtonReleased(mouse::Button::Left))
+    }
+
+    fn moved(x: f32, y: f32) -> Event {
+        Event::Mouse(mouse::Event::CursorMoved {
+            position: iced::Point::new(x, y),
+        })
+    }
+
+    #[test]
+    fn release_outside_surface_still_releases() {
+        let mut pressed = true;
+        let message = translate(
+            "DP-1",
+            &mut pressed,
+            &release(),
+            bounds(),
+            mouse::Cursor::Unavailable,
+        );
+        assert!(matches!(message, Some(Message::Release)));
+        assert!(!pressed);
+    }
+
+    #[test]
+    fn drag_outside_surface_clamps_to_edge() {
+        let mut pressed = true;
+        let message = translate(
+            "DP-1",
+            &mut pressed,
+            &moved(150.0, 40.0),
+            bounds(),
+            at(150.0, 40.0),
+        );
+        assert!(matches!(
+            message,
+            Some(Message::Drag(output, Point { x: 100, y: 40 })) if output == "DP-1"
+        ));
+    }
+
+    #[test]
+    fn hover_without_press_is_ignored() {
+        let mut pressed = false;
+        assert!(
+            translate(
+                "DP-1",
+                &mut pressed,
+                &moved(10.0, 10.0),
+                bounds(),
+                at(10.0, 10.0)
+            )
+            .is_none()
+        );
+        assert!(translate("DP-1", &mut pressed, &release(), bounds(), at(10.0, 10.0)).is_none());
+    }
+
+    #[test]
+    fn press_inside_starts_drag() {
+        let mut pressed = false;
+        let message = translate("DP-1", &mut pressed, &press(), bounds(), at(10.0, 20.0));
+        assert!(matches!(
+            message,
+            Some(Message::Press(_, Point { x: 10, y: 20 }))
+        ));
+        assert!(pressed);
+    }
+
+    #[test]
+    fn press_outside_surface_is_ignored() {
+        let mut pressed = false;
+        assert!(translate("DP-1", &mut pressed, &press(), bounds(), at(150.0, 20.0)).is_none());
+        assert!(!pressed);
     }
 }

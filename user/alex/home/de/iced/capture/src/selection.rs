@@ -5,8 +5,15 @@ use crate::{
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Drag {
-    Resize { output: String, handle: Handle },
-    New { output: String, start: Point },
+    Resize {
+        output: String,
+        handle: Handle,
+        origin: Rect,
+    },
+    New {
+        output: String,
+        start: Point,
+    },
 }
 
 #[derive(Debug, Default)]
@@ -24,11 +31,14 @@ impl Selection {
     }
 
     pub fn press(&mut self, output: &str, point: Point) {
-        let handle = self.on(output).and_then(|rect| rect.handle_at(point));
-        self.drag = Some(match handle {
-            Some(handle) => Drag::Resize {
+        let grabbed = self
+            .on(output)
+            .and_then(|rect| rect.handle_at(point).map(|handle| (rect, handle)));
+        self.drag = Some(match grabbed {
+            Some((origin, handle)) => Drag::Resize {
                 output: output.to_owned(),
                 handle,
+                origin,
             },
             None => {
                 self.current = None;
@@ -43,13 +53,14 @@ impl Selection {
     pub fn drag_to(&mut self, output: &str, point: Point) {
         let rect = match &self.drag {
             Some(Drag::Resize {
-                output: origin,
+                output: pressed,
                 handle,
-            }) if origin == output => self.on(output).and_then(|rect| rect.resize(*handle, point)),
+                origin,
+            }) if pressed == output => origin.resize(*handle, point),
             Some(Drag::New {
-                output: origin,
+                output: pressed,
                 start,
-            }) if origin == output => Rect::from_drag(*start, point),
+            }) if pressed == output => Rect::from_drag(*start, point),
             _ => None,
         };
         if let Some(rect) = rect {
@@ -104,6 +115,15 @@ mod test {
         selection.release();
         assert_eq!(selection.current, Some(saved("DP-1", 100, 100, 300, 100)));
         assert_eq!(selection.drag, None);
+    }
+
+    #[test]
+    fn resize_past_opposite_edge_keeps_fixed_edge() {
+        let mut selection = selection();
+        selection.press("DP-1", point(100, 150));
+        selection.drag_to("DP-1", point(350, 150));
+        selection.drag_to("DP-1", point(360, 150));
+        assert_eq!(selection.current, Some(saved("DP-1", 300, 100, 60, 100)));
     }
 
     #[test]

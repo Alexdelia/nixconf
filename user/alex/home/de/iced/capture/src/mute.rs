@@ -38,6 +38,10 @@ fn makoctl(argument: &[&str]) -> String {
         .unwrap_or_default()
 }
 
+pub fn recover() {
+    makoctl(&["mode", "-r", MODE]);
+}
+
 pub struct Mute {
     before: u64,
 }

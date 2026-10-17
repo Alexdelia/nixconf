@@ -17,16 +17,20 @@ struct SwayOutput {
     rect: Rect,
 }
 
-pub fn parse(json: &str) -> Vec<Output> {
-    serde_json::from_str::<Vec<SwayOutput>>(json)
-        .unwrap_or_default()
+pub fn parse(json: &str) -> Result<Vec<Output>, String> {
+    let output: Vec<Output> = serde_json::from_str::<Vec<SwayOutput>>(json)
+        .map_err(|error| format!("swaymsg output: {error}"))?
         .into_iter()
         .filter(|output| output.active)
         .map(|output| Output {
             name: output.name,
             rect: output.rect,
         })
-        .collect()
+        .collect();
+    if output.is_empty() {
+        return Err("no active output".to_owned());
+    }
+    Ok(output)
 }
 
 pub fn query() -> Result<Vec<Output>, String> {
@@ -37,7 +41,7 @@ pub fn query() -> Result<Vec<Output>, String> {
     if !result.status.success() {
         return Err(format!("swaymsg: {}", result.status));
     }
-    Ok(parse(&String::from_utf8_lossy(&result.stdout)))
+    parse(&String::from_utf8_lossy(&result.stdout))
 }
 
 #[cfg(test)]
@@ -54,7 +58,7 @@ mod test {
         ]"#;
         assert_eq!(
             parse(json),
-            vec![Output {
+            Ok(vec![Output {
                 name: "DP-1".to_owned(),
                 rect: Rect {
                     x: 0,
@@ -62,12 +66,19 @@ mod test {
                     width: 2560,
                     height: 1440
                 },
-            }]
+            }])
         );
     }
 
     #[test]
-    fn parse_invalid_json_is_empty() {
-        assert_eq!(parse("not json"), vec![]);
+    fn parse_invalid_json_is_error() {
+        assert!(parse("not json").is_err());
+    }
+
+    #[test]
+    fn parse_no_active_output_is_error() {
+        let json = r#"[{"name": "DP-1", "active": false,
+            "rect": {"x": 0, "y": 0, "width": 0, "height": 0}}]"#;
+        assert!(parse(json).is_err());
     }
 }

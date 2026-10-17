@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 
 pub enum Claim {
-    Owner(Guard),
+    Owner { guard: Guard, stale: bool },
     Signaled,
 }
 
@@ -36,10 +36,11 @@ pub fn claim(file: &Path) -> std::io::Result<Claim> {
 }
 
 fn claim_with(file: &Path, is_capture: impl Fn(i32) -> bool) -> std::io::Result<Claim> {
-    let running = std::fs::read_to_string(file)
+    let previous = std::fs::read_to_string(file)
         .ok()
-        .and_then(|content| content.trim().parse::<i32>().ok())
-        .filter(|&pid| pid != std::process::id() as i32 && alive(pid) && is_capture(pid));
+        .and_then(|content| content.trim().parse::<i32>().ok());
+    let running =
+        previous.filter(|&pid| pid != std::process::id() as i32 && alive(pid) && is_capture(pid));
 
     if let Some(pid) = running {
         unsafe { libc::kill(pid, libc::SIGINT) };
@@ -50,9 +51,12 @@ fn claim_with(file: &Path, is_capture: impl Fn(i32) -> bool) -> std::io::Result<
         std::fs::create_dir_all(parent)?;
     }
     std::fs::write(file, std::process::id().to_string())?;
-    Ok(Claim::Owner(Guard {
-        file: file.to_owned(),
-    }))
+    Ok(Claim::Owner {
+        guard: Guard {
+            file: file.to_owned(),
+        },
+        stale: previous.is_some(),
+    })
 }
 
 #[cfg(test)]
@@ -84,7 +88,7 @@ mod test {
     fn claim_without_file_is_owner() {
         let file = scratch("no-file");
         let claim = claim_with(&file, |_| true).unwrap();
-        assert!(matches!(claim, Claim::Owner(_)));
+        assert!(matches!(claim, Claim::Owner { stale: false, .. }));
         assert_eq!(content(&file), std::process::id().to_string());
     }
 
@@ -96,7 +100,7 @@ mod test {
         child.wait().unwrap();
         write_pid(&file, pid);
         let claim = claim_with(&file, |_| true).unwrap();
-        assert!(matches!(claim, Claim::Owner(_)));
+        assert!(matches!(claim, Claim::Owner { stale: true, .. }));
         assert_eq!(content(&file), std::process::id().to_string());
     }
 
@@ -106,7 +110,7 @@ mod test {
         write_pid(&file, std::process::id());
         assert!(matches!(
             claim_with(&file, |_| false).unwrap(),
-            Claim::Owner(_)
+            Claim::Owner { .. }
         ));
     }
 

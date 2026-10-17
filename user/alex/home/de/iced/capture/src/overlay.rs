@@ -1,5 +1,5 @@
 use std::cell::Cell;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use iced::{
     Color, Element, Length, Subscription, Task, Theme,
@@ -41,6 +41,7 @@ pub struct State {
     mode: Mode,
     outputs: Vec<Output>,
     surface: HashMap<IcedId, String>,
+    indicator: HashSet<IcedId>,
     selection: Selection,
     recording: Option<Recording>,
     guard: Option<Guard>,
@@ -93,6 +94,7 @@ fn boot(
         mode,
         outputs,
         surface,
+        indicator: HashSet::new(),
         selection: Selection::new(saved),
         recording: None,
         guard,
@@ -114,8 +116,8 @@ fn indicator_layer(output: &str, strip: Rect) -> NewLayerShellSettings {
     }
 }
 
-fn indicate(state: &State) -> Task<Message> {
-    let Some(saved) = &state.selection.current else {
+fn indicate(state: &mut State) -> Task<Message> {
+    let Some(saved) = state.selection.current.clone() else {
         return Task::none();
     };
     let Some(output) = state
@@ -128,12 +130,12 @@ fn indicate(state: &State) -> Task<Message> {
     let Some(recorded) = saved.rect.even() else {
         return Task::none();
     };
-    Task::batch(
-        recorded
-            .frame(INDICATOR_THICKNESS, output.rect.width, output.rect.height)
-            .into_iter()
-            .map(|strip| Message::layershell_open(indicator_layer(&saved.output, strip)).1),
-    )
+    let strips = recorded.frame(INDICATOR_THICKNESS, output.rect.width, output.rect.height);
+    Task::batch(strips.into_iter().map(|strip| {
+        let (id, task) = Message::layershell_open(indicator_layer(&saved.output, strip));
+        state.indicator.insert(id);
+        task
+    }))
 }
 
 fn global(state: &State, saved: &Saved) -> Option<Rect> {
@@ -220,31 +222,52 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
     Task::none()
 }
 
+#[derive(Debug, PartialEq, Eq)]
+enum Appearance<'a> {
+    Selection(&'a str),
+    Indicator,
+    Blank,
+}
+
+fn appearance<'a>(
+    surface: &'a HashMap<IcedId, String>,
+    indicator: &HashSet<IcedId>,
+    id: IcedId,
+) -> Appearance<'a> {
+    match surface.get(&id) {
+        Some(output) => Appearance::Selection(output),
+        None if indicator.contains(&id) => Appearance::Indicator,
+        None => Appearance::Blank,
+    }
+}
+
 fn view(state: &State, id: window::Id) -> Element<'_, Message> {
-    let Some(output) = state.surface.get(&id) else {
-        return container(space())
+    match appearance(&state.surface, &state.indicator, id) {
+        Appearance::Selection(output) => Canvas::new(Overlay {
+            output,
+            rect: state.selection.on(output),
+        })
+        .width(Length::Fill)
+        .height(Length::Fill)
+        .into(),
+        Appearance::Indicator => container(space())
             .width(Length::Fill)
             .height(Length::Fill)
             .style(|_| container::Style {
                 background: Some(p::base08().into()),
                 ..Default::default()
             })
-            .into();
-    };
-    Canvas::new(Overlay {
-        output,
-        rect: state.selection.on(output),
-    })
-    .width(Length::Fill)
-    .height(Length::Fill)
-    .into()
+            .into(),
+        Appearance::Blank => space().into(),
+    }
 }
 
-fn interrupt() -> impl Stream<Item = Message> {
-    iced::stream::channel(1, async |mut sender| {
-        let Ok(mut signal) =
-            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::interrupt())
-        else {
+const STOP_SIGNAL: [i32; 3] = [libc::SIGINT, libc::SIGTERM, libc::SIGHUP];
+
+fn stop_on(raw: &i32) -> impl Stream<Item = Message> + use<> {
+    let kind = tokio::signal::unix::SignalKind::from_raw(*raw);
+    iced::stream::channel(1, async move |mut sender| {
+        let Ok(mut signal) = tokio::signal::unix::signal(kind) else {
             return;
         };
         while signal.recv().await.is_some() {
@@ -264,7 +287,7 @@ fn subscription(state: &State) -> Subscription<Message> {
             _ => None,
         }
     });
-    let stop = Subscription::run(interrupt);
+    let stop = Subscription::batch(STOP_SIGNAL.map(|raw| Subscription::run_with(raw, stop_on)));
     match state.recording {
         Some(_) => Subscription::batch([
             key,
@@ -306,4 +329,35 @@ pub fn run(
         ..Default::default()
     })
     .run()
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn removed_selection_surface_is_blank_not_red() {
+        let surface = HashMap::new();
+        let indicator = HashSet::new();
+        assert_eq!(
+            appearance(&surface, &indicator, IcedId::unique()),
+            Appearance::Blank
+        );
+    }
+
+    #[test]
+    fn appearance_by_kind() {
+        let selection = IcedId::unique();
+        let strip = IcedId::unique();
+        let surface = HashMap::from([(selection, "DP-1".to_owned())]);
+        let indicator = HashSet::from([strip]);
+        assert_eq!(
+            appearance(&surface, &indicator, selection),
+            Appearance::Selection("DP-1")
+        );
+        assert_eq!(
+            appearance(&surface, &indicator, strip),
+            Appearance::Indicator
+        );
+    }
 }

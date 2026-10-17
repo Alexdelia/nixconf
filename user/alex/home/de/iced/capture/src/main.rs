@@ -50,7 +50,12 @@ fn main() {
         Mode::Screenshot => None,
         Mode::Video => match instance::claim(&instance::video_pid_file()) {
             Ok(Claim::Signaled) => return,
-            Ok(Claim::Owner(guard)) => Some(guard),
+            Ok(Claim::Owner { guard, stale }) => {
+                if stale {
+                    mute::recover();
+                }
+                Some(guard)
+            }
             Err(error) => tool::fail(&format!("capture: pid file: {error}")),
         },
     };
