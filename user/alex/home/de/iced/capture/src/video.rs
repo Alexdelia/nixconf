@@ -1,7 +1,7 @@
 use std::os::unix::fs::{DirBuilderExt, PermissionsExt};
 use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
-use std::process::{Child, Command, Stdio};
+use std::process::{Command, Stdio};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::{geometry::Rect, mute::Mute, tool};
@@ -98,52 +98,76 @@ pub fn tie_to_parent(command: &mut Command) -> &mut Command {
 }
 
 pub struct Recording {
-    child: Child,
+    pid: libc::pid_t,
     file: PathBuf,
+    stopping: bool,
     _mute: Mute,
 }
 
 impl Recording {
-    pub fn start(rect: Rect) -> Result<Recording, String> {
+    pub fn start(
+        rect: Rect,
+    ) -> Result<(Recording, impl Future<Output = Result<(), String>> + use<>), String> {
         let rect = rect.even().ok_or("selection too small")?;
         let file = prepare(&dir()).map_err(|error| format!("video dir: {error}"))?;
         let mute = Mute::start();
-        let child = tie_to_parent(&mut Command::new(tool::wf_recorder()))
+        let mut child = tie_to_parent(&mut Command::new(tool::wf_recorder()))
             .args(recorder_args(rect, &file))
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .spawn()
             .map_err(|error| format!("wf-recorder: {error}"))?;
-        Ok(Recording {
-            child,
+        let recording = Recording {
+            pid: child.id() as libc::pid_t,
             file,
+            stopping: false,
             _mute: mute,
-        })
+        };
+        let exit = async move {
+            tokio::task::spawn_blocking(move || child.wait())
+                .await
+                .map_err(|error| format!("wf-recorder: {error}"))?
+                .map(drop)
+                .map_err(|error| format!("wf-recorder: {error}"))
+        };
+        Ok((recording, exit))
     }
 
-    pub fn running(&mut self) -> bool {
-        matches!(self.child.try_wait(), Ok(None))
+    pub fn stopping(&self) -> bool {
+        self.stopping
     }
 
-    pub fn stop(mut self) -> Result<(), String> {
-        unsafe { libc::kill(self.child.id() as i32, libc::SIGINT) };
-        self.child
-            .wait()
-            .map_err(|error| format!("wf-recorder: {error}"))?;
-        let size = std::fs::metadata(&self.file).map_or(0, |metadata| metadata.len());
-        if size == 0 {
-            return Err("recorder produced no video".to_owned());
-        }
-        let copied = Command::new(tool::clipboard_copy())
-            .args(copy_args(&self.file))
-            .status()
-            .map_err(|error| format!("clipboard: {error}"))?;
-        if !copied.success() {
-            return Err(format!("clipboard: {copied}"));
-        }
-        Ok(())
+    pub fn file(&self) -> &Path {
+        &self.file
     }
+
+    pub fn stop(&mut self) {
+        unsafe { libc::kill(self.pid, libc::SIGINT) };
+        self.stopping = true;
+    }
+
+    pub fn kill(&self) {
+        unsafe { libc::kill(self.pid, libc::SIGKILL) };
+    }
+}
+
+pub async fn deliver(file: PathBuf) -> Result<(), String> {
+    let size = tokio::fs::metadata(&file)
+        .await
+        .map_or(0, |metadata| metadata.len());
+    if size == 0 {
+        return Err("recorder produced no video".to_owned());
+    }
+    let copied = tokio::process::Command::new(tool::clipboard_copy())
+        .args(copy_args(&file))
+        .status()
+        .await
+        .map_err(|error| format!("clipboard: {error}"))?;
+    if !copied.success() {
+        return Err(format!("clipboard: {copied}"));
+    }
+    Ok(())
 }
 
 #[cfg(test)]

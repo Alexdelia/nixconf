@@ -28,13 +28,12 @@ use crate::{
     screenshot,
     selection::Selection,
     tool,
-    video::Recording,
+    video::{self, Recording},
 };
 
 const NAMESPACE: &str = env!("CARGO_PKG_NAME");
 
 const HIDE_MS: u64 = 100;
-const RECORDER_POLL_MS: u64 = 250;
 const INDICATOR_THICKNESS: i32 = 2;
 
 pub struct State {
@@ -58,7 +57,7 @@ pub enum Message {
     Captured(Result<(), String>),
     Record(Rect),
     Stop,
-    Poll,
+    Exited(Result<(), String>),
 }
 
 fn layer(output: &str) -> NewLayerShellSettings {
@@ -198,24 +197,34 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
         Message::Cancel => finish(state, Ok(())),
         Message::Captured(outcome) => finish(state, outcome),
         Message::Record(rect) => match Recording::start(rect) {
-            Ok(recording) => {
+            Ok((recording, exit)) => {
                 state.recording = Some(recording);
-                return indicate(state);
+                return Task::batch([indicate(state), Task::perform(exit, Message::Exited)]);
             }
             Err(error) => finish(state, Err(error)),
         },
-        Message::Stop => {
-            let outcome = state.recording.take().map_or(Ok(()), Recording::stop);
-            finish(state, outcome)
-        }
-        Message::Poll
-            if state
-                .recording
-                .as_mut()
-                .is_some_and(|recording| !recording.running()) =>
+        Message::Stop => match state.recording.as_mut() {
+            Some(recording) if !recording.stopping() => recording.stop(),
+            Some(recording) => {
+                recording.kill();
+                finish(state, Err("recorder killed".to_owned()))
+            }
+            None => finish(state, Ok(())),
+        },
+        Message::Exited(Ok(())) => match state
+            .recording
+            .as_ref()
+            .filter(|recording| recording.stopping())
         {
-            finish(state, Err("recorder stopped".to_owned()))
-        }
+            Some(recording) => {
+                return Task::perform(
+                    video::deliver(recording.file().to_owned()),
+                    Message::Captured,
+                );
+            }
+            None => finish(state, Err("recorder stopped".to_owned())),
+        },
+        Message::Exited(Err(error)) => finish(state, Err(error)),
         _ => {}
     }
     Task::none()
@@ -276,7 +285,7 @@ fn stop_on(raw: &i32) -> impl Stream<Item = Message> + use<> {
     })
 }
 
-fn subscription(state: &State) -> Subscription<Message> {
+fn subscription(_state: &State) -> Subscription<Message> {
     let key = keyboard::listen().filter_map(|event| {
         let keyboard::Event::KeyPressed { key, .. } = event else {
             return None;
@@ -288,14 +297,7 @@ fn subscription(state: &State) -> Subscription<Message> {
         }
     });
     let stop = Subscription::batch(STOP_SIGNAL.map(|raw| Subscription::run_with(raw, stop_on)));
-    match state.recording {
-        Some(_) => Subscription::batch([
-            key,
-            stop,
-            iced::time::every(Duration::from_millis(RECORDER_POLL_MS)).map(|_| Message::Poll),
-        ]),
-        None => Subscription::batch([key, stop]),
-    }
+    Subscription::batch([key, stop])
 }
 
 fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
