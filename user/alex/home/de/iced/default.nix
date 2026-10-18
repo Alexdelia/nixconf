@@ -29,7 +29,8 @@ let
       ./power-tray
       ./volume-osd
     ]
-    |> map (w: import w { inherit pkgs lib; });
+    |> map (w: import w { inherit pkgs lib; })
+    |> lib.filter (w: config.wayland.windowManager.sway.enable || w.name == "capture");
 
   workspace = pkgs.rustPlatform.buildRustPackage {
     pname = "iced-widget";
@@ -43,6 +44,7 @@ let
       };
     };
 
+    cargoBuildFlags = spec |> map (w: "--package=${w.name}");
     doCheck = false;
 
     nativeBuildInputs = with pkgs; [ pkg-config ];
