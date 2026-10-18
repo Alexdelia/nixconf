@@ -12,13 +12,15 @@ mod video;
 
 use instance::Claim;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Mode {
     Screenshot,
     Video,
 }
 
 impl Mode {
+    pub const ALL: [Mode; 2] = [Mode::Screenshot, Mode::Video];
+
     pub fn name(self) -> &'static str {
         match self {
             Mode::Screenshot => "screenshot",
@@ -27,9 +29,7 @@ impl Mode {
     }
 
     fn parse(argument: &str) -> Option<Mode> {
-        [Mode::Screenshot, Mode::Video]
-            .into_iter()
-            .find(|mode| mode.name() == argument)
+        Mode::ALL.into_iter().find(|mode| mode.name() == argument)
     }
 }
 
@@ -46,18 +46,15 @@ fn main() {
         tool::fail("capture: compositor unsupported");
     }
 
-    let guard = match mode {
-        Mode::Screenshot => None,
-        Mode::Video => match instance::claim(&instance::video_pid_file()) {
-            Ok(Claim::Signaled) => return,
-            Ok(Claim::Owner { guard, stale }) => {
-                if stale {
-                    mute::recover();
-                }
-                Some(guard)
+    let guard = match instance::claim(&instance::lock_file(), mode) {
+        Ok(Claim::Signaled) => return,
+        Ok(Claim::Owner { guard, recover }) => {
+            if recover {
+                mute::recover();
             }
-            Err(error) => tool::fail(&format!("capture: pid file: {error}")),
-        },
+            guard
+        }
+        Err(error) => tool::fail(&format!("capture: lock file: {error}")),
     };
 
     let outputs = output::query().unwrap_or_else(|error| tool::fail(&format!("capture: {error}")));

@@ -21,7 +21,7 @@ use crate::{
     Mode,
     canvas::Overlay,
     geometry::{Point, Rect},
-    instance::Guard,
+    instance::{self, Guard},
     memory::{self, Saved},
     output::Output,
     screenshot,
@@ -58,6 +58,7 @@ pub enum Message {
     Captured(Result<(), String>),
     Record(Rect),
     Stop,
+    Request(Mode),
     Exited(Result<(), String>),
 }
 
@@ -189,6 +190,11 @@ fn closed(state: &mut State, id: IcedId) -> Task<Message> {
     }
 }
 
+fn switch(state: &mut State, mode: Mode) {
+    state.mode = mode;
+    state.selection = Selection::new(memory::load(&memory::path(mode), &state.outputs));
+}
+
 fn finish(state: &mut State, outcome: Result<(), String>) -> ! {
     drop(state.recording.take());
     drop(state.guard.take());
@@ -211,6 +217,9 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
         Message::Record(rect) => match Recording::start(rect) {
             Ok((recording, exit)) => {
                 state.recording = Some(recording);
+                if let Some(Err(error)) = state.guard.as_ref().map(Guard::mark_recording) {
+                    eprintln!("capture: lock file: {error}");
+                }
                 return Task::batch([indicate(state), Task::perform(exit, Message::Exited)]);
             }
             Err(error) => finish(state, Err(error)),
@@ -226,6 +235,11 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
             },
             None => finish(state, Ok(())),
         },
+        Message::Request(_) if state.recording.is_some() => return update(state, Message::Stop),
+        Message::Request(mode) if mode != state.mode && !state.surface.is_empty() => {
+            switch(state, mode)
+        }
+        Message::Request(_) => {}
         Message::Exited(Ok(())) => match state
             .recording
             .as_mut()
@@ -289,16 +303,24 @@ fn view(state: &State, id: window::Id) -> Element<'_, Message> {
 
 const STOP_SIGNAL: [i32; 3] = [libc::SIGINT, libc::SIGTERM, libc::SIGHUP];
 
-fn stop_on(raw: &i32) -> impl Stream<Item = Message> + use<> {
-    let kind = tokio::signal::unix::SignalKind::from_raw(*raw);
+fn on_signal(raw: i32, message: Message) -> impl Stream<Item = Message> + use<> {
+    let kind = tokio::signal::unix::SignalKind::from_raw(raw);
     iced::stream::channel(1, async move |mut sender| {
         let Ok(mut signal) = tokio::signal::unix::signal(kind) else {
             return;
         };
         while signal.recv().await.is_some() {
-            let _ = sender.send(Message::Stop).await;
+            let _ = sender.send(message.clone()).await;
         }
     })
+}
+
+fn stop_on(raw: &i32) -> impl Stream<Item = Message> + use<> {
+    on_signal(*raw, Message::Stop)
+}
+
+fn request_on(mode: &Mode) -> impl Stream<Item = Message> + use<> {
+    on_signal(instance::request_signal(*mode), Message::Request(*mode))
 }
 
 fn subscription(_state: &State) -> Subscription<Message> {
@@ -313,8 +335,10 @@ fn subscription(_state: &State) -> Subscription<Message> {
         }
     });
     let stop = Subscription::batch(STOP_SIGNAL.map(|raw| Subscription::run_with(raw, stop_on)));
+    let request =
+        Subscription::batch(Mode::ALL.map(|mode| Subscription::run_with(mode, request_on)));
     let closed = window::close_events().map(Message::Closed);
-    Subscription::batch([key, stop, closed])
+    Subscription::batch([key, stop, request, closed])
 }
 
 fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
@@ -328,9 +352,9 @@ pub fn run(
     mode: Mode,
     outputs: Vec<Output>,
     saved: Option<Saved>,
-    guard: Option<Guard>,
+    guard: Guard,
 ) -> Result<(), iced_layershell::Error> {
-    let guard = Cell::new(guard);
+    let guard = Cell::new(Some(guard));
     daemon(
         move || boot(mode, outputs.clone(), saved.clone(), guard.take()),
         NAMESPACE,
