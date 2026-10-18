@@ -113,10 +113,17 @@ pub fn tie_to_parent(command: &mut Command) -> &mut Command {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Phase {
+    Running,
+    Stopping,
+    Reaped,
+}
+
 pub struct Recording {
     pid: libc::pid_t,
     file: PathBuf,
-    stopping: bool,
+    phase: Phase,
     _mute: Mute,
 }
 
@@ -139,7 +146,7 @@ impl Recording {
         let recording = Recording {
             pid: child.id() as libc::pid_t,
             file,
-            stopping: false,
+            phase: Phase::Running,
             _mute: mute,
         };
         let exit = async move {
@@ -152,8 +159,8 @@ impl Recording {
         Ok((recording, exit))
     }
 
-    pub fn stopping(&self) -> bool {
-        self.stopping
+    pub fn phase(&self) -> Phase {
+        self.phase
     }
 
     pub fn file(&self) -> &Path {
@@ -161,12 +168,20 @@ impl Recording {
     }
 
     pub fn stop(&mut self) {
-        unsafe { libc::kill(self.pid, libc::SIGINT) };
-        self.stopping = true;
+        if self.phase == Phase::Running {
+            unsafe { libc::kill(self.pid, libc::SIGINT) };
+            self.phase = Phase::Stopping;
+        }
     }
 
     pub fn kill(&self) {
-        unsafe { libc::kill(self.pid, libc::SIGKILL) };
+        if self.phase == Phase::Stopping {
+            unsafe { libc::kill(self.pid, libc::SIGKILL) };
+        }
+    }
+
+    pub fn reaped(&mut self) {
+        self.phase = Phase::Reaped;
     }
 }
 

@@ -27,7 +27,7 @@ use crate::{
     screenshot,
     selection::Selection,
     tool,
-    video::{self, Recording},
+    video::{self, Phase, Recording},
 };
 
 const NAMESPACE: &str = env!("CARGO_PKG_NAME");
@@ -216,19 +216,23 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
             Err(error) => finish(state, Err(error)),
         },
         Message::Stop => match state.recording.as_mut() {
-            Some(recording) if !recording.stopping() => recording.stop(),
-            Some(recording) => {
-                recording.kill();
-                finish(state, Err("recorder killed".to_owned()))
-            }
+            Some(recording) => match recording.phase() {
+                Phase::Running => recording.stop(),
+                Phase::Stopping => {
+                    recording.kill();
+                    finish(state, Err("recorder killed".to_owned()))
+                }
+                Phase::Reaped => {}
+            },
             None => finish(state, Ok(())),
         },
         Message::Exited(Ok(())) => match state
             .recording
-            .as_ref()
-            .filter(|recording| recording.stopping())
+            .as_mut()
+            .filter(|recording| recording.phase() == Phase::Stopping)
         {
             Some(recording) => {
+                recording.reaped();
                 return Task::perform(
                     video::deliver(recording.file().to_owned()),
                     Message::Captured,
