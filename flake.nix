@@ -52,6 +52,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    crane.url = "github:ipetkov/crane";
+
     jerry = {
       url = "github:justchokingaround/jerry";
       flake = false;

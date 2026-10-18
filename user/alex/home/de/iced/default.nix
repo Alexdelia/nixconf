@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 let
@@ -38,40 +39,44 @@ let
     )
     |> lib.filter (w: config.wayland.windowManager.sway.enable || w.name == "capture");
 
-  workspace = pkgs.rustPlatform.buildRustPackage {
+  craneLib = inputs.crane.mkLib pkgs;
+
+  common = {
     pname = "iced-widget";
     version = "0.1.0";
 
-    src = ./.;
-    cargoLock = {
-      lockFile = ./Cargo.lock;
-      outputHashes = {
-        "hmerr-0.1.0" = "sha256-sstQowDd0onxnHylO4CjdTOZjHpmrRjh+0bJnHDZaAQ=";
-      };
-    };
+    src = craneLib.cleanCargoSource ./.;
+    strictDeps = true;
 
-    cargoBuildFlags = spec |> map (w: "--package=${w.name}");
+    cargoExtraArgs = spec |> map (w: "--package=${w.name}") |> lib.concatStringsSep " ";
     doCheck = false;
 
     nativeBuildInputs = with pkgs; [ pkg-config ];
     buildInputs = runtime;
-
-    env =
-      let
-        maple = "Maple Mono NL";
-      in
-      palette
-      // {
-        WIDGET_FONT_DEFAULT = maple; # config.stylix.fonts.sansSerif.name;
-        WIDGET_FONT_NUMERIC = maple;
-        WIDGET_FONT_SYMBOL = "${config.stylix.fonts.sansSerif.name} Propo";
-      }
-      // (spec |> map (w: w.env) |> lib.mergeAttrsList);
-
-    postFixup = ''
-      patchelf --add-rpath ${lib.makeLibraryPath runtime} $out/bin/*
-    '';
   };
+
+  workspace = craneLib.buildPackage (
+    common
+    // {
+      cargoArtifacts = craneLib.buildDepsOnly common;
+
+      env =
+        let
+          maple = "Maple Mono NL";
+        in
+        palette
+        // {
+          WIDGET_FONT_DEFAULT = maple; # config.stylix.fonts.sansSerif.name;
+          WIDGET_FONT_NUMERIC = maple;
+          WIDGET_FONT_SYMBOL = "${config.stylix.fonts.sansSerif.name} Propo";
+        }
+        // (spec |> map (w: w.env) |> lib.mergeAttrsList);
+
+      postFixup = ''
+        patchelf --add-rpath ${lib.makeLibraryPath runtime} $out/bin/*
+      '';
+    }
+  );
 
   bin =
     name:
