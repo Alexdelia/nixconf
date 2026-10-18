@@ -126,10 +126,9 @@ fn indicate(state: &mut State) -> Task<Message> {
     else {
         return Task::none();
     };
-    let Some(recorded) = saved.rect.even() else {
-        return Task::none();
-    };
-    let strips = recorded.frame(INDICATOR_THICKNESS, output.rect.width, output.rect.height);
+    let strips = saved
+        .rect
+        .frame(INDICATOR_THICKNESS, output.rect.width, output.rect.height);
     Task::batch(strips.into_iter().map(|strip| {
         let (id, task) = Message::layershell_open(indicator_layer(&saved.output, strip));
         state.indicator.insert(id);

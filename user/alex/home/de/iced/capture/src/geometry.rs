@@ -115,15 +115,6 @@ impl Rect {
         edge.rect()
     }
 
-    pub fn even(&self) -> Option<Rect> {
-        let rect = Rect {
-            width: self.width & !1,
-            height: self.height & !1,
-            ..*self
-        };
-        (rect.width > 0 && rect.height > 0).then_some(rect)
-    }
-
     pub fn fits(&self, width: i32, height: i32) -> bool {
         let edge = self.edge();
         edge.left >= 0 && edge.top >= 0 && edge.right <= width && edge.bottom <= height
@@ -266,12 +257,6 @@ mod test {
             rect(100, 100, 200, 100).resize(Handle::BottomRight, point(400, 250)),
             Some(rect(100, 100, 300, 150))
         );
-    }
-
-    #[test]
-    fn even_rounds_down() {
-        assert_eq!(rect(0, 0, 301, 201).even(), Some(rect(0, 0, 300, 200)));
-        assert_eq!(rect(0, 0, 1, 1).even(), None);
     }
 
     #[test]

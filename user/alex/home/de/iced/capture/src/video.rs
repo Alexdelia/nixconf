@@ -11,6 +11,8 @@ pub const CRF: u32 = 23;
 pub const KEEP: usize = 5;
 
 const EXTENSION: &str = "mp4";
+const MIN_SIDE: i32 = 2;
+const YUV420_EVEN_CROP: &str = "crop=trunc(iw/2)*2:trunc(ih/2)*2";
 
 pub fn dir() -> PathBuf {
     let uid = unsafe { libc::getuid() };
@@ -65,6 +67,8 @@ pub fn recorder_args(rect: Rect, file: &Path) -> Vec<String> {
         &format!("crf={CRF}"),
         "-x",
         "yuv420p",
+        "-F",
+        YUV420_EVEN_CROP,
         "-r",
         &FRAMERATE.to_string(),
         "-f",
@@ -108,7 +112,9 @@ impl Recording {
     pub fn start(
         rect: Rect,
     ) -> Result<(Recording, impl Future<Output = Result<(), String>> + use<>), String> {
-        let rect = rect.even().ok_or("selection too small")?;
+        if rect.width < MIN_SIDE || rect.height < MIN_SIDE {
+            return Err("selection too small".to_owned());
+        }
         let file = prepare(&dir()).map_err(|error| format!("video dir: {error}"))?;
         let mute = Mute::start();
         let mut child = tie_to_parent(&mut Command::new(tool::wf_recorder()))
@@ -233,6 +239,8 @@ mod test {
                 "crf=23",
                 "-x",
                 "yuv420p",
+                "-F",
+                "crop=trunc(iw/2)*2:trunc(ih/2)*2",
                 "-r",
                 "60",
                 "-f",
