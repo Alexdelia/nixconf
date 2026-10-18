@@ -1,6 +1,8 @@
+use std::f32::consts::PI;
+
 use iced::{
-    Color, Rectangle, Renderer, Size, Theme, mouse,
-    widget::canvas::{Action, Event, Frame, Geometry, Path, Program, Stroke},
+    Color, Radians, Rectangle, Renderer, Size, Theme, mouse,
+    widget::canvas::{Action, Event, Frame, Geometry, Path, Program, Stroke, path::Arc},
 };
 
 use widget::palette as p;
@@ -12,7 +14,7 @@ use crate::{
 
 const DIM_ALPHA: f32 = 0.5;
 const BORDER: f32 = 2.0;
-const HANDLE: f32 = 8.0;
+const HANDLE_RADIUS: f32 = 7.0;
 
 pub struct Overlay<'a> {
     pub output: &'a str,
@@ -26,24 +28,62 @@ fn point_of(position: iced::Point) -> Point {
     }
 }
 
-fn handle_center(rect: Rect) -> [iced::Point; 8] {
+const HANDLE: [Handle; 8] = [
+    Handle::TopLeft,
+    Handle::Top,
+    Handle::TopRight,
+    Handle::Right,
+    Handle::BottomRight,
+    Handle::Bottom,
+    Handle::BottomLeft,
+    Handle::Left,
+];
+
+struct Wedge {
+    center: iced::Point,
+    start: f32,
+    sweep: f32,
+}
+
+fn wedge(rect: Rect, handle: Handle) -> Wedge {
     let left = rect.x as f32;
     let top = rect.y as f32;
     let right = left + rect.width as f32;
     let bottom = top + rect.height as f32;
     let middle_x = (left + right) / 2.0;
     let middle_y = (top + bottom) / 2.0;
-    [
-        (left, top),
-        (middle_x, top),
-        (right, top),
-        (right, middle_y),
-        (right, bottom),
-        (middle_x, bottom),
-        (left, bottom),
-        (left, middle_y),
-    ]
-    .map(|(x, y)| iced::Point::new(x, y))
+    let (x, y, outward) = match handle {
+        Handle::Right => (right, middle_y, 0.0),
+        Handle::BottomRight => (right, bottom, 0.25),
+        Handle::Bottom => (middle_x, bottom, 0.5),
+        Handle::BottomLeft => (left, bottom, 0.75),
+        Handle::Left => (left, middle_y, 1.0),
+        Handle::TopLeft => (left, top, 1.25),
+        Handle::Top => (middle_x, top, 1.5),
+        Handle::TopRight => (right, top, 1.75),
+    };
+    let sweep = match handle {
+        Handle::Top | Handle::Right | Handle::Bottom | Handle::Left => PI,
+        Handle::TopLeft | Handle::TopRight | Handle::BottomLeft | Handle::BottomRight => 1.5 * PI,
+    };
+    Wedge {
+        center: iced::Point::new(x, y),
+        start: outward * PI - sweep / 2.0,
+        sweep,
+    }
+}
+
+fn wedge_path(wedge: &Wedge) -> Path {
+    Path::new(|builder| {
+        builder.move_to(wedge.center);
+        builder.arc(Arc {
+            center: wedge.center,
+            radius: HANDLE_RADIUS,
+            start_angle: Radians(wedge.start),
+            end_angle: Radians(wedge.start + wedge.sweep),
+        });
+        builder.close();
+    })
 }
 
 fn dim(frame: &mut Frame, bounds: Rectangle, rect: Rect) {
@@ -135,17 +175,13 @@ impl Program<Message> for Overlay<'_> {
         dim(&mut frame, bounds, rect);
         frame.stroke(
             &Path::rectangle(
-                iced::Point::new(rect.x as f32, rect.y as f32),
-                Size::new(rect.width as f32, rect.height as f32),
+                iced::Point::new(rect.x as f32 - BORDER / 2.0, rect.y as f32 - BORDER / 2.0),
+                Size::new(rect.width as f32 + BORDER, rect.height as f32 + BORDER),
             ),
-            Stroke::default().with_color(p::base0d()).with_width(BORDER),
+            Stroke::default().with_color(p::base04()).with_width(BORDER),
         );
-        for center in handle_center(rect) {
-            frame.fill_rectangle(
-                iced::Point::new(center.x - HANDLE / 2.0, center.y - HANDLE / 2.0),
-                Size::new(HANDLE, HANDLE),
-                p::base0d(),
-            );
+        for handle in HANDLE {
+            frame.fill(&wedge_path(&wedge(rect, handle)), p::base04());
         }
         vec![frame.into_geometry()]
     }
@@ -196,6 +232,72 @@ mod test {
         Event::Mouse(mouse::Event::CursorMoved {
             position: iced::Point::new(x, y),
         })
+    }
+
+    fn selection() -> Rect {
+        Rect {
+            x: 100,
+            y: 100,
+            width: 200,
+            height: 100,
+        }
+    }
+
+    fn strictly_inside(rect: Rect, point: iced::Point) -> bool {
+        const TOLERANCE: f32 = 0.01;
+        point.x > rect.x as f32 + TOLERANCE
+            && point.x < (rect.x + rect.width) as f32 - TOLERANCE
+            && point.y > rect.y as f32 + TOLERANCE
+            && point.y < (rect.y + rect.height) as f32 - TOLERANCE
+    }
+
+    #[test]
+    fn handle_wedge_stays_outside_selection() {
+        const STEP: u16 = 64;
+        for handle in HANDLE {
+            let wedge = wedge(selection(), handle);
+            for step in 0..=STEP {
+                let angle = wedge.start + wedge.sweep * f32::from(step) / f32::from(STEP);
+                for radius in [0.5, HANDLE_RADIUS] {
+                    let point = iced::Point::new(
+                        wedge.center.x + radius * angle.cos(),
+                        wedge.center.y + radius * angle.sin(),
+                    );
+                    assert!(
+                        !strictly_inside(selection(), point),
+                        "{handle:?} reaches inside at {point:?}"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn handle_wedge_is_half_on_edge_three_quarter_on_corner() {
+        for handle in HANDLE {
+            let expected = match handle {
+                Handle::Top | Handle::Right | Handle::Bottom | Handle::Left => PI,
+                _ => 1.5 * PI,
+            };
+            assert!((wedge(selection(), handle).sweep - expected).abs() < 1e-6);
+        }
+    }
+
+    #[test]
+    fn handle_wedge_sits_on_its_edge() {
+        let rect = selection();
+        assert_eq!(
+            wedge(rect, Handle::TopLeft).center,
+            iced::Point::new(100.0, 100.0)
+        );
+        assert_eq!(
+            wedge(rect, Handle::Right).center,
+            iced::Point::new(300.0, 150.0)
+        );
+        assert_eq!(
+            wedge(rect, Handle::Bottom).center,
+            iced::Point::new(200.0, 200.0)
+        );
     }
 
     #[test]

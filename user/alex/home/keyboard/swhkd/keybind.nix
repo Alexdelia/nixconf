@@ -39,8 +39,8 @@ let
       "super + shift + x" = "${mpc} next";
     }
     // lib.optionalAttrs (!config.targets.genericLinux.enable) {
-      "super + s" = "${config.customScript.capture} screenshot";
-      "super + shift + s" = "${config.customScript.capture} video";
+      "super + @s" = "${config.customScript.capture} screenshot";
+      "super + shift + @s" = "${config.customScript.capture} video";
     };
 
   isNonNixos = config.targets.genericLinux.enable;
