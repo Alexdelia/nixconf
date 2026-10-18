@@ -34,7 +34,7 @@ pub fn parse(json: &str) -> Result<Vec<Output>, String> {
 }
 
 pub fn query() -> Result<Vec<Output>, String> {
-    let result = Command::new(tool::swaymsg())
+    let result = Command::new(tool::SWAYMSG)
         .args(["-r", "-t", "get_outputs"])
         .output()
         .map_err(|error| format!("swaymsg: {error}"))?;

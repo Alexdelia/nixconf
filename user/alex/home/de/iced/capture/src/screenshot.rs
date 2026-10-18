@@ -11,7 +11,7 @@ pub fn grim_argument(rect: Rect) -> Vec<String> {
 }
 
 pub async fn copy(rect: Rect) -> Result<(), String> {
-    let mut grim = Command::new(tool::grim())
+    let mut grim = Command::new(tool::GRIM)
         .args(grim_argument(rect))
         .stdout(Stdio::piped())
         .spawn()
@@ -22,7 +22,7 @@ pub async fn copy(rect: Rect) -> Result<(), String> {
         .ok_or("grim: no stdout")?
         .try_into()
         .map_err(|error| format!("grim: {error}"))?;
-    let copied = Command::new(tool::clipboard_copy())
+    let copied = Command::new(tool::CLIPBOARD_COPY)
         .args(["--type", "image/png"])
         .stdin(image)
         .status()

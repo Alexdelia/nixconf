@@ -143,7 +143,7 @@ impl Recording {
         }
         let file = prepare(&dir()).map_err(|error| format!("video dir: {error}"))?;
         let mute = Mute::start();
-        let mut child = tie_to_parent(&mut Command::new(tool::wf_recorder()))
+        let mut child = tie_to_parent(&mut Command::new(tool::WF_RECORDER))
             .args(recorder_argument(rect, &file))
             .stdin(Stdio::null())
             .stdout(Stdio::null())
@@ -199,7 +199,7 @@ pub async fn deliver(file: PathBuf) -> Result<(), String> {
     if size == 0 {
         return Err("recorder produced no video".to_owned());
     }
-    let copied = tokio::process::Command::new(tool::clipboard_copy())
+    let copied = tokio::process::Command::new(tool::CLIPBOARD_COPY)
         .args(copy_argument(&file))
         .status()
         .await

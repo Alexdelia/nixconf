@@ -10,11 +10,7 @@ macro_rules! bases {
     ($($name:ident => $env:literal, $fallback:literal;)*) => {
         $(
             pub fn $name() -> Color {
-                const HEX: &str = match option_env!($env) {
-                    Some(v) => v,
-                    None => $fallback,
-                };
-                hex(HEX)
+                hex(crate::build_env!($env, $fallback))
             }
         )*
     };

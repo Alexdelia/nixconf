@@ -29,7 +29,7 @@ pub fn held(history_json: &str, before: u64) -> usize {
 }
 
 fn makoctl(argument: &[&str]) -> String {
-    Command::new(tool::makoctl())
+    Command::new(tool::MAKOCTL)
         .args(argument)
         .output()
         .map(|result| String::from_utf8_lossy(&result.stdout).into_owned())
@@ -37,7 +37,7 @@ fn makoctl(argument: &[&str]) -> String {
 }
 
 pub fn recover() {
-    makoctl(&["mode", "-r", tool::mako_mode()]);
+    makoctl(&["mode", "-r", tool::MAKO_MODE]);
 }
 
 pub struct Mute {
@@ -47,14 +47,14 @@ pub struct Mute {
 impl Mute {
     pub fn start() -> Mute {
         let before = max_id(&[&makoctl(&["list", "-j"]), &makoctl(&["history", "-j"])]);
-        makoctl(&["mode", "-a", tool::mako_mode()]);
+        makoctl(&["mode", "-a", tool::MAKO_MODE]);
         Mute { before }
     }
 }
 
 impl Drop for Mute {
     fn drop(&mut self) {
-        makoctl(&["mode", "-r", tool::mako_mode()]);
+        makoctl(&["mode", "-r", tool::MAKO_MODE]);
         for _ in 0..held(&makoctl(&["history", "-j"]), self.before) {
             makoctl(&["restore"]);
         }

@@ -9,14 +9,8 @@ use tokio::{
     process::Command,
 };
 
-const WPCTL: &str = match option_env!("VOLUME_OSD_WPCTL") {
-    Some(v) => v,
-    None => "wpctl",
-};
-const PACTL: &str = match option_env!("VOLUME_OSD_PACTL") {
-    Some(v) => v,
-    None => "pactl",
-};
+const WPCTL: &str = widget::build_env!("VOLUME_OSD_WPCTL", "wpctl");
+const PACTL: &str = widget::build_env!("VOLUME_OSD_PACTL", "pactl");
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Volume {
