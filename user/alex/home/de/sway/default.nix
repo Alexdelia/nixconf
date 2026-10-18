@@ -49,5 +49,6 @@ in
     };
 
     dp.colorpicker = "${pkgs.hyprpicker}/bin/hyprpicker -a";
+    dp.bluetoothManager = "${pkgs.overskride}/bin/overskride";
   };
 }

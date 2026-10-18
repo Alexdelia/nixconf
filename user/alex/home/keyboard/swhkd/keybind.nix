@@ -18,6 +18,7 @@ let
       # app
       "super + c" = config.dp.term;
       "super + b" = config.dp.browser;
+      "super + shift + b" = withNotifyMissing "dp.bluetoothManager";
       "super + m" = withNotifyMissing "dp.music";
       "super + k" = config.dp.calculator;
       "super + f" = withNotifyMissing "dp.fileManager";
