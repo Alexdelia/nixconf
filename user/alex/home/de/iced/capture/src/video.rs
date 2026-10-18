@@ -54,6 +54,7 @@ pub fn prepare(dir: &Path) -> std::io::Result<PathBuf> {
 
 pub fn recorder_args(rect: Rect, file: &Path) -> Vec<String> {
     [
+        "--no-damage",
         "-g",
         &rect.grim_geometry(),
         "-c",
@@ -197,6 +198,7 @@ mod test {
         assert_eq!(
             args,
             [
+                "--no-damage",
                 "-g",
                 "10,20 300x200",
                 "-c",
