@@ -5,7 +5,6 @@ use iced::{
     Color, Element, Length, Subscription, Task, Theme,
     futures::{SinkExt, Stream},
     keyboard,
-    time::Duration,
     widget::{Canvas, container, space},
     window,
 };
@@ -33,7 +32,6 @@ use crate::{
 
 const NAMESPACE: &str = env!("CARGO_PKG_NAME");
 
-const HIDE_MS: u64 = 100;
 const INDICATOR_THICKNESS: i32 = 2;
 
 pub struct State {
@@ -41,6 +39,8 @@ pub struct State {
     outputs: Vec<Output>,
     surface: HashMap<IcedId, String>,
     indicator: HashSet<IcedId>,
+    hiding: HashSet<IcedId>,
+    queued: Option<Rect>,
     selection: Selection,
     recording: Option<Recording>,
     guard: Option<Guard>,
@@ -54,6 +54,7 @@ pub enum Message {
     Release,
     Confirm,
     Cancel,
+    Closed(IcedId),
     Captured(Result<(), String>),
     Record(Rect),
     Stop,
@@ -94,6 +95,8 @@ fn boot(
         outputs,
         surface,
         indicator: HashSet::new(),
+        hiding: HashSet::new(),
+        queued: None,
         selection: Selection::new(saved),
         recording: None,
         guard,
@@ -145,11 +148,12 @@ fn global(state: &State, saved: &Saved) -> Option<Rect> {
 }
 
 fn hide(state: &mut State) -> Task<Message> {
+    state.hiding.extend(state.surface.drain().map(|(id, _)| id));
     Task::batch(
         state
-            .surface
-            .drain()
-            .map(|(id, _)| Task::done(Message::RemoveWindow(id))),
+            .hiding
+            .iter()
+            .map(|&id| Task::done(Message::RemoveWindow(id))),
     )
 }
 
@@ -163,18 +167,26 @@ fn confirm(state: &mut State) -> Task<Message> {
     if let Err(error) = memory::store(&memory::path(state.mode), &saved) {
         eprintln!("capture: memory: {error}");
     }
-    let hidden = Duration::from_millis(HIDE_MS);
-    let capture = match state.mode {
-        Mode::Screenshot => Task::perform(
-            async move {
-                tokio::time::sleep(hidden).await;
-                screenshot::copy(rect)
-            },
-            Message::Captured,
-        ),
-        Mode::Video => Task::perform(tokio::time::sleep(hidden), move |()| Message::Record(rect)),
-    };
-    hide(state).chain(capture)
+    state.queued = Some(rect);
+    hide(state)
+}
+
+fn capture(mode: Mode, rect: Rect) -> Task<Message> {
+    match mode {
+        Mode::Screenshot => Task::perform(async move { screenshot::copy(rect) }, Message::Captured),
+        Mode::Video => Task::done(Message::Record(rect)),
+    }
+}
+
+fn closed(state: &mut State, id: IcedId) -> Task<Message> {
+    state.hiding.remove(&id);
+    match state.queued {
+        Some(rect) if state.hiding.is_empty() => {
+            state.queued = None;
+            capture(state.mode, rect)
+        }
+        _ => Task::none(),
+    }
 }
 
 fn finish(state: &mut State, outcome: Result<(), String>) -> ! {
@@ -194,6 +206,7 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
         Message::Confirm if state.surface.is_empty() => {}
         Message::Confirm => return confirm(state),
         Message::Cancel => finish(state, Ok(())),
+        Message::Closed(id) => return closed(state, id),
         Message::Captured(outcome) => finish(state, outcome),
         Message::Record(rect) => match Recording::start(rect) {
             Ok((recording, exit)) => {
@@ -296,7 +309,8 @@ fn subscription(_state: &State) -> Subscription<Message> {
         }
     });
     let stop = Subscription::batch(STOP_SIGNAL.map(|raw| Subscription::run_with(raw, stop_on)));
-    Subscription::batch([key, stop])
+    let closed = window::close_events().map(Message::Closed);
+    Subscription::batch([key, stop, closed])
 }
 
 fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
