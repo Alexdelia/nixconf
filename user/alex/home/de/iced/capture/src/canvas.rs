@@ -1,8 +1,6 @@
-use std::f32::consts::PI;
-
 use iced::{
-    Color, Radians, Rectangle, Renderer, Size, Theme, mouse,
-    widget::canvas::{Action, Event, Frame, Geometry, Path, Program, Stroke, path::Arc},
+    Color, Rectangle, Renderer, Size, Theme, mouse,
+    widget::canvas::{Action, Event, Frame, Geometry, Path, Program, Stroke},
 };
 
 use widget::palette as p;
@@ -14,11 +12,13 @@ use crate::{
 
 const DIM_ALPHA: f32 = 0.5;
 const BORDER: f32 = 2.0;
-const HANDLE_RADIUS: f32 = 7.0;
+const BRACKET_GAP: f32 = 6.0;
+const BRACKET_ARM: f32 = 20.0;
 
 pub struct Overlay<'a> {
     pub output: &'a str,
     pub rect: Option<Rect>,
+    pub bracket: bool,
 }
 
 fn point_of(position: iced::Point) -> Point {
@@ -28,61 +28,32 @@ fn point_of(position: iced::Point) -> Point {
     }
 }
 
-const HANDLE: [Handle; 8] = [
-    Handle::TopLeft,
-    Handle::Top,
-    Handle::TopRight,
-    Handle::Right,
-    Handle::BottomRight,
-    Handle::Bottom,
-    Handle::BottomLeft,
-    Handle::Left,
-];
-
-struct Wedge {
-    center: iced::Point,
-    start: f32,
-    sweep: f32,
+fn bracket(rect: Rect) -> [[iced::Point; 3]; 4] {
+    let offset = BORDER + BRACKET_GAP + BORDER / 2.0;
+    let left = rect.x as f32 - offset;
+    let top = rect.y as f32 - offset;
+    let right = (rect.x + rect.width) as f32 + offset;
+    let bottom = (rect.y + rect.height) as f32 + offset;
+    [
+        (left, top, 1.0, 1.0),
+        (right, top, -1.0, 1.0),
+        (right, bottom, -1.0, -1.0),
+        (left, bottom, 1.0, -1.0),
+    ]
+    .map(|(x, y, inward_x, inward_y)| {
+        [
+            iced::Point::new(x, y + inward_y * BRACKET_ARM),
+            iced::Point::new(x, y),
+            iced::Point::new(x + inward_x * BRACKET_ARM, y),
+        ]
+    })
 }
 
-fn wedge(rect: Rect, handle: Handle) -> Wedge {
-    let left = rect.x as f32;
-    let top = rect.y as f32;
-    let right = left + rect.width as f32;
-    let bottom = top + rect.height as f32;
-    let middle_x = (left + right) / 2.0;
-    let middle_y = (top + bottom) / 2.0;
-    let (x, y, outward) = match handle {
-        Handle::Right => (right, middle_y, 0.0),
-        Handle::BottomRight => (right, bottom, 0.25),
-        Handle::Bottom => (middle_x, bottom, 0.5),
-        Handle::BottomLeft => (left, bottom, 0.75),
-        Handle::Left => (left, middle_y, 1.0),
-        Handle::TopLeft => (left, top, 1.25),
-        Handle::Top => (middle_x, top, 1.5),
-        Handle::TopRight => (right, top, 1.75),
-    };
-    let sweep = match handle {
-        Handle::Top | Handle::Right | Handle::Bottom | Handle::Left => PI,
-        Handle::TopLeft | Handle::TopRight | Handle::BottomLeft | Handle::BottomRight => 1.5 * PI,
-    };
-    Wedge {
-        center: iced::Point::new(x, y),
-        start: outward * PI - sweep / 2.0,
-        sweep,
-    }
-}
-
-fn wedge_path(wedge: &Wedge) -> Path {
+fn polyline(point: [iced::Point; 3]) -> Path {
     Path::new(|builder| {
-        builder.move_to(wedge.center);
-        builder.arc(Arc {
-            center: wedge.center,
-            radius: HANDLE_RADIUS,
-            start_angle: Radians(wedge.start),
-            end_angle: Radians(wedge.start + wedge.sweep),
-        });
-        builder.close();
+        builder.move_to(point[0]);
+        builder.line_to(point[1]);
+        builder.line_to(point[2]);
     })
 }
 
@@ -180,8 +151,13 @@ impl Program<Message> for Overlay<'_> {
             ),
             Stroke::default().with_color(p::base04()).with_width(BORDER),
         );
-        for handle in HANDLE {
-            frame.fill(&wedge_path(&wedge(rect, handle)), p::base04());
+        if self.bracket {
+            for corner in bracket(rect) {
+                frame.stroke(
+                    &polyline(corner),
+                    Stroke::default().with_color(p::base08()).with_width(BORDER),
+                );
+            }
         }
         vec![frame.into_geometry()]
     }
@@ -243,61 +219,40 @@ mod test {
         }
     }
 
-    fn strictly_inside(rect: Rect, point: iced::Point) -> bool {
-        const TOLERANCE: f32 = 0.01;
-        point.x > rect.x as f32 + TOLERANCE
-            && point.x < (rect.x + rect.width) as f32 - TOLERANCE
-            && point.y > rect.y as f32 + TOLERANCE
-            && point.y < (rect.y + rect.height) as f32 - TOLERANCE
+    fn points(raw: [(f32, f32); 3]) -> [iced::Point; 3] {
+        raw.map(|(x, y)| iced::Point::new(x, y))
     }
 
     #[test]
-    fn handle_wedge_stays_outside_selection() {
-        const STEP: u16 = 64;
-        for handle in HANDLE {
-            let wedge = wedge(selection(), handle);
-            for step in 0..=STEP {
-                let angle = wedge.start + wedge.sweep * f32::from(step) / f32::from(STEP);
-                for radius in [0.5, HANDLE_RADIUS] {
-                    let point = iced::Point::new(
-                        wedge.center.x + radius * angle.cos(),
-                        wedge.center.y + radius * angle.sin(),
-                    );
-                    assert!(
-                        !strictly_inside(selection(), point),
-                        "{handle:?} reaches inside at {point:?}"
-                    );
-                }
-            }
+    fn bracket_sits_a_gap_outside_selection_border() {
+        let offset = BORDER + BRACKET_GAP + BORDER / 2.0;
+        let corner = bracket(selection());
+        assert_eq!(
+            corner[0],
+            points([
+                (100.0 - offset, 100.0 - offset + BRACKET_ARM),
+                (100.0 - offset, 100.0 - offset),
+                (100.0 - offset + BRACKET_ARM, 100.0 - offset),
+            ])
+        );
+        assert_eq!(
+            corner[2],
+            points([
+                (300.0 + offset, 200.0 + offset - BRACKET_ARM),
+                (300.0 + offset, 200.0 + offset),
+                (300.0 + offset - BRACKET_ARM, 200.0 + offset),
+            ])
+        );
+    }
+
+    #[test]
+    fn bracket_arms_point_along_selection_edges() {
+        for [first, corner, last] in bracket(selection()) {
+            assert_eq!(first.x, corner.x);
+            assert_eq!(last.y, corner.y);
+            assert_eq!((first.y - corner.y).abs(), BRACKET_ARM);
+            assert_eq!((last.x - corner.x).abs(), BRACKET_ARM);
         }
-    }
-
-    #[test]
-    fn handle_wedge_is_half_on_edge_three_quarter_on_corner() {
-        for handle in HANDLE {
-            let expected = match handle {
-                Handle::Top | Handle::Right | Handle::Bottom | Handle::Left => PI,
-                _ => 1.5 * PI,
-            };
-            assert!((wedge(selection(), handle).sweep - expected).abs() < 1e-6);
-        }
-    }
-
-    #[test]
-    fn handle_wedge_sits_on_its_edge() {
-        let rect = selection();
-        assert_eq!(
-            wedge(rect, Handle::TopLeft).center,
-            iced::Point::new(100.0, 100.0)
-        );
-        assert_eq!(
-            wedge(rect, Handle::Right).center,
-            iced::Point::new(300.0, 150.0)
-        );
-        assert_eq!(
-            wedge(rect, Handle::Bottom).center,
-            iced::Point::new(200.0, 200.0)
-        );
     }
 
     #[test]

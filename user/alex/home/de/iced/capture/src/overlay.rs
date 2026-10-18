@@ -246,6 +246,7 @@ fn view(state: &State, id: window::Id) -> Element<'_, Message> {
         Appearance::Selection(output) => Canvas::new(Overlay {
             output,
             rect: state.selection.on(output),
+            bracket: matches!(state.mode, Mode::Video),
         })
         .width(Length::Fill)
         .height(Length::Fill)
