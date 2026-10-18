@@ -36,7 +36,7 @@ const INDICATOR_THICKNESS: i32 = 2;
 
 pub struct State {
     mode: Mode,
-    outputs: Vec<Output>,
+    output: Vec<Output>,
     surface: HashMap<IcedId, String>,
     indicator: HashSet<IcedId>,
     hiding: HashSet<IcedId>,
@@ -78,22 +78,22 @@ fn layer(output: &str) -> NewLayerShellSettings {
 
 fn boot(
     mode: Mode,
-    outputs: Vec<Output>,
+    output: Vec<Output>,
     saved: Option<Saved>,
     guard: Option<Guard>,
 ) -> (State, Task<Message>) {
     let mut surface = HashMap::new();
-    let open: Vec<_> = outputs
+    let open: Vec<_> = output
         .iter()
-        .map(|output| {
-            let (id, task) = Message::layershell_open(layer(&output.name));
-            surface.insert(id, output.name.clone());
+        .map(|monitor| {
+            let (id, task) = Message::layershell_open(layer(&monitor.name));
+            surface.insert(id, monitor.name.clone());
             task
         })
         .collect();
     let state = State {
         mode,
-        outputs,
+        output,
         surface,
         indicator: HashSet::new(),
         hiding: HashSet::new(),
@@ -124,16 +124,16 @@ fn indicate(state: &mut State) -> Task<Message> {
         return Task::none();
     };
     let Some(output) = state
-        .outputs
+        .output
         .iter()
-        .find(|output| output.name == saved.output)
+        .find(|candidate| candidate.name == saved.output)
     else {
         return Task::none();
     };
-    let strips = saved
+    let frame = saved
         .rect
         .frame(INDICATOR_THICKNESS, output.rect.width, output.rect.height);
-    Task::batch(strips.into_iter().map(|strip| {
+    Task::batch(frame.into_iter().map(|strip| {
         let (id, task) = Message::layershell_open(indicator_layer(&saved.output, strip));
         state.indicator.insert(id);
         task
@@ -142,9 +142,9 @@ fn indicate(state: &mut State) -> Task<Message> {
 
 fn global(state: &State, saved: &Saved) -> Option<Rect> {
     let output = state
-        .outputs
+        .output
         .iter()
-        .find(|output| output.name == saved.output)?;
+        .find(|candidate| candidate.name == saved.output)?;
     Some(saved.rect.offset(output.rect.x, output.rect.y))
 }
 
@@ -180,7 +180,7 @@ fn capture(mode: Mode, rect: Rect) -> Task<Message> {
 }
 
 fn vanished(state: &mut State, output: &str) -> Task<Message> {
-    state.outputs.retain(|candidate| candidate.name != output);
+    state.output.retain(|candidate| candidate.name != output);
     state.selection.forget(output);
     match state.surface.is_empty() {
         true => Task::done(Message::Cancel),
@@ -205,7 +205,7 @@ fn closed(state: &mut State, id: IcedId) -> Task<Message> {
 
 fn switch(state: &mut State, mode: Mode) {
     state.mode = mode;
-    state.selection = Selection::new(memory::load(&memory::path(mode), &state.outputs));
+    state.selection = Selection::new(memory::load(&memory::path(mode), &state.output));
 }
 
 fn finish(state: &mut State, outcome: Result<(), String>) -> ! {
@@ -363,13 +363,13 @@ fn style(_state: &State, _theme: &Theme) -> iced::theme::Style {
 
 pub fn run(
     mode: Mode,
-    outputs: Vec<Output>,
+    output: Vec<Output>,
     saved: Option<Saved>,
     guard: Guard,
 ) -> Result<(), iced_layershell::Error> {
     let guard = Cell::new(Some(guard));
     daemon(
-        move || boot(mode, outputs.clone(), saved.clone(), guard.take()),
+        move || boot(mode, output.clone(), saved.clone(), guard.take()),
         NAMESPACE,
         update,
         view,
@@ -406,7 +406,7 @@ mod test {
     fn selecting(surface: &[(IcedId, &str)], selected: &str) -> State {
         State {
             mode: Mode::Screenshot,
-            outputs: surface
+            output: surface
                 .iter()
                 .zip([0, 1920])
                 .map(|(&(_, name), x)| output(name, x))
@@ -459,7 +459,7 @@ mod test {
 
         let _ = closed(&mut state, gone);
         assert_eq!(state.selection.current, None);
-        assert!(state.outputs.iter().all(|output| output.name != "DP-1"));
+        assert!(state.output.iter().all(|output| output.name != "DP-1"));
         assert_eq!(state.surface.len(), 1);
     }
 

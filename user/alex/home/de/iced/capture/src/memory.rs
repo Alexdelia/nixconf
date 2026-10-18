@@ -24,9 +24,11 @@ pub fn path(mode: Mode) -> PathBuf {
         .join(format!("{}.json", mode.name()))
 }
 
-pub fn load(file: &Path, outputs: &[Output]) -> Option<Saved> {
+pub fn load(file: &Path, output: &[Output]) -> Option<Saved> {
     let saved: Saved = serde_json::from_str(&std::fs::read_to_string(file).ok()?).ok()?;
-    let output = outputs.iter().find(|output| output.name == saved.output)?;
+    let output = output
+        .iter()
+        .find(|candidate| candidate.name == saved.output)?;
     saved
         .rect
         .fits(output.rect.width, output.rect.height)

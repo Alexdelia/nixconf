@@ -9,7 +9,7 @@ struct Notification {
     id: u64,
 }
 
-fn ids(json: &str) -> Vec<u64> {
+fn id(json: &str) -> Vec<u64> {
     serde_json::from_str::<Vec<Notification>>(json)
         .unwrap_or_default()
         .into_iter()
@@ -18,11 +18,11 @@ fn ids(json: &str) -> Vec<u64> {
 }
 
 pub fn max_id(json: &[&str]) -> u64 {
-    json.iter().flat_map(|json| ids(json)).max().unwrap_or(0)
+    json.iter().flat_map(|json| id(json)).max().unwrap_or(0)
 }
 
 pub fn held(history_json: &str, before: u64) -> usize {
-    ids(history_json)
+    id(history_json)
         .into_iter()
         .filter(|&id| id > before)
         .count()

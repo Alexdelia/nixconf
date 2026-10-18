@@ -57,10 +57,10 @@ fn main() {
         Err(error) => tool::fail(&format!("capture: lock file: {error}")),
     };
 
-    let outputs = output::query().unwrap_or_else(|error| tool::fail(&format!("capture: {error}")));
-    let saved = memory::load(&memory::path(mode), &outputs);
+    let output = output::query().unwrap_or_else(|error| tool::fail(&format!("capture: {error}")));
+    let saved = memory::load(&memory::path(mode), &output);
 
-    if let Err(error) = overlay::run(mode, outputs, saved, guard) {
+    if let Err(error) = overlay::run(mode, output, saved, guard) {
         tool::fail(&format!("capture: {error}"));
     }
 }

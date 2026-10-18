@@ -4,7 +4,7 @@ use tokio::process::Command;
 
 use crate::{geometry::Rect, tool};
 
-pub fn grim_args(rect: Rect) -> Vec<String> {
+pub fn grim_argument(rect: Rect) -> Vec<String> {
     ["-c", "-g", &rect.grim_geometry(), "-"]
         .map(str::to_owned)
         .to_vec()
@@ -12,7 +12,7 @@ pub fn grim_args(rect: Rect) -> Vec<String> {
 
 pub async fn copy(rect: Rect) -> Result<(), String> {
     let mut grim = Command::new(tool::grim())
-        .args(grim_args(rect))
+        .args(grim_argument(rect))
         .stdout(Stdio::piped())
         .spawn()
         .map_err(|error| format!("grim: {error}"))?;
@@ -46,13 +46,13 @@ mod test {
     use super::*;
 
     #[test]
-    fn grim_args_exact() {
+    fn grim_argument_exact() {
         let rect = Rect {
             x: 10,
             y: 20,
             width: 300,
             height: 200,
         };
-        assert_eq!(grim_args(rect), ["-c", "-g", "10,20 300x200", "-"]);
+        assert_eq!(grim_argument(rect), ["-c", "-g", "10,20 300x200", "-"]);
     }
 }

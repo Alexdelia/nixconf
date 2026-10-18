@@ -66,7 +66,7 @@ pub fn prepare(dir: &Path) -> std::io::Result<PathBuf> {
     Ok(dir.join(format!("{millisecond}.{EXTENSION}")))
 }
 
-pub fn recorder_args(rect: Rect, file: &Path) -> Vec<String> {
+pub fn recorder_argument(rect: Rect, file: &Path) -> Vec<String> {
     [
         "--no-damage",
         "-g",
@@ -94,7 +94,7 @@ pub fn uri_list(file: &Path) -> String {
     format!("file://{}\r\n", file.display())
 }
 
-pub fn copy_args(file: &Path) -> Vec<String> {
+pub fn copy_argument(file: &Path) -> Vec<String> {
     vec![
         "--type".to_owned(),
         "text/uri-list".to_owned(),
@@ -144,7 +144,7 @@ impl Recording {
         let file = prepare(&dir()).map_err(|error| format!("video dir: {error}"))?;
         let mute = Mute::start();
         let mut child = tie_to_parent(&mut Command::new(tool::wf_recorder()))
-            .args(recorder_args(rect, &file))
+            .args(recorder_argument(rect, &file))
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::null())
@@ -200,7 +200,7 @@ pub async fn deliver(file: PathBuf) -> Result<(), String> {
         return Err("recorder produced no video".to_owned());
     }
     let copied = tokio::process::Command::new(tool::clipboard_copy())
-        .args(copy_args(&file))
+        .args(copy_argument(&file))
         .status()
         .await
         .map_err(|error| format!("clipboard: {error}"))?;
@@ -265,16 +265,16 @@ mod test {
     }
 
     #[test]
-    fn recorder_args_exact() {
+    fn recorder_argument_exact() {
         let rect = Rect {
             x: 10,
             y: 20,
             width: 300,
             height: 200,
         };
-        let args = recorder_args(rect, Path::new("/tmp/x.mp4"));
+        let argument = recorder_argument(rect, Path::new("/tmp/x.mp4"));
         assert_eq!(
-            args,
+            argument,
             [
                 "--no-damage",
                 "-g",
@@ -295,13 +295,13 @@ mod test {
                 "/tmp/x.mp4"
             ]
         );
-        assert!(!args.iter().any(|arg| arg == "-a"));
+        assert!(!argument.iter().any(|arg| arg == "-a"));
     }
 
     #[test]
-    fn copy_args_offer_uri_list() {
+    fn copy_argument_offer_uri_list() {
         assert_eq!(
-            copy_args(Path::new("/tmp/capture-1000/a.mp4")),
+            copy_argument(Path::new("/tmp/capture-1000/a.mp4")),
             [
                 "--type",
                 "text/uri-list",
