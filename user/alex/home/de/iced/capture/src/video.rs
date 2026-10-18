@@ -1,7 +1,7 @@
 use std::os::unix::fs::{DirBuilderExt, MetadataExt, PermissionsExt};
 use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
+use std::process::{Command, ExitStatus, Stdio};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::{geometry::Rect, mute::Mute, tool};
@@ -113,6 +113,13 @@ pub fn tie_to_parent(command: &mut Command) -> &mut Command {
     }
 }
 
+fn succeeded(status: ExitStatus) -> Result<(), String> {
+    match status.success() {
+        true => Ok(()),
+        false => Err(format!("wf-recorder: {status}")),
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Phase {
     Running,
@@ -153,8 +160,8 @@ impl Recording {
             tokio::task::spawn_blocking(move || child.wait())
                 .await
                 .map_err(|error| format!("wf-recorder: {error}"))?
-                .map(drop)
                 .map_err(|error| format!("wf-recorder: {error}"))
+                .and_then(succeeded)
         };
         Ok((recording, exit))
     }
@@ -240,6 +247,20 @@ mod test {
         assert_eq!(
             status.and_then(|status| status.signal()),
             Some(libc::SIGINT)
+        );
+    }
+
+    #[test]
+    fn recorder_exit_status_decides_outcome() {
+        use std::os::unix::process::ExitStatusExt;
+        assert_eq!(succeeded(ExitStatus::from_raw(0)), Ok(()));
+        assert_eq!(
+            succeeded(ExitStatus::from_raw(1 << 8)),
+            Err("wf-recorder: exit status: 1".to_owned())
+        );
+        assert_eq!(
+            succeeded(ExitStatus::from_raw(libc::SIGKILL)),
+            Err("wf-recorder: signal: 9 (SIGKILL)".to_owned())
         );
     }
 
