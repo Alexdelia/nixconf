@@ -139,42 +139,6 @@ impl Rect {
     pub fn grim_geometry(&self) -> String {
         format!("{},{} {}x{}", self.x, self.y, self.width, self.height)
     }
-
-    fn clip(&self, width: i32, height: i32) -> Option<Rect> {
-        let edge = self.edge();
-        Rect::from_drag(
-            Point {
-                x: edge.left.clamp(0, width),
-                y: edge.top.clamp(0, height),
-            },
-            Point {
-                x: edge.right.clamp(0, width),
-                y: edge.bottom.clamp(0, height),
-            },
-        )
-    }
-
-    pub fn frame(&self, thickness: i32, width: i32, height: i32) -> Vec<Rect> {
-        let edge = self.edge();
-        let wide = self.width + 2 * thickness;
-        [
-            (edge.left - thickness, edge.top - thickness, wide, thickness),
-            (edge.left - thickness, edge.bottom, wide, thickness),
-            (edge.left - thickness, edge.top, thickness, self.height),
-            (edge.right, edge.top, thickness, self.height),
-        ]
-        .into_iter()
-        .filter_map(|(x, y, strip_width, strip_height)| {
-            Rect {
-                x,
-                y,
-                width: strip_width,
-                height: strip_height,
-            }
-            .clip(width, height)
-        })
-        .collect()
-    }
 }
 
 #[cfg(test)]
@@ -296,25 +260,6 @@ mod test {
     #[test]
     fn offset_shifts_origin() {
         assert_eq!(rect(10, 20, 30, 40).offset(2560, 0), rect(2570, 20, 30, 40));
-    }
-
-    #[test]
-    fn frame_surrounds_outside() {
-        assert_eq!(
-            rect(100, 100, 200, 100).frame(2, 1000, 1000),
-            [
-                rect(98, 98, 204, 2),
-                rect(98, 200, 204, 2),
-                rect(98, 100, 2, 100),
-                rect(300, 100, 2, 100),
-            ]
-        );
-    }
-
-    #[test]
-    fn frame_drops_strip_off_output() {
-        let frame = rect(0, 0, 200, 100).frame(2, 200, 1000);
-        assert_eq!(frame, [rect(0, 100, 200, 2)]);
     }
 
     #[test]

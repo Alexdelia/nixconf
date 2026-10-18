@@ -15,10 +15,34 @@ const BORDER: f32 = 2.0;
 const BRACKET_GAP: f32 = 6.0;
 const BRACKET_ARM: f32 = 20.0;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Look {
+    Screenshot,
+    Video,
+    Recording,
+}
+
+impl Look {
+    fn dimmed(self) -> bool {
+        self != Look::Recording
+    }
+
+    fn bracketed(self) -> bool {
+        self == Look::Video
+    }
+
+    fn border(self) -> Color {
+        match self {
+            Look::Screenshot | Look::Video => p::base04(),
+            Look::Recording => p::base08(),
+        }
+    }
+}
+
 pub struct Overlay<'a> {
     pub output: &'a str,
     pub rect: Option<Rect>,
-    pub bracket: bool,
+    pub look: Look,
 }
 
 fn point_of(position: iced::Point) -> Point {
@@ -132,26 +156,32 @@ impl Program<Message> for Overlay<'_> {
     ) -> Vec<Geometry> {
         let mut frame = Frame::new(renderer, bounds.size());
         let Some(rect) = self.rect else {
-            frame.fill_rectangle(
-                iced::Point::ORIGIN,
-                bounds.size(),
-                Color {
-                    a: DIM_ALPHA,
-                    ..p::base00()
-                },
-            );
+            if self.look.dimmed() {
+                frame.fill_rectangle(
+                    iced::Point::ORIGIN,
+                    bounds.size(),
+                    Color {
+                        a: DIM_ALPHA,
+                        ..p::base00()
+                    },
+                );
+            }
             return vec![frame.into_geometry()];
         };
 
-        dim(&mut frame, bounds, rect);
+        if self.look.dimmed() {
+            dim(&mut frame, bounds, rect);
+        }
         frame.stroke(
             &Path::rectangle(
                 iced::Point::new(rect.x as f32 - BORDER / 2.0, rect.y as f32 - BORDER / 2.0),
                 Size::new(rect.width as f32 + BORDER, rect.height as f32 + BORDER),
             ),
-            Stroke::default().with_color(p::base04()).with_width(BORDER),
+            Stroke::default()
+                .with_color(self.look.border())
+                .with_width(BORDER),
         );
-        if self.bracket {
+        if self.look.bracketed() {
             for corner in bracket(rect) {
                 frame.stroke(
                     &polyline(corner),
@@ -243,6 +273,20 @@ mod test {
                 (300.0 + offset - BRACKET_ARM, 200.0 + offset),
             ])
         );
+    }
+
+    #[test]
+    fn recording_look_is_red_border_without_dim_or_bracket() {
+        assert!(!Look::Recording.dimmed());
+        assert!(!Look::Recording.bracketed());
+        assert_eq!(Look::Recording.border(), p::base08());
+    }
+
+    #[test]
+    fn only_video_selection_has_bracket() {
+        assert!(Look::Video.bracketed());
+        assert!(!Look::Screenshot.bracketed());
+        assert!(Look::Video.dimmed() && Look::Screenshot.dimmed());
     }
 
     #[test]

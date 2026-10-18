@@ -74,10 +74,14 @@ let
       cp ${workspace}/bin/${name} $out/bin/
     '';
 
+  nvidiaVulkanOnly = lib.optionalString (
+    config.hostOption.spec.nvidia && !config.targets.genericLinux.enable
+  ) "WGPU_BACKEND=vulkan VK_DRIVER_FILES=/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.json";
+
   capture = pkgs.writeShellApplication {
     name = "capture";
     text = ''
-      CAPTURE_CLIPBOARD_COPY=${config.dp.clipboard-copy} exec ${workspace}/bin/capture "$@"
+      CAPTURE_CLIPBOARD_COPY=${config.dp.clipboard-copy} ${nvidiaVulkanOnly} exec ${workspace}/bin/capture "$@"
     '';
   };
   mediaBootPrompt = bin "media-boot-prompt";

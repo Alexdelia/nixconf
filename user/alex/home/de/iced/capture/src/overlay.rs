@@ -5,10 +5,11 @@ use iced::{
     Color, Element, Length, Subscription, Task, Theme,
     futures::{SinkExt, Stream},
     keyboard,
-    widget::{Canvas, container, space},
+    widget::{Canvas, space},
     window,
 };
 use iced_layershell::{
+    actions::ActionCallback,
     build_pattern::daemon,
     reexport::{Anchor, IcedId, KeyboardInteractivity, Layer, NewLayerShellSettings, OutputOption},
     settings::{LayerShellSettings, Settings, StartMode},
@@ -19,7 +20,7 @@ use widget::{font, palette as p};
 
 use crate::{
     Mode,
-    canvas::Overlay,
+    canvas::{Look, Overlay},
     geometry::{Point, Rect},
     instance::{self, Guard},
     memory::{self, Saved},
@@ -32,13 +33,11 @@ use crate::{
 
 const NAMESPACE: &str = env!("CARGO_PKG_NAME");
 
-const INDICATOR_THICKNESS: i32 = 2;
-
 pub struct State {
     mode: Mode,
     output: Vec<Output>,
     surface: HashMap<IcedId, String>,
-    indicator: HashSet<IcedId>,
+    frame: Option<IcedId>,
     hiding: HashSet<IcedId>,
     queued: Option<Rect>,
     selection: Selection,
@@ -95,7 +94,7 @@ fn boot(
         mode,
         output,
         surface,
-        indicator: HashSet::new(),
+        frame: None,
         hiding: HashSet::new(),
         queued: None,
         selection: Selection::new(saved),
@@ -103,41 +102,6 @@ fn boot(
         guard,
     };
     (state, Task::batch(open))
-}
-
-fn indicator_layer(output: &str, strip: Rect) -> NewLayerShellSettings {
-    NewLayerShellSettings {
-        size: Some((strip.width as u32, strip.height as u32)),
-        layer: Layer::Overlay,
-        anchor: Anchor::Top | Anchor::Left,
-        exclusive_zone: Some(-1),
-        margin: Some((strip.y, 0, 0, strip.x)),
-        keyboard_interactivity: KeyboardInteractivity::None,
-        output_option: OutputOption::OutputName(output.to_owned()),
-        events_transparent: true,
-        namespace: Some(NAMESPACE.to_owned()),
-    }
-}
-
-fn indicate(state: &mut State) -> Task<Message> {
-    let Some(saved) = state.selection.current.clone() else {
-        return Task::none();
-    };
-    let Some(output) = state
-        .output
-        .iter()
-        .find(|candidate| candidate.name == saved.output)
-    else {
-        return Task::none();
-    };
-    let frame = saved
-        .rect
-        .frame(INDICATOR_THICKNESS, output.rect.width, output.rect.height);
-    Task::batch(frame.into_iter().map(|strip| {
-        let (id, task) = Message::layershell_open(indicator_layer(&saved.output, strip));
-        state.indicator.insert(id);
-        task
-    }))
 }
 
 fn global(state: &State, saved: &Saved) -> Option<Rect> {
@@ -168,8 +132,52 @@ fn confirm(state: &mut State) -> Task<Message> {
     if let Err(error) = memory::store(&memory::path(state.mode), &saved) {
         eprintln!("capture: memory: {error}");
     }
+    queue(state, rect)
+}
+
+fn keep_as_frame(state: &mut State) -> Task<Message> {
+    let Some(saved) = &state.selection.current else {
+        return Task::none();
+    };
+    let Some(id) = state
+        .surface
+        .iter()
+        .find(|(_, output)| **output == saved.output)
+        .map(|(&id, _)| id)
+    else {
+        return Task::none();
+    };
+    state.surface.remove(&id);
+    state.frame = Some(id);
+    Task::batch([
+        Task::done(Message::KeyboardInteractivityChange {
+            id,
+            keyboard_interactivity: KeyboardInteractivity::None,
+        }),
+        Task::done(Message::SetInputRegion {
+            id,
+            callback: ActionCallback::new(|_| {}),
+        }),
+    ])
+}
+
+fn queue(state: &mut State, rect: Rect) -> Task<Message> {
     state.queued = Some(rect);
-    hide(state)
+    let frame = match state.mode {
+        Mode::Video => keep_as_frame(state),
+        Mode::Screenshot => Task::none(),
+    };
+    Task::batch([frame, hide(state), flush(state)])
+}
+
+fn flush(state: &mut State) -> Task<Message> {
+    match state.queued {
+        Some(rect) if state.hiding.is_empty() => {
+            state.queued = None;
+            capture(state.mode, rect)
+        }
+        _ => Task::none(),
+    }
 }
 
 fn capture(mode: Mode, rect: Rect) -> Task<Message> {
@@ -189,18 +197,14 @@ fn vanished(state: &mut State, output: &str) -> Task<Message> {
 }
 
 fn closed(state: &mut State, id: IcedId) -> Task<Message> {
-    state.indicator.remove(&id);
+    if state.frame == Some(id) {
+        state.frame = None;
+    }
     if let Some(output) = state.surface.remove(&id) {
         return vanished(state, &output);
     }
     state.hiding.remove(&id);
-    match state.queued {
-        Some(rect) if state.hiding.is_empty() => {
-            state.queued = None;
-            capture(state.mode, rect)
-        }
-        _ => Task::none(),
-    }
+    flush(state)
 }
 
 fn switch(state: &mut State, mode: Mode) {
@@ -233,7 +237,7 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
                 if let Some(Err(error)) = state.guard.as_ref().map(Guard::mark_recording) {
                     eprintln!("capture: lock file: {error}");
                 }
-                return Task::batch([indicate(state), Task::perform(exit, Message::Exited)]);
+                return Task::perform(exit, Message::Exited);
             }
             Err(error) => finish(state, Err(error)),
         },
@@ -276,41 +280,48 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
 #[derive(Debug, PartialEq, Eq)]
 enum Appearance<'a> {
     Selection(&'a str),
-    Indicator,
+    Frame,
     Blank,
 }
 
-fn appearance<'a>(
-    surface: &'a HashMap<IcedId, String>,
-    indicator: &HashSet<IcedId>,
+fn appearance(
+    surface: &HashMap<IcedId, String>,
+    frame: Option<IcedId>,
     id: IcedId,
-) -> Appearance<'a> {
+) -> Appearance<'_> {
     match surface.get(&id) {
         Some(output) => Appearance::Selection(output),
-        None if indicator.contains(&id) => Appearance::Indicator,
+        None if frame == Some(id) => Appearance::Frame,
         None => Appearance::Blank,
     }
 }
 
-fn view(state: &State, id: window::Id) -> Element<'_, Message> {
-    match appearance(&state.surface, &state.indicator, id) {
-        Appearance::Selection(output) => Canvas::new(Overlay {
-            output,
-            rect: state.selection.on(output),
-            bracket: matches!(state.mode, Mode::Video),
-        })
+fn canvas(overlay: Overlay<'_>) -> Element<'_, Message> {
+    Canvas::new(overlay)
         .width(Length::Fill)
         .height(Length::Fill)
-        .into(),
-        Appearance::Indicator => container(space())
-            .width(Length::Fill)
-            .height(Length::Fill)
-            .style(|_| container::Style {
-                background: Some(p::base08().into()),
-                ..Default::default()
-            })
-            .into(),
-        Appearance::Blank => space().into(),
+        .into()
+}
+
+fn view(state: &State, id: window::Id) -> Element<'_, Message> {
+    match (
+        appearance(&state.surface, state.frame, id),
+        &state.selection.current,
+    ) {
+        (Appearance::Selection(output), _) => canvas(Overlay {
+            output,
+            rect: state.selection.on(output),
+            look: match state.mode {
+                Mode::Screenshot => Look::Screenshot,
+                Mode::Video => Look::Video,
+            },
+        }),
+        (Appearance::Frame, Some(saved)) => canvas(Overlay {
+            output: &saved.output,
+            rect: Some(saved.rect),
+            look: Look::Recording,
+        }),
+        (Appearance::Frame | Appearance::Blank, _) => space().into(),
     }
 }
 
@@ -403,9 +414,9 @@ mod test {
         }
     }
 
-    fn selecting(surface: &[(IcedId, &str)], selected: &str) -> State {
+    fn selecting(mode: Mode, surface: &[(IcedId, &str)], selected: &str) -> State {
         State {
-            mode: Mode::Screenshot,
+            mode,
             output: surface
                 .iter()
                 .zip([0, 1920])
@@ -415,7 +426,7 @@ mod test {
                 .iter()
                 .map(|&(id, name)| (id, name.to_owned()))
                 .collect(),
-            indicator: HashSet::new(),
+            frame: None,
             hiding: HashSet::new(),
             queued: None,
             selection: Selection::new(Some(Saved {
@@ -436,7 +447,11 @@ mod test {
     fn vanished_output_no_longer_blocks_capture() {
         let gone = IcedId::unique();
         let kept = IcedId::unique();
-        let mut state = selecting(&[(gone, "DP-1"), (kept, "HDMI-A-1")], "HDMI-A-1");
+        let mut state = selecting(
+            Mode::Screenshot,
+            &[(gone, "DP-1"), (kept, "HDMI-A-1")],
+            "HDMI-A-1",
+        );
 
         let _ = closed(&mut state, gone);
         state.queued = state
@@ -455,7 +470,11 @@ mod test {
     fn vanished_output_forgets_its_selection() {
         let gone = IcedId::unique();
         let kept = IcedId::unique();
-        let mut state = selecting(&[(gone, "DP-1"), (kept, "HDMI-A-1")], "DP-1");
+        let mut state = selecting(
+            Mode::Screenshot,
+            &[(gone, "DP-1"), (kept, "HDMI-A-1")],
+            "DP-1",
+        );
 
         let _ = closed(&mut state, gone);
         assert_eq!(state.selection.current, None);
@@ -466,9 +485,8 @@ mod test {
     #[test]
     fn removed_selection_surface_is_blank_not_red() {
         let surface = HashMap::new();
-        let indicator = HashSet::new();
         assert_eq!(
-            appearance(&surface, &indicator, IcedId::unique()),
+            appearance(&surface, None, IcedId::unique()),
             Appearance::Blank
         );
     }
@@ -476,16 +494,74 @@ mod test {
     #[test]
     fn appearance_by_kind() {
         let selection = IcedId::unique();
-        let strip = IcedId::unique();
+        let frame = IcedId::unique();
         let surface = HashMap::from([(selection, "DP-1".to_owned())]);
-        let indicator = HashSet::from([strip]);
         assert_eq!(
-            appearance(&surface, &indicator, selection),
+            appearance(&surface, Some(frame), selection),
             Appearance::Selection("DP-1")
         );
-        assert_eq!(
-            appearance(&surface, &indicator, strip),
-            Appearance::Indicator
+        assert_eq!(appearance(&surface, Some(frame), frame), Appearance::Frame);
+    }
+
+    fn selected_rect(state: &State) -> Rect {
+        let saved = state.selection.current.clone().unwrap();
+        global(state, &saved).unwrap()
+    }
+
+    #[test]
+    fn video_queue_keeps_selected_surface_as_frame() {
+        let other = IcedId::unique();
+        let selected = IcedId::unique();
+        let mut state = selecting(
+            Mode::Video,
+            &[(other, "DP-1"), (selected, "HDMI-A-1")],
+            "HDMI-A-1",
         );
+
+        let rect = selected_rect(&state);
+        let _ = queue(&mut state, rect);
+        assert_eq!(state.frame, Some(selected));
+        assert_eq!(state.hiding, HashSet::from([other]));
+        assert!(state.surface.is_empty());
+        assert!(state.queued.is_some());
+    }
+
+    #[test]
+    fn video_queue_on_single_output_records_right_away() {
+        let selected = IcedId::unique();
+        let mut state = selecting(Mode::Video, &[(selected, "DP-1")], "DP-1");
+
+        let rect = selected_rect(&state);
+        let _ = queue(&mut state, rect);
+        assert_eq!(state.frame, Some(selected));
+        assert_eq!(state.queued, None);
+    }
+
+    #[test]
+    fn screenshot_queue_hides_every_surface() {
+        let other = IcedId::unique();
+        let selected = IcedId::unique();
+        let mut state = selecting(
+            Mode::Screenshot,
+            &[(other, "DP-1"), (selected, "HDMI-A-1")],
+            "HDMI-A-1",
+        );
+
+        let rect = selected_rect(&state);
+        let _ = queue(&mut state, rect);
+        assert_eq!(state.frame, None);
+        assert_eq!(state.hiding, HashSet::from([other, selected]));
+        assert!(state.queued.is_some());
+    }
+
+    #[test]
+    fn closed_frame_is_forgotten() {
+        let selected = IcedId::unique();
+        let mut state = selecting(Mode::Video, &[(selected, "DP-1")], "DP-1");
+        let rect = selected_rect(&state);
+        let _ = queue(&mut state, rect);
+
+        let _ = closed(&mut state, selected);
+        assert_eq!(state.frame, None);
     }
 }
