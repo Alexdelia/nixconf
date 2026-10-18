@@ -29,7 +29,13 @@ let
       ./power-tray
       ./volume-osd
     ]
-    |> map (w: import w { inherit pkgs lib; })
+    |> map (
+      w:
+      import w {
+        inherit pkgs lib;
+        inherit (config) dp;
+      }
+    )
     |> lib.filter (w: config.wayland.windowManager.sway.enable || w.name == "capture");
 
   workspace = pkgs.rustPlatform.buildRustPackage {
@@ -81,7 +87,7 @@ let
   capture = pkgs.writeShellApplication {
     name = "capture";
     text = ''
-      CAPTURE_CLIPBOARD_COPY=${config.dp.clipboard-copy} ${nvidiaVulkanOnly} exec ${workspace}/bin/capture "$@"
+      ${nvidiaVulkanOnly} exec ${workspace}/bin/capture "$@"
     '';
   };
   mediaBootPrompt = bin "media-boot-prompt";

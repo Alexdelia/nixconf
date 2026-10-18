@@ -19,5 +19,3 @@
   - have screenshot related shortcut in swhkd
   - allow video
 - iced debug build allow optional env, but release refuse compilation
-- refactor `dp` to avoid the easy infinite recursion
-  - then simplify `CAPTURE_CLIPBOARD_COPY` and the other workaround

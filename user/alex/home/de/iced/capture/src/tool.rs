@@ -24,8 +24,8 @@ pub fn notify_send() -> &'static str {
     option_env!("CAPTURE_NOTIFY_SEND").unwrap_or("notify-send")
 }
 
-pub fn clipboard_copy() -> String {
-    std::env::var("CAPTURE_CLIPBOARD_COPY").unwrap_or_else(|_| "wl-copy".to_owned())
+pub fn clipboard_copy() -> &'static str {
+    option_env!("CAPTURE_CLIPBOARD_COPY").unwrap_or("wl-copy")
 }
 
 pub fn fail(message: &str) -> ! {

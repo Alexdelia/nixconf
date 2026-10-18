@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  dp,
   ...
 }:
 {
@@ -12,5 +13,6 @@
     CAPTURE_MAKOCTL = lib.getExe' pkgs.mako "makoctl";
     CAPTURE_MAKO_MODE = (import ../../notification/mode.nix).dnd;
     CAPTURE_NOTIFY_SEND = lib.getExe' pkgs.libnotify "notify-send";
+    CAPTURE_CLIPBOARD_COPY = dp.clipboard-copy;
   };
 }

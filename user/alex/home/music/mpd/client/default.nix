@@ -4,9 +4,9 @@
   ...
 }:
 {
-  dp.music = lib.mkIf config.hostOption.entertainment.music (
-    config.terminal.exec { command = "rmpc"; }
-  );
+  config = lib.mkIf config.hostOption.entertainment.music {
+    dp.music = config.terminal.exec { command = "rmpc"; };
+  };
 
   imports = [
     ./mpc.nix

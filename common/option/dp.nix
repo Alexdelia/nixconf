@@ -7,7 +7,7 @@
   options.dp = lib.mkOption {
     description = "preferred packages (default packages|program|path)";
 
-    type = lib.types.attrsOf lib.types.path;
+    type = lib.types.lazyAttrsOf lib.types.path;
 
     default = {
       term = "${pkgs.foot}/bin/foot";
