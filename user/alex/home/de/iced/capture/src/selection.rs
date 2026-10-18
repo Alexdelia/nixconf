@@ -16,6 +16,14 @@ pub enum Drag {
     },
 }
 
+impl Drag {
+    fn output(&self) -> &str {
+        match self {
+            Drag::Resize { output, .. } | Drag::New { output, .. } => output,
+        }
+    }
+}
+
 #[derive(Debug, Default)]
 pub struct Selection {
     pub current: Option<Saved>,
@@ -73,6 +81,11 @@ impl Selection {
 
     pub fn release(&mut self) {
         self.drag = None;
+    }
+
+    pub fn forget(&mut self, output: &str) {
+        self.current.take_if(|saved| saved.output == output);
+        self.drag.take_if(|drag| drag.output() == output);
     }
 
     pub fn on(&self, output: &str) -> Option<Rect> {
@@ -174,6 +187,24 @@ mod test {
         let mut selection = selection();
         selection.drag_to("DP-1", point(5, 5));
         assert_eq!(selection.current, Some(saved("DP-1", 100, 100, 200, 100)));
+    }
+
+    #[test]
+    fn forget_clears_selection_and_drag_on_that_output() {
+        let mut selection = selection();
+        selection.press("DP-1", point(300, 150));
+        selection.forget("DP-1");
+        assert_eq!(selection.current, None);
+        assert_eq!(selection.drag, None);
+    }
+
+    #[test]
+    fn forget_other_output_keeps_selection() {
+        let mut selection = selection();
+        selection.press("DP-1", point(300, 150));
+        selection.forget("HDMI-A-1");
+        assert_eq!(selection.current, Some(saved("DP-1", 100, 100, 200, 100)));
+        assert!(selection.drag.is_some());
     }
 
     #[test]

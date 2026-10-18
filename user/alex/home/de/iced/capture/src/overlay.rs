@@ -179,7 +179,20 @@ fn capture(mode: Mode, rect: Rect) -> Task<Message> {
     }
 }
 
+fn vanished(state: &mut State, output: &str) -> Task<Message> {
+    state.outputs.retain(|candidate| candidate.name != output);
+    state.selection.forget(output);
+    match state.surface.is_empty() {
+        true => Task::done(Message::Cancel),
+        false => Task::none(),
+    }
+}
+
 fn closed(state: &mut State, id: IcedId) -> Task<Message> {
+    state.indicator.remove(&id);
+    if let Some(output) = state.surface.remove(&id) {
+        return vanished(state, &output);
+    }
     state.hiding.remove(&id);
     match state.queued {
         Some(rect) if state.hiding.is_empty() => {
@@ -377,6 +390,78 @@ pub fn run(
 #[cfg(test)]
 mod test {
     use super::*;
+
+    fn output(name: &str, x: i32) -> Output {
+        Output {
+            name: name.to_owned(),
+            rect: Rect {
+                x,
+                y: 0,
+                width: 1920,
+                height: 1080,
+            },
+        }
+    }
+
+    fn selecting(surface: &[(IcedId, &str)], selected: &str) -> State {
+        State {
+            mode: Mode::Screenshot,
+            outputs: surface
+                .iter()
+                .zip([0, 1920])
+                .map(|(&(_, name), x)| output(name, x))
+                .collect(),
+            surface: surface
+                .iter()
+                .map(|&(id, name)| (id, name.to_owned()))
+                .collect(),
+            indicator: HashSet::new(),
+            hiding: HashSet::new(),
+            queued: None,
+            selection: Selection::new(Some(Saved {
+                output: selected.to_owned(),
+                rect: Rect {
+                    x: 10,
+                    y: 10,
+                    width: 100,
+                    height: 100,
+                },
+            })),
+            recording: None,
+            guard: None,
+        }
+    }
+
+    #[test]
+    fn vanished_output_no_longer_blocks_capture() {
+        let gone = IcedId::unique();
+        let kept = IcedId::unique();
+        let mut state = selecting(&[(gone, "DP-1"), (kept, "HDMI-A-1")], "HDMI-A-1");
+
+        let _ = closed(&mut state, gone);
+        state.queued = state
+            .selection
+            .current
+            .clone()
+            .and_then(|saved| global(&state, &saved));
+        let _ = hide(&mut state);
+        assert_eq!(state.hiding, HashSet::from([kept]));
+
+        let _ = closed(&mut state, kept);
+        assert_eq!(state.queued, None);
+    }
+
+    #[test]
+    fn vanished_output_forgets_its_selection() {
+        let gone = IcedId::unique();
+        let kept = IcedId::unique();
+        let mut state = selecting(&[(gone, "DP-1"), (kept, "HDMI-A-1")], "DP-1");
+
+        let _ = closed(&mut state, gone);
+        assert_eq!(state.selection.current, None);
+        assert!(state.outputs.iter().all(|output| output.name != "DP-1"));
+        assert_eq!(state.surface.len(), 1);
+    }
 
     #[test]
     fn removed_selection_surface_is_blank_not_red() {
