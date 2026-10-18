@@ -15,7 +15,3 @@
 - shortcut visualizer
 - `fwupd` on `work` host
 - enable `programs.git.signing`
-- improve screenshot tool
-  - have screenshot related shortcut in swhkd
-  - allow video
-- iced debug build allow optional env, but release refuse compilation
