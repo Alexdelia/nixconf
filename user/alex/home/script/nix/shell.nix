@@ -8,7 +8,7 @@
 let
   inherit (pkgs) lib;
 
-  registry = if unstable then "github:NixOS/nixpkgs/nixpkgs-unstable" else "nixpkgs";
+  registry = if unstable then "nixpkgs-unstable" else "nixpkgs";
   impure = lib.optionalString unfree " --impure";
 
   empty =

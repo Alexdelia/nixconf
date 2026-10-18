@@ -35,10 +35,15 @@
       url = "github:Alexdelia/vity-base24";
       flake = false;
     };
-    vity-nvim.url = "github:Alexdelia/vity.nvim";
+    vity-nvim = {
+      url = "github:Alexdelia/vity.nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    };
     stylix = {
       url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.base16.follows = "base16";
     };
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
