@@ -174,7 +174,7 @@ fn confirm(state: &mut State) -> Task<Message> {
 
 fn capture(mode: Mode, rect: Rect) -> Task<Message> {
     match mode {
-        Mode::Screenshot => Task::perform(async move { screenshot::copy(rect) }, Message::Captured),
+        Mode::Screenshot => Task::perform(screenshot::copy(rect), Message::Captured),
         Mode::Video => Task::done(Message::Record(rect)),
     }
 }

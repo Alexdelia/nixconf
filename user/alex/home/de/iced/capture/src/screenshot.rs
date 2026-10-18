@@ -1,4 +1,6 @@
-use std::process::{Command, Stdio};
+use std::process::Stdio;
+
+use tokio::process::Command;
 
 use crate::{geometry::Rect, tool};
 
@@ -8,19 +10,28 @@ pub fn grim_args(rect: Rect) -> Vec<String> {
         .to_vec()
 }
 
-pub fn copy(rect: Rect) -> Result<(), String> {
+pub async fn copy(rect: Rect) -> Result<(), String> {
     let mut grim = Command::new(tool::grim())
         .args(grim_args(rect))
         .stdout(Stdio::piped())
         .spawn()
         .map_err(|error| format!("grim: {error}"))?;
-    let image = grim.stdout.take().ok_or("grim: no stdout")?;
+    let image: Stdio = grim
+        .stdout
+        .take()
+        .ok_or("grim: no stdout")?
+        .try_into()
+        .map_err(|error| format!("grim: {error}"))?;
     let copied = Command::new(tool::clipboard_copy())
         .args(["--type", "image/png"])
         .stdin(image)
         .status()
+        .await
         .map_err(|error| format!("clipboard: {error}"))?;
-    let captured = grim.wait().map_err(|error| format!("grim: {error}"))?;
+    let captured = grim
+        .wait()
+        .await
+        .map_err(|error| format!("grim: {error}"))?;
     if !captured.success() {
         return Err(format!("grim: {captured}"));
     }
