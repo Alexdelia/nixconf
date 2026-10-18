@@ -54,6 +54,16 @@ fn near(value: i32, edge: i32) -> bool {
     (value - edge).abs() <= GRAB
 }
 
+fn nearest(value: i32, low: i32, high: i32) -> (bool, bool) {
+    let low_near = near(value, low);
+    let high_near = near(value, high);
+    if low_near && high_near {
+        let low_closer = (value - low).abs() <= (high - value).abs();
+        return (low_closer, !low_closer);
+    }
+    (low_near, high_near)
+}
+
 fn between(value: i32, low: i32, high: i32) -> bool {
     low - GRAB <= value && value <= high + GRAB
 }
@@ -83,10 +93,8 @@ impl Rect {
         if !between(point.x, edge.left, edge.right) || !between(point.y, edge.top, edge.bottom) {
             return None;
         }
-        let left = near(point.x, edge.left);
-        let right = near(point.x, edge.right);
-        let top = near(point.y, edge.top);
-        let bottom = near(point.y, edge.bottom);
+        let (left, right) = nearest(point.x, edge.left, edge.right);
+        let (top, bottom) = nearest(point.y, edge.top, edge.bottom);
         match (left, right, top, bottom) {
             (true, _, true, _) => Some(Handle::TopLeft),
             (_, true, true, _) => Some(Handle::TopRight),
@@ -257,6 +265,25 @@ mod test {
             rect(100, 100, 200, 100).resize(Handle::BottomRight, point(400, 250)),
             Some(rect(100, 100, 300, 150))
         );
+    }
+
+    #[test]
+    fn handle_on_thin_rect_picks_closer_edge() {
+        let thin = rect(0, 0, 20, 200);
+        assert_eq!(thin.handle_at(point(9, 100)), Some(Handle::Left));
+        assert_eq!(thin.handle_at(point(10, 100)), Some(Handle::Left));
+        assert_eq!(thin.handle_at(point(11, 100)), Some(Handle::Right));
+        assert_eq!(
+            rect(0, 0, 10, 200).handle_at(point(10, 100)),
+            Some(Handle::Right)
+        );
+    }
+
+    #[test]
+    fn handle_on_short_rect_picks_closer_corner() {
+        let short = rect(0, 0, 200, 20);
+        assert_eq!(short.handle_at(point(200, 15)), Some(Handle::BottomRight));
+        assert_eq!(short.handle_at(point(0, 5)), Some(Handle::TopLeft));
     }
 
     #[test]
