@@ -208,14 +208,13 @@ fn update(state: &mut State, message: Message) -> Task<Message> {
             let outcome = state.recording.take().map_or(Ok(()), Recording::stop);
             finish(state, outcome)
         }
-        Message::Poll => {
+        Message::Poll
             if state
                 .recording
                 .as_mut()
-                .is_some_and(|recording| !recording.running())
-            {
-                finish(state, Err("recorder stopped".to_owned()))
-            }
+                .is_some_and(|recording| !recording.running()) =>
+        {
+            finish(state, Err("recorder stopped".to_owned()))
         }
         _ => {}
     }
