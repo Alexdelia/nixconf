@@ -47,13 +47,40 @@ let
     	printf '%s' "$ri"
     }
 
-    activity_create() {
-    	local id ri
+    activity_new() {
+    	local id
     	id="branch-$(date +%H%M%S)"
     	rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
-    	ri="$(cur_role)"
-    	printf '%s\n' "$id" >"$state/current"
-    	swaymsg workspace "$(ws_name "$ri" "$id")" >/dev/null
+    	printf '%s' "$id"
+    }
+
+    activity_next() {
+    	local acts n c i a
+    	mapfile -t acts <"$state/list"
+    	n="''${#acts[@]}"
+    	if [ "$n" -lt 2 ]; then activity_new; return; fi
+    	c="$(cur)"
+    	i=0
+    	for a in "''${acts[@]}"; do
+    		if [ "$a" = "$c" ]; then break; fi
+    		i=$((i + 1))
+    	done
+    	printf '%s' "''${acts[$(((i + 1) % n))]}"
+    }
+
+    activity_enter() {
+    	local act="$1" target
+    	target="$(ws_name "$(cur_role)" "$act")"
+    	printf '%s\n' "$act" >"$state/current"
+    	swaymsg workspace "$target" >/dev/null
+    }
+
+    activity_carry() {
+    	local act="$1" target
+    	target="$(ws_name "$(cur_role)" "$act")"
+    	swaymsg "move container to workspace \"$target\"" >/dev/null
+    	printf '%s\n' "$act" >"$state/current"
+    	swaymsg workspace "$target" >/dev/null
     }
 
     # empty = no window in the activity's per-activity workspaces (globals don't count)
@@ -113,36 +140,19 @@ let
   '';
 
   activityCreate = mkScript "sway-activity-create" /* bash */ ''
-    activity_create
+    activity_enter "$(activity_new)"
   '';
 
   activityMove = mkScript "sway-activity-move" /* bash */ ''
-    ri="$(cur_role)"
-    id="branch-$(date +%H%M%S)"
-    rg -qFx "$id" "$state/list" || printf '%s\n' "$id" >>"$state/list"
-    target="$(ws_name "$ri" "$id")"
-    swaymsg "move container to workspace \"$target\"" >/dev/null
-    printf '%s\n' "$id" >"$state/current"
-    swaymsg workspace "$target" >/dev/null
+    activity_carry "$(activity_new)"
   '';
 
   activityCycle = mkScript "sway-activity-cycle" /* bash */ ''
-    mapfile -t acts <"$state/list"
-    n="''${#acts[@]}"
-    if [ "$n" -lt 2 ]; then activity_create; exit 0; fi
+    activity_enter "$(activity_next)"
+  '';
 
-    c="$(cur)"
-    i=0
-    for a in "''${acts[@]}"; do
-    	if [ "$a" = "$c" ]; then break; fi
-    	i=$((i + 1))
-    done
-    j=$(((i + 1) % n))
-    next="''${acts[$j]}"
-
-    ri="$(cur_role)"
-    printf '%s\n' "$next" >"$state/current"
-    swaymsg workspace "$(ws_name "$ri" "$next")" >/dev/null
+  activityCycleMove = mkScript "sway-activity-cycle-move" /* bash */ ''
+    activity_carry "$(activity_next)"
   '';
 
   activityClose = mkScript "sway-activity-close" /* bash */ ''
@@ -228,6 +238,7 @@ let
     "${modifier}+grave" = "exec ${activityCreate}/bin/sway-activity-create";
     "${modifier}+Shift+grave" = "exec ${activityMove}/bin/sway-activity-move";
     "${modifier}+Tab" = "exec ${activityCycle}/bin/sway-activity-cycle";
+    "${modifier}+Shift+Tab" = "exec ${activityCycleMove}/bin/sway-activity-cycle-move";
     "${modifier}+Control+w" = "exec ${activityClose}/bin/sway-activity-close";
   };
 
@@ -242,6 +253,7 @@ in
       activityCreate
       activityMove
       activityCycle
+      activityCycleMove
       activityClose
     ];
 
