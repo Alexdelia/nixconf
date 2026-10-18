@@ -16,6 +16,10 @@ pub fn makoctl() -> &'static str {
     option_env!("CAPTURE_MAKOCTL").unwrap_or("makoctl")
 }
 
+pub fn mako_mode() -> &'static str {
+    option_env!("CAPTURE_MAKO_MODE").unwrap_or("do-not-disturb")
+}
+
 pub fn notify_send() -> &'static str {
     option_env!("CAPTURE_NOTIFY_SEND").unwrap_or("notify-send")
 }

@@ -4,8 +4,6 @@ use serde::Deserialize;
 
 use crate::tool;
 
-pub const MODE: &str = "do-not-disturb";
-
 #[derive(Deserialize)]
 struct Notification {
     id: u64,
@@ -39,7 +37,7 @@ fn makoctl(argument: &[&str]) -> String {
 }
 
 pub fn recover() {
-    makoctl(&["mode", "-r", MODE]);
+    makoctl(&["mode", "-r", tool::mako_mode()]);
 }
 
 pub struct Mute {
@@ -49,14 +47,14 @@ pub struct Mute {
 impl Mute {
     pub fn start() -> Mute {
         let before = max_id(&[&makoctl(&["list", "-j"]), &makoctl(&["history", "-j"])]);
-        makoctl(&["mode", "-a", MODE]);
+        makoctl(&["mode", "-a", tool::mako_mode()]);
         Mute { before }
     }
 }
 
 impl Drop for Mute {
     fn drop(&mut self) {
-        makoctl(&["mode", "-r", MODE]);
+        makoctl(&["mode", "-r", tool::mako_mode()]);
         for _ in 0..held(&makoctl(&["history", "-j"]), self.before) {
             makoctl(&["restore"]);
         }
@@ -81,11 +79,5 @@ mod test {
     #[test]
     fn held_counts_newer_only() {
         assert_eq!(held(r#"[{"id":9,"summary":"a"},{"id":8},{"id":4}]"#, 5), 2);
-    }
-
-    #[test]
-    fn mode_matches_mako_config() {
-        let mode_nix = include_str!("../../../notification/mode.nix");
-        assert!(mode_nix.contains(&format!("\"{MODE}\"")));
     }
 }
