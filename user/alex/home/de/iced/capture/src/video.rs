@@ -1,4 +1,4 @@
-use std::os::unix::fs::{DirBuilderExt, PermissionsExt};
+use std::os::unix::fs::{DirBuilderExt, MetadataExt, PermissionsExt};
 use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
@@ -34,11 +34,23 @@ fn recording(dir: &Path) -> std::io::Result<Vec<(SystemTime, PathBuf)>> {
     Ok(recording)
 }
 
+fn ensure_owned(dir: &Path, uid: u32) -> std::io::Result<()> {
+    let metadata = std::fs::symlink_metadata(dir)?;
+    if !metadata.is_dir() || metadata.uid() != uid {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::PermissionDenied,
+            format!("{} not a directory owned by uid {uid}", dir.display()),
+        ));
+    }
+    Ok(())
+}
+
 pub fn prepare(dir: &Path) -> std::io::Result<PathBuf> {
     std::fs::DirBuilder::new()
         .recursive(true)
         .mode(0o700)
         .create(dir)?;
+    ensure_owned(dir, unsafe { libc::getuid() })?;
     std::fs::set_permissions(dir, std::fs::Permissions::from_mode(0o700))?;
 
     let old = recording(dir)?;
@@ -309,6 +321,37 @@ mod test {
         assert_eq!(new.parent().unwrap(), dir);
         assert_eq!(new.extension().unwrap(), "mp4");
         assert!(!new.exists());
+    }
+
+    #[test]
+    fn ensure_owned_accepts_own_dir() {
+        let dir = scratch("owned");
+        std::fs::create_dir_all(&dir).unwrap();
+        assert!(ensure_owned(&dir, unsafe { libc::getuid() }).is_ok());
+    }
+
+    #[test]
+    fn ensure_owned_rejects_other_uid() {
+        let dir = scratch("other-uid");
+        std::fs::create_dir_all(&dir).unwrap();
+        let other = unsafe { libc::getuid() } + 1;
+        assert_eq!(
+            ensure_owned(&dir, other).unwrap_err().kind(),
+            std::io::ErrorKind::PermissionDenied
+        );
+    }
+
+    #[test]
+    fn prepare_rejects_symlink() {
+        let target = scratch("symlink-target");
+        std::fs::create_dir_all(&target).unwrap();
+        let link = scratch("symlink");
+        std::os::unix::fs::symlink(&target, &link).unwrap();
+        assert_eq!(
+            prepare(&link).unwrap_err().kind(),
+            std::io::ErrorKind::PermissionDenied
+        );
+        let _ = std::fs::remove_file(&link);
     }
 
     #[test]
