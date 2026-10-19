@@ -6,6 +6,7 @@ local icons = {
 	lock = { icon = "", color = "#444444", name = "Lock" },
 	sh = { icon = "", color = "#ff7043", name = "Shell" },
 	rs = { icon = "", color = "#8a3510", name = "Rs" },
+	tsv = { icon = "", color = "#89e051", name = "Tsv" },
 }
 
 devicons.setup({
@@ -19,6 +20,7 @@ devicons.setup({
 		lock = icons.lock,
 		sh = icons.sh,
 		rs = icons.rs,
+		tsv = icons.tsv,
 	},
 })
 
