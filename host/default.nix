@@ -6,8 +6,55 @@ let
   inherit (inputs.nixpkgs) lib;
 
   scheme = "${inputs.vity-base24}/vity.yaml";
+
+  mkHomeConfiguration =
+    {
+      hostname,
+      username,
+      extraModules ? [ ],
+    }:
+    let
+      hostAttrs = hosts.${hostname};
+      userConfigName = if username == "alexandre" then "alex" else username;
+    in
+    inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        inherit (hostAttrs) system;
+        overlays = [ (import ../common/overlay.nix inputs) ];
+      };
+
+      extraSpecialArgs = {
+        inherit inputs;
+      };
+
+      modules = [
+        inputs.sops-nix.homeManagerModules.sops
+
+        inputs.base16.homeManagerModule
+        { inherit scheme; }
+
+        inputs.stylix.homeModules.stylix
+        ../common/stylix.nix
+
+        inputs.plasma-manager.homeModules.plasma-manager
+
+        (import ../common/mkHome.nix {
+          inherit username;
+          inherit (hostAttrs) stateVersion;
+          isNixos = false;
+          hostOption = { };
+        })
+        ../user/${userConfigName}/home
+        ../common/standalone-nix.nix
+
+        ./${hostname}
+      ]
+      ++ extraModules;
+    };
 in
 {
+  lib = { inherit mkHomeConfiguration; };
+
   nixosConfigurations =
     hosts
     |> lib.filterAttrs (_hostname: hostAttrs: hostAttrs.isNixos)
@@ -44,48 +91,10 @@ in
     |> lib.mapAttrsToList (
       hostname: hostAttrs:
       hostAttrs.users
-      |> map (
-        username:
-        let
-          userConfigName = if username == "alexandre" then "alex" else username;
-        in
-        {
-          name = "${username}@${hostname}";
-          value = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = import inputs.nixpkgs {
-              inherit (hostAttrs) system;
-              overlays = [ (import ../common/overlay.nix inputs) ];
-            };
-
-            extraSpecialArgs = {
-              inherit inputs;
-            };
-
-            modules = [
-              inputs.sops-nix.homeManagerModules.sops
-
-              inputs.base16.homeManagerModule
-              { inherit scheme; }
-
-              inputs.stylix.homeModules.stylix
-              ../common/stylix.nix
-
-              inputs.plasma-manager.homeModules.plasma-manager
-
-              (import ../common/mkHome.nix {
-                inherit username;
-                inherit (hostAttrs) stateVersion;
-                isNixos = false;
-                hostOption = { };
-              })
-              ../user/${userConfigName}/home
-              ../common/standalone-nix.nix
-
-              ./${hostname}
-            ];
-          };
-        }
-      )
+      |> map (username: {
+        name = "${username}@${hostname}";
+        value = mkHomeConfiguration { inherit hostname username; };
+      })
     )
     |> builtins.concatLists
     |> builtins.listToAttrs;
