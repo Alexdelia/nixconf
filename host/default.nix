@@ -84,18 +84,4 @@ in
         };
       }
     );
-
-  homeConfigurations =
-    hosts
-    |> lib.filterAttrs (_hostname: hostAttrs: !hostAttrs.isNixos)
-    |> lib.mapAttrsToList (
-      hostname: hostAttrs:
-      hostAttrs.users
-      |> map (username: {
-        name = "${username}@${hostname}";
-        value = mkHomeConfiguration { inherit hostname username; };
-      })
-    )
-    |> builtins.concatLists
-    |> builtins.listToAttrs;
 }

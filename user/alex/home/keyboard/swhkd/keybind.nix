@@ -43,26 +43,10 @@ let
       "super + @s" = "${config.customScript.capture} screenshot";
       "super + shift + @s" = "${config.customScript.capture} video";
     };
-
-  isNonNixos = config.targets.genericLinux.enable;
-  localConfig = "${config.xdg.configHome}/swhkd/local.swhkdrc";
-  localInclude = lib.optionalString isNonNixos "include ${localConfig}\n";
 in
 {
   xdg.configFile."swhkd/swhkdrc".text =
-    localInclude
-    + (
-      keybind
-      |> lib.mapAttrsToList (hotkey: command: "${hotkey}\n\t${command}\n")
-      |> lib.concatStringsSep "\n"
-    );
-
-  home.activation = lib.mkIf isNonNixos {
-    swhkdLocalConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] /* bash */ ''
-      if [[ ! -e ${lib.escapeShellArg localConfig} ]]; then
-      	run mkdir -p ${lib.escapeShellArg (dirOf localConfig)}
-      	run touch ${lib.escapeShellArg localConfig}
-      fi
-    '';
-  };
+    keybind
+    |> lib.mapAttrsToList (hotkey: command: "${hotkey}\n\t${command}\n")
+    |> lib.concatStringsSep "\n";
 }
