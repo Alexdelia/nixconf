@@ -65,7 +65,14 @@
     # `8` = probe-order ATA port (DVD drive)
     # /!\ motherboard/CPU/GPU change can reorder ports
     # recheck number with `journalctl -b | grep ata`
-    kernelParams = [ "libata.force=8:disable" ];
+    kernelParams = [
+      "libata.force=8:disable"
+
+      # 990 PRO root nvme dropped off the bus (all reads EIO, then panic), smart log clean
+      # suspect power state transitions
+      "nvme_core.default_ps_max_latency_us=0"
+      "pcie_aspm=off"
+    ];
   };
 
   hardware.bluetooth = {
