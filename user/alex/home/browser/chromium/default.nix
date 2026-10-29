@@ -7,6 +7,7 @@ in
     ./extension
 
     ./self-hosted-forgejo.nix
+    ./no-leave-prompt.nix
   ];
 
   programs.chromium = {

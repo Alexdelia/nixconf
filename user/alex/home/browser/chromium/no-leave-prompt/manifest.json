@@ -1,0 +1,16 @@
+{
+	"manifest_version": 3,
+	"name": "No leave prompt",
+	"description": "Lets beforeunload handlers run but never shows the leave site confirmation",
+	"version": "1.0",
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["content.js"],
+			"run_at": "document_start",
+			"world": "MAIN",
+			"all_frames": true,
+			"match_origin_as_fallback": true
+		}
+	]
+}
