@@ -5,7 +5,12 @@
   ...
 }:
 let
-  extension = ./no-leave-prompt;
+  source = ./no-leave-prompt;
+  extension = pkgs.runCommand "no-leave-prompt" { nativeBuildInputs = [ pkgs.typescript ]; } ''
+    mkdir $out
+    cp ${source}/manifest.json $out/manifest.json
+    tsc --project ${source} --outDir $out
+  '';
   baseVersion = "1.0";
   id = "hikbpejagmfnfnikhpmjfipkadcnfndm";
 

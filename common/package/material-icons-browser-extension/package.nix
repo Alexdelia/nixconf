@@ -16,7 +16,6 @@ buildNpmPackage {
   patches = [
     ./self-hosted-port.patch
     ./forgejo-diff-tree.patch
-    ./local-instance.patch
   ];
 
   npmDepsHash = "sha256-c8i1OUWP/42N1DZHIq5p9PyQzH+FcnbvAjyvLswuEqo=";

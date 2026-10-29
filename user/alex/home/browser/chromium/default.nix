@@ -6,7 +6,8 @@ in
   imports = [
     ./extension
 
-    ./self-hosted-forgejo.nix
+    ./local-extension.nix
+    ./material-icons.nix
     ./no-leave-prompt.nix
   ];
 
