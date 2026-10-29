@@ -13,6 +13,27 @@ let
     system: inputs.treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} ./treefmt.nix
   );
 
+  icedClippy =
+    system:
+    let
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      iced = "user/alex/home/de/iced";
+    in
+    pkgs.writeShellApplication {
+      name = "iced-clippy";
+      runtimeInputs = with pkgs; [
+        cargo
+        clippy
+        rustc
+        pkg-config
+        stdenv.cc
+      ];
+      runtimeEnv.PKG_CONFIG_PATH = pkgs.lib.makeSearchPathOutput "dev" "lib/pkgconfig" (
+        import ./${iced}/runtime.nix pkgs
+      );
+      text = "cargo clippy --manifest-path ${iced}/Cargo.toml --all-targets -- -D warnings";
+    };
+
   checks = forSystems (system: {
     pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
       src = ./.;
@@ -22,6 +43,24 @@ let
           stages = [ "pre-commit" ];
 
           packageOverrides.treefmt = treefmtEval.${system}.config.build.wrapper;
+        };
+
+        typos = {
+          enable = true;
+          stages = [ "pre-commit" ];
+        };
+
+        shellcheck = {
+          enable = true;
+          stages = [ "pre-commit" ];
+        };
+
+        clippy = {
+          enable = true;
+          entry = "${icedClippy system}/bin/iced-clippy";
+          files = "^user/alex/home/de/iced/.*\\.(rs|toml)$|Cargo\\.lock$";
+          pass_filenames = false;
+          stages = [ "pre-push" ];
         };
 
         deadnix = {

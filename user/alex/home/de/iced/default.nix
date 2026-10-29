@@ -10,12 +10,7 @@ let
 
   mediaEnabled = config.hostOption.spec.monitor |> lib.attrValues |> lib.any (m: m.media);
 
-  runtime = with pkgs; [
-    wayland
-    vulkan-loader
-    libxkbcommon
-    libGL
-  ];
+  runtime = import ./runtime.nix pkgs;
 
   palette =
     c

@@ -3,12 +3,7 @@ let
   pkgs = root.inputs.nixpkgs.legacyPackages.${builtins.currentSystem};
   inherit (pkgs) lib;
 
-  runtime = with pkgs; [
-    wayland
-    vulkan-loader
-    libxkbcommon
-    libGL
-  ];
+  runtime = import ./runtime.nix pkgs;
 in
 pkgs.mkShell {
   packages = with pkgs; [

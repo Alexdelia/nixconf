@@ -16,9 +16,11 @@ _: {
 
     shfmt.enable = true;
 
-    prettier = {
+    biome.enable = true;
+
+    yamlfmt = {
       enable = true;
-      settings.useTabs = true;
+      settings.formatter.retain_line_breaks = true;
     };
   };
 
@@ -31,6 +33,8 @@ _: {
       ".env*"
 
       "*.toml"
+
+      "*.md"
 
       # sops-encrypted
       ".sops.yaml"
