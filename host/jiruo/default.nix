@@ -44,7 +44,7 @@
     };
 
     vault = {
-      usb = "1C34-C9ED";
+      usb = "fbfd899c-34e6-44a7-913c-95b32d55b80f";
       hdd = "/mnt/hdd/vault";
     };
   };

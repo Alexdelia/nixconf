@@ -15,12 +15,10 @@ in
   config = lib.mkIf (vault != null) {
     fileSystems.${usbMount} = {
       device = "/dev/disk/by-uuid/${vault.usb}";
-      fsType = "vfat";
+      fsType = "ext4";
       options = [
         "noauto"
         "user"
-        "umask=0077"
-        "flush"
       ];
     };
 
