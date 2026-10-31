@@ -104,16 +104,20 @@ pkgs.writeShellApplication {
     	before=$(git -C "$nvme_mount" rev-parse HEAD)
     	for remote in "$usb_repo" "$hdd_mount"; do
     		if has_commit "$remote"; then
-    			git -C "$nvme_mount" pull -q --no-rebase --no-edit "$remote" main
+    			echo "pull $remote"
+    			git -C "$nvme_mount" pull -q --progress --no-rebase --no-edit "$remote" main
     		fi
     	done
     	git -C "$nvme_mount" diff --stat "$before" HEAD
 
-    	git -C "$nvme_mount" push -q "$hdd_mount" main
-    	git -C "$nvme_mount" push -q "$usb_repo" main
+    	for remote in "$hdd_mount" "$usb_repo"; do
+    		echo "push $remote"
+    		git -C "$nvme_mount" push -q --progress "$remote" main
+    	done
 
     	for repo in "$nvme_mount" "$hdd_mount" "$usb_repo"; do
-    		git -C "$repo" fsck --no-progress --no-dangling
+    		echo "fsck $repo"
+    		git -C "$repo" fsck --progress --no-dangling
     	done
 
     	cp "$nvme_cipher/gocryptfs.conf" "$usb_key/gocryptfs-nvme.conf"
