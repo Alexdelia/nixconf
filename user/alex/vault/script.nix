@@ -132,6 +132,17 @@ pkgs.writeShellApplication {
     	done
     }
 
+    compact() {
+    	usb_attach
+    	unlock_nvme
+    	unlock_hdd
+
+    	for repo in "$nvme_mount" "$hdd_mount" "$usb_repo"; do
+    		echo "gc $repo"
+    		git -C "$repo" gc
+    	done
+    }
+
     ask_passphrase() {
     	local first second
     	IFS= read -rsp "passphrase: " first
@@ -244,11 +255,14 @@ pkgs.writeShellApplication {
     fsck)
     	verify
     	;;
+    gc)
+    	compact
+    	;;
     init)
     	initialize
     	;;
     *)
-    	echo "usage: vault open|close|sync|fsck|init" >&2
+    	echo "usage: vault open|close|sync|fsck|gc|init" >&2
     	exit 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
     	;;
     esac
