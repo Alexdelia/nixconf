@@ -42,7 +42,7 @@ in
               compression = 0;
               bigFileThreshold = "1m";
             };
-            gc.auto = 0;
+            maintenance.auto = false;
           };
         })
         [
