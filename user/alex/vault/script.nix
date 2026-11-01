@@ -2,6 +2,7 @@
   pkgs,
   vault,
   usbMount,
+  usbRepo,
   home,
   link,
   wrapperDir,
@@ -20,7 +21,7 @@ pkgs.writeShellApplication {
   text = ''
     usb_device=/dev/disk/by-uuid/${vault.usb}
     usb_mount=${usbMount}
-    usb_repo="$usb_mount/vault"
+    usb_repo=${usbRepo}
     usb_key="$usb_mount/vault-key"
     passphrase="$usb_key/passphrase"
 
@@ -98,8 +99,6 @@ pkgs.writeShellApplication {
     	unlock_nvme
     	unlock_hdd
 
-    	git -C "$usb_repo" config receive.denyCurrentBranch updateInstead
-
     	local before
     	before=$(git -C "$nvme_mount" rev-parse HEAD)
     	for remote in "$usb_repo" "$hdd_mount"; do
@@ -115,16 +114,22 @@ pkgs.writeShellApplication {
     		git -C "$nvme_mount" push -q --progress "$remote" main
     	done
 
-    	for repo in "$nvme_mount" "$hdd_mount" "$usb_repo"; do
-    		echo "fsck $repo"
-    		git -C "$repo" fsck --progress --no-dangling
-    	done
-
     	cp "$nvme_cipher/gocryptfs.conf" "$usb_key/gocryptfs-nvme.conf"
     	cp "$hdd_cipher/gocryptfs.conf" "$usb_key/gocryptfs-hdd.conf"
     	sync
 
     	echo "synced"
+    }
+
+    verify() {
+    	usb_attach
+    	unlock_nvme
+    	unlock_hdd
+
+    	for repo in "$nvme_mount" "$hdd_mount" "$usb_repo"; do
+    		echo "fsck $repo"
+    		git -C "$repo" fsck --progress --no-dangling
+    	done
     }
 
     ask_passphrase() {
@@ -188,20 +193,20 @@ pkgs.writeShellApplication {
     	name=$(git config --global user.personal.name)
     	email=$(git config --global user.personal.email)
 
-    	for repo in "$usb_repo" "$nvme_mount"; do
-    		if [[ ! -e $repo/.git ]]; then
-    			git init -q -b main "$repo"
-    			created=true
-    		fi
-
-    		git -C "$repo" config user.name "$name"
-    		git -C "$repo" config user.email "$email"
-    	done
-
-    	if [[ ! -e $hdd_mount/HEAD ]]; then
-    		git init -q --bare -b main "$hdd_mount"
+    	if [[ ! -e $nvme_mount/.git ]]; then
+    		git init -q -b main "$nvme_mount"
     		created=true
     	fi
+
+    	git -C "$nvme_mount" config user.name "$name"
+    	git -C "$nvme_mount" config user.email "$email"
+
+    	for repo in "$usb_repo" "$hdd_mount"; do
+    		if [[ ! -e $repo/HEAD ]]; then
+    			git init -q --bare -b main "$repo"
+    			created=true
+    		fi
+    	done
 
     	if ! has_commit "$nvme_mount"; then
     		created=true
@@ -236,11 +241,14 @@ pkgs.writeShellApplication {
     sync)
     	synchronize
     	;;
+    fsck)
+    	verify
+    	;;
     init)
     	initialize
     	;;
     *)
-    	echo "usage: vault open|close|sync|init" >&2
+    	echo "usage: vault open|close|sync|fsck|init" >&2
     	exit 64 # sysexits.h `EX_USAGE` https://github.com/openbsd/src/blob/master/include/sysexits.h#L101
     	;;
     esac
