@@ -10,6 +10,9 @@
 
     pulse.enable = true;
 
+    # pipewire 1.6.6 x11-bell segfaults when xwayland exits, restart drops every pulse client
+    extraConfig.pipewire.no-x11-bell."context.properties"."module.x11.bell" = false;
+
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 

@@ -1,7 +1,7 @@
-use std::{process::Stdio, str::FromStr};
+use std::{process::Stdio, str::FromStr, time::Duration};
 
 use iced::{
-    futures::{SinkExt, Stream},
+    futures::{SinkExt, Stream, channel::mpsc},
     stream,
 };
 use tokio::{
@@ -11,6 +11,7 @@ use tokio::{
 
 const WPCTL: &str = widget::build_env!("VOLUME_OSD_WPCTL", "wpctl");
 const PACTL: &str = widget::build_env!("VOLUME_OSD_PACTL", "pactl");
+const RESUBSCRIBE_DELAY: Duration = Duration::from_secs(1);
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Volume {
@@ -61,23 +62,31 @@ impl FromStr for Volume {
 
 pub fn event() -> impl Stream<Item = ()> {
     stream::channel(4, async |mut output| {
-        let Ok(mut child) = Command::new(PACTL)
-            .arg("subscribe")
-            .stdout(Stdio::piped())
-            .spawn()
-        else {
-            return;
-        };
-        let Some(stdout) = child.stdout.take() else {
-            return;
-        };
-        let mut line = BufReader::new(stdout).lines();
-        while let Ok(Some(l)) = line.next_line().await {
-            if l.contains("on sink #") || l.contains("on server") {
-                let _ = output.send(()).await;
-            }
+        loop {
+            forward_sink_event(&mut output).await;
+            tokio::time::sleep(RESUBSCRIBE_DELAY).await;
         }
     })
+}
+
+async fn forward_sink_event(output: &mut mpsc::Sender<()>) {
+    let Ok(mut child) = Command::new(PACTL)
+        .arg("subscribe")
+        .stdout(Stdio::piped())
+        .kill_on_drop(true)
+        .spawn()
+    else {
+        return;
+    };
+    let Some(stdout) = child.stdout.take() else {
+        return;
+    };
+    let mut line = BufReader::new(stdout).lines();
+    while let Ok(Some(l)) = line.next_line().await {
+        if l.contains("on sink #") || l.contains("on server") {
+            let _ = output.send(()).await;
+        }
+    }
 }
 
 #[cfg(test)]
