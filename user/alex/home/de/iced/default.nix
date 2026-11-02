@@ -31,8 +31,7 @@ let
         inherit pkgs lib;
         inherit (config) dp;
       }
-    )
-    |> lib.filter (w: config.wayland.windowManager.sway.enable || w.name == "capture");
+    );
 
   craneLib = inputs.crane.mkLib pkgs;
 
@@ -80,9 +79,7 @@ let
       cp ${workspace}/bin/${name} $out/bin/
     '';
 
-  nvidiaVulkanOnly = lib.optionalString (
-    config.hostOption.spec.nvidia && !config.targets.genericLinux.enable
-  ) "WGPU_BACKEND=vulkan VK_DRIVER_FILES=/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.json";
+  nvidiaVulkanOnly = lib.optionalString config.hostOption.spec.nvidia "WGPU_BACKEND=vulkan VK_DRIVER_FILES=/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.json";
 
   capture = pkgs.writeShellApplication {
     name = "capture";
@@ -106,22 +103,18 @@ let
   };
 in
 {
-  config = lib.mkMerge [
-    {
-      home.packages = [ capture ];
-      customScript.capture = "${capture}/bin/capture";
-    }
-    (lib.mkIf config.wayland.windowManager.sway.enable (
-      lib.mkMerge [
-        {
-          dp.volumeOsd = "${volumeOsd}/bin/volume-osd";
-          dp.powerMenu = "${powerMenu}/bin/power-menu";
-        }
-        (lib.mkIf mediaEnabled {
-          dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
-          dp.powerTray = "${powerTray}/bin/power-tray";
-        })
-      ]
-    ))
-  ];
+  config = lib.mkIf config.wayland.windowManager.sway.enable (
+    lib.mkMerge [
+      {
+        home.packages = [ capture ];
+        customScript.capture = "${capture}/bin/capture";
+        dp.volumeOsd = "${volumeOsd}/bin/volume-osd";
+        dp.powerMenu = "${powerMenu}/bin/power-menu";
+      }
+      (lib.mkIf mediaEnabled {
+        dp.mediaBootPrompt = "${mediaBootPrompt}/bin/media-boot-prompt";
+        dp.powerTray = "${powerTray}/bin/power-tray";
+      })
+    ]
+  );
 }

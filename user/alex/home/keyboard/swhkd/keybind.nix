@@ -39,7 +39,7 @@ let
       "super + x" = "${playerctl} next";
       "super + shift + x" = "${mpc} next";
     }
-    // lib.optionalAttrs (!config.targets.genericLinux.enable) {
+    // lib.optionalAttrs (config.customScript ? capture) {
       "super + @s" = "${config.customScript.capture} screenshot";
       "super + shift + @s" = "${config.customScript.capture} video";
     };
