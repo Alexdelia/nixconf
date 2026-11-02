@@ -11,24 +11,17 @@ let
 
   sink = import ./sink.nix;
 
-  armShutdown = true;
-
   hdmiWatch = pkgs.writeShellApplication {
     name = "hdmi-watch";
     runtimeInputs = with pkgs; [
       curl
       jaq
       sway
-      systemd
       uutils-coreutils-noprefix
-      libnotify
-      speechd
     ];
     inheritPath = false;
     excludeShellChecks = [ "SC2016" ];
     text = ''
-      arm=${if armShutdown then "1" else "0"}
-
       state="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-state"
       grace="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/hdmi-grace"
 
@@ -72,48 +65,6 @@ let
       	if [ "$follow" = 1 ]; then swaymsg workspace "$to" >/dev/null; fi
       }
 
-      window_count() {
-      	swaymsg -t get_tree | jaq '[recurse(.nodes[]?, .floating_nodes[]?)
-      		| select((.type == "con" or .type == "floating_con") and (.nodes | length) == 0)] | length'
-      }
-
-      brave_quit() {
-      	local pid
-      	pid="$(swaymsg -t get_tree | jaq -r 'first(recurse(.nodes[]?, .floating_nodes[]?)
-      		| select(.app_id == "brave-browser" or (.window_properties.class? == "brave-browser"))
-      		| .pid) // empty')"
-      	[ -n "$pid" ] && kill -TERM "$pid" 2>/dev/null || true
-      }
-
-      shutdown_prompt() {
-      	local t baseline
-      	${config.customScript.isMediaDefaultTime} || return 0
-
-      	baseline="$(window_count)"
-
-      	notify-send -u critical "shutdown" "shutting down in 60 seconds"
-      	spd-say "Shutting down in 60 seconds." || true
-
-      	for ((t = 0; t < 60; t++)); do
-      		sleep 1
-      		if [ "$(cat "$state" 2>/dev/null)" = on ]; then
-      			notify-send "shutdown" "cancelled"
-      			return 0
-      		fi
-      		if [ "$(window_count)" -gt "$baseline" ]; then
-      			notify-send "shutdown" "cancelled"
-      			return 0
-      		fi
-      	done
-
-      	brave_quit
-      	if [ "$arm" = 1 ]; then
-      		systemctl poweroff
-      	else
-      		notify-send -u critical "shutdown" "dry-run"
-      	fi
-      }
-
       on_hdmi() {
       	move_ws browser media 1
       	${config.customScript.switchSink} ${lib.escapeShellArg sink.hdmi}
@@ -122,7 +73,6 @@ let
       off_hdmi() {
       	move_ws media browser 0
       	${config.customScript.switchSink} ${lib.escapeShellArg sink.analog}
-      	shutdown_prompt &
       }
 
       watch_session() {
@@ -173,7 +123,7 @@ in
   config = lib.mkIf (config.wayland.windowManager.sway.enable && mediaEnabled) {
     systemd.user.services.hdmi-watch = {
       Unit = {
-        Description = "track HDMI media screen power, drive sound & workspace + work-hours shutdown";
+        Description = "track HDMI media screen power, drive sound & workspace";
         PartOf = [ "graphical-session.target" ];
         After = [ "graphical-session.target" ];
       };
