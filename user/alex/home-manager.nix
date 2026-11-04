@@ -9,7 +9,7 @@
     useUserPackages = true;
 
     sharedModules = [
-      inputs.sops-nix.homeManagerModules.sops
+      inputs.sops-nix.homeModules.sops
 
       inputs.base16.homeManagerModule
       { inherit (config) scheme; }

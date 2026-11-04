@@ -28,7 +28,7 @@ let
       };
 
       modules = [
-        inputs.sops-nix.homeManagerModules.sops
+        inputs.sops-nix.homeModules.sops
 
         inputs.base16.homeManagerModule
         { inherit scheme; }
