@@ -36,7 +36,7 @@ let
 
       brave_id() {
       	swaymsg -t get_tree | jaq -r 'first(recurse(.nodes[]?, .floating_nodes[]?)
-      		| select(.app_id == "brave-browser" or (.window_properties.class? == "brave-browser"))
+      		| select(.app_id == "brave-origin" or (.window_properties.class? == "brave-origin"))
       		| .id) // empty'
       }
 
@@ -45,7 +45,7 @@ let
       		[ "$(jaq -r '.change' <<<"$ev")" = new ] || continue
       		appid="$(jaq -r '.container.app_id // empty' <<<"$ev")"
       		class="$(jaq -r '.container.window_properties.class // empty' <<<"$ev")"
-      		if [ "$appid" = brave-browser ] || [ "$class" = brave-browser ]; then
+      		if [ "$appid" = brave-origin ] || [ "$class" = brave-origin ]; then
       			place "$(jaq -r '.container.id' <<<"$ev")" 1
       		fi
       	else

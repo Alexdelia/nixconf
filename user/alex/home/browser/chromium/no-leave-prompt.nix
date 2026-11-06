@@ -29,7 +29,7 @@ let
       pkgs.uutils-coreutils-noprefix
       pkgs.gnused
       pkgs.findutils
-      config.programs.chromium.package
+      config.programs.brave.package
     ];
     inheritPath = false;
     text = ''
@@ -59,7 +59,7 @@ let
 
       sed -i "s|\"version\": *\"[^\"]*\"|\"version\": \"$version\"|" ${staging}/manifest.json
 
-      brave --pack-extension=${staging} --pack-extension-key=${keyFile} --no-sandbox
+      brave-origin --pack-extension=${staging} --pack-extension-key=${keyFile} --no-sandbox
 
       mv ${staging}.crx ${crx}
       rm -rf ${staging}

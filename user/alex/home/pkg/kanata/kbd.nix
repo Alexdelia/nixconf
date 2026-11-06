@@ -10,7 +10,7 @@
   	;; held-meta-layer (layer-while-held meta-layer)
 
   	;; terminal (cmd ${pkgs.foot}/bin/foot)
-  	;; browser (cmd ${pkgs.brave}/bin/brave)
+  	;; browser (cmd ${pkgs.unstable.brave-origin}/bin/brave-origin)
   )
 
   (defsrc

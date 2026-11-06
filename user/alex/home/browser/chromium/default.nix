@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
-  package = pkgs.brave;
+  package = pkgs.unstable.brave-origin;
 in
 {
   imports = [
@@ -11,12 +11,15 @@ in
     ./no-leave-prompt.nix
   ];
 
-  programs.chromium = {
+  programs.brave = {
     enable = true;
 
     inherit package;
 
     commandLineArgs = [
+      # brave-origin defaults to BraveSoftware/Brave-Origin; reuse the brave profile, also where hm writes brave extensions
+      "--user-data-dir=${config.xdg.configHome}/BraveSoftware/Brave-Browser"
+
       "--ozone-platform-hint=auto"
 
       "--accept-lang=en-GB,en,fr"

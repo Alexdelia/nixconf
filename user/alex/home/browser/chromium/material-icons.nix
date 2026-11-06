@@ -5,7 +5,7 @@
   ...
 }:
 {
-  programs.chromium.localExtensions.material-icons = {
+  programs.brave.localExtensions.material-icons = {
     id = "pknjbmepijfoahncaleibaiagmmieecj";
     src = lib.mkDefault pkgs.material-icons-browser-extension;
     inherit (pkgs.material-icons-browser-extension) version;

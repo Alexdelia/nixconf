@@ -1,5 +1,5 @@
 { config, ... }: {
-  programs.chromium.extensions = [
+  programs.brave.extensions = [
     (import ./dark_reader.nix)
 
     (import ./improved_intra_42.nix)

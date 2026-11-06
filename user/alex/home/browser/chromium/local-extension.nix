@@ -59,7 +59,7 @@ let
         pkgs.gnused
         pkgs.findutils
         pkgs.openssl
-        config.programs.chromium.package
+        config.programs.brave.package
       ];
       inheritPath = false;
       text = ''
@@ -98,7 +98,7 @@ let
 
         sed -i "s|\"version\": *\"[^\"]*\"|\"version\": \"$version\"|" "$staging/manifest.json"
 
-        brave --pack-extension="$staging" --pack-extension-key=${extension.keyFile} --no-sandbox
+        brave-origin --pack-extension="$staging" --pack-extension-key=${extension.keyFile} --no-sandbox
 
         mv "$staging.crx" ${crx}
         rm -rf "$staging"
@@ -113,7 +113,7 @@ let
     };
 in
 {
-  options.programs.chromium.localExtensions = lib.mkOption {
+  options.programs.brave.localExtensions = lib.mkOption {
     description = "unpacked extensions packed into a crx and installed as external extensions";
     type = lib.types.attrsOf (lib.types.submodule extensionOptions);
     default = { };
@@ -133,5 +133,5 @@ in
     };
 
     Install.WantedBy = [ "default.target" ];
-  }) config.programs.chromium.localExtensions;
+  }) config.programs.brave.localExtensions;
 }
