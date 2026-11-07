@@ -19,6 +19,7 @@ in
 
   services.xserver.xkb = {
     inherit layout;
+    options = "caps:backspace";
     extraLayouts.${layout} = {
       description = layout;
       languages = [

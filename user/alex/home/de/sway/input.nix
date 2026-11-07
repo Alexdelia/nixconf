@@ -14,6 +14,7 @@
 
       "type:keyboard" = {
         xkb_layout = if !checkConfig then "qwerty-dev-ca" else "us";
+        xkb_options = "caps:backspace";
       };
     }
     // lib.optionalAttrs config.hostOption.spec.laptop {
