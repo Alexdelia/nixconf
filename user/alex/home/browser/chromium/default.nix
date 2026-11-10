@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  package = pkgs.unstable.brave-origin;
+  package = pkgs.brave-origin;
 in
 {
   imports = [
