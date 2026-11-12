@@ -6,6 +6,7 @@
 {
   imports = [
     ./font.nix
+    ./keyboard.nix
     ./keybind.nix
     ./locale.nix
     ./record.nix
