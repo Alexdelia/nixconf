@@ -1,0 +1,4 @@
+! include %S/evdev
+
+! option = symbols
+  custom:no_backspace = +custom(no_backspace)

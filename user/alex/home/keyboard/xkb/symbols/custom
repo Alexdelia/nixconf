@@ -1,0 +1,4 @@
+partial alphanumeric_keys
+xkb_symbols "no_backspace" {
+    key <BKSP> { type = "ONE_LEVEL", [ VoidSymbol ] };
+};

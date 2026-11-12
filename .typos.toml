@@ -2,3 +2,6 @@
 lazer = "lazer"
 espace = "espace"
 nd = "nd"
+
+[default.extend-identifiers]
+CPY001 = "CPY001"

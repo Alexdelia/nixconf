@@ -1,0 +1,60 @@
+--- a/swhkd/src/daemon.rs
++++ b/swhkd/src/daemon.rs
+@@ -330,6 +330,18 @@
+         }
+     };
+ 
++    let mut tap_device = if std::env::var_os("SWHKD_TAP").is_some() {
++        match uinput::create_tap_device() {
++            Ok(dev) => Some(dev),
++            Err(e) => {
++                log::error!("Failed to create tap device: \nErr: {:#?}", e);
++                exit(1);
++            }
++        }
++    } else {
++        None
++    };
++
+     let mut uinput_switches_device = match uinput::create_uinput_switches_device() {
+         Ok(dev) => dev,
+         Err(e) => {
+@@ -485,7 +497,12 @@
+                 let keyboard_state = &mut keyboard_states.get_mut(&node).expect("device not in states map");
+ 
+                 let key = match event.kind() {
+-                    InputEventKind::Key(keycode) => keycode,
++                    InputEventKind::Key(keycode) => {
++                        if let Some(tap) = tap_device.as_mut() {
++                            tap.emit(&[event]).unwrap();
++                        }
++                        keycode
++                    }
+                     InputEventKind::Switch(_) => {
+                         uinput_switches_device.emit(&[event]).unwrap();
+                         continue
+@@ -585,7 +602,7 @@
+ 
+ pub fn check_device_is_keyboard(device: &Device) -> bool {
+     if device.supported_keys().is_some_and(|keys| keys.contains(Key::KEY_ENTER)) {
+-        if device.name() == Some("swhkd virtual output") {
++        if matches!(device.name(), Some("swhkd virtual output") | Some("swhkd tap")) {
+             return false;
+         }
+         log::debug!("Keyboard: {}", device.name().unwrap(),);
+--- a/swhkd/src/uinput.rs
++++ b/swhkd/src/uinput.rs
+@@ -27,6 +27,13 @@
+     Ok(device)
+ }
+ 
++pub fn create_tap_device() -> Result<VirtualDevice, Box<dyn std::error::Error>> {
++    let keys: AttributeSet<Key> = get_all_keys().iter().copied().collect();
++
++    let device = VirtualDeviceBuilder::new()?.name("swhkd tap").with_keys(&keys)?.build()?;
++    Ok(device)
++}
++
+ pub fn create_uinput_switches_device() -> Result<VirtualDevice, Box<dyn std::error::Error>> {
+     let switches: AttributeSet<SwitchType> = get_all_switches().iter().copied().collect();
+ 

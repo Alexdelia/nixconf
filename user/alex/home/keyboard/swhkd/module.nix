@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -43,6 +44,7 @@ in
 
       Service = {
         ExecStart = swhkdBin;
+        Environment = lib.optional config.hostOption.keyheat "SWHKD_TAP=1";
         ExecReload = "${pkgs.uutils-coreutils-noprefix}/bin/kill -s HUP $MAINPID";
         Restart = "on-failure";
         KillMode = "process";

@@ -16,6 +16,7 @@ in
     environment.loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
         [ -f "$HOME/.profile" ] && . "$HOME/.profile"
+        export XDG_SESSION_TYPE=wayland
         exec sway
       fi
     '';

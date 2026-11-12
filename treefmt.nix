@@ -18,6 +18,9 @@ _: {
 
     biome.enable = true;
 
+    ruff-format.enable = true;
+    ruff-check.enable = true;
+
     yamlfmt = {
       enable = true;
       settings.formatter.retain_line_breaks = true;

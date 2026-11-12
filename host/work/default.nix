@@ -7,6 +7,7 @@ _: {
 
   hostOption = {
     work = true;
+    keyheat = true;
     type = "lite";
 
     spec = {

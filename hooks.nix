@@ -34,6 +34,34 @@ let
       text = "cargo clippy --manifest-path ${iced}/Cargo.toml --all-targets -- -D warnings";
     };
 
+  keyheat = "common/package/keyheat";
+
+  keyheatPython =
+    system:
+    inputs.nixpkgs.legacyPackages.${system}.python3.withPackages (
+      python: with python; [
+        evdev
+        xkbcommon
+        jeepney
+        pytest
+      ]
+    );
+
+  keyheatTest =
+    system:
+    let
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+    in
+    pkgs.writeShellApplication {
+      name = "keyheat-test";
+      runtimeInputs = [ (keyheatPython system) ];
+      runtimeEnv = {
+        KEYHEAT_TEST_XKB_DIR = (import ./${keyheat} { final = pkgs; }).xkb;
+        PYTHONDONTWRITEBYTECODE = "1";
+      };
+      text = "cd ${keyheat} && pytest -q -p no:cacheprovider";
+    };
+
   checks = forSystems (system: {
     pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
       src = ./.;
@@ -53,12 +81,38 @@ let
         shellcheck = {
           enable = true;
           stages = [ "pre-commit" ];
+          args = [ "--shell=bash" ];
         };
 
         clippy = {
           enable = true;
           entry = "${icedClippy system}/bin/iced-clippy";
           files = "^user/alex/home/de/iced/.*\\.(rs|toml)$|Cargo\\.lock$";
+          pass_filenames = false;
+          stages = [ "pre-push" ];
+        };
+
+        ruff = {
+          enable = true;
+          stages = [ "pre-push" ];
+        };
+
+        ty = {
+          enable = true;
+          name = "ty";
+          description = "type check every python file";
+          entry = "${
+            inputs.nixpkgs.lib.getExe inputs.nixpkgs.legacyPackages.${system}.ty
+          } check --python ${keyheatPython system}";
+          files = "\\.py$";
+          stages = [ "pre-push" ];
+        };
+
+        keyheat-test = {
+          enable = true;
+          name = "keyheat pytest";
+          entry = "${keyheatTest system}/bin/keyheat-test";
+          files = "^${keyheat}/";
           pass_filenames = false;
           stages = [ "pre-push" ];
         };

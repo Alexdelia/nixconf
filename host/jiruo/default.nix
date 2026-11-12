@@ -15,6 +15,8 @@
   hostOption = {
     type = "full";
 
+    keyheat = true;
+
     spec = {
       monitor = {
         "DP-1" = {
