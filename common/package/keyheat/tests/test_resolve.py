@@ -24,12 +24,12 @@ def test_altgr_4_gives_euro(
 	assert type_keys(jiruo_resolver, 100, 5) == Token("glyph", "€")
 
 
-def test_caps_is_backspace_and_backspace_is_void(
+def test_caps_is_backspace_and_backspace_is_less(
 	work_resolver: KeyResolver, jiruo_resolver: KeyResolver
 ) -> None:
 	for resolver in (work_resolver, jiruo_resolver):
 		assert type_keys(resolver, 58) == Token("named", "BackSpace")
-		assert type_keys(resolver, 14) == Token("named", "VoidSymbol")
+		assert type_keys(resolver, 14) == Token("glyph", "<")
 
 
 def test_chords(work_resolver: KeyResolver) -> None:
