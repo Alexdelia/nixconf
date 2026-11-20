@@ -347,7 +347,6 @@
 		});
 		$("board").addEventListener("pointerleave", () => {
 			state.hover = null;
-			hideTooltip();
 			renderBoard();
 		});
 		window
@@ -581,14 +580,12 @@
 					),
 				);
 			}
-			group.addEventListener("pointerenter", (event) => {
+			group.addEventListener("pointerenter", () => {
 				if (state.hover !== key.code) {
 					state.hover = key.code;
 					renderBoard();
 				}
-				showKeyTooltip(key.code, event);
 			});
-			group.addEventListener("pointermove", (event) => moveTooltip(event));
 			group.addEventListener("click", () => pinKey(key.code));
 			keyLayer.append(group);
 		}
@@ -651,6 +648,7 @@
 			}
 		}
 		board.replaceChildren(keyLayer, flowLayer, badgeLayer);
+		renderKeyInfo();
 		renderFlowInfo(active, shown);
 		renderLegend();
 	}
@@ -761,8 +759,15 @@
 		legend.replaceChildren(...items);
 	}
 
-	function showKeyTooltip(code, event) {
-		const tooltip = $("tooltip");
+	function renderKeyInfo() {
+		const panel = $("key-info");
+		const code = state.hover ?? state.pins.at(-1) ?? null;
+		if (code === null) {
+			panel.replaceChildren(
+				el("p", { class: "empty" }, "hover a key to see what was typed on it"),
+			);
+			return;
+		}
 		const usage = model.keyUsage(selectedHosts(), state.layout, state.kinds);
 		const entry = usage.keys.get(code);
 		const total = [...usage.keys.values()].reduce(
@@ -775,7 +780,7 @@
 		const header = entry
 			? `${describeKey(code)}: ${formatCount(entry.count)} presses, ${percent(share(entry.count, total))}`
 			: `${describeKey(code)}: unused`;
-		const children = [el("strong", {}, header)];
+		const children = [el("h2", {}, header)];
 		if (state.colorMode === "difference") {
 			const [first, second] = data.hosts;
 			const difference = model
@@ -791,48 +796,21 @@
 				);
 			}
 		}
-		if (rows.length) {
-			children.push(
-				el(
-					"table",
-					{},
+		children.push(
+			el(
+				"ul",
+				{ class: "chips" },
+				rows.map(([token, count]) =>
 					el(
-						"tbody",
+						"li",
 						{},
-						rows.map(([token, count]) =>
-							el(
-								"tr",
-								{},
-								el("td", {}, tokenLabel(token)),
-								el("td", {}, formatCount(count)),
-							),
-						),
+						tokenLabel(token),
+						el("span", { class: "count" }, formatCount(count)),
 					),
 				),
-			);
-		}
-		tooltip.replaceChildren(...children);
-		tooltip.hidden = false;
-		moveTooltip(event);
-	}
-
-	function moveTooltip(event) {
-		const tooltip = $("tooltip");
-		const offset = 16;
-		const x = Math.min(
-			event.clientX + offset,
-			window.innerWidth - tooltip.offsetWidth - 8,
+			),
 		);
-		const y = Math.min(
-			event.clientY + offset,
-			window.innerHeight - tooltip.offsetHeight - 8,
-		);
-		tooltip.style.left = `${x}px`;
-		tooltip.style.top = `${y}px`;
-	}
-
-	function hideTooltip() {
-		$("tooltip").hidden = true;
+		panel.replaceChildren(...children);
 	}
 
 	function meter(label, value, total) {

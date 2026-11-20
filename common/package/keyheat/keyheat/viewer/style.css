@@ -9,27 +9,27 @@
 	--text-muted: #78776f;
 	--accent: #2a78d6;
 	--key-empty: #ecebe7;
-	--heat-0: #cde2fb;
-	--heat-1: #9ec5f4;
-	--heat-2: #6da7ec;
-	--heat-3: #3987e5;
-	--heat-4: #2a78d6;
-	--heat-5: #256abf;
-	--heat-6: #1c5cab;
-	--heat-7: #184f95;
-	--heat-8: #0d366b;
+	--heat-0: #0b1f4f;
+	--heat-1: #17357f;
+	--heat-2: #2f3fa6;
+	--heat-3: #5a3aae;
+	--heat-4: #8634a3;
+	--heat-5: #af2f86;
+	--heat-6: #cf2f62;
+	--heat-7: #e3333f;
+	--heat-8: #f2402a;
+	--flow: #22d3c5;
+	--flow-alternate: #3ddc84;
+	--flow-same-hand: #ffd23f;
+	--flow-same-finger: #f5f5f5;
+	--flow-repeat: #7fe3ff;
+	--flow-other: #a0a09a;
 	--diverge-first: #1c5cab;
 	--diverge-middle: #f0efec;
 	--diverge-second: #c23a39;
 	--host-0: #2a78d6;
 	--host-1: #eb6834;
 	--host-2: #1baf7a;
-	--flow: #eb6834;
-	--flow-alternate: #1baf7a;
-	--flow-same-hand: #eda100;
-	--flow-same-finger: #e34948;
-	--flow-repeat: #6250d6;
-	--flow-other: #78776f;
 	--pin: #0b0b0b;
 }
 
@@ -45,27 +45,12 @@
 		--text-muted: #94938a;
 		--accent: #3987e5;
 		--key-empty: #2a2a28;
-		--heat-0: #13284a;
-		--heat-1: #104281;
-		--heat-2: #184f95;
-		--heat-3: #1c5cab;
-		--heat-4: #256abf;
-		--heat-5: #3987e5;
-		--heat-6: #6da7ec;
-		--heat-7: #9ec5f4;
-		--heat-8: #cde2fb;
 		--diverge-first: #3987e5;
 		--diverge-middle: #383835;
 		--diverge-second: #e66767;
 		--host-0: #3987e5;
 		--host-1: #d95926;
 		--host-2: #199e70;
-		--flow: #f08a5d;
-		--flow-alternate: #2fc48f;
-		--flow-same-hand: #e6b02e;
-		--flow-same-finger: #ff7a7a;
-		--flow-repeat: #a59cf0;
-		--flow-other: #94938a;
 		--pin: #f0efec;
 	}
 }
@@ -81,27 +66,12 @@
 	--text-muted: #94938a;
 	--accent: #3987e5;
 	--key-empty: #2a2a28;
-	--heat-0: #13284a;
-	--heat-1: #104281;
-	--heat-2: #184f95;
-	--heat-3: #1c5cab;
-	--heat-4: #256abf;
-	--heat-5: #3987e5;
-	--heat-6: #6da7ec;
-	--heat-7: #9ec5f4;
-	--heat-8: #cde2fb;
 	--diverge-first: #3987e5;
 	--diverge-middle: #383835;
 	--diverge-second: #e66767;
 	--host-0: #3987e5;
 	--host-1: #d95926;
 	--host-2: #199e70;
-	--flow: #f08a5d;
-	--flow-alternate: #2fc48f;
-	--flow-same-hand: #e6b02e;
-	--flow-same-finger: #ff7a7a;
-	--flow-repeat: #a59cf0;
-	--flow-other: #94938a;
 	--pin: #f0efec;
 }
 
@@ -517,22 +487,41 @@ tbody tr.clickable:hover {
 	font-size: 12px;
 }
 
-.tooltip {
-	position: fixed;
-	z-index: 10;
-	max-width: 320px;
+.key-info {
+	min-height: 92px;
+	margin-top: 8px;
 	padding: 8px 10px;
 	background: var(--surface-raised);
 	border: 1px solid var(--border);
 	border-radius: 6px;
-	box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
-	pointer-events: none;
 	font-size: 12px;
 }
 
-.tooltip table td {
-	border: 0;
-	padding: 1px 4px;
+.key-info .empty {
+	margin: 0;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 6px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.chips li {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 6px;
+	padding: 2px 8px;
+	background: var(--surface-sunken);
+	border-radius: 4px;
+	font-variant-numeric: tabular-nums;
+}
+
+.chips .count {
+	color: var(--text-secondary);
 }
 
 @media (max-width: 900px) {

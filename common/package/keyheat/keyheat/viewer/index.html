@@ -59,6 +59,7 @@
 						<label class="field"><input type="checkbox" id="trigram-mode" /> trigram mode</label>
 					</div>
 					<svg id="board" role="img" aria-label="keyboard heatmap"></svg>
+					<section class="key-info" id="key-info" aria-live="polite"></section>
 					<div class="legend" id="legend"></div>
 					<p class="hint" id="flow-info"></p>
 				</div>
@@ -79,7 +80,6 @@
 			</section>
 		</main>
 
-		<div class="tooltip" id="tooltip" hidden></div>
 
 		<script type="application/json" id="keyheat-data">{{data}}</script>
 		<script>
