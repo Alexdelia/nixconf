@@ -59,7 +59,10 @@ let
   };
 in
 {
-  config = lib.mkIf (config.hostOption.keyheat && config.targets.genericLinux.enable) {
-    home.packages = [ keyheatInstall ];
+  config = lib.mkIf config.hostOption.keyheat {
+    home.packages = [
+      pkgs.keyheat
+    ]
+    ++ lib.optional config.targets.genericLinux.enable keyheatInstall;
   };
 }

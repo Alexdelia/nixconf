@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"
+		/>
+		<meta name="referrer" content="no-referrer" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>keyheat</title>
+		<style>
+			{{style}}
+		</style>
+	</head>
+	<body>
+		<header class="topbar">
+			<h1>keyheat</h1>
+			<nav class="tabs" id="tabs">
+				<button type="button" data-tab="board">board</button>
+				<button type="button" data-tab="tokens">tokens</button>
+				<button type="button" data-tab="shortcuts">shortcuts</button>
+			</nav>
+			<div class="segmented" id="hosts" aria-label="host"></div>
+			<label class="field">
+				layout
+				<select id="layout"></select>
+			</label>
+			<fieldset class="kinds" id="kinds">
+				<label><input type="checkbox" value="glyph" checked /> glyphs</label>
+				<label><input type="checkbox" value="named" checked /> named</label>
+				<label><input type="checkbox" value="chord" checked /> chords</label>
+				<label><input type="checkbox" value="modifier" checked /> modifiers</label>
+			</fieldset>
+		</header>
+
+		<main>
+			<section id="board-view" class="view">
+				<div class="board-column">
+					<div class="controls">
+						<div class="segmented" id="color-mode">
+							<button type="button" data-value="usage">usage</button>
+							<button type="button" data-value="difference">host difference</button>
+						</div>
+						<div class="segmented" id="scale">
+							<button type="button" data-value="sqrt">sqrt</button>
+							<button type="button" data-value="linear">linear</button>
+							<button type="button" data-value="log">log</button>
+						</div>
+						<div class="segmented" id="direction">
+							<button type="button" data-value="next">next</button>
+							<button type="button" data-value="before">before</button>
+						</div>
+						<label class="field">
+							top <output id="top-value"></output>
+							<input type="range" id="top" min="1" max="20" />
+						</label>
+						<label class="field"><input type="checkbox" id="hand-colors" /> hand colors</label>
+						<label class="field"><input type="checkbox" id="trigram-mode" /> trigram mode</label>
+					</div>
+					<svg id="board" role="img" aria-label="keyboard heatmap"></svg>
+					<div class="legend" id="legend"></div>
+					<p class="hint" id="flow-info"></p>
+				</div>
+				<aside class="side">
+					<section id="key-detail"></section>
+					<section id="stats"></section>
+					<section id="comparison"></section>
+					<section id="unplaced"></section>
+				</aside>
+			</section>
+
+			<section id="tokens-view" class="view">
+				<div class="list-column">
+					<input type="search" id="token-search" placeholder="filter" />
+					<ol class="ranking" id="token-ranking"></ol>
+				</div>
+				<aside class="side" id="token-detail"></aside>
+			</section>
+		</main>
+
+		<div class="tooltip" id="tooltip" hidden></div>
+
+		<script type="application/json" id="keyheat-data">{{data}}</script>
+		<script>
+			{{model}}
+		</script>
+		<script>
+			{{app}}
+		</script>
+	</body>
+</html>

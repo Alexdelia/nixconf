@@ -38,11 +38,24 @@ final.python3Packages.buildPythonApplication {
     jeepney
   ];
 
-  nativeCheckInputs = [ final.python3Packages.pytestCheckHook ];
+  nativeCheckInputs = [
+    final.python3Packages.pytestCheckHook
+    final.nodejs
+  ];
 
   preCheck = ''
     export KEYHEAT_TEST_XKB_DIR=${xkb}
   '';
+
+  postCheck = ''
+    node --test tests/model.test.js
+  '';
+
+  makeWrapperArgs = [
+    "--set-default"
+    "KEYHEAT_XKB_DIR"
+    "${xkb}"
+  ];
 
   passthru = { inherit xkb toggle; };
 

@@ -54,12 +54,15 @@ let
     in
     pkgs.writeShellApplication {
       name = "keyheat-test";
-      runtimeInputs = [ (keyheatPython system) ];
+      runtimeInputs = [
+        (keyheatPython system)
+        pkgs.nodejs
+      ];
       runtimeEnv = {
         KEYHEAT_TEST_XKB_DIR = (import ./${keyheat} { final = pkgs; }).xkb;
         PYTHONDONTWRITEBYTECODE = "1";
       };
-      text = "cd ${keyheat} && pytest -q -p no:cacheprovider";
+      text = "cd ${keyheat} && pytest -q -p no:cacheprovider && node --test tests/model.test.js";
     };
 
   checks = forSystems (system: {

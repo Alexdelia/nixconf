@@ -10,9 +10,13 @@ dependencies = ["evdev", "xkbcommon", "jeepney"]
 
 [project.scripts]
 keyheat = "keyheat.__main__:main"
+keyheat-view = "keyheat.view:main"
 
 [tool.setuptools]
 packages = ["keyheat"]
+
+[tool.setuptools.package-data]
+keyheat = ["viewer/*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

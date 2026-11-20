@@ -1,9 +1,9 @@
 if ! getent group keyheat >/dev/null; then
-  sudo groupadd --system keyheat
+	sudo groupadd --system keyheat
 fi
 
 if ! id keyheat >/dev/null 2>&1; then
-  sudo useradd --system --gid keyheat --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin keyheat
+	sudo useradd --system --gid keyheat --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin keyheat
 fi
 
 sudo usermod -aG keyheat "$KEYHEAT_USER"
